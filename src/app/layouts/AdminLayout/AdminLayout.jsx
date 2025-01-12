@@ -8,8 +8,12 @@ const AdminLayout = () => {
   return (
     <>
       <AdminSidebar activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
-      <AdminHeader activeMenu={activeMenu}/>
-      <Outlet />
+      <div className="pl-64">
+        <AdminHeader activeMenu={activeMenu} />
+        <div className="mt-[77px]">
+          <Outlet />
+        </div>
+      </div>
     </>
   );
 };
