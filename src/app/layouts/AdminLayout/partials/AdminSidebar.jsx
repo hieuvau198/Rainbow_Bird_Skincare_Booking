@@ -23,7 +23,7 @@ const AdminSidebar = ({ activeMenu, setActiveMenu }) => {
   ];
 
   return (
-    <div className="fixed top-0 left-0 h-screen lg:w-64 md:w-56 bg-white shadow-sm flex flex-col items-center">
+    <div className="fixed top-0 left-0 h-screen lg:w-64 md:w-56 bg-white shadow-md z-50 flex flex-col items-center">
       <div className="mt-4">
         <img
           src="https://cms.imgworlds.com/assets/473cfc50-242c-46f8-80be-68b867e28919.jpg?key=home-gallery" 

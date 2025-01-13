@@ -1,13 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Loading from "../../../../components/Loading/index"
+import { getTopServices } from "../../../../modules/Admin/Dashboard/getTopService";
 
 export default function TopServices() {
-    const services = [
-        { id: 1, name: "Facial Treatment", popularity: 85 },
-        { id: 2, name: "Acne Removal", popularity: 75 },
-        { id: 3, name: "Anti-Aging", popularity: 65 },
-        { id: 4, name: "Skin Whitening", popularity: 50 },
-        { id: 5, name: "Laser Therapy", popularity: 45 },
-    ];
+    const [services, setServices] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await getTopServices(); 
+                setServices(data);
+            } catch (error) {
+                setError("Failed to load Top Services. Please try again later.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    if (error) {
+        return <div className="text-red-500">{error}</div>;
+    }
+
+    if (loading) {
+        return <><Loading /></>;
+    }
 
     return (
         <div className="p-4 bg-white rounded-lg shadow-md">

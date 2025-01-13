@@ -26,8 +26,8 @@ export default function ScrollTop() {
             {isVisible && (
                 <button
                     onClick={scrollToTop}
-                    className="fixed w-[55px] h-[55px] bottom-10 right-7 bg-orange-400 dark:border dark:border-white dark:bg-gray-600 
-                    text-white p-3 rounded-[15px] shadow-xl hover:bg-orange-500 dark:hover:bg-slate-600 transition duration-300"
+                    className="fixed w-[55px] h-[55px] bottom-10 right-7 bg-lime-500 dark:border dark:border-white dark:bg-gray-600 
+                    text-white p-3 rounded-[15px] shadow-xl hover:bg-lime-600 dark:hover:bg-slate-600 transition duration-300"
                 >
                     <IoMdArrowRoundUp className="w-full h-full font-light dark:hover:text-white" />
                 </button>

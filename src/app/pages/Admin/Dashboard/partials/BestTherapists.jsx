@@ -1,13 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getBestTherapists } from "../../../../modules/Admin/Dashboard/getBestTherapists";
+import Loading from "../../../../components/Loading/index"
+
 
 export default function BestTherapists() {
-    const therapists = [
-        { id: 1, name: "Anna Johnson", rating: "4.9", reviews: 120 },
-        { id: 2, name: "John Doe", rating: "4.8", reviews: 100 },
-        { id: 3, name: "Maria Lopez", rating: "4.7", reviews: 90 },
-        { id: 4, name: "Emily Davis", rating: "4.6", reviews: 80 },
-        { id: 5, name: "Michael Brown", rating: "4.5", reviews: 70 },
-    ];
+    const [Therapists, setTherapists] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await getBestTherapists();
+                setTherapists(data);
+            } catch (error) {
+                setError("Failed to load Top Services. Please try again later.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    if (error) {
+        return <div className="text-red-500">{error}</div>;
+    }
+
+    if (loading) {
+        return <><Loading /></>;
+    }
 
     return (
         <div className="p-4 bg-white rounded-lg shadow-md">
@@ -22,7 +44,7 @@ export default function BestTherapists() {
                     </tr>
                 </thead>
                 <tbody>
-                    {therapists.map((therapist) => (
+                    {Therapists.map((therapist) => (
                         <tr key={therapist.id}>
                             <td className="p-2 border-b">{therapist.id}</td>
                             <td className="p-2 border-b">{therapist.name}</td>
