@@ -15,7 +15,7 @@ const AdminSidebar = ({ activeMenu, setActiveMenu }) => {
   const menuItems = [
     { id: "/dashboard", label: "Dashboard", icon: <FaChartPie />, link: "/admin/dashboard" },
     { id: "/statistic", label: "Statistic", icon: <LineChartOutlined />, link: "/admin/dashboard" },
-    { id: "/bookings", label: "Bookings", icon: <ShoppingCartOutlined />, link: "/admin/dashboard" },
+    { id: "/bookings", label: "Bookings", icon: <ShoppingCartOutlined />, link: "/admin/booking" },
     { id: "/services", label: "Services", icon: <FileTextOutlined />, link: "/admin/dashboard" },
     { id: "/employee", label: "Employee", icon: <LineChartOutlined />, link: "/admin/employee" },
     { id: "/feedback", label: "Feedback", icon: <MessageOutlined />, link: "/admin/feedback" },

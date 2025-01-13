@@ -6,6 +6,7 @@ import Home from "../pages/Home";
 import Loading from "../components/Loading";
 import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 import Employee from "../pages/Admin/Employee/Employee";
+import Booking from "../pages/Admin/Booking/Booking";
 
 const PageNotFound = lazy(() => import("../layouts/PageNotFound"));
 const ServerError = lazy(() => import("../layouts/ServerError/ServerError"));
@@ -23,6 +24,8 @@ export default function MainRoutes() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="employee" element={<Employee />} />
+          <Route path="booking" element={<Booking />} />
+
         </Route>
 
         <Route
