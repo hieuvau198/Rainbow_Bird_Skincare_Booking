@@ -39,9 +39,9 @@ export default function Header() {
 
   return (
     <header className="bg-white shadow-md">
-      <div className="container mx-auto px-28 py-4 flex justify-between items-center">
+      <div className="container mx-auto px-36 py-4 flex justify-between items-center">
         <div className="flex items-center">
-          <Link to="/" target="_top" className="text-2xl font-bold text-blue-600">
+          <Link to="/" target="_top" className="text-2xl font-bold text-lime-600">
             LOGO
           </Link>
         </div>
@@ -49,25 +49,25 @@ export default function Header() {
         <nav className="flex items-center space-x-6">
           <Link
             to="/about"
-            className="text-gray-600 hover:text-blue-600 transition duration-200"
+            className="text-gray-600 hover:text-lime-600 transition duration-200"
           >
             About Us
           </Link>
           <Link
             to="/services"
-            className="text-gray-600 hover:text-blue-600 transition duration-200"
+            className="text-gray-600 hover:text-lime-600 transition duration-200"
           >
             Services
           </Link>
           <Link
             to="/therapists"
-            className="text-gray-600 hover:text-blue-600 transition duration-200"
+            className="text-gray-600 hover:text-lime-600 transition duration-200"
           >
             Therapists
           </Link>
           <Link
             to="/blog"
-            className="text-gray-600 hover:text-blue-600 transition duration-200"
+            className="text-gray-600 hover:text-lime-600 transition duration-200"
           >
             Blog & News
           </Link>
