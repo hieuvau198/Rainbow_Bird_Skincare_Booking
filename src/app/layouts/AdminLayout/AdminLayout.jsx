@@ -1,16 +1,14 @@
 import { Outlet } from "react-router-dom";
 import AdminHeader from "./partials/AdminHeader";
 import AdminSidebar from "./partials/AdminSidebar";
-import { useState } from "react";
 
 const AdminLayout = () => {
-  const [activeMenu, setActiveMenu] = useState("Dashboard");
   return (
     <>
-      <AdminSidebar activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
-      <div className="pl-64">
-        <AdminHeader activeMenu={activeMenu} />
-        <div className="mt-[77px]">
+      <AdminSidebar />
+      <div className="pl-64 min-h-[40.2vw] bg-slate-200">
+        <AdminHeader />
+        <div className="mt-[77px] ">
           <Outlet />
         </div>
       </div>
