@@ -116,31 +116,36 @@ export default function Booking() {
     },
   ];
 
-  const containerStyle = {
-    margin: "20px",
-    backgroundColor: "#f9f9f9",
-    borderRadius: "10px",
-    padding: "18px",
-  };
-
   return (
     <div
       style={{
         margin: "20px auto",
         padding: "16px",
         backgroundColor: "#f0f0f0",
-        borderRadius: "8px",
+        maxWidth: "1600px", // Set max width for the table container
       }}
     >
-      <h1 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "10px" }}>
-        Skincare Service Bookings
-      </h1>
-      <Table
-        dataSource={dataSource}
-        columns={columns}
-        bordered
-        pagination={{ pageSize: 6 }}
-      />
+      <div
+        style={{
+          backgroundColor: "#fff", // White background for the table
+          borderRadius: "16px",
+          padding: "18px",
+          display: "flex",
+          justifyContent: "center", // Center table horizontally
+        }}
+      >
+        <div style={{ width: "100%" }}>
+          <h1 style={{ fontSize: "22px", fontWeight: "bold", marginBottom: "20px" }}>
+            Skincare Service Bookings
+          </h1>
+          <Table
+            dataSource={dataSource}
+            columns={columns}
+            bordered
+            pagination={{ pageSize: 5 }}
+          />
+        </div>
+      </div>
     </div>
   );
 }
