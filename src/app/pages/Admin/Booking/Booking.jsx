@@ -94,7 +94,6 @@ export default function Booking() {
       key: "actions",
       render: (_, record) => (
         <div>
-          {/* Nút View */}
           <Button
             type="primary"
             size="small"
@@ -103,13 +102,11 @@ export default function Booking() {
           >
             View
           </Button>
-
-          {/* Nút Cancel */}
           <Button
             type="default"
             size="small"
             danger
-            disabled={record.status === "Completed"} 
+            disabled={record.status === "Completed"}
             onClick={() => handleAction(record, "cancel")}
           >
             Cancel
@@ -119,14 +116,30 @@ export default function Booking() {
     },
   ];
 
+  const containerStyle = {
+    margin: "20px",
+    backgroundColor: "#f9f9f9",
+    borderRadius: "10px",
+    padding: "18px",
+  };
+
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Skincare Service Bookings</h1>
+    <div
+      style={{
+        margin: "20px auto",
+        padding: "16px",
+        backgroundColor: "#f0f0f0",
+        borderRadius: "8px",
+      }}
+    >
+      <h1 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "10px" }}>
+        Skincare Service Bookings
+      </h1>
       <Table
         dataSource={dataSource}
         columns={columns}
         bordered
-        pagination={{ pageSize: 5 }}
+        pagination={{ pageSize: 6 }}
       />
     </div>
   );
