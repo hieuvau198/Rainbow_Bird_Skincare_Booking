@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./Scrollbar.css";
+import "../../styles/Scrollbar.css";
 
 export default function Scrollbar({ children, style, className, trackColor, thumbColor, thumbHoverColor }) {
   const customStyles = {

@@ -3,13 +3,14 @@ import {
   LineChartOutlined,
   MessageOutlined,
   ShoppingCartOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import React, { useEffect } from "react";
 import { FaChartPie } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
 import { Link, useLocation } from "react-router-dom";
-import logOut from "../../../modules/Logout";
 import { sActiveMenu } from "../../../../store/Store";
+import logOut from "../../../modules/Logout";
 
 const AdminSidebar = () => {
   const activeMenu = sActiveMenu.use();
@@ -25,10 +26,10 @@ const AdminSidebar = () => {
   const menuItems = [
     { id: "/dashboard", label: "Dashboard", icon: <FaChartPie />, link: "/admin/dashboard" },
     { id: "/bookings", label: "Bookings", icon: <ShoppingCartOutlined />, link: "/admin/booking" },
-    { id: "/services", label: "Services", icon: <FileTextOutlined />, link: "/admin/dashboard" },
+    { id: "/services", label: "Services", icon: <FileTextOutlined />, link: "/admin/service" },
     { id: "/employee", label: "Employee", icon: <LineChartOutlined />, link: "/admin/employee" },
     { id: "/feedback", label: "Feedback", icon: <MessageOutlined />, link: "/admin/feedback" }, 
-    { id: "/profile", label: "Profile", icon: <MessageOutlined />, link: "/admin/profile" }, 
+    { id: "/profile", label: "Profile", icon: <UserOutlined/>, link: "/admin/profile" }, 
   ];
 
   return (
