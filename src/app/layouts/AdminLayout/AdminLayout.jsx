@@ -6,7 +6,7 @@ const AdminLayout = () => {
   return (
     <>
       <AdminSidebar />
-      <div className="pl-64 min-h-[40.2vw] bg-slate-200">
+      <div className="pl-64 bg-slate-200">
         <AdminHeader />
         <div className="mt-[77px] ">
           <Outlet />

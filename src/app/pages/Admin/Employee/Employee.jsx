@@ -14,6 +14,7 @@ const columns = [
     title: "Employee Name",
     dataIndex: "name",
     key: "name",
+    with: 1000,
     render: (text) => <strong>{text}</strong>,
   },
   {

@@ -46,7 +46,7 @@ const AdminSidebar = () => {
             <li
               key={item.id}
               className={`group flex items-center justify-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === item.label
-                ? "bg-blue-500 hover:bg-blue-600 text-white shadow-md"
+                ? "bg-sky-700 hover:bg-sky-500 text-white shadow-md"
                 : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
                 }`}
               onClick={() => sActiveMenu.set(item.label)}
