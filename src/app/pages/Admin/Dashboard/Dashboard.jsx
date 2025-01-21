@@ -8,12 +8,12 @@ import RevenueByDayChart from "./partials/RevenueByDayChart";
 
 export default function Dashboard() {
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <div className="grid grid-cols-5 gap-6 mb-6">
-        <div className="col-span-3">
+    <div className="p-4 sm:p-6 min-h-screen">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-6">
+        <div className="lg:col-span-3">
           <OverviewMetrics />
         </div>
-        <div className="col-span-2">
+        <div className="lg:col-span-2">
           <RevenueByDayChart />
         </div>
       </div>
@@ -28,6 +28,5 @@ export default function Dashboard() {
         <BestTherapists />
       </div>
     </div>
-
   );
 }

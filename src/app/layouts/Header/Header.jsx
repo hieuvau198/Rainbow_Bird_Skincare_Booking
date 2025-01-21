@@ -85,7 +85,7 @@ export default function Header() {
             >
               <Avatar
                 size={50}
-                src="https://randomuser.me/api/portraits/men/75.jpg"
+                src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/270961679_10159870536636108_2642967668131478092_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeFcKl-V6-IcsAMbuC15NFDdKmwUhI5YCb0qbBSEjlgJvWOpSKl3-IjxZpa8SmROKDGZI5ShY_7cnrfPXsHB02uw&_nc_ohc=QhTJECPW7ewQ7kNvgFpxoZD&_nc_oc=AdiKdtkmZPaeC1RldWIbW4sz3gtBi4r6rEFND-8S11k1Lgh1PUXog_vK_yfSyGQFjq4&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=ABnkf-_xQmKgrxvOCHEh5Dg&oh=00_AYDvtTwN6ZTh_SJRTjHsl_gci6R2mKkBoMOah8gZ78WBMA&oe=678EF957"
                 icon={<UserOutlined />}
                 className="cursor-pointer"
               />
