@@ -15,7 +15,7 @@ jobs:
           branch_name=$(git rev-parse --abbrev-ref HEAD)
           allowed_prefixes="feature|chore|test|fix"
           
-          # Skip validation for 'main' and 'develop' branches
+          # Skip validation only for 'main' and 'develop' branches
           if [[ "${branch_name}" == "main" || "${branch_name}" == "develop" ]]; then
             echo "Branch '${branch_name}' is exempt from validation."
             exit 0
