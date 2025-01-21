@@ -7,7 +7,11 @@ import Loading from "../components/Loading";
 import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 import Employee from "../pages/Admin/Employee/Employee";
 import Booking from "../pages/Admin/Booking/Booking";
+import Service from "../pages/Admin/Service/Service";
 import AboutUs from "../pages/About Us/AboutUs";
+import Feedback from "../pages/Admin/Feedback/Feedback";
+import Customer from "../pages/Admin/Customer/Customer";
+import Profile from "../pages/Admin/Profile/Profile";
 
 const PageNotFound = lazy(() => import("../layouts/PageNotFound"));
 const ServerError = lazy(() => import("../layouts/ServerError/ServerError"));
@@ -27,6 +31,10 @@ export default function MainRoutes() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="employee" element={<Employee />} />
           <Route path="booking" element={<Booking />} />
+          <Route path="service" element={<Service />} />
+          <Route path="feedback" element={<Feedback />} />
+          <Route path="customer" element={<Customer />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
 
         <Route
