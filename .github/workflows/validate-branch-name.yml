@@ -14,7 +14,7 @@ jobs:
         run: |
           branch_name=$(git rev-parse --abbrev-ref HEAD)
 
-          # Allow main and develop branches
+          # Allow main and develop branches 
           if [[ "${branch_name}" == "main" || "${branch_name}" == "develop" ]]; then
             echo "Branch '${branch_name}' is exempt from validation."
             exit 0
