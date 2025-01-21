@@ -14,6 +14,14 @@ jobs:
         run: |
           branch_name=$(git rev-parse --abbrev-ref HEAD)
           allowed_prefixes="feature|chore|test|fix"
+          
+          # Skip validation for 'main' and 'develop' branches
+          if [[ "${branch_name}" == "main" || "${branch_name}" == "develop" ]]; then
+            echo "Branch '${branch_name}' is exempt from validation."
+            exit 0
+          fi
+
+          # Validate other branch names
           if [[ ! "${branch_name}" =~ ^(${allowed_prefixes})/ ]]; then
             echo "Invalid branch name: ${branch_name}"
             echo "Branch names must start with 'feature/', 'chore/', 'test/', or 'fix/'"
