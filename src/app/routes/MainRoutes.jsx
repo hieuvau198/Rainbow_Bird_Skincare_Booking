@@ -7,12 +7,21 @@ import Loading from "../components/Loading";
 import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 import Employee from "../pages/Admin/Employee/Employee";
 import Booking from "../pages/Admin/Booking/Booking";
-import Service from "../pages/Admin/Service/Service";
+import MaService from "../pages/Admin/Service/Service";
 import AboutUs from "../pages/About Us/AboutUs";
 import Feedback from "../pages/Admin/Feedback/Feedback";
 import Customer from "../pages/Admin/Customer/Customer";
-import Profile from "../pages/Admin/Profile/Profile";
+import AdminProfile from "../pages/Admin/Profile/Profile";
+import Login from "../pages/Login/Login";
+import Quiz from "../pages/Customer/Quiz/Quiz";
+import Profile from "../pages/Customer/Profile/Profile";
+import Service from "../pages/Customer/Service/Service";
+import ViewTherapist from "../pages/Customer/ViewTherapist/ViewTherapist";
+import ScheduleBooking from "../pages/Customer/ScheduleBooking/ScheduleBooking";
+import Rating from "../pages/Customer/Rating/Rating";
 
+const SignUp = lazy(() => import("../pages/SignUp/SignUp"));
+const ForgotPassword = lazy(() => import("../pages/ForgorPassword/ForgotPassword"));
 const PageNotFound = lazy(() => import("../layouts/PageNotFound"));
 const ServerError = lazy(() => import("../layouts/ServerError/ServerError"));
 const Maintenance = lazy(() => import("../layouts/Maintenance/Maintenance"));
@@ -25,17 +34,41 @@ export default function MainRoutes() {
         <Route element={<UserLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<AboutUs />} />
+          <Route path="/quiz" element={<Quiz />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/services" element={<Service />} />
+          <Route path="/therapists" element={<ViewTherapist />} />
+          <Route path="/schedule-booking" element={<ScheduleBooking />} />
+          <Route path="/rating" element={<Rating />} />
         </Route>
 
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="employee" element={<Employee />} />
           <Route path="booking" element={<Booking />} />
-          <Route path="service" element={<Service />} />
+          <Route path="service" element={<MaService />} />
           <Route path="feedback" element={<Feedback />} />
           <Route path="customer" element={<Customer />} />
-          <Route path="profile" element={<Profile />} />
+          <Route path="profile" element={<AdminProfile />} />
         </Route>
+
+        <Route path="login" element={<Login />} />
+        <Route
+          path="sign-up"
+          element={
+            <Suspense fallback={<Loading />}>
+              <SignUp />
+            </Suspense>
+          }
+        />
+        <Route
+          path="forgot-password"
+          element={
+            <Suspense fallback={<Loading />}>
+              <ForgotPassword />
+            </Suspense>
+          }
+        />
 
         <Route
           path="*"

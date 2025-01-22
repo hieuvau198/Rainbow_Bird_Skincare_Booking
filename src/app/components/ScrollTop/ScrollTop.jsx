@@ -3,9 +3,9 @@ import { IoMdArrowRoundUp } from "react-icons/io";
 
 export default function ScrollTop() {
     const [isVisible, setIsVisible] = useState(false);
+    const scrollContainer = document.querySelector(".custom-scrollbar");
 
     const toggleVisibility = () => {
-        const scrollContainer = document.querySelector(".custom-scrollbar");
         if (scrollContainer) {
             setIsVisible(scrollContainer.scrollTop > 100);
         } else {
@@ -14,7 +14,6 @@ export default function ScrollTop() {
     };
 
     const scrollToTop = () => {
-        const scrollContainer = document.querySelector(".custom-scrollbar");
         if (scrollContainer) {
             scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
         } else {
@@ -23,7 +22,6 @@ export default function ScrollTop() {
     };
 
     useEffect(() => {
-        const scrollContainer = document.querySelector(".custom-scrollbar");
         if (scrollContainer) {
             scrollContainer.addEventListener("scroll", toggleVisibility);
             return () => scrollContainer.removeEventListener("scroll", toggleVisibility);
