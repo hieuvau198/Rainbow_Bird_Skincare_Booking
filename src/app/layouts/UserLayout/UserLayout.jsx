@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
 import Header from "../Header";
 import Footer from "../Footer";
-import ScrollTop from "../../components/ScrollTop";
 import Scrollbar from "../../components/Scrollbar";
+import ScrollTop from "../../components/ScrollTop";
 
 const UserLayout = () => {
   return (

@@ -77,7 +77,7 @@ export default function Service() {
   };
 
   return (
-    <div className="p-6 max-w-7xl">
+    <div className="p-6 max-w-[1270px]">
       <div className="p-6 bg-white rounded-md shadow-md">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold">Skincare Services</h2>
@@ -95,7 +95,7 @@ export default function Service() {
             dataSource={services}
             pagination={{ pageSize: 10 }}
             bordered
-            scroll={{ y: 350 }}
+            scroll={{ y: 345 }}
           />
         </div>
         <AddService
