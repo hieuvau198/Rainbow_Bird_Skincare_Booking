@@ -3,22 +3,32 @@ import { IoMdArrowRoundUp } from "react-icons/io";
 
 export default function ScrollTop() {
     const [isVisible, setIsVisible] = useState(false);
+    const scrollContainer = document.querySelector(".custom-scrollbar");
 
     const toggleVisibility = () => {
-        if (window.scrollY > 100) {
-            setIsVisible(true);
+        if (scrollContainer) {
+            setIsVisible(scrollContainer.scrollTop > 100);
         } else {
-            setIsVisible(false);
+            setIsVisible(window.scrollY > 100);
         }
     };
 
     const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: "smooth", });
+        if (scrollContainer) {
+            scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
     };
 
     useEffect(() => {
-        window.addEventListener("scroll", toggleVisibility);
-        return () => window.removeEventListener("scroll", toggleVisibility);
+        if (scrollContainer) {
+            scrollContainer.addEventListener("scroll", toggleVisibility);
+            return () => scrollContainer.removeEventListener("scroll", toggleVisibility);
+        } else {
+            window.addEventListener("scroll", toggleVisibility);
+            return () => window.removeEventListener("scroll", toggleVisibility);
+        }
     }, []);
 
     return (
@@ -26,12 +36,15 @@ export default function ScrollTop() {
             {isVisible && (
                 <button
                     onClick={scrollToTop}
-                    className="fixed w-[55px] h-[55px] bottom-10 right-7 bg-orange-400 dark:border dark:border-white dark:bg-gray-600 
-                    text-white p-3 rounded-[15px] shadow-xl hover:bg-orange-500 dark:hover:bg-slate-600 transition duration-300"
+                    aria-label="Scroll to top"
+                    className="fixed w-[55px] h-[55px] bottom-10 right-7 bg-lime-500 text-white 
+                        p-3 rounded-[15px] shadow-xl transition duration-300 
+                        hover:bg-lime-600 dark:bg-gray-600 dark:border dark:border-white 
+                        dark:hover:bg-slate-600 dark:hover:text-white"
                 >
-                    <IoMdArrowRoundUp className="w-full h-full font-light dark:hover:text-white" />
+                    <IoMdArrowRoundUp className="w-full h-full" />
                 </button>
             )}
         </div>
     );
-};
+}
