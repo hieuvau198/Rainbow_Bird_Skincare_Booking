@@ -4,7 +4,7 @@ import HomePopularService from "./partials/HomePopularService";
 import HomeSpecialService from "./partials/HomeSpeicalService";
 import HomeBestTherapists from "./partials/HomeBestTherapists";
 import HomeCategories from "./partials/HomeCategories";
-import HomeCeterNews from "./partials/HomeCeterNews";
+import HomeCenterNews from "./partials/HomeCeterNews";
 import HomeRecentBlogs from "./partials/HomeRecentBlogs";
 
 export default function Home() {
@@ -16,7 +16,7 @@ export default function Home() {
       <HomeBestTherapists />
       <HomeCategories />
       <HomeRecentBlogs />
-      <HomeCeterNews />
+      <HomeCenterNews />
     </>
   );
 }
