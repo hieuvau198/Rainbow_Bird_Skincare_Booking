@@ -1,7 +1,7 @@
 import React from 'react';
 
-export default function HomeSpeicalService() {
+export default function HomeSpecialService() {
    return(
-      <div>HomeSpeicalService<div>
+      <div>HomeSpecialService</div>
    );
 }
