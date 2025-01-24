@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Dropdown, Avatar } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { Dropdown, Avatar, Button } from "antd";
+import { UserOutlined, MenuOutlined } from "@ant-design/icons";
 import logOut from "../../modules/Logout";
 
 export default function Header() {
@@ -12,80 +12,77 @@ export default function Header() {
     setIsLoggedIn(!!token);
   }, []);
 
-  const menuItems = [
-    {
-      key: "profile",
-      label: <Link className="text-md" to="/profile">Profile</Link>,
-    },
-    {
-      key: "schedule",
-      label: <Link className="text-md" to="/schedule">Schedule</Link>,
-    },
-    {
-      key: "logout",
-      danger: true,
-      label: (
-        <span
-          className="text-md"
-          onClick={() => {
-            logOut();
-          }}
-        >
-          Logout
-        </span>
-      ),
-    },
-  ];
+  const menuItems = isLoggedIn
+    ? [
+        {
+          key: "profile",
+          label: <Link className="text-md" to="/profile">Profile</Link>,
+        },
+        {
+          key: "schedule",
+          label: <Link className="text-md" to="/schedule">Schedule</Link>,
+        },
+        {
+          key: "logout",
+          danger: true,
+          label: (
+            <span
+              className="text-md"
+              onClick={() => {
+                logOut();
+              }}
+            >
+              Logout
+            </span>
+          ),
+        },
+      ]
+    : [
+        {
+          key: "login",
+          label: (
+            <Link
+              to="/login"
+              className="text-md text-lime-600 font-semibold hover:underline"
+            >
+              Login
+            </Link>
+          ),
+        },
+      ];
 
   return (
-    <header className="bg-white shadow-md">
-      <div className="container mx-auto px-36 py-4 flex justify-between items-center">
+    <div className="bg-white shadow-md">
+      <div className="container mx-auto px-6 md:px-12 lg:px-24 py-4 flex justify-between items-center">
         <div className="flex items-center">
-          <Link to="/" target="_top" className="text-2xl font-bold text-lime-600">
+          <Link to="/" className="text-2xl font-bold text-lime-600">
             LOGO
           </Link>
         </div>
 
-        <nav className="flex items-center space-x-6">
-          <Link
-            to="/about"
-            className="text-gray-600 hover:text-lime-600 transition duration-200"
-          >
+        <nav className="hidden lg:flex items-center space-x-6">
+          <Link to="/about" className="text-gray-600 hover:text-lime-600 transition duration-200">
             About Us
           </Link>
-          <Link
-            to="/services"
-            className="text-gray-600 hover:text-lime-600 transition duration-200"
-          >
+          <Link to="/services" className="text-gray-600 hover:text-lime-600 transition duration-200">
             Services
           </Link>
-          <Link
-            to="/therapists"
-            className="text-gray-600 hover:text-lime-600 transition duration-200"
-          >
+          <Link to="/therapists" className="text-gray-600 hover:text-lime-600 transition duration-200">
             Therapists
           </Link>
-          <Link
-            to="/blog"
-            className="text-gray-600 hover:text-lime-600 transition duration-200"
-          >
+          <Link to="/news" className="text-gray-600 hover:text-lime-600 transition duration-200">
             Blog & News
           </Link>
-
           {isLoggedIn ? (
             <Dropdown
               menu={{ items: menuItems }}
               trigger={["hover"]}
               placement="bottom"
-              overlayStyle={{
-                minWidth: "90px",
-                textAlign: "center",
-              }}
-              openClassName="ant-dropdown-open"
+              overlayStyle={{ minWidth: "90px", textAlign: "center" }}
             >
               <Avatar
-                size={50}
-                src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/270961679_10159870536636108_2642967668131478092_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeFcKl-V6-IcsAMbuC15NFDdKmwUhI5YCb0qbBSEjlgJvWOpSKl3-IjxZpa8SmROKDGZI5ShY_7cnrfPXsHB02uw&_nc_ohc=QhTJECPW7ewQ7kNvgFpxoZD&_nc_oc=AdiKdtkmZPaeC1RldWIbW4sz3gtBi4r6rEFND-8S11k1Lgh1PUXog_vK_yfSyGQFjq4&_nc_zt=23&_nc_ht=scontent.fsgn2-7.fna&_nc_gid=ABnkf-_xQmKgrxvOCHEh5Dg&oh=00_AYDvtTwN6ZTh_SJRTjHsl_gci6R2mKkBoMOah8gZ78WBMA&oe=678EF957"
+                size={40}
+                src="https://via.placeholder.com/150"
                 icon={<UserOutlined />}
                 className="cursor-pointer"
               />
@@ -99,7 +96,29 @@ export default function Header() {
             </Link>
           )}
         </nav>
+
+        <div className="lg:hidden">
+          <Dropdown
+            menu={{
+              items: [
+                { key: "about", label: <Link to="/about">About Us</Link> },
+                { key: "services", label: <Link to="/services">Services</Link> },
+                { key: "therapists", label: <Link to="/therapists">Therapists</Link> },
+                { key: "blog", label: <Link to="/blog">Blog & News</Link> },
+                ...menuItems,
+              ],
+            }}
+            trigger={["click"]}
+            placement="bottomRight"
+          >
+            <Button
+              type="text"
+              icon={<MenuOutlined className="text-xl text-gray-600" />}
+              className="p-0"
+            />
+          </Dropdown>
+        </div>
       </div>
-    </header>
+    </div>
   );
 }
