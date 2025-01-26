@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
+    "@react-oauth/google": "^0.12.1",
     "@testing-library/jest-dom": "5.17.0",
     "@testing-library/react": "13.4.0",
     "@testing-library/user-event": "13.5.0",
@@ -10,6 +11,7 @@
     "@uiw/react-md-editor": "^4.0.5",
     "antd": "^5.23.0",
     "apexcharts": "^4.3.0",
+    "axios": "^1.7.9",
     "js-cookie": "^3.0.5",
     "react": "18.3.1",
     "react-apexcharts": "^1.7.0",
