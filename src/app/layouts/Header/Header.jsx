@@ -52,7 +52,7 @@ export default function Header() {
       ];
 
   return (
-    <div className="bg-white shadow-md">
+    <div className="bg-gradient-to-l from-lime-200 via-sky-100 to-green-200 shadow-md">
       <div className="container mx-auto px-6 md:px-12 lg:px-24 py-4 flex justify-between items-center">
         <div className="flex items-center">
           <Link to="/" className="text-2xl font-bold text-lime-600">
@@ -61,17 +61,17 @@ export default function Header() {
         </div>
 
         <nav className="hidden lg:flex items-center space-x-6">
-          <Link to="/about" className="text-gray-600 hover:text-lime-600 transition duration-200">
-            About Us
-          </Link>
-          <Link to="/services" className="text-gray-600 hover:text-lime-600 transition duration-200">
+          <Link to="/services" className="text-gray-500 hover:text-lime-700 font-semibold transition duration-200">
             Services
           </Link>
-          <Link to="/therapists" className="text-gray-600 hover:text-lime-600 transition duration-200">
+          <Link to="/therapists" className="text-gray-500 hover:text-lime-700 font-semibold transition duration-200">
             Therapists
           </Link>
-          <Link to="/news" className="text-gray-600 hover:text-lime-600 transition duration-200">
+          <Link to="/news" className="text-gray-500 hover:text-lime-700 font-semibold transition duration-200">
             Blog & News
+          </Link>
+          <Link to="/about" className="text-gray-500 hover:text-lime-700 font-semibold transition duration-200">
+            About Us
           </Link>
           {isLoggedIn ? (
             <Dropdown

@@ -1,4 +1,4 @@
-import { Button, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input } from "antd";
 import React from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-lime-200 via-blue-100 to-green-200 px-4 relative">
-      <div >
+      <div>
         <Button
           type="text"
           icon={<IoMdArrowRoundBack />}
@@ -41,7 +41,7 @@ export default function Login() {
             </h1>
           </div>
         </div>
-        <div className="p-6 md:p-8 flex-1">
+        <div className="p-6 lg:px-14 md:p-10 flex-1">
           <h2 className="text-lg md:text-xl font-semibold text-gray-700 text-center">
             Login to Your Account
           </h2>
@@ -92,6 +92,15 @@ export default function Login() {
                 className="rounded-md border-gray-300 focus:ring-sky-500 focus:border-sky-500"
               />
             </Form.Item>
+            <div className="flex justify-between items-center mb-2">
+              <Checkbox name="rememberMe">Remember Me</Checkbox>
+              <Link
+                to="/forgot-password"
+                className="text-sm text-sky-500 hover:underline"
+              >
+                Forgot Password?
+              </Link>
+            </div>
             <Form.Item>
               <Button
                 type="primary"
@@ -103,17 +112,6 @@ export default function Login() {
               </Button>
             </Form.Item>
           </Form>
-          <div className="text-center pt-3">
-            <p className="text-sm text-gray-500">
-              Don't remember password?{" "}
-              <Link
-                to="/forgot-password"
-                className="text-sm text-sky-500 hover:underline"
-              >
-                Forgot Password
-              </Link>
-            </p>
-          </div>
           <div className="flex items-center my-4">
             <div className="flex-grow border-t border-gray-300"></div>
             <span className="mx-3 text-gray-400">or</span>
@@ -146,6 +144,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 }
