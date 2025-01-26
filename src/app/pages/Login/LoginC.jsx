@@ -42,7 +42,8 @@ const LoginC = () => {
     console.log("Google login response:", response); // Log the response from Google
 
     try {
-      const serverResponse = await fetch('https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Auth/google-login', {
+      const serverResponse = await fetch('https://localhost/api/Auth/google-login', {
+                                      // https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Auth/google-login
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
