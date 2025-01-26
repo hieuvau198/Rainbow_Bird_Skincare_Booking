@@ -55,8 +55,7 @@ export default function MainRoutes() {
           <Route path="profile" element={<AdminProfile />} />
         </Route>
 
-        <Route path="login" element={<Login />} />
-        <Route path="loginc" element={<LoginC />} />
+        <Route path="login" element={<LoginC />} />
         <Route
           path="sign-up"
           element={
