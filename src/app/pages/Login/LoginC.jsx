@@ -39,6 +39,8 @@ const LoginC = () => {
     setLoading(true);
     setError(null);
 
+    console.log("Google login response:", response); // Log the response from Google
+
     try {
       const serverResponse = await fetch('https://localhost/api/Auth/google-login', {
         method: 'POST',
@@ -49,17 +51,24 @@ const LoginC = () => {
         })
       });
 
+      console.log("Server response:", serverResponse); // Log the response from the backend
+
       if (!serverResponse.ok) {
+        const errorData = await serverResponse.json();
+        console.error("Error response from server:", errorData); // Log any error response from the server
         throw new Error('Authentication failed');
       }
 
       const data = await serverResponse.json();
+
+      console.log("Authentication successful, server data:", data); // Log the data received after successful login
 
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
 
       window.location.href = '/dashboard';
     } catch (err) {
+      console.error("Error during Google login:", err); // Log the error message
       setError(err.message);
       setLoading(false);
     }
