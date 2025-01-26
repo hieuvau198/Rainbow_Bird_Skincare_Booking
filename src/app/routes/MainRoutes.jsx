@@ -12,7 +12,7 @@ import AboutUs from "../pages/About Us/AboutUs";
 import Feedback from "../pages/Admin/Feedback/Feedback";
 import Customer from "../pages/Admin/Customer/Customer";
 import AdminProfile from "../pages/Admin/Profile/Profile";
-import Login from "../pages/Login/LoginB";
+import Login from "../pages/Login/Login";
 import LoginC from "../pages/Login/LoginC";
 import Quiz from "../pages/Customer/Quiz/Quiz";
 import Profile from "../pages/Customer/Profile/Profile";
