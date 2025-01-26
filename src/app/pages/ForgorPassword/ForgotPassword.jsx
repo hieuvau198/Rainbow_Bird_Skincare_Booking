@@ -1,7 +1,7 @@
+import { Button, Form, Input } from "antd";
 import React, { useState } from "react";
-import { Button, Input, Form } from "antd";
-import { Link, useNavigate } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 export default function ForgotPassword() {
   const [form] = Form.useForm();
@@ -87,14 +87,6 @@ export default function ForgotPassword() {
               Send Reset Link
             </Button>
           </Form>
-          <div className="text-center mt-6">
-            <Link
-              to="/login"
-              className="text-sm text-sky-500 hover:underline"
-            >
-              Back to Login
-            </Link>
-          </div>
         </div>
       </div>
     </div>
