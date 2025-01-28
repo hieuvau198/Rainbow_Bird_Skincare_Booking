@@ -1,18 +1,115 @@
-import { Button, Checkbox, Form, Input } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Button, Checkbox, Form, Input, message } from "antd";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const CLIENT_ID =
+    "472695676845-p90k5n0bfbl730krba46c016htbckvrk.apps.googleusercontent.com";
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    document.body.appendChild(script);
+
+    script.onload = () => {
+      window.google.accounts.id.initialize({
+        client_id: CLIENT_ID,
+        callback: handleCredentialResponse,
+      });
+
+      window.google.accounts.id.renderButton(
+        document.getElementById("googleSignInButton"),
+        {
+          theme: "outline",
+          size: "large",
+        }
+      );
+    };
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
+  const handleCredentialResponse = async (response) => {
+    setLoading(true);
+    setError(null);
+
+    console.log("Google login response:", response);
+
+    try {
+      const serverResponse = await fetch(
+        "https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Auth/google-login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            idToken: response.credential,
+            clientId: CLIENT_ID,
+          }),
+        }
+      );
+
+      console.log("Server response:", serverResponse);
+
+      if (!serverResponse.ok) {
+        const errorData = await serverResponse.json();
+        console.error("Error response from server:", errorData);
+        throw new Error("Authentication failed");
+      }
+
+      const data = await serverResponse.json();
+
+      console.log("Authentication successful, server data:", data);
+
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
+
+      window.location.href = "/dashboard";
+    } catch (err) {
+      console.error("Error during Google login:", err);
+      setError(err.message);
+      setLoading(false);
+      message.error(err.message || "Google login failed!");
+    }
+  };
+
+  const onFinish = async (values) => {
+    console.log("Form login values:", values);
+    try {
+      const response = await fetch(
+        "https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Auth/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Login failed");
+      }
+
+      const data = await response.json();
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
+      message.success("Login successful!");
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err);
+      message.error(err.message || "Login failed!");
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+    console.log("Form validation failed:", errorInfo);
   };
 
   return (
@@ -117,20 +214,7 @@ export default function Login() {
             <span className="mx-3 text-gray-400">or</span>
             <div className="flex-grow border-t border-gray-300"></div>
           </div>
-          <div>
-            <Button
-              type="default"
-              size="large"
-              className="w-full flex items-center justify-center rounded-md border-gray-300"
-            >
-              <img
-                src="https://cdn-icons-png.flaticon.com/256/2702/2702602.png"
-                alt="Google"
-                className="w-5 h-5 mr-2"
-              />
-              Login with Google
-            </Button>
-          </div>
+          <div id="googleSignInButton"></div>
           <div className="text-center mt-4">
             <p className="text-sm text-gray-500">
               Don't have an account?{" "}
