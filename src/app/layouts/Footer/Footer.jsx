@@ -43,7 +43,7 @@ export default function Footer() {
               <h3 className="text-lg font-semibold text-white">COMPANY</h3>
               <ul className="mt-2 space-y-2">
                 <li>
-                  <Link to="/about" className="hover:text-white">
+                  <Link to="/about" target="_top" className="hover:text-white">
                     About Us
                   </Link>
                 </li>

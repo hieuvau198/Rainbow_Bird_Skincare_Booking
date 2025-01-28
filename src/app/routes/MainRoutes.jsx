@@ -13,6 +13,7 @@ import Feedback from "../pages/Admin/Feedback/Feedback";
 import Customer from "../pages/Admin/Customer/Customer";
 import AdminProfile from "../pages/Admin/Profile/Profile";
 import Login from "../pages/Login/Login";
+import LoginC from "../pages/Login/LoginC";
 import Quiz from "../pages/Customer/Quiz/Quiz";
 import Profile from "../pages/Customer/Profile/Profile";
 import Service from "../pages/Customer/Service/Service";
@@ -54,7 +55,7 @@ export default function MainRoutes() {
           <Route path="profile" element={<AdminProfile />} />
         </Route>
 
-        <Route path="login" element={<Login />} />
+        <Route path="login" element={<LoginC />} />
         <Route
           path="sign-up"
           element={
