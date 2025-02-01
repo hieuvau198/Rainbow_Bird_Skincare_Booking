@@ -154,21 +154,17 @@ export default function Login() {
             className="space-y-3"
           >
             <Form.Item
-              name="email"
-              label="Email"
+              name="username"
+              label="Username"
               rules={[
                 {
                   required: true,
-                  message: "Please enter your email!",
-                },
-                {
-                  type: "email",
-                  message: "Please enter a valid email!",
-                },
+                  message: "Please enter your username!",
+                }
               ]}
             >
               <Input
-                placeholder="Enter your email"
+                placeholder="Enter your username"
                 size="large"
                 className="rounded-md border-gray-300 focus:ring-sky-500 focus:border-sky-500"
               />
@@ -189,7 +185,7 @@ export default function Login() {
                 className="rounded-md border-gray-300 focus:ring-sky-500 focus:border-sky-500"
               />
             </Form.Item>
-            <div className="flex justify-between items-center mb-2">
+            {/* <div className="flex justify-between items-center mb-2">
               <Checkbox name="rememberMe">Remember Me</Checkbox>
               <Link
                 to="/forgot-password"
@@ -197,7 +193,7 @@ export default function Login() {
               >
                 Forgot Password?
               </Link>
-            </div>
+            </div> */}
             <Form.Item>
               <Button
                 type="primary"
