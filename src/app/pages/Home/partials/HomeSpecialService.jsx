@@ -2,68 +2,65 @@ import React from 'react';
 
 export default function HomeSpecialService() {
   return (
-    <div className="bg-gray-100 py-16 flex flex-wrap">
+    <div className="bg-gray-50 py-16 px-6 md:px-12 lg:px-24 flex flex-wrap items-center">
       {/* Left Side */}
-      <div className="w-full md:w-1/2 flex items-center justify-center relative pl-4">
+      <div className="w-full md:w-1/2 flex items-center justify-center relative overflow-hidden rounded-lg shadow-lg">
         <img
           src="https://hips.hearstapps.com/hmg-prod/images/2-natural-skincare-brands-670eadb4e4fcf.jpg?crop=0.6666666666666666xw:1xh;center,top&resize=1200:*"
           alt="Skincare Collection"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
         />
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white text-center px-4">
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 p-6 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white">
             Our Exquisite Collection of Must-Have Essentials
           </h2>
         </div>
       </div>
 
       {/* Right Side */}
-      <div className="w-full md:w-1/2 bg-gray-100 p-6">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-8 text-center">
+      <div className="w-full md:w-1/2 bg-gray-50 p-8 md:p-12">
+        <h2 className="text-4xl font-semibold text-gray-800 mb-10 text-center border-b-4 border-gray-300 pb-4">
           Special Skincare Services
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Facial Treatment */}
-          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-            <img
-              src="https://hoamoctamanspa.vn/wp-content/uploads/2023/11/6-review-top-5-dia-chi-spa-cham-soc-da-tai-Ha-Noi.jpg"
-              alt="Facial Treatment"
-              className="w-full h-48 object-cover rounded-md mb-4"
-            />
-            <h3 className="text-2xl font-semibold text-gray-800">Facial Treatment</h3>
-          </div>
-
-          {/* Anti-aging Care */}
-          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-            <img
-              src="https://medicviet.vn/uploads/images/dich-vu-massage-2.jpg"
-              alt="Anti-aging Care"
-              className="w-full h-48 object-cover rounded-md mb-4"
-            />
-            <h3 className="text-2xl font-semibold text-gray-800">Anti-aging Care</h3>
-          </div>
-
-          {/* Acne Treatment */}
-          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnjoUXVZo3q7EaieFSEjwm5F0PN_tP8TB_mw&s"
-              alt="Acne Treatment"
-              className="w-full h-48 object-cover rounded-md mb-4"
-            />
-            <h3 className="text-2xl font-semibold text-gray-800">Acne Treatment</h3>
-          </div>
-
-          {/* Brightening Serum */}
-          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-            <img
-              src="https://www.vinmec.com/static/uploads/20210612_022232_200493_tiem_filler_va_boto_max_1800x1800_jpg_c72d179600.jpg"
-              alt="Brightening Serum"
-              className="w-full h-48 object-cover rounded-md mb-4"
-            />
-            <h3 className="text-2xl font-semibold text-gray-800">Brightening Serum</h3>
-          </div>
+          {/** Service Items */}
+          {services.map((service, index) => (
+            <div
+              key={index}
+              className="bg-white p-6 rounded-lg shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:bg-gray-100 hover:ring-2 hover:ring-gray-300"
+            >
+              <img
+                src={service.image}
+                alt={service.title}
+                className="w-full h-48 object-cover rounded-md mb-4 transition-transform duration-300 hover:scale-110"
+              />
+              <h3 className="text-2xl font-semibold text-gray-800 text-center">{service.title}</h3>
+            </div>
+          ))}
         </div>
       </div>
     </div>
   );
 }
+
+const services = [
+  {
+    title: "Facial Treatment",
+    image:
+      "https://hoamoctamanspa.vn/wp-content/uploads/2023/11/6-review-top-5-dia-chi-spa-cham-soc-da-tai-Ha-Noi.jpg",
+  },
+  {
+    title: "Anti-aging Care",
+    image: "https://medicviet.vn/uploads/images/dich-vu-massage-2.jpg",
+  },
+  {
+    title: "Acne Treatment",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnjoUXVZo3q7EaieFSEjwm5F0PN_tP8TB_mw&s",
+  },
+  {
+    title: "Brightening Serum",
+    image:
+      "https://www.vinmec.com/static/uploads/20210612_022232_200493_tiem_filler_va_boto_max_1800x1800_jpg_c72d179600.jpg",
+  },
+];
