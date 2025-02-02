@@ -2,15 +2,22 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Dropdown, Avatar, Button } from "antd";
 import { UserOutlined, MenuOutlined } from "@ant-design/icons";
+import Cookies from "js-cookie";
 import logOut from "../../modules/Logout";
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("accessToken");
     setIsLoggedIn(!!token);
   }, []);
+
+  const handleLogout = () => {
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
+    logOut();
+  };
 
   const menuItems = isLoggedIn
     ? [
@@ -26,12 +33,7 @@ export default function Header() {
           key: "logout",
           danger: true,
           label: (
-            <span
-              className="text-md"
-              onClick={() => {
-                logOut();
-              }}
-            >
+            <span className="text-md" onClick={handleLogout}>
               Logout
             </span>
           ),
@@ -61,16 +63,28 @@ export default function Header() {
         </div>
 
         <nav className="hidden lg:flex items-center space-x-6">
-          <Link to="/services" className="text-gray-500 hover:text-lime-700 font-semibold transition duration-200">
+          <Link
+            to="/services"
+            className="text-gray-500 hover:text-lime-700 font-semibold transition duration-200"
+          >
             Services
           </Link>
-          <Link to="/therapists" className="text-gray-500 hover:text-lime-700 font-semibold transition duration-200">
+          <Link
+            to="/therapists"
+            className="text-gray-500 hover:text-lime-700 font-semibold transition duration-200"
+          >
             Therapists
           </Link>
-          <Link to="/news" className="text-gray-500 hover:text-lime-700 font-semibold transition duration-200">
+          <Link
+            to="/news"
+            className="text-gray-500 hover:text-lime-700 font-semibold transition duration-200"
+          >
             Blog & News
           </Link>
-          <Link to="/about" className="text-gray-500 hover:text-lime-700 font-semibold transition duration-200">
+          <Link
+            to="/about"
+            className="text-gray-500 hover:text-lime-700 font-semibold transition duration-200"
+          >
             About Us
           </Link>
           {isLoggedIn ? (
