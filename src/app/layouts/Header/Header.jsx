@@ -16,7 +16,7 @@ export default function Header() {
   const handleLogout = () => {
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
-    logOut();
+    // logOut();
   };
 
   const menuItems = isLoggedIn
