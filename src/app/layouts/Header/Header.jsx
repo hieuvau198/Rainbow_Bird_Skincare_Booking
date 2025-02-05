@@ -14,9 +14,7 @@ export default function Header() {
   }, []);
 
   const handleLogout = () => {
-    Cookies.remove("accessToken");
-    Cookies.remove("refreshToken");
-    // logOut();
+    logOut();
   };
 
   const menuItems = isLoggedIn
@@ -27,7 +25,7 @@ export default function Header() {
         },
         {
           key: "schedule",
-          label: <Link className="text-md" to="/schedule">Schedule</Link>,
+          label: <Link className="text-md" to="/schedule-booking">Schedule</Link>,
         },
         {
           key: "logout",
@@ -63,6 +61,12 @@ export default function Header() {
         </div>
 
         <nav className="hidden lg:flex items-center space-x-6">
+          <Link
+            to="/quiz"
+            className="text-gray-500 hover:text-lime-700 font-semibold transition duration-200"
+          >
+            Quiz
+          </Link>
           <Link
             to="/services"
             className="text-gray-500 hover:text-lime-700 font-semibold transition duration-200"

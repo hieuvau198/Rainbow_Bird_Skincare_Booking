@@ -20,7 +20,7 @@ export default function Login() {
     script.onload = () => {
       window.google.accounts.id.initialize({
         client_id: CLIENT_ID,
-        callback: (response) => googleLogin(response, CLIENT_ID, setLoading),
+        callback: (response) => googleLogin(response, CLIENT_ID, setLoading, navigate),
       });
       window.google.accounts.id.renderButton(
         document.getElementById("googleSignInButton"),

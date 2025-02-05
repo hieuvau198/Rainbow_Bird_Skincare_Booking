@@ -30,6 +30,8 @@ export default function Service() {
       dataIndex: "price",
       key: "price",
       width: 100,
+      defaultSortOrder: 'descend',
+      sorter: (a, b) => a.price - b.price,
     },
     {
       title: "Status",
@@ -78,7 +80,7 @@ export default function Service() {
 
   return (
     <div className="p-6 max-w-[1270px]">
-      <div className="p-6 bg-white rounded-md shadow-md">
+      <div className="p-6 bg-white rounded-md shadow-md min-h-[580px]">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold">Skincare Services</h2>
           <Button

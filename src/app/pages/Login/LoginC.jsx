@@ -42,8 +42,7 @@ const LoginC = () => {
     console.log("Google login response:", response); // Log the response from Google
 
     try {
-      const serverResponse = await fetch('https://localhost/api/Auth/google-login', {
-                                      // https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Auth/google-login
+      const serverResponse = await fetch('https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Auth/google-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -67,7 +66,7 @@ const LoginC = () => {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
 
-      window.location.href = '/dashboard';
+      window.location.href = '/';
     } catch (err) {
       console.error("Error during Google login:", err); // Log the error message
       setError(err.message);
@@ -89,8 +88,7 @@ const LoginC = () => {
           <div className="text-red-500 text-center mb-4">{error}</div>
         )}
 
-        {loading && (
-          <div className="text-center text-blue-500">Signing in...</div>
+        {loading && (<div className="text-center text-blue-500">Signing in...</div>
         )}
 
         <div className="text-center mt-4 text-sm text-gray-600">

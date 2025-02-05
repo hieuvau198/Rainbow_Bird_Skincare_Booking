@@ -45,8 +45,18 @@ export const loginUser = async (values, setLoading, navigate) => {
         setLoading(false);
     }
 };
-
 const saveTokens = (data) => {
-    Cookies.set("accessToken", data.accessToken, { sameSite: "Strict", secure: true });
-    Cookies.set("refreshToken", data.refreshToken, { sameSite: "Strict", secure: true });
+    const oneHour = 1 / 24;
+    
+    Cookies.set("accessToken", data.accessToken, { 
+        expires: oneHour, 
+        sameSite: "Strict", 
+        secure: true 
+    });
+
+    Cookies.set("refreshToken", data.refreshToken, { 
+        expires: oneHour, 
+        sameSite: "Strict", 
+        secure: true 
+    });
 };

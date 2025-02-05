@@ -1,25 +1,17 @@
 import { Outlet } from "react-router-dom";
+import "../../styles/ScrollbarAdmin.css";
 import AdminHeader from "./partials/AdminHeader";
 import AdminSidebar from "./partials/AdminSidebar";
-import Scrollbar from "../../components/Scrollbar";
 
 const AdminLayout = () => {
   return (
     <div className="flex flex-col lg:flex-row">
       <AdminSidebar />
-      <div className="flex-1">
-        <Scrollbar
-          style={{ height: "100vh", overflowY: "auto" }}
-          className="lg:pl-64 bg-slate-200"
-          trackColor="#e5e7eb"
-          thumbColor="#0ea5e9"
-          thumbHoverColor="#0ea5e9"
-        >
+      <div className="flex-1 lg:pl-64 bg-slate-200">
           <AdminHeader />
-          <div className="mt-[77px]">
+          <main className="pt-16 custom-scrollbar">
             <Outlet />
-          </div>
-        </Scrollbar>
+          </main>
       </div>
     </div>
   );
