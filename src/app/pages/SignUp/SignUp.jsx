@@ -1,23 +1,38 @@
-import React from "react";
-import { Button, Input, Select, Form } from "antd";
+import React, { useState } from "react";
+import { Button, Input, Select, Form, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import apiSignUp from "../../modules/SignUp/apiSignUp";
 
 export default function SignUp() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const onFinish = (values) => {
-    console.log("Form Submitted:", values);
-  };
+  const onFinish = async (values) => {
+    setLoading(true);
+    try {
+      const payload = {
+        username: values.username,
+        password: values.password,
+        email: values.email,
+        fullName: values.fullName,
+        phone: values.phone,
+      };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Validation Failed:", errorInfo);
+      await apiSignUp(payload);
+      message.success("Registration successful!");
+      navigate("/login");
+    } catch (error) {
+      message.error(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-lime-200 via-blue-100 to-green-200 px-4">
-      <div >
+      <div>
         <Button
           type="text"
           icon={<IoMdArrowRoundBack />}
@@ -52,23 +67,17 @@ export default function SignUp() {
             form={form}
             layout="vertical"
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             requiredMark={true}
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Form.Item
-                name="name"
-                label="Full Name"
-                rules={[
-                  { required: true, message: "Please enter your full name!" },
-                ]}
+                name="username"
+                label="Username"
+                rules={[{ required: true, message: "Please enter your username!" }]}
               >
-                <Input
-                  placeholder="Enter your full name"
-                  size="large"
-                  className="rounded-md border-gray-300 focus:ring-sky-500 focus:border-sky-500"
-                />
+                <Input placeholder="Enter your username" size="large" />
               </Form.Item>
+
               <Form.Item
                 name="email"
                 label="Email"
@@ -77,35 +86,42 @@ export default function SignUp() {
                   { type: "email", message: "Please enter a valid email!" },
                 ]}
               >
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  size="large"
-                  className="rounded-md border-gray-300 focus:ring-sky-500 focus:border-sky-500"
-                />
+                <Input type="email" placeholder="Enter your email" size="large" />
               </Form.Item>
+
+              <Form.Item
+                name="fullName"
+                label="Full Name"
+                rules={[{ required: true, message: "Please enter your full name!" }]}
+              >
+                <Input placeholder="Enter your full name" size="large" />
+              </Form.Item>
+
+              <Form.Item
+                name="phone"
+                label="Phone Number"
+                rules={[{ required: true, message: "Please enter your phone number!" }]}
+              >
+                <Input type="tel" placeholder="Enter your phone number" size="large" />
+              </Form.Item>
+
               <Form.Item
                 name="password"
                 label="Password"
-                rules={[
-                  { required: true, message: "Please create a password!" },
-                ]}
+                rules={[{ required: true, message: "Please create a password!" }]}
               >
-                <Input.Password
-                  placeholder="Create a password"
-                  size="large"
-                  className="rounded-md border-gray-300 focus:ring-sky-500 focus:border-sky-500"
-                />
+                <Input.Password placeholder="Create a password" size="large" />
               </Form.Item>
+
               <Form.Item
                 name="confirmPassword"
                 label="Confirm Password"
-                dependencies={['password']}
+                dependencies={["password"]}
                 rules={[
                   { required: true, message: "Please confirm your password!" },
                   ({ getFieldValue }) => ({
                     validator(_, value) {
-                      if (!value || getFieldValue('password') === value) {
+                      if (!value || getFieldValue("password") === value) {
                         return Promise.resolve();
                       }
                       return Promise.reject(
@@ -115,49 +131,16 @@ export default function SignUp() {
                   }),
                 ]}
               >
-                <Input.Password
-                  placeholder="Confirm your password"
-                  size="large"
-                  className="rounded-md border-gray-300 focus:ring-sky-500 focus:border-sky-500"
-                />
-              </Form.Item>
-              <Form.Item
-                name="phone"
-                label="Phone Number"
-                rules={[
-                  { required: true, message: "Please enter your phone number!" },
-                ]}
-              >
-                <Input
-                  type="tel"
-                  placeholder="Enter your phone number"
-                  size="large"
-                  className="rounded-md border-gray-300 focus:ring-sky-500 focus:border-sky-500"
-                />
-              </Form.Item>
-              <Form.Item
-                name="gender"
-                label="Gender"
-                rules={[
-                  { required: true, message: "Please select your gender!" },
-                ]}
-              >
-                <Select
-                  placeholder="Select your gender"
-                  size="large"
-                  className="w-full rounded-md border-gray-300 focus:ring-sky-500 focus:border-sky-500"
-                >
-                  <Select.Option value="male">Male</Select.Option>
-                  <Select.Option value="female">Female</Select.Option>
-                  <Select.Option value="other">Other</Select.Option>
-                </Select>
+                <Input.Password placeholder="Confirm your password" size="large" />
               </Form.Item>
             </div>
+
             <Form.Item>
               <Button
                 type="primary"
                 htmlType="submit"
                 size="large"
+                loading={loading}
                 className="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-md"
               >
                 Sign up
