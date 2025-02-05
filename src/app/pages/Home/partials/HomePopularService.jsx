@@ -1,4 +1,5 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 export default function HomePopularService() {
   const services = [
@@ -11,62 +12,77 @@ export default function HomePopularService() {
   ];
 
   const scrollContainerRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const scrollLeft = () => {
-    scrollContainerRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+    scrollContainerRef.current.scrollBy({ left: -320, behavior: 'smooth' });
   };
 
   const scrollRight = () => {
-    scrollContainerRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+    scrollContainerRef.current.scrollBy({ left: 320, behavior: 'smooth' });
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const index = Math.round(scrollContainerRef.current.scrollLeft / 960);
+      setActiveIndex(index);
+    };
+    const container = scrollContainerRef.current;
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className="bg-gray-100 py-8 flex flex-col items-center">
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">HOT SERVICES🔥</h2>
-      <div className="relative flex justify-center w-full max-w-7xl">
-        {/* Button Scroll Left */}
+    <div className="bg-gray-100 py-10 flex flex-col items-center">
+      <h2 className="text-3xl font-bold text-gray-800 mb-6">🔥 HOT SERVICES 🔥</h2>
+      <div className="relative flex justify-center w-full max-w-7xl px-8">
         <button
           onClick={scrollLeft}
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-green-800 text-white p-2 rounded-full shadow-lg hover:bg-green-700 z-10"
+          className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-green-700 text-white p-3 rounded-full shadow-md hover:bg-green-600 transition duration-300 z-10"
         >
-          &larr;
+          <FaChevronLeft size={20} />
         </button>
 
-        {/* Scrollable Container */}
         <div
           ref={scrollContainerRef}
-          className="flex overflow-x-scroll space-x-4 px-4"
-          style={{
-            scrollbarWidth: 'none', // Firefox
-            msOverflowStyle: 'none', // IE/Edge
-          }}
+          className="flex overflow-x-scroll space-x-6 px-4 snap-x snap-mandatory hide-scrollbar"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', overflow: 'hidden' }}
         >
           {services.map((service) => (
             <div
-              className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 flex-none"
               key={service.id}
-              style={{ width: '300px', height: '300px' }}
+              className="bg-white rounded-2xl shadow-lg overflow-hidden flex-none transform transition duration-300 hover:scale-105 hover:shadow-2xl snap-start"
+              style={{ width: '320px', height: '320px' }}
             >
               <img
                 src={service.image}
                 alt={service.name}
-                className="w-full h-2/3 object-cover"
+                className="w-full h-2/3 object-cover rounded-t-2xl"
               />
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-center text-gray-800 mb-1">{service.name}</h3>
-                <p className="text-sm text-center text-gray-600">Rating: {service.rating} ⭐</p>
+              <div className="p-4 text-center">
+                <h3 className="text-lg font-semibold text-gray-800">{service.name}</h3>
+                <p className="text-sm text-gray-600">Rating: {service.rating} ⭐</p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Button Scroll Right */}
         <button
           onClick={scrollRight}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-green-800 text-white p-2 rounded-full shadow-lg hover:bg-green-700 z-10"
+          className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-green-700 text-white p-3 rounded-full shadow-md hover:bg-green-600 transition duration-300 z-10"
         >
-          &rarr;
+          <FaChevronRight size={20} />
         </button>
+      </div>
+
+      {/* Pagination Dots */}
+      <div className="flex space-x-2 mt-4">
+        {[0, 1, 2].map((index) => (
+          <span
+            key={index}
+            className={`h-3 w-3 rounded-full ${activeIndex === index ? 'bg-green-700' : 'bg-gray-400'} transition duration-300`}
+          ></span>
+        ))}
       </div>
     </div>
   );
