@@ -1,78 +1,15 @@
 import { UserOutlined, StarOutlined, DollarOutlined , ClockCircleOutlined  } from "@ant-design/icons";
-import React from "react";
-
-const services = [
-  {
-    service_id: 1,
-    service_name: "Triệt Lông Nách (1 Buổi)",
-    price: "2.188.000đ",
-    salePrice: "1.500.000đ",
-    description: "Triệt Lông Diode Laser An Toàn & Hiệu Quả - Không Phát Sinh Chí Phí!",
-    buyers: "20.000",
-    reviews: "4",
-    image:"https://media.hcdn.vn/catalog/product/a/v/avt-nach-1726122729_img_380x380_64adc6_fit_center.jpg",
-    duration_minutes: "1 lần | 7 phút",
-    
-  },
-  {
-    service_id: 2,
-    service_name: "Triệt Lông Vùng Bikini (1 Buổi)",
-    price: "1.050.000đ",
-    salePrice: "500.000đ",
-    description: "Lấy Nhân Mụn Chuẩn Y Khoa Bác sĩ Da Liễu tư vấn chăm sóc da miễn phí! Loại bỏ nhân mụn bằng tăm bông an toàn",
-    buyers: "40.000",
-    reviews: "19",
-    image: "https://media.hcdn.vn/catalog/product/v/i/vien-bikini-1726193516_img_380x380_64adc6_fit_center.jpg",
-    duration_minutes: "1 lần | 60 phút",
-  },
-  {
-    service_id: 3,
-    service_name: "Ủ Trắng Vùng Nách",
-    price: "1.130.000đ",
-    salePrice: "200.000đ",
-    description: "Triệt Lông Diode Laser An Toàn & Hiệu Quả - Không Phát Sinh Chí Phí!",
-    buyers: "50.000",
-    reviews: "9",
-    image: "https://media.hcdn.vn/catalog/product/u/-/u-nach-avt-1670045353_1_-1734405773_img_380x380_64adc6_fit_center.jpg",
-    duration_minutes: "1 lần | 30 phút",
-  },
-  {
-    service_id: 4,
-    service_name: "Triệt Lông Nách (1 Buổi)",
-    price: "2.188.000đ",
-    salePrice: "1.500.000đ",
-    description: "Triệt Lông Diode Laser An Toàn & Hiệu Quả - Không Phát Sinh Chí Phí!",
-    buyers: "20.000",
-    reviews: "4",
-    image:"https://media.hcdn.vn/catalog/product/a/v/avt-nach-1726122729_img_380x380_64adc6_fit_center.jpg",
-    duration_minutes: "1 lần | 7 phút",
-    
-  },
-  {
-    service_id: 5,
-    service_name: "Triệt Lông Vùng Bikini (1 Buổi)",
-    price: "1.050.000đ",
-    salePrice: "500.000đ",
-    description: "Lấy Nhân Mụn Chuẩn Y Khoa Bác sĩ Da Liễu tư vấn chăm sóc da miễn phí! Loại bỏ nhân mụn bằng tăm bông an toàn",
-    buyers: "40.000",
-    reviews: "19",
-    image: "https://media.hcdn.vn/catalog/product/v/i/vien-bikini-1726193516_img_380x380_64adc6_fit_center.jpg",
-    duration_minutes: "1 lần | 60 phút",
-  },
-  {
-    service_id: 6,
-    service_name: "Ủ Trắng Vùng Nách",
-    price: "1.130.000đ",
-    salePrice: "200.000đ",
-    description: "Triệt Lông Diode Laser An Toàn & Hiệu Quả - Không Phát Sinh Chí Phí!",
-    buyers: "50.000",
-    reviews: "9",
-    image: "https://media.hcdn.vn/catalog/product/u/-/u-nach-avt-1670045353_1_-1734405773_img_380x380_64adc6_fit_center.jpg",
-    duration_minutes: "1 lần | 30 phút",
-  },
-];
+import React, { useEffect, useState } from "react";
+import mockData from "./mock_service.json";
+import { Link } from "react-router-dom";
 
 export default function Service() {
+
+  const [services, setServices] = useState ([]);
+  useEffect(() => {
+    setServices(mockData)
+  })
+
   return (
     <div className="px-40 bg-white min-h-screen mt-2 grid grid-cols-1 gap-4 w-full">
       {/* Large Banner */}
@@ -137,33 +74,36 @@ export default function Service() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service) => (
               <div key={service.service_id}  className="bg-white shadow-lg rounded-lg p-4 border">
-                {/* Title */}
-                <p className="text-gray-500 text-xs">Thẩm mỹ không xâm lấn</p>
-                <h3 className="text-sm font-semibold">{service.service_name}</h3>
+                <Link to={`/services/${service.service_id}`} key={service.service_id} target="_top" className="block">
+                  <div className="bg-white cursor-pointer">
+                    {/* Title */}
+                    <p className="text-gray-500 text-xs">Thẩm mỹ không xâm lấn</p>
+                    <h3 className="text-sm font-semibold">{service.service_name}</h3>
 
-                {/* Image */}
-                <div className="relative">
-                  <img src={service.image} alt={service.service_name} className="w-full rounded-md my-2 transform transition-transform duration-300 hover:scale-105" />
-                </div>
+                    {/* Image */}
+                    <div className="relative">
+                      <img src={service.image} alt={service.service_name} className="w-full rounded-md my-2 transform transition-transform duration-300 hover:scale-105" />
+                    </div>
 
-                {/* Price & Status */}
-                <div className="flex items-center justify-between text-gray-600 text-xs mt-1">
-                  <p><UserOutlined className="fas fa-users"></UserOutlined > {service.buyers} người mua</p>
-                  <p><StarOutlined className="fas fa-star"></StarOutlined> {service.reviews} đánh giá</p>
-                </div>
+                    {/* Price & Status */}
+                    <div className="flex items-center justify-between text-gray-600 text-xs mt-1">
+                      <p><UserOutlined className="fas fa-users"></UserOutlined > {service.buyers} người mua</p>
+                      <p><StarOutlined className="fas fa-star"></StarOutlined> {service.reviews} đánh giá</p>
+                    </div>
 
-                <div className="mt-2">
-                  <p className="text-gray-500 line-through text-xs"><DollarOutlined />{service.price}</p>
-                  <p className="text-red-500 font-bold text-sm"><DollarOutlined />{service.salePrice}</p>
-                  <p className="text-gray-700 text-xs"><ClockCircleOutlined />{service.duration_minutes}</p>
-                </div>
-
+                    <div className="mt-2">
+                      <p className="text-gray-500 line-through text-xs"><DollarOutlined />{service.price}</p>
+                      <p className="text-red-500 font-bold text-sm"><DollarOutlined />{service.salePrice}</p>
+                      <p className="text-gray-700 text-xs"><ClockCircleOutlined />{service.duration_minutes}</p>
+                    </div>
+                  </div>
+                </Link>
                 {/* Phân cách */}
                 <hr className="my-4 border-gray-300" />
 
                 {/* Description */}
                 <p className="text-gray-600 text-xs mt-2 min-h-12"> {service.description}
-                  <a href="#" className="text-blue-500"> Xem thêm </a>
+                  <Link to={`/services/${service.service_id}`} key={service.service_id} target="_top" className="text-blue-500"> Xem thêm </Link>
                 </p>
 
                 {/* Buttons */}

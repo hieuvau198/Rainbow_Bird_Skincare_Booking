@@ -1,0 +1,125 @@
+[
+    {
+      "service_id": "1",
+      "service_name": "Triệt Lông Nách (1 Buổi)",
+      "price": "2.188.000đ",
+      "salePrice": "1.500.000đ",
+      "description": "Triệt Lông Diode Laser An Toàn & Hiệu Quả - Không Phát Sinh Chí Phí!",
+      "buyers": "20.000",
+      "reviews": "4",
+      "image": "https://media.hcdn.vn/catalog/product/a/v/avt-nach-1726122729_img_380x380_64adc6_fit_center.jpg",
+      "extra_images": [
+        "https://media.hcdn.vn/catalog/product/d/a/dai_tiec_lam_dep_1_-1734334072_img_38x38_2b8932_fit_center.png",
+        "https://media.hcdn.vn/catalog/product/d/a/dai_tiec_lam_dep_2_-1734401572_img_38x38_2b8932_fit_center.png",
+        "https://media.hcdn.vn/catalog/product/d/a/dai_tiec_lam_dep_3_-1734402605_img_38x38_2b8932_fit_center.png",
+        "https://media.hcdn.vn/catalog/product/u/-/u-nach-avt-1670045353_1_-1734405773_img_38x38_2b8932_fit_center.jpg"
+      ],
+      "duration_minutes": "1 lần | 7 phút",
+      "promotion": "Giảm 30% chỉ còn 1.500.000đ cho lần đầu tiên!",
+      "additional_info": [
+        "Nuôi dưỡng vùng da trắng sáng, đều màu và mềm mại.",
+        "Hạn chế tình trạng thâm, sạm quay trở lại.",
+        "Dịch vụ ủ trắng chỉ áp dụng cho khách hàng nữ."
+      ]
+    },
+    {
+      "service_id": "2",
+      "service_name": "Triệt Lông Vùng Bikini (1 Buổi)",
+      "price": "1.050.000đ",
+      "salePrice": "500.000đ",
+      "description": "Lấy Nhân Mụn Chuẩn Y Khoa Bác sĩ Da Liễu tư vấn chăm sóc da miễn phí! Loại bỏ nhân mụn bằng tăm bông an toàn",
+      "buyers": "40.000",
+      "reviews": "19",
+      "image": "https://media.hcdn.vn/catalog/product/v/i/vien-bikini-1726193516_img_380x380_64adc6_fit_center.jpg",
+      "duration_minutes": "1 lần | 60 phút"
+    },
+    {
+      "service_id": "3",
+      "service_name": "Ủ Trắng Vùng Nách",
+      "price": "1.130.000đ",
+      "salePrice": "200.000đ",
+      "description": "Triệt Lông Diode Laser An Toàn & Hiệu Quả - Không Phát Sinh Chí Phí!",
+      "buyers": "50.000",
+      "reviews": "9",
+      "image": "https://media.hcdn.vn/catalog/product/u/-/u-nach-avt-1670045353_1_-1734405773_img_380x380_64adc6_fit_center.jpg",
+      "duration_minutes": "1 lần | 30 phút"
+    },
+    {
+      "service_id": "4",
+      "service_name": "Triệt Lông Nách (1 Buổi)",
+      "price": "2.188.000đ",
+      "salePrice": "1.500.000đ",
+      "description": "Triệt Lông Diode Laser An Toàn & Hiệu Quả - Không Phát Sinh Chí Phí!",
+      "buyers": "20.000",
+      "reviews": "4",
+      "image": "https://media.hcdn.vn/catalog/product/a/v/avt-nach-1726122729_img_380x380_64adc6_fit_center.jpg",
+      "duration_minutes": "1 lần | 7 phút"
+    },
+    {
+      "service_id": "5",
+      "service_name": "Triệt Lông Vùng Bikini (1 Buổi)",
+      "price": "1.050.000đ",
+      "salePrice": "500.000đ",
+      "description": "Lấy Nhân Mụn Chuẩn Y Khoa Bác sĩ Da Liễu tư vấn chăm sóc da miễn phí! Loại bỏ nhân mụn bằng tăm bông an toàn",
+      "buyers": "40.000",
+      "reviews": "19",
+      "image": "https://media.hcdn.vn/catalog/product/v/i/vien-bikini-1726193516_img_380x380_64adc6_fit_center.jpg",
+      "duration_minutes": "1 lần | 60 phút"
+    },
+    {
+      "service_id": "6",
+      "service_name": "Ủ Trắng Vùng Nách",
+      "price": "1.130.000đ",
+      "salePrice": "200.000đ",
+      "description": "Triệt Lông Diode Laser An Toàn & Hiệu Quả - Không Phát Sinh Chí Phí!",
+      "buyers": "50.000",
+      "reviews": "9",
+      "image": "https://media.hcdn.vn/catalog/product/u/-/u-nach-avt-1670045353_1_-1734405773_img_380x380_64adc6_fit_center.jpg",
+      "duration_minutes": "1 lần | 30 phút"
+    },
+    {
+      "service_id": "7",
+      "service_name": "Triệt Lông Vùng Bikini (1 Buổi)",
+      "price": "1.050.000đ",
+      "salePrice": "500.000đ",
+      "description": "Lấy Nhân Mụn Chuẩn Y Khoa Bác sĩ Da Liễu tư vấn chăm sóc da miễn phí! Loại bỏ nhân mụn bằng tăm bông an toàn",
+      "buyers": "40.000",
+      "reviews": "19",
+      "image": "https://media.hcdn.vn/catalog/product/v/i/vien-bikini-1726193516_img_380x380_64adc6_fit_center.jpg",
+      "duration_minutes": "1 lần | 60 phút"
+    },
+    {
+      "service_id": "8",
+      "service_name": "Ủ Trắng Vùng Nách",
+      "price": "1.130.000đ",
+      "salePrice": "200.000đ",
+      "description": "Triệt Lông Diode Laser An Toàn & Hiệu Quả - Không Phát Sinh Chí Phí!",
+      "buyers": "50.000",
+      "reviews": "9",
+      "image": "https://media.hcdn.vn/catalog/product/u/-/u-nach-avt-1670045353_1_-1734405773_img_380x380_64adc6_fit_center.jpg",
+      "duration_minutes": "1 lần | 30 phút"
+    },
+    {
+      "service_id": "9",
+      "service_name": "Triệt Lông Vùng Bikini (1 Buổi)",
+      "price": "1.050.000đ",
+      "salePrice": "500.000đ",
+      "description": "Lấy Nhân Mụn Chuẩn Y Khoa Bác sĩ Da Liễu tư vấn chăm sóc da miễn phí! Loại bỏ nhân mụn bằng tăm bông an toàn",
+      "buyers": "40.000",
+      "reviews": "19",
+      "image": "https://media.hcdn.vn/catalog/product/v/i/vien-bikini-1726193516_img_380x380_64adc6_fit_center.jpg",
+      "duration_minutes": "1 lần | 60 phút"
+    },
+    {
+      "service_id": "10",
+      "service_name": "Ủ Trắng Vùng Nách",
+      "price": "1.130.000đ",
+      "salePrice": "200.000đ",
+      "description": "Triệt Lông Diode Laser An Toàn & Hiệu Quả - Không Phát Sinh Chí Phí!",
+      "buyers": "50.000",
+      "reviews": "9",
+      "image": "https://media.hcdn.vn/catalog/product/u/-/u-nach-avt-1670045353_1_-1734405773_img_380x380_64adc6_fit_center.jpg",
+      "duration_minutes": "1 lần | 30 phút"
+    }
+  ]
+  
