@@ -1,35 +1,33 @@
+// ScrollTop.jsx
 import React, { useState, useEffect } from "react";
 import { IoMdArrowRoundUp } from "react-icons/io";
 
-export default function ScrollTop() {
+export default function ScrollTop({ scrollContainerRef }) {
     const [isVisible, setIsVisible] = useState(false);
-    const scrollContainer = document.querySelector(".custom-scrollbar");
 
     const toggleVisibility = () => {
-        if (scrollContainer) {
-            setIsVisible(scrollContainer.scrollTop > 100);
-        } else {
-            setIsVisible(window.scrollY > 100);
+        if (scrollContainerRef.current) {
+            if (scrollContainerRef.current.scrollTop > 100) {
+                setIsVisible(true);
+            } else {
+                setIsVisible(false);
+            }
         }
     };
 
     const scrollToTop = () => {
-        if (scrollContainer) {
-            scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
-        } else {
-            window.scrollTo({ top: 0, behavior: "smooth" });
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
         }
     };
 
     useEffect(() => {
-        if (scrollContainer) {
-            scrollContainer.addEventListener("scroll", toggleVisibility);
-            return () => scrollContainer.removeEventListener("scroll", toggleVisibility);
-        } else {
-            window.addEventListener("scroll", toggleVisibility);
-            return () => window.removeEventListener("scroll", toggleVisibility);
+        const container = scrollContainerRef.current;
+        if (container) {
+            container.addEventListener("scroll", toggleVisibility);
+            return () => container.removeEventListener("scroll", toggleVisibility);
         }
-    }, []);
+    }, [scrollContainerRef]);
 
     return (
         <div>

@@ -1,174 +1,13 @@
-import React from "react";
+// EmployeeManagement.jsx
+import React, { useState, useEffect } from "react";
 import { Table, Tag, Space, Button } from "antd";
+import getTherapists from "../../../modules/Admin/Employee/getTherapist";
 
-const Employee = () => {
-  // Sample data for the table
-  const data = [
-    {
-      key: "1",
-      id: "1",
-      name: "John Doe",
-      email: "john.doe@example.com",
-      mobile: "123-456-7890",
-      role: "Admin",
-      status: "Active",
-    },
-    {
-      key: "2",
-      id: "2",
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      mobile: "987-654-3210",
-      role: "User",
-      status: "Inactive",
-    },
-    {
-      key: "3",
-      id: "3",
-      name: "Alice Johnson",
-      email: "alice.johnson@example.com",
-      mobile: "456-789-1230",
-      role: "Manager",
-      status: "Active",
-    },
-    {
-      key: "4",
-      id: "4",
-      name: "Robert Brown",
-      email: "robert.brown@example.com",
-      mobile: "321-654-9870",
-      role: "Developer",
-      status: "Active",
-    },
-    {
-      key: "5",
-      id: "5",
-      name: "Emily Davis",
-      email: "emily.davis@example.com",
-      mobile: "654-321-0987",
-      role: "Designer",
-      status: "Inactive",
-    },
-    {
-      key: "6",
-      id: "6",
-      name: "Michael Wilson",
-      email: "michael.wilson@example.com",
-      mobile: "789-012-3456",
-      role: "Support",
-      status: "Active",
-    },
-    {
-      key: "7",
-      id: "7",
-      name: "Emma Thomas",
-      email: "emma.thomas@example.com",
-      mobile: "890-123-4567",
-      role: "Admin",
-      status: "Inactive",
-    },
-    {
-      key: "8",
-      id: "8",
-      name: "James White",
-      email: "james.white@example.com",
-      mobile: "901-234-5678",
-      role: "User",
-      status: "Active",
-    },
-    {
-      key: "9",
-      id: "9",
-      name: "Olivia Harris",
-      email: "olivia.harris@example.com",
-      mobile: "012-345-6789",
-      role: "Manager",
-      status: "Inactive",
-    },
-    {
-      key: "10",
-      id: "10",
-      name: "Lucas Martin",
-      email: "lucas.martin@example.com",
-      mobile: "345-678-9012",
-      role: "Developer",
-      status: "Active",
-    },
-    {
-      key: "11",
-      id: "11",
-      name: "Charlotte Lee",
-      email: "charlotte.lee@example.com",
-      mobile: "678-901-2345",
-      role: "Designer",
-      status: "Inactive",
-    },
-    {
-      key: "12",
-      id: "12",
-      name: "Liam King",
-      email: "liam.king@example.com",
-      mobile: "789-123-4567",
-      role: "Support",
-      status: "Active",
-    },
-    {
-      key: "13",
-      id: "13",
-      name: "Sophia Anderson",
-      email: "sophia.anderson@example.com",
-      mobile: "890-234-5678",
-      role: "Admin",
-      status: "Inactive",
-    },
-    {
-      key: "14",
-      id: "14",
-      name: "Mason Rodriguez",
-      email: "mason.rodriguez@example.com",
-      mobile: "901-345-6789",
-      role: "User",
-      status: "Active",
-    },
-    {
-      key: "15",
-      id: "15",
-      name: "Isabella Hall",
-      email: "isabella.hall@example.com",
-      mobile: "012-456-7890",
-      role: "Manager",
-      status: "Inactive",
-    },
-    {
-      key: "16",
-      id: "16",
-      name: "Sophia Anderson",
-      email: "sophia.anderson@example.com",
-      mobile: "890-234-5678",
-      role: "Admin",
-      status: "Inactive",
-    },
-    {
-      key: "17",
-      id: "17",
-      name: "Mason Rodriguez",
-      email: "mason.rodriguez@example.com",
-      mobile: "901-345-6789",
-      role: "User",
-      status: "Active",
-    },
-    {
-      key: "18",
-      id: "18",
-      name: "Isabella Hall",
-      email: "isabella.hall@example.com",
-      mobile: "012-456-7890",
-      role: "Manager",
-      status: "Inactive",
-    },
-  ];
+export default function Employee() {
+  const [activeCategory, setActiveCategory] = useState("therapists");
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // Define columns for the table
   const columns = [
     {
       title: "ID",
@@ -191,11 +30,6 @@ const Employee = () => {
       title: "Mobile",
       dataIndex: "mobile",
       key: "mobile",
-    },
-    {
-      title: "Role",
-      dataIndex: "role",
-      key: "role",
     },
     {
       title: "Status",
@@ -221,22 +55,112 @@ const Employee = () => {
     },
   ];
 
+  const fetchTherapists = async () => {
+    setLoading(true);
+    try {
+      const therapistsData = await getTherapists();
+
+      const formattedData = therapistsData.map((item) => ({
+        id: item.therapistId,
+        name: item.user.fullName,
+        email: item.user.email,
+        mobile: item.user.phone,
+        status: item.isAvailable ? "Active" : "Inactive",
+      }));
+
+      setData(formattedData);
+    } catch (error) {
+      console.error("Error:", error);
+      setData([]);
+    }
+    setLoading(false);
+  };
+
+  const loadMockData = (category) => {
+    const formattedCategory =
+      category.charAt(0).toUpperCase() + category.slice(1);
+    const mockData = [
+      {
+        key: "1",
+        id: "1",
+        name: `${formattedCategory} One`,
+        email: `${category.toLowerCase()}1@example.com`,
+        mobile: "123-456-7890",
+        role: formattedCategory,
+        status: "Active",
+      },
+      {
+        key: "2",
+        id: "2",
+        name: `${formattedCategory} Two`,
+        email: `${category.toLowerCase()}2@example.com`,
+        mobile: "987-654-3210",
+        role: formattedCategory,
+        status: "Inactive",
+      },
+    ];
+    setData(mockData);
+  };
+
+  useEffect(() => {
+    if (activeCategory === "therapists") {
+      fetchTherapists();
+    } else if (activeCategory === "staffs" || activeCategory === "managers") {
+      loadMockData(activeCategory);
+    }
+  }, [activeCategory]);
+
+
+  const getTitle = () => {
+    switch (activeCategory) {
+      case "therapists":
+        return "Therapist Management";
+      case "staffs":
+        return "Staff Management";
+      case "managers":
+        return "Manager Management";
+      default:
+        return "Employee Management";
+    }
+  };
+
   return (
-    <div className="p-6 bg-slate-100">
-      <div className="p-6 bg-white rounded-md shadow-md">
-        <div className="text-xl font-medium mb-6">Employee Management</div>
+    <div className="p-6 max-w-[1270px]">
+      <div className="p-6 bg-white rounded-md shadow-md min-h-[580px]">
+        <div className="flex items-center justify-between mb-6">
+          <div className="text-xl font-medium">{getTitle()}</div>
+          <div className="flex space-x-4">
+            <Button
+              type={activeCategory === "therapists" ? "primary" : "default"}
+              onClick={() => setActiveCategory("therapists")}
+            >
+              Therapists
+            </Button>
+            <Button
+              type={activeCategory === "staffs" ? "primary" : "default"}
+              onClick={() => setActiveCategory("staffs")}
+            >
+              Staffs
+            </Button>
+            <Button
+              type={activeCategory === "managers" ? "primary" : "default"}
+              onClick={() => setActiveCategory("managers")}
+            >
+              Managers
+            </Button>
+          </div>
+        </div>
+
         <Table
+          rowKey="id"
           columns={columns}
           dataSource={data}
-          pagination={{
-            pageSize: 10, // Number of rows per page
-          }}
+          loading={loading}
+          pagination={{ pageSize: 10 }}
           bordered
-          scroll={{y: 400}}
+          scroll={{ y: 350 }}
         />
       </div>
     </div>
   );
-};
-
-export default Employee;
+}

@@ -21,6 +21,8 @@ import ViewTherapist from "../pages/Customer/ViewTherapist/ViewTherapist";
 import ScheduleBooking from "../pages/Customer/ScheduleBooking/ScheduleBooking";
 import Rating from "../pages/Customer/Rating/Rating";
 import News from "../pages/Customer/BlogsAndNews/News";
+import ManageQuiz from "../pages/Admin/Quiz/ManageQuiz";
+import TherapistProfile from "../pages/Customer/ViewTherapist/TherapistProfile";
 
 const SignUp = lazy(() => import("../pages/SignUp/SignUp"));
 const ForgotPassword = lazy(() => import("../pages/ForgorPassword/ForgotPassword"));
@@ -39,8 +41,9 @@ export default function MainRoutes() {
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/services" element={<Service />} />
-          <Route path="/therapists" element={<ViewTherapist />} />
           <Route path="/schedule-booking" element={<ScheduleBooking />} />
+          <Route path="/therapists" element={<ViewTherapist />} />
+          <Route path="/therapists/:id" element={<TherapistProfile />} />
           <Route path="/rating" element={<Rating />} />
           <Route path="/news" element={<News />} />
         </Route>
@@ -53,6 +56,7 @@ export default function MainRoutes() {
           <Route path="feedback" element={<Feedback />} />
           <Route path="customer" element={<Customer />} />
           <Route path="profile" element={<AdminProfile />} />
+          <Route path="quiz" element={<ManageQuiz />} />
         </Route>
 
         <Route path="login" element={<Login />} />

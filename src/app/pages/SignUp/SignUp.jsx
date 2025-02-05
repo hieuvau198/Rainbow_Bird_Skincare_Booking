@@ -164,25 +164,6 @@ export default function SignUp() {
               </Button>
             </Form.Item>
           </Form>
-          <div className="flex items-center my-3">
-            <div className="flex-grow border-t border-gray-300"></div>
-            <span className="mx-3 text-gray-400">or</span>
-            <div className="flex-grow border-t border-gray-300"></div>
-          </div>
-          <div className="space-y-2">
-            <Button
-              type="default"
-              size="large"
-              className="w-full flex items-center justify-center rounded-md border-gray-300"
-            >
-              <img
-                src="https://cdn-icons-png.flaticon.com/256/2702/2702602.png"
-                alt="Google"
-                className="w-5 h-5 mr-2"
-              />
-              Sign up with Google
-            </Button>
-          </div>
         </div>
       </div>
     </div>

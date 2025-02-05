@@ -1,0 +1,43 @@
+[
+    {
+      "id": 1,
+      "name": "Jane Doe",
+      "specialization": "Facial Treatments",
+      "experience": "5 years",
+      "rating": 4.8,
+      "profileImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1FMFaVAFv6VkiHet16XvUKU-TQlUOV3xWNUB9YNbUG8Fldp0XOd2VrFXUNzFGCi4_En4&usqp=CAU"
+    },
+    {
+      "id": 2,
+      "name": "John Smith",
+      "specialization": "Massage Therapy",
+      "experience": "8 years",
+      "rating": 4.9,
+      "profileImage": "https://via.placeholder.com/100"
+    },
+    {
+      "id": 3,
+      "name": "Emily White",
+      "specialization": "Skincare",
+      "experience": "3 years",
+      "rating": 4.5,
+      "profileImage": "https://via.placeholder.com/100"
+    },
+    {
+      "id": 4,
+      "name": "Michael Brown",
+      "specialization": "Hair Removal",
+      "experience": "6 years",
+      "rating": 4.7,
+      "profileImage": "https://via.placeholder.com/100"
+    },
+    {
+      "id": 5,
+      "name": "Sarah Johnson",
+      "specialization": "Massage Therapy",
+      "experience": "10 years",
+      "rating": 4.9,
+      "profileImage": "https://via.placeholder.com/100"
+    }
+  ]
+  

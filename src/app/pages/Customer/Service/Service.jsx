@@ -74,23 +74,23 @@ const services = [
 
 export default function Service() {
   return (
-    <div className="px-40 bg-white min-h-screen mt-2 flex flex-col">
+    <div className="px-40 bg-white min-h-screen mt-2 grid grid-cols-1 gap-4 w-full">
       {/* Large Banner */}
-      <div className="w-full mb-6">
+      <div className="w-full">
         <img src="https://media.hcdn.vn/catalog/category/1320x250-1.jpg" alt="Banner" className="rounded-lg shadow-lg" />
       </div>
 
-      <div className="w-full flex items-start">
+      <div className="w-full grid grid-cols-4 gap-4">
         {/* Sidebar */}
-        <div className="w-1/5 p-4 bg-white shadow-md rounded-lg">
-          <h2 className="text-sm font-bold mb-4">Dịch Vụ</h2>
+        <div className="col-span-1 p-4 bg-white shadow-md rounded-lg">
+          <h2 className="text-lg font-bold mb-4">Dịch Vụ</h2>
           <ul className="space-y-2 text-sm">
             <li className="p-2 bg-white cursor-pointer"> {" "} Dịch Vụ Phòng Khám {" "} </li>
             <li className="p-2 bg-white cursor-pointer"> {" "}  Triệt Lông Diode Laser{" "} </li>
             <li className="p-2 bg-white cursor-pointer"> {" "} Thư Giãn & Chăm Sóc{" "} </li>
           </ul>
 
-          <h2 className="text-sm font-bold mt-4 mb-2">Khoảng Giá</h2>
+          <h2 className="text-lg font-bold mt-4 mb-2">Khoảng Giá</h2>
           <div className="flex items-center space-x-2 text-sm">
             <input type="text" className="w-1/2 p-1 border rounded" placeholder="Từ" />
             <input type="text" className="w-1/2 p-1 border rounded" placeholder="Đến" />
@@ -101,8 +101,8 @@ export default function Service() {
           <hr className="my-4 border-gray-300" />
 
           {/* Cẩm Nang */}
-          <h2 className="text-sm font-bold mt-6 mb-2">Cẩm Nang Mới</h2>
-          <div className="space-y-4 text-sm">
+          <h2 className="text-lg font-bold mt-6 mb-2">Cẩm Nang Mới</h2>
+          <div className="space-y-4">
             {[
               { img: "https://media.hcdn.vn/hsk/1737353441_1737348985702-202253631_img_200x145_c4ef78_fit_center.jpg", title: "Thông Báo Booking Online", },
               { img: "https://media.hcdn.vn/hsk/1737353441_1737348985702-202253631_img_200x145_c4ef78_fit_center.jpg", title: "Hướng Dẫn Triệt Lông An Toàn", },
@@ -110,7 +110,7 @@ export default function Service() {
             ].map((guide, index) => (
               <div key={index} className="cursor-pointer">
                 <img src={guide.img} alt={`Guide ${index + 1}`} className="w-full h-20 rounded" />
-                <span className="block mt-2 bg-white bg-opacity-80 px-2 py-1 rounded text-sm font-bold">
+                <span className="block mt-2 bg-white bg-opacity-80 px-2 py-1 rounded text-sm">
                   {guide.title}
                 </span>
               </div>
@@ -119,7 +119,7 @@ export default function Service() {
         </div>
 
         {/* Main Content */}
-        <div className="w-4/5 p-4">
+        <div className="col-span-3 p-4">
           {/* Sorting and Display Options */}
           <div className="flex justify-between items-center bg-gray-50 p-4 rounded-lg shadow-md mb-4">
             <div className="flex space-x-2 text-sm">
@@ -143,7 +143,7 @@ export default function Service() {
 
                 {/* Image */}
                 <div className="relative">
-                  <img src={service.image} alt={service.service_name} className="w-full rounded-md my-2" />
+                  <img src={service.image} alt={service.service_name} className="w-full rounded-md my-2 transform transition-transform duration-300 hover:scale-105" />
                 </div>
 
                 {/* Price & Status */}
