@@ -2,16 +2,16 @@ import {
   FileTextOutlined,
   LineChartOutlined,
   MessageOutlined,
+  PieChartOutlined,
   ShoppingCartOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import React, { useEffect } from "react";
-import { FaChartPie } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
 import { Link, useLocation } from "react-router-dom";
+import logo from "../../../../app/assets/img/logo.png";
 import { sActiveMenu } from "../../../../store/Store";
 import logOut from "../../../modules/Logout";
-import logo from "../../../../app/assets/img/logo.png";
 
 const AdminSidebar = () => {
   const activeMenu = sActiveMenu.use();
@@ -27,6 +27,7 @@ const AdminSidebar = () => {
       "/admin/employee": "Employee",
       "/admin/feedback": "Feedback",
       "/admin/profile": "Profile",
+      "/admin/quiz": "Quiz",
     };
 
     const currentMenu = menuMap[currentPath];
@@ -42,98 +43,120 @@ const AdminSidebar = () => {
       </div>
 
       <nav className="mt-6 w-[80%] mx-auto">
-        <ul className="space-y-2 text-gray-600">
-          <li
+        <div className="space-y-2 text-gray-600">
+          <Link
+            to="/admin/dashboard"
             className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Dashboard"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
               }`}
             onClick={() => {
               sActiveMenu.set("Dashboard");
             }}
           >
-            <Link to="/admin/dashboard" className="flex items-center gap-3 w-full">
-              <FaChartPie />
+            <div className="flex items-center gap-3 w-full">
+              <PieChartOutlined />
               <span className="text-lg font-semibold">Dashboard</span>
-            </Link>
-          </li>
+            </div>
+          </Link>
 
-          <li
+          <Link
+            to="/admin/booking"
             className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Bookings"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
               }`}
             onClick={() => {
               sActiveMenu.set("Bookings");
             }}
           >
-            <Link to="/admin/booking" className="flex items-center gap-3 w-full">
+            <div className="flex items-center gap-3 w-full">
               <ShoppingCartOutlined />
               <span className="text-lg font-semibold">Bookings</span>
-            </Link>
-          </li>
+            </div>
+          </Link>
 
-          <li
-            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Services"
+          <Link
+            to="/admin/quiz"
+            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Quiz"
                 ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
                 : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
+            onClick={() => {
+              sActiveMenu.set("Quiz");
+            }}
+          >
+            <div className="flex items-center gap-3 w-full">
+              <FileTextOutlined />
+              <span className="text-lg font-semibold">Quiz</span>
+            </div>
+          </Link>
+
+          <Link
+            to="/admin/service"
+            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Services"
+              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
               }`}
             onClick={() => {
               sActiveMenu.set("Services");
             }}
           >
-            <Link to="/admin/service" className="flex items-center gap-3 w-full">
+            <div className="flex items-center gap-3 w-full">
               <FileTextOutlined />
               <span className="text-lg font-semibold">Services</span>
-            </Link>
-          </li>
+            </div>
+          </Link>
 
-          <li
+          <Link
+            to="/admin/employee"
             className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Employee"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
               }`}
             onClick={() => {
               sActiveMenu.set("Employee");
             }}
           >
-            <Link to="/admin/employee" className="flex items-center gap-3 w-full">
+            <div className="flex items-center gap-3 w-full">
               <LineChartOutlined />
               <span className="text-lg font-semibold">Employee</span>
-            </Link>
-          </li>
+            </div>
+          </Link>
 
-          <li
+          <Link
+            to="/admin/feedback"
             className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Feedback"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
               }`}
             onClick={() => {
               sActiveMenu.set("Feedback");
             }}
           >
-            <Link to="/admin/feedback" className="flex items-center gap-3 w-full">
+            <div className="flex items-center gap-3 w-full">
               <MessageOutlined />
               <span className="text-lg font-semibold">Feedback</span>
-            </Link>
-          </li>
+            </div>
+          </Link>
 
-          <li
+          <Link
+            to="/admin/profile"
             className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Profile"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
               }`}
             onClick={() => {
               sActiveMenu.set("Profile");
             }}
           >
-            <Link to="/admin/profile" className="flex items-center gap-3 w-full">
+            <div className="flex items-center gap-3 w-full">
               <UserOutlined />
               <span className="text-lg font-semibold">Profile</span>
-            </Link>
-          </li>
+            </div>
+          </Link>
 
-          <li className="group hover:bg-gray-200 rounded-lg">
+          <div className="cursor-pointer hover:bg-gray-200 rounded-lg">
             <a
               onClick={() => logOut()}
               className="flex items-center gap-3 px-6 py-3 w-full text-red-500 hover:text-red-600"
@@ -141,8 +164,8 @@ const AdminSidebar = () => {
               <TbLogout />
               <span>Sign Out</span>
             </a>
-          </li>
-        </ul>
+          </div>
+        </div>
       </nav>
     </div>
   );

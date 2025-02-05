@@ -21,6 +21,7 @@ import ViewTherapist from "../pages/Customer/ViewTherapist/ViewTherapist";
 import ScheduleBooking from "../pages/Customer/ScheduleBooking/ScheduleBooking";
 import Rating from "../pages/Customer/Rating/Rating";
 import News from "../pages/Customer/BlogsAndNews/News";
+import ManageQuiz from "../pages/Admin/Quiz/ManageQuiz";
 
 const SignUp = lazy(() => import("../pages/SignUp/SignUp"));
 const ForgotPassword = lazy(() => import("../pages/ForgorPassword/ForgotPassword"));
@@ -53,6 +54,7 @@ export default function MainRoutes() {
           <Route path="feedback" element={<Feedback />} />
           <Route path="customer" element={<Customer />} />
           <Route path="profile" element={<AdminProfile />} />
+          <Route path="quiz" element={<ManageQuiz />} />
         </Route>
 
         <Route path="login" element={<Login />} />
