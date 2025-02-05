@@ -1,0 +1,57 @@
+[
+    {
+      "id": 1,
+      "name": "Jane Doe",
+      "specialization": "Facial Treatments",
+      "experience": "5 years",
+      "rating": 4.8,
+      "email": "jane.doe@example.com",
+      "phone": "(123) 456-7890",
+      "profileImage": "https://via.placeholder.com/100",
+      "bio": "Jane specializes in skincare and facial treatments."
+    },
+    {
+      "id": 2,
+      "name": "John Smith",
+      "specialization": "Massage Therapy",
+      "experience": "8 years",
+      "rating": 4.9,
+      "email": "john.smith@example.com",
+      "phone": "(234) 567-8901",
+      "profileImage": "https://via.placeholder.com/100",
+      "bio": "John is an expert in various massage therapies to relieve stress."
+    },
+    {
+      "id": 3,
+      "name": "Emily White",
+      "specialization": "Skincare",
+      "experience": "3 years",
+      "rating": 4.5,
+      "email": "emily.white@example.com",
+      "phone": "(345) 678-9012",
+      "profileImage": "https://via.placeholder.com/100",
+      "bio": "Emily focuses on skincare treatments with a personalized touch."
+    },
+    {
+      "id": 4,
+      "name": "Michael Brown",
+      "specialization": "Hair Removal",
+      "experience": "6 years",
+      "rating": 4.7,
+      "email": "michael.brown@example.com",
+      "phone": "(456) 789-0123",
+      "profileImage": "https://via.placeholder.com/100",
+      "bio": "Michael is skilled in hair removal and provides a comfortable experience."
+    },
+    {
+      "id": 5,
+      "name": "Sarah Johnson",
+      "specialization": "Massage Therapy",
+      "experience": "10 years",
+      "rating": 4.9,
+      "email": "sarah.johnson@example.com",
+      "phone": "(567) 890-1234",
+      "profileImage": "https://via.placeholder.com/100",
+      "bio": "Sarah has extensive experience in therapeutic massage to enhance relaxation."
+    }
+]
