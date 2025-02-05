@@ -27,6 +27,7 @@ const AdminSidebar = () => {
       "/admin/employee": "Employee",
       "/admin/feedback": "Feedback",
       "/admin/profile": "Profile",
+      "/admin/quiz": "Quiz",
     };
 
     const currentMenu = menuMap[currentPath];
@@ -54,7 +55,7 @@ const AdminSidebar = () => {
             }}
           >
             <div className="flex items-center gap-3 w-full">
-            <PieChartOutlined />
+              <PieChartOutlined />
               <span className="text-lg font-semibold">Dashboard</span>
             </div>
           </Link>
@@ -72,6 +73,22 @@ const AdminSidebar = () => {
             <div className="flex items-center gap-3 w-full">
               <ShoppingCartOutlined />
               <span className="text-lg font-semibold">Bookings</span>
+            </div>
+          </Link>
+
+          <Link
+            to="/admin/quiz"
+            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Quiz"
+                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
+            onClick={() => {
+              sActiveMenu.set("Quiz");
+            }}
+          >
+            <div className="flex items-center gap-3 w-full">
+              <FileTextOutlined />
+              <span className="text-lg font-semibold">Quiz</span>
             </div>
           </Link>
 

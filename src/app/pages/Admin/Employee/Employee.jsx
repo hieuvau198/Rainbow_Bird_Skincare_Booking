@@ -126,7 +126,7 @@ export default function Employee() {
 
   return (
     <div className="p-6 max-w-[1270px]">
-      <div className="p-6 bg-white rounded-md shadow-md min-h-[550px]">
+      <div className="p-6 bg-white rounded-md shadow-md min-h-[580px]">
         <div className="flex items-center justify-between mb-6">
           <div className="text-xl font-medium">{getTitle()}</div>
           <div className="flex space-x-4">
