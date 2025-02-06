@@ -17,37 +17,55 @@ const TherapistProfile = () => {
 
   return (
     <div className="p-6 lg:p-24 md:p-16 bg-gray-100 min-h-screen flex justify-center">
-      <div className="bg-white shadow-lg rounded-lg p-6 flex flex-col md:flex-row w-full max-w-4xl">
+      <div className="flex flex-col md:flex-row w-full max-w-5xl bg-white shadow-lg rounded-lg overflow-hidden">
+        
         {/* Hình ảnh bên trái */}
-        <div className="md:w-2/3 flex justify-center">
+        <div className="md:w-1/3 bg-gray-200 flex justify-center items-center p-4">
           <img
             src={therapist.profileImage}
             alt={therapist.name}
-            className="object-cover rounded-md w-48 h-48 md:w-60 md:h-60"
+            className="object-cover w-full h-full rounded-md"
           />
         </div>
 
-        {/* Thông tin therapist bên phải */}
-        <div className="md:w-2/3 flex flex-col p-6">
-          <h1 className="text-2xl font-bold text-gray-700">{therapist.name}</h1>
-          <p className="text-sm text-gray-500">Profile ID: {therapist.profileId}</p>
-          <p className="text-sm text-gray-500">Specialization: {therapist.specialization}</p>
-          <p className="text-sm text-gray-500">Specialties: {therapist.specialties.join(", ")}</p>
-          <p className="text-sm text-gray-500">Experience: {therapist.yearsExperience} years</p>
-          <p className="text-sm text-gray-500">Languages: {therapist.languages.join(", ")}</p>
-          <p className="text-sm text-gray-500">Education: {therapist.education}</p>
-          <p className="text-sm text-gray-500">Certifications: {therapist.certifications.join(", ")}</p>
-          <p className="text-sm text-gray-500">Accepting New Clients: {therapist.acceptsNewClients ? "Yes" : "No"}</p>
-          <p className="text-sm text-yellow-500 font-medium">Rating: {therapist.rating}</p>
-          <p className="text-sm text-gray-500">Email: {therapist.email}</p>
-          <p className="text-sm text-gray-500">Phone: {therapist.phone}</p>
-          <p className="text-sm text-gray-700 mt-4">{therapist.bio}</p>
-          <p className="text-sm text-gray-700 italic mt-4">"{therapist.personalStatement}"</p>
+        {/* Thông tin bên phải */}
+        <div className="md:w-2/3 p-6">
+          <h1 className="text-3xl font-bold text-blue-800">{therapist.name.toUpperCase()}</h1>
+          <p className="text-lg text-gray-600 font-semibold">{therapist.position}</p>
+          <p className="text-md text-gray-600">{therapist.hospital}</p>
+
+          {/* Nội dung chi tiết */}
+          <div className="mt-6 space-y-3 text-gray-700">
+            <p><strong>Specialization:</strong> {therapist.specialization}</p>
+            <p><strong>Specialties:</strong> {therapist.specialties.join(", ")}</p>
+            <p><strong>Experience:</strong> {therapist.yearsExperience} years</p>
+            <p><strong>Languages:</strong> {therapist.languages.join(", ")}</p>
+            <p><strong>Education:</strong> {therapist.education}</p>
+            <p><strong>Certifications:</strong> {therapist.certifications.join(", ")}</p>
+            <p><strong>Accepting New Clients:</strong> {therapist.acceptsNewClients ? "Yes" : "No"}</p>
+            <p><strong>Rating:</strong> <span className="text-yellow-500 font-medium">{therapist.rating}</span></p>
+          </div>
+
+          {/* Thông tin liên hệ */}
+          <div className="mt-6 text-gray-700">
+            <p><strong>Email:</strong> {therapist.email}</p>
+            <p><strong>Phone:</strong> {therapist.phone}</p>
+          </div>
+
+          {/* Tiểu sử và câu nói */}
+          <p className="text-gray-700 mt-4">{therapist.bio}</p>
+          <p className="text-gray-700 italic mt-4">"{therapist.personalStatement}"</p>
+
+          {/* Thời gian cập nhật */}
           <p className="text-sm text-gray-500 mt-2">Profile Created: {new Date(therapist.createdAt).toLocaleDateString()}</p>
           <p className="text-sm text-gray-500">Last Updated: {new Date(therapist.updatedAt).toLocaleDateString()}</p>
 
-          <Link to="/therapists" className="mt-4 text-blue-500 underline">Go back</Link>
+          {/* Nút quay lại */}
+          <Link to="/therapists" className="mt-6 inline-block text-blue-600 font-semibold hover:text-blue-800">
+            ← Back
+          </Link>
         </div>
+
       </div>
     </div>
   );
