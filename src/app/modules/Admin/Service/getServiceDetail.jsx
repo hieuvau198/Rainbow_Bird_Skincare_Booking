@@ -1,8 +1,9 @@
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-const getAllService = async () => {
+const getServiceDetail = async (id, setService) => {
+    
     try {
-        const response = await fetch(`${API_BASE_URL}/api/Service`, {
+        const response = await fetch(`${API_BASE_URL}/api/Service/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -12,11 +13,10 @@ const getAllService = async () => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        return data;
+        setService(data);
     } catch (error) {
-        console.error("Error fetching services:", error);
-        throw error;
+        console.error("Error fetching service details:", error);
+        message.error("Error fetching service details");
     }
 };
-
-export default getAllService;
+export default getServiceDetail;

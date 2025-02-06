@@ -1,44 +1,61 @@
 import { Button, Space, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import getAllService from "../../../../app/modules/Admin/Service/getAllService";
+import getServiceDetail from "../../../../app/modules/Admin/Service/getServiceDetail";
 import "../../../styles/Admin/ScrollbarTable.css";
 import AddService from "./partials/AddService";
+import { useNavigate } from "react-router-dom";
+import ServiceDetails from "./partials/ServiceDetail";
 
 export default function Service() {
   const [services, setServices] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isAddServiceModalVisible, setIsAddServiceModalVisible] = useState(false);
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
+  const [selectedService, setSelectedService] = useState(null);
+  
+  const handleViewDetails = async (id) => {
+    try {
+      await getServiceDetail(id, setSelectedService);
+      setIsDetailModalVisible(true);
+      console.log("Service details:", selectedService);
+    } catch (error) {
+      console.error("Error fetching service details:", error);
+    }
+  };
 
   const columns = [
     {
       title: "ID",
-      dataIndex: "id",
-      key: "id",
+      dataIndex: "serviceId",
+      key: "serviceId",
       width: 50,
     },
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: "Service Name",
+      dataIndex: "serviceName",
+      key: "serviceName",
     },
     {
-      title: "Duration",
-      dataIndex: "duration",
-      key: "duration",
+      title: "Duration (Mins)",
+      dataIndex: "durationMinutes",
+      key: "durationMinutes",
+      width: 150,
     },
     {
       title: "Price",
       dataIndex: "price",
       key: "price",
-      width: 100,
-      defaultSortOrder: 'descend',
-      sorter: (a, b) => a.price - b.price,
+      width: 150,
     },
     {
       title: "Status",
-      dataIndex: "status",
+      dataIndex: "isActive",
       key: "status",
-      render: (status) => (
-        <Tag color={status === "Available" ? "green" : "volcano"}>{status}</Tag>
+      width: 150,
+      render: (isActive) => (
+        <Tag color={isActive ? "green" : "volcano"}>
+          {isActive ? "Available" : "Unavailable"}
+        </Tag>
       ),
     },
     {
@@ -46,6 +63,9 @@ export default function Service() {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
+          <Button color="gold" variant="solid" type="link" onClick={() => handleViewDetails(record.serviceId)}>
+            View details
+          </Button>
           <Button color="primary" variant="solid" type="link">
             Edit
           </Button>
@@ -61,7 +81,11 @@ export default function Service() {
     const fetchServices = async () => {
       try {
         const data = await getAllService();
-        setServices(data);
+        const servicesWithKey = data.map((service) => ({
+          key: service.serviceId,
+          ...service,
+        }));
+        setServices(servicesWithKey);
       } catch (error) {
         console.error("Error fetching services:", error);
       }
@@ -75,7 +99,7 @@ export default function Service() {
       ...prevServices,
       { key: prevServices.length + 1, ...service },
     ]);
-    setIsModalVisible(false);
+    setIsAddServiceModalVisible(false);
   };
 
   return (
@@ -85,7 +109,7 @@ export default function Service() {
           <h2 className="text-xl font-semibold">Skincare Services</h2>
           <Button
             type="primary"
-            onClick={() => setIsModalVisible(true)}
+            onClick={() => setIsAddServiceModalVisible(true)}
             className="bg-blue-500"
           >
             Add Service
@@ -99,13 +123,19 @@ export default function Service() {
             bordered
             scroll={{ y: 345 }}
           />
+
         </div>
         <AddService
-          open={isModalVisible}
-          onClose={() => setIsModalVisible(false)}
+          open={isAddServiceModalVisible}
+          onClose={() => setIsAddServiceModalVisible(false)}
           onSubmit={handleAddService}
+        />
+        <ServiceDetails
+          visible={isDetailModalVisible}
+          onClose={() => setIsDetailModalVisible(false)}
+          service={selectedService}
         />
       </div>
     </div>
   );
-};
+}

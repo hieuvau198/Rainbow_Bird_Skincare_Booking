@@ -8,6 +8,7 @@ import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 import Employee from "../pages/Admin/Employee/Employee";
 import Booking from "../pages/Admin/Booking/Booking";
 import MaService from "../pages/Admin/Service/Service";
+import MaServiceDetail from "../pages/Admin/Service/partials/ServiceDetail";
 import AboutUs from "../pages/About Us/AboutUs";
 import Feedback from "../pages/Admin/Feedback/Feedback";
 import Customer from "../pages/Admin/Customer/Customer";
@@ -56,6 +57,7 @@ export default function MainRoutes() {
           <Route path="employee" element={<Employee />} />
           <Route path="booking" element={<Booking />} />
           <Route path="service" element={<MaService />} />
+          <Route path="service/:id" element={<MaServiceDetail />} />
           <Route path="feedback" element={<Feedback />} />
           <Route path="customer" element={<Customer />} />
           <Route path="profile" element={<AdminProfile />} />
@@ -112,7 +114,7 @@ export default function MainRoutes() {
             </Suspense>
           }
         />
-        
+
       </Routes>
     </BrowserRouter>
   );
