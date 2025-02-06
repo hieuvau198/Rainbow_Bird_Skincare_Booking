@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Table, Tag, Space, Button } from "antd";
+import { Button, Space, Table, Tag } from "antd";
+import React, { useEffect, useState } from "react";
 import getAllService from "../../../../app/modules/Admin/Service/getAllService";
-import "../../../styles/ScrollbarTable.css";
+import "../../../styles/Admin/ScrollbarTable.css";
 import AddService from "./partials/AddService";
 
 export default function Service() {

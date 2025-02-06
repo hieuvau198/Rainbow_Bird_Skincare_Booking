@@ -1,9 +1,9 @@
+import { useRef } from "react";
 import { Outlet } from "react-router-dom";
 import ScrollTop from "../../components/ScrollTop";
-import "../../styles/Scrollbar.css";
+import "../../styles/User/Scrollbar.css";
 import Footer from "../Footer";
 import Header from "../Header";
-import { useRef } from "react";
 
 const UserLayout = () => {
   const scrollContainerRef = useRef(null);
