@@ -9,7 +9,7 @@ import {
 import React, { useEffect } from "react";
 import { TbLogout } from "react-icons/tb";
 import { Link, useLocation } from "react-router-dom";
-import logo from "../../../../app/assets/img/logo.png";
+import logo from "../../../assets/img/logo.png";
 import { sActiveMenu } from "../../../../store/Store";
 import logOut from "../../../modules/Logout";
 
@@ -38,8 +38,8 @@ const AdminSidebar = () => {
 
   return (
     <div className="fixed top-0 left-0 h-screen bg-white shadow-md z-40 lg:w-64 hidden lg:block">
-      <div className="mt-4 flex justify-center border-b-2">
-        <img src={logo} alt="Logo" className="w-28 h-28 rounded-full" />
+      <div className="py-4 flex justify-center border-b-2">
+        <img src={logo} alt="Logo" className="w-20 h-20 rounded-full" />
       </div>
 
       <nav className="mt-6 w-[80%] mx-auto">

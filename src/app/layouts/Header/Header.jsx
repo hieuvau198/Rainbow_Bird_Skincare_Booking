@@ -4,6 +4,7 @@ import { Dropdown, Avatar, Button } from "antd";
 import { UserOutlined, MenuOutlined } from "@ant-design/icons";
 import Cookies from "js-cookie";
 import logOut from "../../modules/Logout";
+import logo from "../../assets/img/logo.png";
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -19,44 +20,44 @@ export default function Header() {
 
   const menuItems = isLoggedIn
     ? [
-        {
-          key: "profile",
-          label: <Link className="text-md" to="/profile">Profile</Link>,
-        },
-        {
-          key: "schedule",
-          label: <Link className="text-md" to="/schedule-booking">Schedule</Link>,
-        },
-        {
-          key: "logout",
-          danger: true,
-          label: (
-            <span className="text-md" onClick={handleLogout}>
-              Logout
-            </span>
-          ),
-        },
-      ]
+      {
+        key: "profile",
+        label: <Link className="text-md" to="/profile">Profile</Link>,
+      },
+      {
+        key: "schedule",
+        label: <Link className="text-md" to="/schedule-booking">Schedule</Link>,
+      },
+      {
+        key: "logout",
+        danger: true,
+        label: (
+          <span className="text-md" onClick={handleLogout}>
+            Logout
+          </span>
+        ),
+      },
+    ]
     : [
-        {
-          key: "login",
-          label: (
-            <Link
-              to="/login"
-              className="text-md text-lime-600 font-semibold hover:underline"
-            >
-              Login
-            </Link>
-          ),
-        },
-      ];
+      {
+        key: "login",
+        label: (
+          <Link
+            to="/login"
+            className="text-md text-lime-600 font-semibold hover:underline"
+          >
+            Login
+          </Link>
+        ),
+      },
+    ];
 
   return (
     <div className="bg-gradient-to-l from-lime-200 via-sky-100 to-green-200 shadow-md">
       <div className="container mx-auto px-6 md:px-12 lg:px-24 py-4 flex justify-between items-center">
         <div className="flex items-center">
           <Link to="/" className="text-2xl font-bold text-lime-600">
-            LOGO
+            <img src={logo} alt="Logo" className="w-16 h-16 rounded-full" />
           </Link>
         </div>
 
