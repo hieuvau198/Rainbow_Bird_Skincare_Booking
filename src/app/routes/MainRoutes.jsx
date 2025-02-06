@@ -13,7 +13,6 @@ import Feedback from "../pages/Admin/Feedback/Feedback";
 import Customer from "../pages/Admin/Customer/Customer";
 import AdminProfile from "../pages/Admin/Profile/Profile";
 import Login from "../pages/Login/Login";
-import LoginC from "../pages/Login/LoginC";
 import Quiz from "../pages/Customer/Quiz/Quiz";
 import Profile from "../pages/Customer/Profile/Profile";
 import Service from "../pages/Customer/Service/Service";
@@ -23,7 +22,9 @@ import Rating from "../pages/Customer/Rating/Rating";
 import News from "../pages/Customer/BlogsAndNews/News";
 import ManageQuiz from "../pages/Admin/Quiz/ManageQuiz";
 import TherapistProfile from "../pages/Customer/ViewTherapist/TherapistProfile";
+import ServiceDetail from "../pages/Customer/Service/ServiceDetail";
 
+const LoginC = lazy(() => import("../pages/Login/LoginC"));
 const SignUp = lazy(() => import("../pages/SignUp/SignUp"));
 const ForgotPassword = lazy(() => import("../pages/ForgorPassword/ForgotPassword"));
 const PageNotFound = lazy(() => import("../layouts/PageNotFound"));
@@ -41,6 +42,8 @@ export default function MainRoutes() {
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/services" element={<Service />} />
+          <Route path="/services/:id" element={<ServiceDetail />} />
+          <Route path="/therapists" element={<ViewTherapist />} />
           <Route path="/schedule-booking" element={<ScheduleBooking />} />
           <Route path="/therapists" element={<ViewTherapist />} />
           <Route path="/therapists/:id" element={<TherapistProfile />} />
@@ -60,7 +63,14 @@ export default function MainRoutes() {
         </Route>
 
         <Route path="login" element={<Login />} />
-        <Route path="loginc" element={<LoginC />} />
+        <Route
+          path="loginc"
+          element={
+            <Suspense fallback={<Loading />}>
+              <LoginC />
+            </Suspense>
+          }
+        />
         <Route
           path="sign-up"
           element={
@@ -102,6 +112,7 @@ export default function MainRoutes() {
             </Suspense>
           }
         />
+        
       </Routes>
     </BrowserRouter>
   );
