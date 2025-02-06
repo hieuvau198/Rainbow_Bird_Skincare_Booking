@@ -22,6 +22,7 @@ import Rating from "../pages/Customer/Rating/Rating";
 import News from "../pages/Customer/BlogsAndNews/News";
 import ManageQuiz from "../pages/Admin/Quiz/ManageQuiz";
 import TherapistProfile from "../pages/Customer/ViewTherapist/TherapistProfile";
+import ServiceDetail from "../pages/Customer/Service/ServiceDetail";
 
 const LoginC = lazy(() => import("../pages/Login/LoginC"));
 const SignUp = lazy(() => import("../pages/SignUp/SignUp"));
@@ -41,6 +42,8 @@ export default function MainRoutes() {
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/services" element={<Service />} />
+          <Route path="/services/:id" element={<ServiceDetail />} />
+          <Route path="/therapists" element={<ViewTherapist />} />
           <Route path="/schedule-booking" element={<ScheduleBooking />} />
           <Route path="/therapists" element={<ViewTherapist />} />
           <Route path="/therapists/:id" element={<TherapistProfile />} />
