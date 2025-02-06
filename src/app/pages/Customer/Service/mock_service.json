@@ -64,6 +64,50 @@
       "reviews": "9",
       "image": "https://media.hcdn.vn/catalog/product/u/-/u-nach-avt-1670045353_1_-1734405773_img_380x380_64adc6_fit_center.jpg",
       "duration_minutes": "1 lần | 30 phút"
+    },
+    {
+      "service_id": "7",
+      "service_name": "Triệt Bikini (1 Buổi)",
+      "price": "1.050.000đ",
+      "salePrice": "500.000đ",
+      "description": "Lấy Nhân Mụn Chuẩn Y Khoa Bác sĩ Da Liễu tư vấn chăm sóc da miễn phí! Loại bỏ nhân mụn bằng tăm bông an toàn",
+      "buyers": "40.000",
+      "reviews": "19",
+      "image": "https://media.hcdn.vn/catalog/product/v/i/vien-bikini-1726193516_img_380x380_64adc6_fit_center.jpg",
+      "duration_minutes": "1 lần | 60 phút"
+    },
+    {
+      "service_id": "8",
+      "service_name": "Trắng Vùng Nách",
+      "price": "1.130.000đ",
+      "salePrice": "200.000đ",
+      "description": "Triệt Lông Diode Laser An Toàn & Hiệu Quả - Không Phát Sinh Chí Phí!",
+      "buyers": "50.000",
+      "reviews": "9",
+      "image": "https://media.hcdn.vn/catalog/product/u/-/u-nach-avt-1670045353_1_-1734405773_img_380x380_64adc6_fit_center.jpg",
+      "duration_minutes": "1 lần | 30 phút"
+    },
+    {
+      "service_id": "9",
+      "service_name": "Triệt Lông (1 Buổi)",
+      "price": "1.050.000đ",
+      "salePrice": "500.000đ",
+      "description": "Lấy Nhân Mụn Chuẩn Y Khoa Bác sĩ Da Liễu tư vấn chăm sóc da miễn phí! Loại bỏ nhân mụn bằng tăm bông an toàn",
+      "buyers": "40.000",
+      "reviews": "19",
+      "image": "https://media.hcdn.vn/catalog/product/v/i/vien-bikini-1726193516_img_380x380_64adc6_fit_center.jpg",
+      "duration_minutes": "1 lần | 60 phút"
+    },
+    {
+      "service_id": "10",
+      "service_name": "Ủ Nách",
+      "price": "1.130.000đ",
+      "salePrice": "200.000đ",
+      "description": "Triệt Lông Diode Laser An Toàn & Hiệu Quả - Không Phát Sinh Chí Phí!",
+      "buyers": "50.000",
+      "reviews": "9",
+      "image": "https://media.hcdn.vn/catalog/product/u/-/u-nach-avt-1670045353_1_-1734405773_img_380x380_64adc6_fit_center.jpg",
+      "duration_minutes": "1 lần | 30 phút"
     }
   ]
   
