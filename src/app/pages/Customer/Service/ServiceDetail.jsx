@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import { ClockCircleOutlined, DollarOutlined, LeftOutlined, RightOutlined, StarOutlined, UserOutlined } from "@ant-design/icons";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { UserOutlined, StarOutlined, DollarOutlined, ClockCircleOutlined, LeftOutlined,  RightOutlined } from "@ant-design/icons";
 import mockData from "./mock_serviceDetail.json";
 
 export default function ServiceDetail() {
