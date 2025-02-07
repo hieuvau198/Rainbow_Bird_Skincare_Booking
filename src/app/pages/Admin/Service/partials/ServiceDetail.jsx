@@ -3,9 +3,7 @@ import {
     DollarOutlined,
     IdcardOutlined,
     InfoCircleOutlined,
-    PlusOutlined,
     ProfileOutlined,
-    UpCircleFilled,
     UploadOutlined
 } from "@ant-design/icons";
 import MDEditor from "@uiw/react-md-editor";
@@ -14,7 +12,8 @@ import React, { useEffect, useState } from "react";
 import Loading from "../../../../components/Loading";
 import editService from "../../../../modules/Admin/Service/editService";
 
-export default function ServiceDetails({ visible, onClose, service }) {
+// Thêm prop onServiceUpdate để thông báo cho component cha cập nhật service mới
+export default function ServiceDetails({ visible, onClose, service, onServiceUpdate }) {
     const [isEdit, setIsEdit] = useState(false);
     const [uploadedImageFile, setUploadedImageFile] = useState(null);
     const [uploadedImagePreview, setUploadedImagePreview] = useState(null);
@@ -32,6 +31,9 @@ export default function ServiceDetails({ visible, onClose, service }) {
                 isActive: service.isActive,
                 description: service.description,
             });
+            // Reset trạng thái ảnh upload
+            setUploadedImageFile(null);
+            setUploadedImagePreview(null);
         }
     }, [service, visible, isEdit, form]);
 
@@ -39,21 +41,50 @@ export default function ServiceDetails({ visible, onClose, service }) {
         try {
             const updatedValues = await form.validateFields();
 
-            const payload = {
-                ServiceName: updatedValues.serviceName || service.serviceName,
-                DurationMinutes: updatedValues.durationMinutes || service.durationMinutes,
-                Price: updatedValues.price || service.price,
-                Currency: updatedValues.currency || service.currency,
-                Location: updatedValues.location || service.location,
-                IsActive: updatedValues.isActive !== undefined ? updatedValues.isActive : service.isActive,
-                Description: updatedValues.description || service.description,
-                ServiceImage: updatedValues.serviceImage || uploadedImageFile,
-            };
-            console.log("API Payload:", payload);
+            // Tạo FormData để gửi dữ liệu, bao gồm cả file ảnh
+            const formData = new FormData();
+            formData.append("ServiceName", updatedValues.serviceName || service.serviceName);
+            formData.append("DurationMinutes", updatedValues.durationMinutes || service.durationMinutes);
+            formData.append("Price", updatedValues.price || service.price);
+            formData.append("Currency", updatedValues.currency || service.currency);
+            formData.append("Location", updatedValues.location || service.location);
+            formData.append("IsActive", updatedValues.isActive !== undefined ? updatedValues.isActive : service.isActive);
+            formData.append("Description", updatedValues.description || service.description);
 
-            // Gọi API cập nhật
-            await editService(service.serviceId, payload);
+            // Nếu có upload ảnh mới thì sử dụng file đó,
+            // còn không thì lấy file ảnh cũ từ URL (convert về blob và tạo File)
+            if (uploadedImageFile) {
+                formData.append("ServiceImage", uploadedImageFile);
+            } else if (service.serviceImage) {
+                try {
+                    const response = await fetch(service.serviceImage);
+                    const blob = await response.blob();
+                    // Lấy tên file từ URL (nếu có thể)
+                    const fileName = service.serviceImage.split('/').pop() || "oldImage.jpg";
+                    const fileFromUrl = new File([blob], fileName, { type: blob.type });
+                    formData.append("ServiceImage", fileFromUrl);
+                } catch (fetchError) {
+                    console.error("Không lấy được file từ URL:", fetchError);
+                    message.error("Không thể lấy ảnh cũ, vui lòng upload ảnh mới!");
+                    return;
+                }
+            } else {
+                message.error("Không có ảnh nào để sử dụng cho Service Image!");
+                return;
+            }
+
+            console.log("Payload gửi đi:");
+            for (let pair of formData.entries()) {
+                console.log(pair[0] + ": ", pair[1]);
+            }
+
+            // Gọi API cập nhật với payload là FormData
+            const updatedServiceData = await editService(service.serviceId, formData);
             message.success("Service updated successfully!");
+            // Gọi callback để thông báo cho component cha cập nhật dữ liệu mới
+            if (typeof onServiceUpdate === "function") {
+                onServiceUpdate(updatedServiceData);
+            }
             setIsEdit(false);
         } catch (error) {
             console.error("Error saving edit:", error);
@@ -61,9 +92,8 @@ export default function ServiceDetails({ visible, onClose, service }) {
         }
     };
 
-
     const renderDetails = () => {
-        if (!service) return <><Loading /></>;
+        if (!service) return <Loading />;
 
         return (
             <>
@@ -93,8 +123,7 @@ export default function ServiceDetails({ visible, onClose, service }) {
                                 <DollarOutlined className="mr-1" /> Price:
                             </span>
                             <span className="ml-4">
-                                {service.currency}
-                                {service.price}
+                                {service.currency}{service.price}
                             </span>
                         </div>
                         <div className="flex items-center">
@@ -124,7 +153,6 @@ export default function ServiceDetails({ visible, onClose, service }) {
             </>
         );
     };
-
 
     const renderEditForm = () => (
         <Form
@@ -198,13 +226,19 @@ export default function ServiceDetails({ visible, onClose, service }) {
                     >
                         <Button icon={<UploadOutlined />}>Upload New Image</Button>
                     </Upload>
-                    {uploadedImagePreview && (
+                    {uploadedImagePreview ? (
                         <img
                             src={uploadedImagePreview}
                             alt="Preview"
                             style={{ width: "150px", marginTop: "8px", objectFit: "cover", borderRadius: "4px" }}
                         />
-                    )}
+                    ) : service?.serviceImage ? (
+                        <img
+                            src={service.serviceImage}
+                            alt="Current Service"
+                            style={{ width: "150px", marginTop: "8px", objectFit: "cover", borderRadius: "4px" }}
+                        />
+                    ) : null}
                 </Form.Item>
             </div>
             <Form.Item
@@ -227,13 +261,13 @@ export default function ServiceDetails({ visible, onClose, service }) {
             footer={
                 isEdit
                     ? [
-                        <Button key="cancel" onClick={() => setIsEdit(false)}>
-                            Cancel
-                        </Button>,
-                        <Button key="save" type="primary" onClick={handleSaveEdit}>
-                            Save
-                        </Button>,
-                    ]
+                          <Button key="cancel" onClick={() => setIsEdit(false)}>
+                              Cancel
+                          </Button>,
+                          <Button key="save" type="primary" onClick={handleSaveEdit}>
+                              Save
+                          </Button>,
+                      ]
                     : null
             }
             width={880}
@@ -242,7 +276,7 @@ export default function ServiceDetails({ visible, onClose, service }) {
                     <span>Service Details</span>
                     <div className="w-5/6 text-end">
                         {!isEdit && (
-                            <Button color="primary" variant="solid" type="link" onClick={() => setIsEdit(true)}>
+                            <Button type="link" onClick={() => setIsEdit(true)}>
                                 Edit
                             </Button>
                         )}

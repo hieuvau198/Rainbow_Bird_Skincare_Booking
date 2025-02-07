@@ -3,13 +3,18 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const editService = async (id, payload) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/Service/${id}`, {
-            method: "PUT", 
-            headers: {
+        const options = {
+            method: "PUT",
+            body: payload
+        };
+
+        if (!(payload instanceof FormData)) {
+            options.headers = {
                 "Content-Type": "application/json",
-            },
-            body: payload,
-        });
+            };
+        }
+
+        const response = await fetch(`${API_BASE_URL}/api/Service/${id}`, options);
         if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
