@@ -51,7 +51,7 @@ const Quiz = () => {
           <div className="w-full max-w-2xl p-8 text-center min-h-[250px]">
             <h2 className="text-2xl font-bold text-gray-900">What's Your Skin Type?</h2>
             <p className="text-gray-700 mt-2">
-              Knowing your skin type can help you learn how to take care of your skin, 
+              Knowing SHIT your skin type can help you learn how to take care of your skin, 
               create the right skincare routine, and address any skin concerns you may be experiencing. 
               Take this quiz to find out if you have dry, oily, combination, normal, or sensitive skin.
             </p>
