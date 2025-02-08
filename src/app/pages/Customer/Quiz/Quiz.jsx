@@ -33,7 +33,7 @@ const Quiz = () => {
     );
 
     const skinTypeMap = {
-      oily: "Oily Skin",
+      oily: "Oily Skin SHIT",
       dry: "Dry Skin",
       normal: "Normal Skin",
       combination: "Combination Skin",
