@@ -19,6 +19,7 @@ export default async function logOut() {
 
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
+    Cookies.remove("userRole");
     
     window.location.href = "/";
   } catch (error) {

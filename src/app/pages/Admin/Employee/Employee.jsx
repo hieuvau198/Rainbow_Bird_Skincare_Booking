@@ -1,4 +1,3 @@
-// EmployeeManagement.jsx
 import React, { useState, useEffect } from "react";
 import { Table, Tag, Space, Button } from "antd";
 import getTherapists from "../../../modules/Admin/Employee/getTherapist";
@@ -44,10 +43,8 @@ export default function Employee() {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button color="primary" variant="solid" type="link">
-            Edit
-          </Button>
-          <Button color="danger" variant="solid" type="link" danger>
+          <Button type="link">Edit</Button>
+          <Button type="link" danger>
             Delete
           </Button>
         </Space>
@@ -59,7 +56,6 @@ export default function Employee() {
     setLoading(true);
     try {
       const therapistsData = await getTherapists();
-
       const formattedData = therapistsData.map((item) => ({
         id: item.therapistId,
         name: item.user.fullName,
@@ -67,7 +63,6 @@ export default function Employee() {
         mobile: item.user.phone,
         status: item.isAvailable ? "Active" : "Inactive",
       }));
-
       setData(formattedData);
     } catch (error) {
       console.error("Error:", error);
@@ -110,7 +105,6 @@ export default function Employee() {
     }
   }, [activeCategory]);
 
-
   const getTitle = () => {
     switch (activeCategory) {
       case "therapists":
@@ -121,6 +115,19 @@ export default function Employee() {
         return "Manager Management";
       default:
         return "Employee Management";
+    }
+  };
+
+  const getAddButtonText = () => {
+    switch (activeCategory) {
+      case "therapists":
+        return "Add Therapist";
+      case "staffs":
+        return "Add Staff";
+      case "managers":
+        return "Add Manager";
+      default:
+        return "Add Employee";
     }
   };
 
@@ -150,16 +157,22 @@ export default function Employee() {
             </Button>
           </div>
         </div>
-
-        <Table
-          rowKey="id"
-          columns={columns}
-          dataSource={data}
-          loading={loading}
-          pagination={{ pageSize: 10 }}
-          bordered
-          scroll={{ y: 350 }}
-        />
+        <div className="flex justify-end my-4">
+          <Button type="primary" onClick={() => console.log(`${getAddButtonText()} clicked`)}>
+            {getAddButtonText()}
+          </Button>
+        </div>
+        <div>
+          <Table
+            rowKey="id"
+            columns={columns}
+            dataSource={data}
+            loading={loading}
+            pagination={{ pageSize: 10 }}
+            bordered
+            scroll={{ y: 350 }}
+          />
+        </div>
       </div>
     </div>
   );

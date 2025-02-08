@@ -125,6 +125,7 @@ const AddService = ({ open, onClose, onSubmit }) => {
               name="serviceImage"
               listType="picture-card"
               beforeUpload={() => false}
+              maxCount={1}
             >
               <div>
                 <PlusOutlined />

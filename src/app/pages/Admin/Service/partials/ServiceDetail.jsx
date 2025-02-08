@@ -11,6 +11,8 @@ import MDEditor from "@uiw/react-md-editor";
 import { Button, Form, Input, InputNumber, message, Modal, Select, Tag, Upload } from "antd";
 import Loading from "../../../../components/Loading";
 import editService from "../../../../modules/Admin/Service/editService";
+import renderEditForm from "./ServiceDetailPartials/RenderEditForm";
+import renderDetails from "./ServiceDetailPartials/RenderDetails";
 
 // Giả sử API_BASE_URL được định nghĩa trong biến môi trường
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -118,167 +120,6 @@ export default function ServiceDetails({ visible, onClose, service }) {
     }
   };
 
-  // Render giao diện detail của service
-  const renderDetails = () => {
-    if (!localService) return <Loading />;
-
-    return (
-      <>
-        <div className="grid grid-cols-2 gap-4 gap-x-4">
-          <div className="flex justify-center items-center">
-            <img
-              src={localService.serviceImage || "https://www.chanchao.com.tw/images/default.jpg"}
-              alt="Service"
-              className="w-60 h-60 object-cover rounded-lg shadow-md"
-            />
-          </div>
-          <div className="flex flex-col justify-center space-y-2">
-            <div className="flex items-center">
-              <span className="font-bold w-24 flex items-center">
-                <IdcardOutlined className="mr-1" /> ID:
-              </span>
-              <span className="ml-4">{localService.serviceId}</span>
-            </div>
-            <div className="flex items-center">
-              <span className="font-bold w-24 flex items-center">
-                <ProfileOutlined className="mr-1" /> Name:
-              </span>
-              <span className="ml-4">{localService.serviceName}</span>
-            </div>
-            <div className="flex items-center">
-              <span className="font-bold w-24 flex items-center">
-                <DollarOutlined className="mr-1" /> Price:
-              </span>
-              <span className="ml-4">
-                {localService.currency}{localService.price}
-              </span>
-            </div>
-            <div className="flex items-center">
-              <span className="font-bold w-24 flex items-center">
-                <ClockCircleOutlined className="mr-1" /> Duration:
-              </span>
-              <span className="ml-4">{localService.durationMinutes} minutes</span>
-            </div>
-            <div className="flex items-center">
-              <span className="font-bold w-24 flex items-center">
-                <InfoCircleOutlined className="mr-1" /> Status:
-              </span>
-              <span className="ml-4">
-                <Tag color={localService.isActive ? "green" : "volcano"}>
-                  {localService.isActive ? "Available" : "Unavailable"}
-                </Tag>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold mb-2">Description</h3>
-          <div className="p-4">
-            <MDEditor.Markdown source={localService.description || "No description available"} />
-          </div>
-        </div>
-      </>
-    );
-  };
-
-  // Render form chỉnh sửa
-  const renderEditForm = () => (
-    <Form
-      form={form}
-      layout="vertical"
-      initialValues={{
-        serviceName: localService?.serviceName,
-        durationMinutes: localService?.durationMinutes,
-        price: localService?.price,
-        currency: localService?.currency,
-        location: localService?.location,
-        isActive: localService?.isActive,
-        description: localService?.description,
-      }}
-    >
-      <div className="grid grid-cols-2 gap-4">
-        <Form.Item
-          name="serviceName"
-          label="Service Name"
-          rules={[{ required: true, message: "Please input the service name!" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="durationMinutes"
-          label="Duration (Minutes)"
-          rules={[{ required: true, message: "Please input the duration!" }]}
-        >
-          <InputNumber style={{ width: "100%" }} />
-        </Form.Item>
-        <Form.Item
-          name="price"
-          label="Price"
-          rules={[{ required: true, message: "Please input the price!" }]}
-        >
-          <InputNumber style={{ width: "100%" }} />
-        </Form.Item>
-        <Form.Item
-          name="currency"
-          label="Currency"
-          rules={[{ required: true, message: "Please input the currency!" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="location"
-          label="Location"
-          rules={[{ required: true, message: "Please input the location!" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="isActive"
-          label="Status"
-          rules={[{ required: true, message: "Please select a status!" }]}
-        >
-          <Select>
-            <Select.Option value={true}>Available</Select.Option>
-            <Select.Option value={false}>Unavailable</Select.Option>
-          </Select>
-        </Form.Item>
-        <Form.Item label="Service Image">
-          <Upload
-            showUploadList={false} // Không hiển thị fileList tự động
-            beforeUpload={(file) => {
-              // Lưu file mới được chọn vào state và tạo URL preview
-              setUploadedImageFile(file);
-              setUploadedImagePreview(URL.createObjectURL(file));
-              return false; // Ngăn upload tự động
-            }}
-          >
-            <Button icon={<UploadOutlined />}>Upload New Image</Button>
-          </Upload>
-          {uploadedImagePreview ? (
-            <img
-              src={uploadedImagePreview}
-              alt="Preview"
-              style={{ width: "150px", marginTop: "8px", objectFit: "cover", borderRadius: "4px" }}
-            />
-          ) : localService?.serviceImage ? (
-            <img
-              src={localService.serviceImage}
-              alt="Current Service"
-              style={{ width: "150px", marginTop: "8px", objectFit: "cover", borderRadius: "4px" }}
-            />
-          ) : null}
-        </Form.Item>
-      </div>
-      <Form.Item
-        name="description"
-        label="Description"
-        rules={[{ required: true, message: "Please input the description!" }]}
-      >
-        <MDEditor height={200} />
-      </Form.Item>
-    </Form>
-  );
-
   return (
     <Modal
       open={visible}
@@ -289,13 +130,13 @@ export default function ServiceDetails({ visible, onClose, service }) {
       footer={
         isEdit
           ? [
-              <Button key="cancel" onClick={() => setIsEdit(false)}>
-                Cancel
-              </Button>,
-              <Button key="save" type="primary" onClick={handleSaveEdit}>
-                Save
-              </Button>,
-            ]
+            <Button key="cancel" onClick={() => setIsEdit(false)}>
+              Cancel
+            </Button>,
+            <Button key="save" type="primary" onClick={handleSaveEdit}>
+              Save
+            </Button>,
+          ]
           : null
       }
       width={880}
@@ -304,7 +145,7 @@ export default function ServiceDetails({ visible, onClose, service }) {
           <span>Service Details</span>
           <div className="w-5/6 text-end">
             {!isEdit && (
-              <Button type="link" onClick={() => setIsEdit(true)}>
+              <Button color="primary" variant="solid" type="link" onClick={() => setIsEdit(true)}>
                 Edit
               </Button>
             )}
@@ -312,7 +153,7 @@ export default function ServiceDetails({ visible, onClose, service }) {
         </div>
       }
     >
-      {isReloading ? <Loading /> : (isEdit ? renderEditForm() : renderDetails())}
+      {isReloading ? <Loading /> : (isEdit ? renderEditForm(localService, form, uploadedImagePreview) : renderDetails(localService))}
     </Modal>
   );
 }
