@@ -16,6 +16,7 @@ const TherapistTable = () => {
             title: "Status",
             dataIndex: "status",
             key: "status",
+            width: 100,
             render: (status) => (
                 <Tag color={status === "Active" ? "green" : "volcano"}>{status}</Tag>
             ),
@@ -25,7 +26,7 @@ const TherapistTable = () => {
             key: "action",
             render: (_, record) => (
                 <Space size="middle">
-                    <Button color="primary" variant="solid" type="link">Edit</Button>
+                    <Button color="gold" variant="solid" type="link">View details</Button>
                     <Button color="danger" variant="solid" type="link" danger>
                         Delete
                     </Button>
@@ -37,8 +38,8 @@ const TherapistTable = () => {
     const fetchTherapists = async () => {
         setLoading(true);
         try {
-            // const therapistsData = await getTherapists();
-            const formattedData = therapist.map((item) => ({
+            const therapistsData = await getTherapists();
+            const formattedData = therapistsData.map((item) => ({
                 id: item.therapistId,
                 name: item.user.fullName,
                 email: item.user.email,
@@ -64,7 +65,7 @@ const TherapistTable = () => {
     return (
         <div>
             <div className="flex justify-between my-4">
-                <div className="text-xl font-medium">Therapist Management</div>
+                <div className="text-xl font-medium">Therapist List</div>
                 <Button type="primary" onClick={handleAdd}>
                     Add Therapist
                 </Button>

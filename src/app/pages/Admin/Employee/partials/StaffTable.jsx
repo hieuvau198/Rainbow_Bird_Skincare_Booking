@@ -17,6 +17,7 @@ const StaffTable = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      width: 100,
       render: (status) => (
         <Tag color={status === "Active" ? "green" : "volcano"}>{status}</Tag>
       ),
@@ -26,7 +27,7 @@ const StaffTable = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button color="primary" variant="solid" type="link">Edit</Button>
+          <Button color="gold" variant="solid" type="link">View details</Button>
           <Button color="danger" variant="solid" type="link" danger>
             Delete
           </Button>
@@ -38,8 +39,8 @@ const StaffTable = () => {
   const loadStaffData = async () => {
     setLoading(true);
     try {
-      // const allUsers = await getAllUser();
-      const staffUsers = staff.filter(user => user.role === userRole.STAFF);
+      const allUsers = await getAllUser();
+      const staffUsers = allUsers.filter(user => user.role === userRole.STAFF);
 
       const formattedData = staffUsers.map(user => ({
         key: user.userId, // Giả sử API trả về userId
@@ -69,7 +70,7 @@ const StaffTable = () => {
   return (
     <div>
       <div className="flex justify-between my-4">
-        <div className="text-xl font-medium">Staff Management</div>
+        <div className="text-xl font-medium">Staff List</div>
         <Button type="primary" onClick={handleAdd}>
           Add Staff
         </Button>

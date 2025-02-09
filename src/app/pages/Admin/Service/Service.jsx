@@ -56,6 +56,14 @@ export default function Service() {
     setIsAddServiceModalVisible(false);
   };
 
+  const handleServiceUpdate = (updatedService) => {
+    setServices((prevServices) =>
+      prevServices.map((s) =>
+        s.serviceId === updatedService.serviceId ? { key: updatedService.serviceId, ...updatedService } : s
+      )
+    );
+  };
+
   const columns = [
     {
       title: "ID",
@@ -126,7 +134,6 @@ export default function Service() {
     fetchServices();
   }, []);
 
-
   return (
     <div className="p-6 max-w-[1270px]">
       <div className="p-6 bg-white rounded-md shadow-md min-h-[580px]">
@@ -149,7 +156,6 @@ export default function Service() {
             bordered
             scroll={{ y: 345 }}
           />
-
         </div>
         <AddService
           open={isAddServiceModalVisible}
@@ -160,6 +166,7 @@ export default function Service() {
           visible={isDetailModalVisible}
           onClose={() => setIsDetailModalVisible(false)}
           service={selectedService}
+          onServiceUpdate={handleServiceUpdate}
         />
         <Modal
           title="Confirm Delete"

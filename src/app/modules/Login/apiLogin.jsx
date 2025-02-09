@@ -65,6 +65,7 @@ const saveTokens = (data) => {
     });
 
     Cookies.set("refreshToken", data.refreshToken, {
+        expires: oneHour,
         sameSite: "Strict",
         secure: true
     });

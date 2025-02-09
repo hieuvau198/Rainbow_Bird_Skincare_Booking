@@ -17,6 +17,7 @@ const ManagerTable = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      width: 100,
       render: (status) => (
         <Tag color={status === "Active" ? "green" : "volcano"}>{status}</Tag>
       ),
@@ -26,7 +27,7 @@ const ManagerTable = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button color="primary" variant="solid" type="link">Edit</Button>
+          <Button color="gold" variant="solid" type="link">View details</Button>
           <Button color="danger" variant="solid" type="link" danger>
             Delete
           </Button>
@@ -39,9 +40,8 @@ const ManagerTable = () => {
     setLoading(true);
     try {
 
-      // const allUsers = await getAllUser();
-
-      const managerUsers = manager.filter(
+      const allUsers = await getAllUser();
+      const managerUsers = allUsers.filter(
         (user) => user.role === userRole.MANAGER
       );
 
@@ -73,7 +73,7 @@ const ManagerTable = () => {
   return (
     <div>
       <div className="flex justify-between my-4">
-        <div className="text-xl font-medium">Manager Management</div>
+        <div className="text-xl font-medium">Manager List</div>
         <Button type="primary" onClick={handleAdd}>
           Add Manager
         </Button>

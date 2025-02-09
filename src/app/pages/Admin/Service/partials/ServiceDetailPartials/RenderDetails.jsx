@@ -14,7 +14,7 @@ const renderDetails = (localService) => {
 
     return (
       <>
-        <div className="grid grid-cols-2 gap-4 gap-x-4">
+        <div className="grid grid-cols-2 gap-4">
           <div className="flex justify-center items-center">
             <img
               src={localService.serviceImage || "https://www.chanchao.com.tw/images/default.jpg"}
@@ -22,7 +22,7 @@ const renderDetails = (localService) => {
               className="w-60 h-60 object-cover rounded-lg shadow-md"
             />
           </div>
-          <div className="flex flex-col justify-center space-y-2">
+          <div className="flex flex-col justify-center space-y-3">
             <div className="flex items-center">
               <span className="font-bold w-24 flex items-center">
                 <IdcardOutlined className="mr-1" /> ID:
