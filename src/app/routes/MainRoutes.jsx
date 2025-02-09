@@ -24,6 +24,8 @@ import News from "../pages/Customer/BlogsAndNews/News";
 import ManageQuiz from "../pages/Admin/Quiz/ManageQuiz";
 import TherapistProfile from "../pages/Customer/ViewTherapist/TherapistProfile";
 import ServiceDetail from "../pages/Customer/Service/ServiceDetail";
+import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
+import UserRole from "../../enums/userRole";
 
 const LoginC = lazy(() => import("../pages/Login/LoginC"));
 const SignUp = lazy(() => import("../pages/SignUp/SignUp"));
@@ -41,7 +43,7 @@ export default function MainRoutes() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/quiz" element={<Quiz />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<PrivateRoute children={<Profile />} allowedRoles={[UserRole.CUSTOMER]} />} />
           <Route path="/services" element={<Service />} />
           <Route path="/services/:id" element={<ServiceDetail />} />
           <Route path="/therapists" element={<ViewTherapist />} />
@@ -52,7 +54,7 @@ export default function MainRoutes() {
           <Route path="/news" element={<News />} />
         </Route>
 
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin" element={<PrivateRoute children={<AdminLayout />} allowedRoles={[UserRole.ADMIN, UserRole.MANAGER, UserRole.STAFF]} />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="employee" element={<Employee />} />
           <Route path="booking" element={<Booking />} />

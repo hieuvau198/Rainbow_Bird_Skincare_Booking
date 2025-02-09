@@ -137,7 +137,7 @@ export default function ServiceDetails({ visible, onClose, service, onServiceUpd
         </div>
       }
     >
-      {isReloading ? <Loading /> : (isEdit ? renderEditForm(localService, form, uploadedImagePreview) : renderDetails(localService))}
+      {isReloading ? <Loading /> : (isEdit ? renderEditForm(localService, form, uploadedImagePreview, setUploadedImageFile, setUploadedImagePreview) : renderDetails(localService))}
     </Modal>
   );
 }

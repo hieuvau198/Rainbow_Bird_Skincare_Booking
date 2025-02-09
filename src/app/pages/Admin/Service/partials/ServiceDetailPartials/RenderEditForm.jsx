@@ -4,7 +4,7 @@ import {
 import MDEditor from "@uiw/react-md-editor";
 import { Button, Form, Input, InputNumber, Select, Upload } from "antd";
 
-const renderEditForm = (localService, form, uploadedImagePreview) => (
+const renderEditForm = (localService, form, uploadedImagePreview, setUploadedImageFile, setUploadedImagePreview) => (
     <Form
         form={form}
         layout="vertical"
