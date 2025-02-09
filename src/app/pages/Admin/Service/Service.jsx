@@ -9,6 +9,7 @@ import AddService from "./partials/AddService";
 import ServiceDetails from "./partials/ServiceDetail";
 
 export default function Service() {
+  const [loading, setLoading] = useState(false);
   const [services, setServices] = useState([]);
   const [isAddServiceModalVisible, setIsAddServiceModalVisible] = useState(false);
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
@@ -108,6 +109,7 @@ export default function Service() {
 
   useEffect(() => {
     const fetchServices = async () => {
+      setLoading(true);
       try {
         const data = await getAllService();
         const servicesWithKey = data.map((service) => ({
@@ -118,6 +120,7 @@ export default function Service() {
       } catch (error) {
         console.error("Error fetching services:", error);
       }
+      setLoading(false);
     };
 
     fetchServices();
@@ -141,6 +144,7 @@ export default function Service() {
           <Table
             columns={columns}
             dataSource={services}
+            loading={loading}
             pagination={{ pageSize: 10 }}
             bordered
             scroll={{ y: 345 }}

@@ -130,10 +130,10 @@ export default function ServiceDetails({ visible, onClose, service }) {
       footer={
         isEdit
           ? [
-            <Button key="cancel" onClick={() => setIsEdit(false)}>
+            <Button key="cancel" variant="solid" onClick={() => setIsEdit(false)}>
               Cancel
             </Button>,
-            <Button key="save" type="primary" onClick={handleSaveEdit}>
+            <Button key="save" variant="solid" type="primary" onClick={handleSaveEdit}>
               Save
             </Button>,
           ]

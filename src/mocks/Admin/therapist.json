@@ -1,0 +1,33 @@
+[
+    {
+      "therapistId": 1,
+      "user": {
+        "fullName": "Alice Nguyen",
+        "email": "alice.nguyen@example.com",
+        "phone": "0123456789"
+      },
+      "isAvailable": true,
+      "createdAt": "2025-01-01T12:00:00Z"
+    },
+    {
+      "therapistId": 2,
+      "user": {
+        "fullName": "Bob Tran",
+        "email": "bob.tran@example.com",
+        "phone": "0987654321"
+      },
+      "isAvailable": false,
+      "createdAt": "2025-01-02T09:30:00Z"
+    },
+    {
+      "therapistId": 3,
+      "user": {
+        "fullName": "Carol Pham",
+        "email": "carol.pham@example.com",
+        "phone": "0912345678"
+      },
+      "isAvailable": true,
+      "createdAt": "2025-01-03T14:45:00Z"
+    }
+  ]
+  

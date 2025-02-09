@@ -1,0 +1,23 @@
+[
+    {
+      "userId": 3,
+      "username": "staff1",
+      "email": "staff1@example.com",
+      "phone": "1122334455",
+      "fullName": "Staff One",
+      "role": 2,
+      "createdAt": "2025-02-09T07:15:43.014Z",
+      "lastLoginAt": "2025-02-09T07:15:43.014Z"
+    },
+    {
+      "userId": 4,
+      "username": "staff2",
+      "email": "staff2@example.com",
+      "phone": "5566778899",
+      "fullName": "Staff Two",
+      "role": 2,
+      "createdAt": "2025-02-09T08:15:43.014Z",
+      "lastLoginAt": "2025-02-09T08:15:43.014Z"
+    }
+  ]
+  
