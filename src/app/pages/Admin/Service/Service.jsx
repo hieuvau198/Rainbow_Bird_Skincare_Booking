@@ -1,26 +1,67 @@
-import { Button, Space, Table, Tag } from "antd";
+import { Button, message, Modal, Space, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import getAllService from "../../../../app/modules/Admin/Service/getAllService";
 import getServiceDetail from "../../../../app/modules/Admin/Service/getServiceDetail";
+import addService from "../../../modules/Admin/Service/addService";
+import deleteService from "../../../modules/Admin/Service/deleteService";
 import "../../../styles/Admin/ScrollbarTable.css";
 import AddService from "./partials/AddService";
-import { useNavigate } from "react-router-dom";
 import ServiceDetails from "./partials/ServiceDetail";
 
 export default function Service() {
+  const [loading, setLoading] = useState(false);
   const [services, setServices] = useState([]);
   const [isAddServiceModalVisible, setIsAddServiceModalVisible] = useState(false);
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
-  
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [serviceToDelete, setServiceToDelete] = useState(null);
+
+  const showDeleteConfirm = (service) => {
+    setServiceToDelete(service);
+    setIsDeleteModalVisible(true);
+  };
+
+  const handleDeleteService = async () => {
+    if (!serviceToDelete) return;
+    try {
+      await deleteService(serviceToDelete.serviceId);
+      message.success("Service deleted successfully!");
+      setServices((prev) => prev.filter((s) => s.serviceId !== serviceToDelete.serviceId));
+    } catch (error) {
+      console.error("Error deleting service:", error);
+      message.error("Failed to delete service!");
+    } finally {
+      setIsDeleteModalVisible(false);
+      setServiceToDelete(null);
+    }
+  };
+
   const handleViewDetails = async (id) => {
     try {
       await getServiceDetail(id, setSelectedService);
       setIsDetailModalVisible(true);
-      console.log("Service details:", selectedService);
     } catch (error) {
       console.error("Error fetching service details:", error);
     }
+  };
+
+  const handleAddService = async (service) => {
+    const newService = await addService(service);
+    console.log("Data sent to API:", service);
+    setServices((prevServices) => [
+      ...prevServices,
+      { key: newService.serviceId, ...newService },
+    ]);
+    setIsAddServiceModalVisible(false);
+  };
+
+  const handleServiceUpdate = (updatedService) => {
+    setServices((prevServices) =>
+      prevServices.map((s) =>
+        s.serviceId === updatedService.serviceId ? { key: updatedService.serviceId, ...updatedService } : s
+      )
+    );
   };
 
   const columns = [
@@ -66,10 +107,7 @@ export default function Service() {
           <Button color="gold" variant="solid" type="link" onClick={() => handleViewDetails(record.serviceId)}>
             View details
           </Button>
-          <Button color="primary" variant="solid" type="link">
-            Edit
-          </Button>
-          <Button color="danger" variant="solid" type="link" danger>
+          <Button color="danger" variant="solid" type="link" danger onClick={() => showDeleteConfirm(record)}>
             Delete
           </Button>
         </Space>
@@ -79,6 +117,7 @@ export default function Service() {
 
   useEffect(() => {
     const fetchServices = async () => {
+      setLoading(true);
       try {
         const data = await getAllService();
         const servicesWithKey = data.map((service) => ({
@@ -89,18 +128,11 @@ export default function Service() {
       } catch (error) {
         console.error("Error fetching services:", error);
       }
+      setLoading(false);
     };
 
     fetchServices();
   }, []);
-
-  const handleAddService = (service) => {
-    setServices((prevServices) => [
-      ...prevServices,
-      { key: prevServices.length + 1, ...service },
-    ]);
-    setIsAddServiceModalVisible(false);
-  };
 
   return (
     <div className="p-6 max-w-[1270px]">
@@ -119,11 +151,11 @@ export default function Service() {
           <Table
             columns={columns}
             dataSource={services}
+            loading={loading}
             pagination={{ pageSize: 10 }}
             bordered
             scroll={{ y: 345 }}
           />
-
         </div>
         <AddService
           open={isAddServiceModalVisible}
@@ -134,7 +166,19 @@ export default function Service() {
           visible={isDetailModalVisible}
           onClose={() => setIsDetailModalVisible(false)}
           service={selectedService}
+          onServiceUpdate={handleServiceUpdate}
         />
+        <Modal
+          title="Confirm Delete"
+          open={isDeleteModalVisible}
+          onOk={handleDeleteService}
+          onCancel={() => setIsDeleteModalVisible(false)}
+          okText="Delete"
+          cancelText="Cancel"
+          okButtonProps={{ danger: true }}
+        >
+          <p>Are you sure you want to delete this service?</p>
+        </Modal>
       </div>
     </div>
   );

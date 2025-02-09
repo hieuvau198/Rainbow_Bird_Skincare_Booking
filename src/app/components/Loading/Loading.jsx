@@ -1,10 +1,20 @@
-import React from 'react';
-import { Spin } from 'antd';
+import { Flex, Spin } from "antd";
+import React from "react";
+import { LoadingOutlined } from "@ant-design/icons";
 
 export default function Loading() {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 bg-opacity-50">
-      <Spin size="large" />
+    <div>
+      <Flex className="flex items-center justify-center min-h-screen">
+        <Spin
+          indicator={
+            <LoadingOutlined
+              style={{ fontSize: 80, color: "#38bdf8" }}
+              spin
+            />
+          }
+        />
+      </Flex>
     </div>
   );
-};
+}

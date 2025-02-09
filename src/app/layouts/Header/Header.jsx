@@ -101,7 +101,6 @@ export default function Header() {
             >
               <Avatar
                 size={40}
-                src="https://via.placeholder.com/150"
                 icon={<UserOutlined />}
                 className="cursor-pointer"
               />
