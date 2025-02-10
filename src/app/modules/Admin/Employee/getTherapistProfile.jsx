@@ -1,15 +1,15 @@
 import { message } from "antd";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-export default async function getAllUser() {
+export default async function getTherapistProfile(id) {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/Users`, {
+    const response = await fetch(`${API_BASE_URL}/api/TherapistProfile/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${Cookies.get("_aT")}`,
+        // "Authorization": `Bearer ${Cookies.get("_aT")}`,
       },
     });
 

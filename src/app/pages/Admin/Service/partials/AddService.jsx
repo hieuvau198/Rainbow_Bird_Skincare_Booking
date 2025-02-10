@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Modal, Form, Input, InputNumber, Select, Button, Upload, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import MDEditor from "@uiw/react-md-editor";
+import { Button, Form, Input, InputNumber, Modal, Select, Upload, message } from "antd";
+import React, { useState } from "react";
 
 
 const normFile = (e) => {
@@ -19,13 +19,13 @@ const AddService = ({ open, onClose, onSubmit }) => {
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
-      
+
       let fileObject = null;
       const fileList = values.serviceImage;
       if (fileList && fileList.length > 0) {
         fileObject = fileList[0].originFileObj;
       }
-  
+
       const formData = new FormData();
       formData.append("ServiceName", values.serviceName);
       formData.append("Description", description);
@@ -37,7 +37,7 @@ const AddService = ({ open, onClose, onSubmit }) => {
       formData.append("DurationMinutes", values.durationMinutes);
       formData.append("Location", values.location);
       formData.append("IsActive", values.isActive.toString());
-  
+
       onSubmit(formData);
       form.resetFields();
       setDescription("");
@@ -45,7 +45,7 @@ const AddService = ({ open, onClose, onSubmit }) => {
       console.error("Validation Failed:", info);
       message.error("Please complete the form correctly.");
     }
-  };  
+  };
 
   return (
     <Modal

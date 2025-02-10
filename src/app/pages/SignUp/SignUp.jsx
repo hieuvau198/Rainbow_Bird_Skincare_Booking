@@ -1,7 +1,7 @@
+import { Button, Form, Input, message } from "antd";
 import React, { useState } from "react";
-import { Button, Input, Select, Form, message } from "antd";
-import { useNavigate } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 import apiSignUp from "../../modules/SignUp/apiSignUp";
 
 export default function SignUp() {

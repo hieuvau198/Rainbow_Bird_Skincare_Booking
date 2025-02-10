@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Table, Tag, Space, Button } from "antd";
+import { Button, Space, Table, Tag } from "antd";
+import React, { useEffect, useState } from "react";
 import getTherapists from "../../../../modules/Admin/Employee/getTherapist";
-import therapist from "../../../../../mocks/Admin/therapist.json";
+import AddTherapist from "./TherapistPartials/AddTherapist";
+import ViewTherapistProfile from "./TherapistPartials/ViewTherapistProfile";
 
 const TherapistTable = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [detailModalVisible, setDetailModalVisible] = useState(false);
+    const [selectedTherapistId, setSelectedTherapistId] = useState(null);
+    const [addModalVisible, setAddModalVisible] = useState(false);
 
     const columns = [
         { title: "ID", dataIndex: "id", key: "id", width: 50 },
@@ -26,10 +30,13 @@ const TherapistTable = () => {
             key: "action",
             render: (_, record) => (
                 <Space size="middle">
-                    <Button color="gold" variant="solid" type="link">View details</Button>
-                    <Button color="danger" variant="solid" type="link" danger>
+                    <Button color="gold" variant="solid" type="link" onClick={() => {
+                        setSelectedTherapistId(record.id);
+                        setDetailModalVisible(true);
+                    }}>View details</Button>
+                    {/* <Button color="danger" variant="solid" type="link" danger>
                         Delete
-                    </Button>
+                    </Button> */}
                 </Space>
             ),
         },
@@ -58,15 +65,15 @@ const TherapistTable = () => {
         fetchTherapists();
     }, []);
 
-    const handleAdd = () => {
-        console.log("Add Therapist clicked");
+    const handleAddTherapist = (values) => {
+        console.log("New therapist data:", values);
     };
 
     return (
         <div>
             <div className="flex justify-between my-4">
                 <div className="text-xl font-medium">Therapist List</div>
-                <Button type="primary" onClick={handleAdd}>
+                <Button type="primary" onClick={() => setAddModalVisible(true)}>
                     Add Therapist
                 </Button>
             </div>
@@ -78,6 +85,16 @@ const TherapistTable = () => {
                 pagination={{ pageSize: 10 }}
                 bordered
                 scroll={{ y: 350 }}
+            />
+            <ViewTherapistProfile
+                open={detailModalVisible}
+                therapistId={selectedTherapistId}
+                onClose={() => setDetailModalVisible(false)}
+            />
+            <AddTherapist
+                open={addModalVisible}
+                onClose={() => setAddModalVisible(false)}
+                onSubmit={handleAddTherapist}
             />
         </div>
     );

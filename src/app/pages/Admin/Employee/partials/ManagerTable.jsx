@@ -3,10 +3,12 @@ import { Table, Tag, Space, Button } from "antd";
 import getAllUser from "../../../../modules/Admin/Employee/getAllUser";
 import userRole from "../../../../../enums/userRole";
 import manager from "../../../../../mocks/Admin/manager.json";
+import AddManager from "./ManagerPartials/AddManager";
 
 const ManagerTable = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [addModalVisible, setAddModalVisible] = useState(false);
 
   const columns = [
     { title: "ID", dataIndex: "id", key: "id", width: 50 },
@@ -25,14 +27,14 @@ const ManagerTable = () => {
     {
       title: "Action",
       key: "action",
-      render: (_, record) => (
-        <Space size="middle">
-          <Button color="gold" variant="solid" type="link">View details</Button>
-          <Button color="danger" variant="solid" type="link" danger>
-            Delete
-          </Button>
-        </Space>
-      ),
+      // render: (_, record) => (
+      //   <Space size="middle">
+      //     <Button color="gold" variant="solid" type="link">View details</Button>
+      //     <Button color="danger" variant="solid" type="link" danger>
+      //       Delete
+      //     </Button>
+      //   </Space>
+      // ),
     },
   ];
 
@@ -46,12 +48,12 @@ const ManagerTable = () => {
       );
 
       const formattedData = managerUsers.map((user) => ({
-        key: user.userId, 
+        key: user.userId,
         id: user.userId,
         name: user.fullName,
         email: user.email,
         mobile: user.phone,
-        status: "Active", 
+        status: "Active",
       }));
       setData(formattedData);
     } catch (error) {
@@ -65,16 +67,15 @@ const ManagerTable = () => {
     loadManagerData();
   }, []);
 
-  const handleAdd = () => {
-    console.log("Add Manager clicked");
-    // Thêm modal hoặc chuyển hướng sang trang thêm Manager tại đây.
+  const handleAddManager = (values) => {
+    console.log("New therapist data:", values);
   };
 
   return (
     <div>
       <div className="flex justify-between my-4">
         <div className="text-xl font-medium">Manager List</div>
-        <Button type="primary" onClick={handleAdd}>
+        <Button type="primary" onClick={() => setAddModalVisible(true)}>
           Add Manager
         </Button>
       </div>
@@ -86,6 +87,11 @@ const ManagerTable = () => {
         pagination={{ pageSize: 10 }}
         bordered
         scroll={{ y: 350 }}
+      />
+      <AddManager
+        open={addModalVisible}
+        onClose={() => setAddModalVisible(false)}
+        onSubmit={handleAddManager}
       />
     </div>
   );

@@ -1,6 +1,9 @@
 import { message } from "antd";
+import CryptoJS from "crypto-js";
 import Cookies from "js-cookie";
+import UserRole from "../../../enums/userRole";
 
+const secretKey = process.env.REACT_APP_SECRET_KEY || "ToiYeuEMToiYeuEM";
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export const googleLogin = async (response, CLIENT_ID, setLoading, navigate) => {
@@ -15,7 +18,11 @@ export const googleLogin = async (response, CLIENT_ID, setLoading, navigate) => 
         const data = await serverResponse.json();
         saveTokens(data);
         message.success("Google login successful!");
-        navigate("/");
+        if (data.user.role === UserRole.ADMIN || data.user.role === UserRole.MANAGER || data.user.role === UserRole.STAFF) {
+            navigate("/management/dashboard");
+        } else {
+            navigate("/");
+        }
     } catch (err) {
         message.error(err.message || "Google login failed!");
     } finally {
@@ -38,7 +45,11 @@ export const loginUser = async (values, setLoading, navigate) => {
         const data = await response.json();
         saveTokens(data);
         message.success("Login successful!");
-        navigate("/");
+        if (data.user.role === UserRole.ADMIN || data.user.role === UserRole.MANAGER || data.user.role === UserRole.STAFF) {
+            navigate("/management/dashboard");
+        } else {
+            navigate("/");
+        }
     } catch (err) {
         message.error(err.message || "Login failed!");
     } finally {
@@ -46,25 +57,30 @@ export const loginUser = async (values, setLoading, navigate) => {
     }
 };
 
-// Lưu accessToken và refreshToken và rolerole vào Cookies với thời gian hết hạn 1 giờ
+const encodeRoleToBase64 = (role) => {
+    return btoa(String(role));
+};
+
 const saveTokens = (data) => {
-    const oneHour = 1 / 24; // 1 giờ = 1/24 ngày
+    const oneHour = 1 / 24;
 
     if (data.user && data.user.role !== undefined) {
-        Cookies.set("userRole", data.user.role, {
+        const encodedRole = encodeRoleToBase64(data.user.role);
+        const encryptedRole = CryptoJS.AES.encrypt(encodedRole, secretKey).toString();
+        Cookies.set("_uR", encryptedRole, {
             expires: oneHour,
             sameSite: "Strict",
             secure: true
         });
     }
 
-    Cookies.set("accessToken", data.accessToken, {
+    Cookies.set("_aT", data.accessToken, {
         expires: oneHour,
         sameSite: "Strict",
         secure: true
     });
 
-    Cookies.set("refreshToken", data.refreshToken, {
+    Cookies.set("_rT", data.refreshToken, {
         expires: oneHour,
         sameSite: "Strict",
         secure: true
@@ -74,7 +90,6 @@ const saveTokens = (data) => {
 // ========================= Hàm refreshToken =========================
 export async function refreshToken() {
     try {
-        // Gửi refreshToken lấy từ Cookies đến API refresh-token
         const response = await fetch(`${API_BASE_URL}/api/Auth/refresh-token`, {
             method: "POST",
             headers: {
@@ -88,7 +103,7 @@ export async function refreshToken() {
         }
 
         const data = await response.json();
-        const oneHour = 1 / 24; // 1 giờ
+        const oneHour = 1 / 24;
 
         if (data.user && data.user.role !== undefined) {
             Cookies.set("userRole", data.user.role, {
@@ -97,7 +112,7 @@ export async function refreshToken() {
                 secure: true
             });
         }
-        // Cập nhật lại Cookies với token mới
+
         Cookies.set("accessToken", data.accessToken, {
             expires: oneHour,
             sameSite: "Strict",
@@ -112,9 +127,9 @@ export async function refreshToken() {
         return data.accessToken;
     } catch (error) {
         message.error("Session expired. Please log in again.");
-        Cookies.remove("accessToken");
-        Cookies.remove("refreshToken");
-        Cookies.remove("userRole");
+        Cookies.remove("_aT");
+        Cookies.remove("_rT");
+        Cookies.remove("_uR");
         window.location.href = "/login";
         throw error;
     }
@@ -123,7 +138,7 @@ export async function refreshToken() {
 // ========================= Hàm fetchWithAuth =========================
 export async function fetchWithAuth(url, options = {}) {
     // Lấy accessToken hiện tại từ Cookies
-    let accessToken = Cookies.get("accessToken");
+    let accessToken = Cookies.get("_aT");
 
     // Thiết lập header mặc định
     const headers = {

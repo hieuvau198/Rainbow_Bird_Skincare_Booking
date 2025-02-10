@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
 import { Button, Form, message, Modal } from "antd";
+import React, { useEffect, useState } from "react";
+import UserRole from "../../../../../enums/userRole";
+import DecodeRole from "../../../../components/DecodeRole";
 import Loading from "../../../../components/Loading";
 import editService from "../../../../modules/Admin/Service/editService";
-import renderEditForm from "./ServiceDetailPartials/RenderEditForm";
 import renderDetails from "./ServiceDetailPartials/RenderDetails";
+import renderEditForm from "./ServiceDetailPartials/RenderEditForm";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -13,6 +15,7 @@ export default function ServiceDetails({ visible, onClose, service, onServiceUpd
   const [isReloading, setIsReloading] = useState(false);
   const [uploadedImageFile, setUploadedImageFile] = useState(null);
   const [uploadedImagePreview, setUploadedImagePreview] = useState(null);
+  const userRole = DecodeRole();
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -128,7 +131,7 @@ export default function ServiceDetails({ visible, onClose, service, onServiceUpd
         <div className="flex flex-col items-center pb-4 text-2xl font-bold">
           <span>Service Details</span>
           <div className="w-11/12 text-end">
-            {!isEdit && (
+            {(!isEdit && (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER)) && (
               <Button color="primary" variant="solid" type="link" onClick={() => setIsEdit(true)}>
                 Edit
               </Button>
@@ -137,7 +140,7 @@ export default function ServiceDetails({ visible, onClose, service, onServiceUpd
         </div>
       }
     >
-      {isReloading ? <Loading /> : (isEdit ? renderEditForm(localService, form, uploadedImagePreview) : renderDetails(localService))}
+      {isReloading ? <Loading /> : (isEdit ? renderEditForm(localService, form, uploadedImagePreview, setUploadedImageFile, setUploadedImagePreview) : renderDetails(localService))}
     </Modal>
   );
 }
