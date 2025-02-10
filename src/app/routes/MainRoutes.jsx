@@ -47,10 +47,10 @@ export default function MainRoutes() {
           <Route path="/services" element={<Service />} />
           <Route path="/services/:id" element={<ServiceDetail />} />
           <Route path="/therapists" element={<ViewTherapist />} />
-          <Route path="/schedule-booking" element={<ScheduleBooking />} />
+          <Route path="/schedule-booking" element={<PrivateRoute children={<ScheduleBooking />} allowedRoles={[UserRole.CUSTOMER]} />} />
           <Route path="/therapists" element={<ViewTherapist />} />
           <Route path="/therapists/:id" element={<TherapistProfile />} />
-          <Route path="/rating" element={<Rating />} />
+          <Route path="/rating" element={<PrivateRoute children={<Rating />} allowedRoles={[UserRole.CUSTOMER]} />} />
           <Route path="/news" element={<News />} />
         </Route>
 

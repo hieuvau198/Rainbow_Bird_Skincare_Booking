@@ -1,7 +1,9 @@
 import { Button, message, Modal, Space, Table, Tag } from "antd";
+import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import getAllService from "../../../../app/modules/Admin/Service/getAllService";
 import getServiceDetail from "../../../../app/modules/Admin/Service/getServiceDetail";
+import UserRole from "../../../../enums/userRole";
 import addService from "../../../modules/Admin/Service/addService";
 import deleteService from "../../../modules/Admin/Service/deleteService";
 import "../../../styles/Admin/ScrollbarTable.css";
@@ -16,6 +18,7 @@ export default function Service() {
   const [selectedService, setSelectedService] = useState(null);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [serviceToDelete, setServiceToDelete] = useState(null);
+  const userRole = Cookies.get("userRole");
 
   const showDeleteConfirm = (service) => {
     setServiceToDelete(service);
@@ -107,9 +110,11 @@ export default function Service() {
           <Button color="gold" variant="solid" type="link" onClick={() => handleViewDetails(record.serviceId)}>
             View details
           </Button>
-          <Button color="danger" variant="solid" type="link" danger onClick={() => showDeleteConfirm(record)}>
-            Delete
-          </Button>
+          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
+            <Button color="danger" variant="solid" type="link" danger onClick={() => showDeleteConfirm(record)}>
+              Delete
+            </Button>
+          )}
         </Space>
       ),
     },
@@ -139,13 +144,15 @@ export default function Service() {
       <div className="p-6 bg-white rounded-md shadow-md min-h-[580px]">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold">Skincare Services</h2>
-          <Button
-            type="primary"
-            onClick={() => setIsAddServiceModalVisible(true)}
-            className="bg-blue-500"
-          >
-            Add Service
-          </Button>
+          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
+            <Button
+              type="primary"
+              onClick={() => setIsAddServiceModalVisible(true)}
+              className="bg-blue-500"
+            >
+              Add Service
+            </Button>
+          )}
         </div>
         <div>
           <Table

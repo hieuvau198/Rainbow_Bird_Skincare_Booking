@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { message } from "antd";
 
 export default function PrivateRoute({ allowedRoles, children }) {
   const accessToken = Cookies.get("accessToken");
@@ -9,10 +10,10 @@ export default function PrivateRoute({ allowedRoles, children }) {
     return <Navigate to="/login" replace />;
   }
 
-  const userRoleCookie = Cookies.get("userRole");
-  const userRole = userRoleCookie ? parseInt(userRoleCookie, 10) : null;
+  const userRole = Cookies.get("userRole");
 
   if (!userRole || !allowedRoles.includes(userRole)) {
+    message.warning("You do not have permission to access this page.");
     return <Navigate to="/" replace />;
   }
 

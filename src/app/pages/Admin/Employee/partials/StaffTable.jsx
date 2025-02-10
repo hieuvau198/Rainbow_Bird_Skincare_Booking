@@ -2,11 +2,12 @@ import { Button, Space, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import userRole from "../../../../../enums/userRole";
 import getAllUser from "../../../../modules/Admin/Employee/getAllUser";
-import staff from "../../../../../mocks/Admin/staff.json";
+import AddStaff from "./StaffPartials/AddStaff";
 
 const StaffTable = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [addModalVisible, setAddModalVisible] = useState(false);
 
   const columns = [
     { title: "ID", dataIndex: "id", key: "id", width: 50 },
@@ -25,14 +26,14 @@ const StaffTable = () => {
     {
       title: "Action",
       key: "action",
-      render: (_, record) => (
-        <Space size="middle">
-          <Button color="gold" variant="solid" type="link">View details</Button>
-          <Button color="danger" variant="solid" type="link" danger>
-            Delete
-          </Button>
-        </Space>
-      ),
+      // render: (_, record) => (
+      //   <Space size="middle">
+      //     <Button color="gold" variant="solid" type="link">View details</Button>
+      //     <Button color="danger" variant="solid" type="link" danger>
+      //       Delete
+      //     </Button>
+      //   </Space>
+      // ),
     },
   ];
 
@@ -43,12 +44,12 @@ const StaffTable = () => {
       const staffUsers = allUsers.filter(user => user.role === userRole.STAFF);
 
       const formattedData = staffUsers.map(user => ({
-        key: user.userId, // Giả sử API trả về userId
+        key: user.userId,
         id: user.userId,
         name: user.fullName,
         email: user.email,
         mobile: user.phone,
-        status: "Active", // Nếu có thông tin trạng thái cụ thể, bạn có thể thay thế ở đây
+        status: "Active", 
       }));
       setData(formattedData);
     } catch (error) {
@@ -62,16 +63,15 @@ const StaffTable = () => {
     loadStaffData();
   }, []);
 
-  const handleAdd = () => {
-    console.log("Add Staff clicked");
-    // Ở đây bạn có thể mở modal thêm mới Staff hoặc chuyển hướng sang trang thêm mới
+  const handleAddStaff = (values) => {
+    console.log("New therapist data:", values);
   };
 
   return (
     <div>
       <div className="flex justify-between my-4">
         <div className="text-xl font-medium">Staff List</div>
-        <Button type="primary" onClick={handleAdd}>
+        <Button type="primary" onClick={() => setAddModalVisible(true)}>
           Add Staff
         </Button>
       </div>
@@ -83,6 +83,11 @@ const StaffTable = () => {
         pagination={{ pageSize: 10 }}
         bordered
         scroll={{ y: 350 }}
+      />
+      <AddStaff
+        open={addModalVisible}
+        onClose={() => setAddModalVisible(false)}
+        onSubmit={handleAddStaff}
       />
     </div>
   );

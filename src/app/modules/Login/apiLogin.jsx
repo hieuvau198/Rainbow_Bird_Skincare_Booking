@@ -16,7 +16,11 @@ export const googleLogin = async (response, CLIENT_ID, setLoading, navigate) => 
         const data = await serverResponse.json();
         saveTokens(data);
         message.success("Google login successful!");
-        navigate("/");
+        if (data.user.role === UserRole.ADMIN || data.user.role === UserRole.MANAGER || data.user.role === UserRole.STAFF) {
+            navigate("/admin/dashboard");
+        } else {
+            navigate("/");
+        }
     } catch (err) {
         message.error(err.message || "Google login failed!");
     } finally {
