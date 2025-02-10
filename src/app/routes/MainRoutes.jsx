@@ -14,7 +14,6 @@ import Feedback from "../pages/Admin/Feedback/Feedback";
 import AdminProfile from "../pages/Admin/Profile/Profile";
 import ManageQuiz from "../pages/Admin/Quiz/ManageQuiz";
 import MaService from "../pages/Admin/Service/Service";
-import MaServiceDetail from "../pages/Admin/Service/partials/ServiceDetail";
 import News from "../pages/Customer/BlogsAndNews/News";
 import Profile from "../pages/Customer/Profile/Profile";
 import Quiz from "../pages/Customer/Quiz/Quiz";
@@ -26,6 +25,7 @@ import TherapistProfile from "../pages/Customer/ViewTherapist/TherapistProfile";
 import ViewTherapist from "../pages/Customer/ViewTherapist/ViewTherapist";
 import Home from "../pages/Home";
 import Login from "../pages/Login/Login";
+import TherapistChedule from "../pages/Admin/Schedule/TherapistChedule";
 
 const LoginC = lazy(() => import("../pages/Login/LoginC"));
 const SignUp = lazy(() => import("../pages/SignUp/SignUp"));
@@ -55,15 +55,15 @@ export default function MainRoutes() {
         </Route>
 
         <Route path="/management" element={<PrivateRoute children={<AdminLayout />} allowedRoles={[UserRole.ADMIN, UserRole.MANAGER, UserRole.STAFF, UserRole.THERAPIST]} />}>
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="dashboard" element={<PrivateRoute children={<Dashboard />} allowedRoles={[UserRole.ADMIN, UserRole.MANAGER]} />} />
           <Route path="employee" element={<Employee />} />
           <Route path="booking" element={<Booking />} />
           <Route path="service" element={<MaService />} />
-          <Route path="service/:id" element={<MaServiceDetail />} />
           <Route path="feedback" element={<Feedback />} />
           <Route path="customer" element={<Customer />} />
           <Route path="profile" element={<AdminProfile />} />
           <Route path="quiz" element={<ManageQuiz />} />
+          <Route path="schedule" element={<PrivateRoute children={<TherapistChedule />} allowedRoles={[UserRole.THERAPIST, UserRole.MANAGER]} />} />
         </Route>
 
         <Route path="login" element={<Login />} />

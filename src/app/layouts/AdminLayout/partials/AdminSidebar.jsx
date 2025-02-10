@@ -3,6 +3,7 @@ import {
   LineChartOutlined,
   MessageOutlined,
   PieChartOutlined,
+  ScheduleOutlined,
   ShoppingCartOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -12,10 +13,13 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../../../assets/img/logo.png";
 import { sActiveMenu } from "../../../../store/Store";
 import logOut from "../../../modules/Logout";
+import DecodeRole from "../../../components/DecodeRole";
+import UserRole from "../../../../enums/userRole";
 
 const AdminSidebar = () => {
   const activeMenu = sActiveMenu.use();
   const location = useLocation();
+  const userRole = DecodeRole();
 
   useEffect(() => {
     const currentPath = location.pathname;
@@ -28,6 +32,7 @@ const AdminSidebar = () => {
       "/management/feedback": "Feedback",
       "/management/profile": "Profile",
       "/management/quiz": "Quiz",
+      "/management/schedule": "Schedule",
     };
 
     const currentMenu = menuMap[currentPath];
@@ -44,21 +49,23 @@ const AdminSidebar = () => {
 
       <nav className="mt-6 w-[80%] mx-auto">
         <div className="space-y-2 text-gray-600">
-          <Link
-            to="/management/dashboard"
-            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Dashboard"
-              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-              }`}
-            onClick={() => {
-              sActiveMenu.set("Dashboard");
-            }}
-          >
-            <div className="flex items-center gap-3 w-full">
-              <PieChartOutlined />
-              <span className="text-lg font-semibold">Dashboard</span>
-            </div>
-          </Link>
+          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
+            <Link
+              to="/management/dashboard"
+              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Dashboard"
+                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+                }`}
+              onClick={() => {
+                sActiveMenu.set("Dashboard");
+              }}
+            >
+              <div className="flex items-center gap-3 w-full">
+                <PieChartOutlined />
+                <span className="text-lg font-semibold">Dashboard</span>
+              </div>
+            </Link>
+          )}
 
           <Link
             to="/management/booking"
@@ -79,8 +86,8 @@ const AdminSidebar = () => {
           <Link
             to="/management/quiz"
             className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Quiz"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
               }`}
             onClick={() => {
               sActiveMenu.set("Quiz");
@@ -153,6 +160,22 @@ const AdminSidebar = () => {
             <div className="flex items-center gap-3 w-full">
               <UserOutlined />
               <span className="text-lg font-semibold">Profile</span>
+            </div>
+          </Link>
+
+          <Link
+            to="/management/schedule"
+            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Schedule"
+              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
+            onClick={() => {
+              sActiveMenu.set("Schedule");
+            }}
+          >
+            <div className="flex items-center gap-3 w-full">
+              <ScheduleOutlined />
+              <span className="text-lg font-semibold">Schedule</span>
             </div>
           </Link>
 

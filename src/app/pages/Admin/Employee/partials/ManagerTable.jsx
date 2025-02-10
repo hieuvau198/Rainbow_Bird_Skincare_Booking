@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Table, Tag, Space, Button } from "antd";
-import getAllUser from "../../../../modules/Admin/Employee/getAllUser";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button, Table, Tag } from "antd";
+import React, { useEffect, useState } from "react";
 import userRole from "../../../../../enums/userRole";
-import manager from "../../../../../mocks/Admin/manager.json";
+import getAllUser from "../../../../modules/Admin/Employee/getAllUser";
 import AddManager from "./ManagerPartials/AddManager";
 
 const ManagerTable = () => {
@@ -75,7 +75,7 @@ const ManagerTable = () => {
     <div>
       <div className="flex justify-between my-4">
         <div className="text-xl font-medium">Manager List</div>
-        <Button type="primary" onClick={() => setAddModalVisible(true)}>
+        <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddModalVisible(true)}>
           Add Manager
         </Button>
       </div>

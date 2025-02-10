@@ -1,3 +1,4 @@
+import { PlusOutlined } from "@ant-design/icons";
 import { Button, message, Modal, Space, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import getAllService from "../../../../app/modules/Admin/Service/getAllService";
@@ -147,6 +148,7 @@ export default function Service() {
           {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
             <Button
               type="primary"
+              icon={<PlusOutlined />}
               onClick={() => setIsAddServiceModalVisible(true)}
               className="bg-blue-500"
             >

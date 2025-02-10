@@ -63,6 +63,12 @@ export default function Header() {
 
         <nav className="hidden lg:flex items-center space-x-6">
           <Link
+            to="/"
+            className="text-gray-500 hover:text-lime-700 font-semibold transition duration-200"
+          >
+            Home
+          </Link>
+          <Link
             to="/quiz"
             className="text-gray-500 hover:text-lime-700 font-semibold transition duration-200"
           >
