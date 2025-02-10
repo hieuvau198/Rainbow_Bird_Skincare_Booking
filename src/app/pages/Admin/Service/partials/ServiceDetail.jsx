@@ -1,7 +1,7 @@
 import { Button, Form, message, Modal } from "antd";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import UserRole from "../../../../../enums/userRole";
+import DecodeRole from "../../../../components/DecodeRole";
 import Loading from "../../../../components/Loading";
 import editService from "../../../../modules/Admin/Service/editService";
 import renderDetails from "./ServiceDetailPartials/RenderDetails";
@@ -15,7 +15,7 @@ export default function ServiceDetails({ visible, onClose, service, onServiceUpd
   const [isReloading, setIsReloading] = useState(false);
   const [uploadedImageFile, setUploadedImageFile] = useState(null);
   const [uploadedImagePreview, setUploadedImagePreview] = useState(null);
-  const userRole = Cookies.get("userRole");
+  const userRole = DecodeRole();
   const [form] = Form.useForm();
 
   useEffect(() => {

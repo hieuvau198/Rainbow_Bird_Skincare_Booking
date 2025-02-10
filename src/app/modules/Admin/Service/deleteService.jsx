@@ -1,3 +1,5 @@
+// import Cookies from "js-cookie";
+
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const deleteService = async (serviceId) => {
@@ -6,6 +8,7 @@ const deleteService = async (serviceId) => {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
+                // "Authorization": `Bearer ${Cookies.get("_aT")}`,
             },
         });
 

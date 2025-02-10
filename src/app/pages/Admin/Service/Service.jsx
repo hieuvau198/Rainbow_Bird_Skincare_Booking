@@ -1,9 +1,9 @@
 import { Button, message, Modal, Space, Table, Tag } from "antd";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import getAllService from "../../../../app/modules/Admin/Service/getAllService";
 import getServiceDetail from "../../../../app/modules/Admin/Service/getServiceDetail";
 import UserRole from "../../../../enums/userRole";
+import DecodeRole from "../../../components/DecodeRole";
 import addService from "../../../modules/Admin/Service/addService";
 import deleteService from "../../../modules/Admin/Service/deleteService";
 import "../../../styles/Admin/ScrollbarTable.css";
@@ -18,7 +18,7 @@ export default function Service() {
   const [selectedService, setSelectedService] = useState(null);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [serviceToDelete, setServiceToDelete] = useState(null);
-  const userRole = Cookies.get("userRole");
+  const userRole = DecodeRole();
 
   const showDeleteConfirm = (service) => {
     setServiceToDelete(service);

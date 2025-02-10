@@ -9,7 +9,7 @@ export default async function getAllUser() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${Cookies.get("accessToken")}`,
+        "Authorization": `Bearer ${Cookies.get("_aT")}`,
       },
     });
 

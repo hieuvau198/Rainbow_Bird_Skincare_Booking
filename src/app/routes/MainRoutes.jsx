@@ -1,31 +1,31 @@
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import UserRole from "../../enums/userRole";
+import Loading from "../components/Loading";
+import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 import AdminLayout from "../layouts/AdminLayout";
 import UserLayout from "../layouts/UserLayout/UserLayout";
-import Home from "../pages/Home";
-import Loading from "../components/Loading";
+import AboutUs from "../pages/About Us/AboutUs";
+import Booking from "../pages/Admin/Booking/Booking";
+import Customer from "../pages/Admin/Customer/Customer";
 import Dashboard from "../pages/Admin/Dashboard/Dashboard";
 import Employee from "../pages/Admin/Employee/Employee";
-import Booking from "../pages/Admin/Booking/Booking";
+import Feedback from "../pages/Admin/Feedback/Feedback";
+import AdminProfile from "../pages/Admin/Profile/Profile";
+import ManageQuiz from "../pages/Admin/Quiz/ManageQuiz";
 import MaService from "../pages/Admin/Service/Service";
 import MaServiceDetail from "../pages/Admin/Service/partials/ServiceDetail";
-import AboutUs from "../pages/About Us/AboutUs";
-import Feedback from "../pages/Admin/Feedback/Feedback";
-import Customer from "../pages/Admin/Customer/Customer";
-import AdminProfile from "../pages/Admin/Profile/Profile";
-import Login from "../pages/Login/Login";
-import Quiz from "../pages/Customer/Quiz/Quiz";
-import Profile from "../pages/Customer/Profile/Profile";
-import Service from "../pages/Customer/Service/Service";
-import ViewTherapist from "../pages/Customer/ViewTherapist/ViewTherapist";
-import ScheduleBooking from "../pages/Customer/ScheduleBooking/ScheduleBooking";
-import Rating from "../pages/Customer/Rating/Rating";
 import News from "../pages/Customer/BlogsAndNews/News";
-import ManageQuiz from "../pages/Admin/Quiz/ManageQuiz";
-import TherapistProfile from "../pages/Customer/ViewTherapist/TherapistProfile";
+import Profile from "../pages/Customer/Profile/Profile";
+import Quiz from "../pages/Customer/Quiz/Quiz";
+import Rating from "../pages/Customer/Rating/Rating";
+import ScheduleBooking from "../pages/Customer/ScheduleBooking/ScheduleBooking";
+import Service from "../pages/Customer/Service/Service";
 import ServiceDetail from "../pages/Customer/Service/ServiceDetail";
-import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
-import UserRole from "../../enums/userRole";
+import TherapistProfile from "../pages/Customer/ViewTherapist/TherapistProfile";
+import ViewTherapist from "../pages/Customer/ViewTherapist/ViewTherapist";
+import Home from "../pages/Home";
+import Login from "../pages/Login/Login";
 
 const LoginC = lazy(() => import("../pages/Login/LoginC"));
 const SignUp = lazy(() => import("../pages/SignUp/SignUp"));
@@ -54,7 +54,7 @@ export default function MainRoutes() {
           <Route path="/news" element={<News />} />
         </Route>
 
-        <Route path="/admin" element={<PrivateRoute children={<AdminLayout />} allowedRoles={[UserRole.ADMIN, UserRole.MANAGER, UserRole.STAFF]} />}>
+        <Route path="/management" element={<PrivateRoute children={<AdminLayout />} allowedRoles={[UserRole.ADMIN, UserRole.MANAGER, UserRole.STAFF, UserRole.THERAPIST]} />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="employee" element={<Employee />} />
           <Route path="booking" element={<Booking />} />

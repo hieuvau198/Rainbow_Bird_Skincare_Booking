@@ -1,9 +1,9 @@
 import {
-    ClockCircleOutlined,
-    DollarOutlined,
-    IdcardOutlined,
-    InfoCircleOutlined,
-    ProfileOutlined
+  ClockCircleOutlined,
+  DollarOutlined,
+  IdcardOutlined,
+  InfoCircleOutlined,
+  ProfileOutlined
 } from "@ant-design/icons";
 import MDEditor from "@uiw/react-md-editor";
 import { Tag } from "antd";
