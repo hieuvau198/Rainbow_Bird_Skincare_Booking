@@ -1,4 +1,5 @@
-import { Button, Space, Table, Tag } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import userRole from "../../../../../enums/userRole";
 import getAllUser from "../../../../modules/Admin/Employee/getAllUser";
@@ -71,7 +72,7 @@ const StaffTable = () => {
     <div>
       <div className="flex justify-between my-4">
         <div className="text-xl font-medium">Staff List</div>
-        <Button type="primary" onClick={() => setAddModalVisible(true)}>
+        <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddModalVisible(true)}>
           Add Staff
         </Button>
       </div>
