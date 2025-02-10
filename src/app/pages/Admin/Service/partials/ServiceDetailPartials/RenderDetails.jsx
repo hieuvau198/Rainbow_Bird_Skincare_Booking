@@ -1,9 +1,9 @@
 import {
-    ClockCircleOutlined,
-    DollarOutlined,
-    IdcardOutlined,
-    InfoCircleOutlined,
-    ProfileOutlined
+  ClockCircleOutlined,
+  DollarOutlined,
+  IdcardOutlined,
+  InfoCircleOutlined,
+  ProfileOutlined
 } from "@ant-design/icons";
 import MDEditor from "@uiw/react-md-editor";
 import { Tag } from "antd";
@@ -14,7 +14,7 @@ const renderDetails = (localService) => {
 
     return (
       <>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-1">
           <div className="flex justify-center items-center">
             <img
               src={localService.serviceImage || "https://www.chanchao.com.tw/images/default.jpg"}

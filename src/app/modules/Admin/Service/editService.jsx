@@ -1,4 +1,6 @@
 import { message } from "antd";
+// import Cookies from "js-cookie";
+
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const editService = async (id, payload) => {
@@ -11,6 +13,7 @@ const editService = async (id, payload) => {
         if (!(payload instanceof FormData)) {
             options.headers = {
                 "Content-Type": "application/json",
+                // "Authorization": `Bearer ${Cookies.get("_aT")}`,
             };
         }
 

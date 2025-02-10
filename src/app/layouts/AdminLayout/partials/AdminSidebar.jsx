@@ -21,13 +21,13 @@ const AdminSidebar = () => {
     const currentPath = location.pathname;
 
     const menuMap = {
-      "/admin/dashboard": "Dashboard",
-      "/admin/booking": "Bookings",
-      "/admin/service": "Services",
-      "/admin/employee": "Employee",
-      "/admin/feedback": "Feedback",
-      "/admin/profile": "Profile",
-      "/admin/quiz": "Quiz",
+      "/management/dashboard": "Dashboard",
+      "/management/booking": "Bookings",
+      "/management/service": "Services",
+      "/management/employee": "Employee",
+      "/management/feedback": "Feedback",
+      "/management/profile": "Profile",
+      "/management/quiz": "Quiz",
     };
 
     const currentMenu = menuMap[currentPath];
@@ -45,7 +45,7 @@ const AdminSidebar = () => {
       <nav className="mt-6 w-[80%] mx-auto">
         <div className="space-y-2 text-gray-600">
           <Link
-            to="/admin/dashboard"
+            to="/management/dashboard"
             className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Dashboard"
               ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
               : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
@@ -61,7 +61,7 @@ const AdminSidebar = () => {
           </Link>
 
           <Link
-            to="/admin/booking"
+            to="/management/booking"
             className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Bookings"
               ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
               : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
@@ -77,7 +77,7 @@ const AdminSidebar = () => {
           </Link>
 
           <Link
-            to="/admin/quiz"
+            to="/management/quiz"
             className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Quiz"
                 ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
                 : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
@@ -93,7 +93,7 @@ const AdminSidebar = () => {
           </Link>
 
           <Link
-            to="/admin/service"
+            to="/management/service"
             className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Services"
               ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
               : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
@@ -109,7 +109,7 @@ const AdminSidebar = () => {
           </Link>
 
           <Link
-            to="/admin/employee"
+            to="/management/employee"
             className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Employee"
               ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
               : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
@@ -125,7 +125,7 @@ const AdminSidebar = () => {
           </Link>
 
           <Link
-            to="/admin/feedback"
+            to="/management/feedback"
             className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Feedback"
               ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
               : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
@@ -141,7 +141,7 @@ const AdminSidebar = () => {
           </Link>
 
           <Link
-            to="/admin/profile"
+            to="/management/profile"
             className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Profile"
               ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
               : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
