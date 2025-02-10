@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Form, Input, InputNumber, Select, Button, List, message, Radio, Tag } from "antd";
 
-const AddQuiz = ({ visible, onClose, onSubmit }) => {
+const AddQuiz = ({ open, onClose, onSubmit }) => {
   const [form] = Form.useForm();
   const [questions, setQuestions] = useState([]);
   const [questionContent, setQuestionContent] = useState("");
@@ -54,7 +54,7 @@ const AddQuiz = ({ visible, onClose, onSubmit }) => {
 
   return (
     <Modal
-      visible={visible}
+      open={open}
       title="Add New Quiz"
       onCancel={onClose}
       onOk={handleOk}
