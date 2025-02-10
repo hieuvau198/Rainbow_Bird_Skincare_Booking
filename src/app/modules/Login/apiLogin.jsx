@@ -1,5 +1,6 @@
 import { message } from "antd";
 import Cookies from "js-cookie";
+import UserRole from "../../../enums/userRole";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -38,7 +39,11 @@ export const loginUser = async (values, setLoading, navigate) => {
         const data = await response.json();
         saveTokens(data);
         message.success("Login successful!");
-        navigate("/");
+        if (data.user.role === UserRole.ADMIN || data.user.role === UserRole.MANAGER || data.user.role === UserRole.STAFF) {
+            navigate("/admin/dashboard");
+        } else {
+            navigate("/");
+        }
     } catch (err) {
         message.error(err.message || "Login failed!");
     } finally {
@@ -46,9 +51,8 @@ export const loginUser = async (values, setLoading, navigate) => {
     }
 };
 
-// Lưu accessToken và refreshToken và rolerole vào Cookies với thời gian hết hạn 1 giờ
 const saveTokens = (data) => {
-    const oneHour = 1 / 24; // 1 giờ = 1/24 ngày
+    const oneHour = 1 / 24;
 
     if (data.user && data.user.role !== undefined) {
         Cookies.set("userRole", data.user.role, {
