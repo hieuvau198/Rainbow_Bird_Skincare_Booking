@@ -6,7 +6,7 @@ export const DecodeRole = () => {
 
     if (!encryptedRole) return null;
 
-    const secretKey = process.env.REACT_APP_SECRET_KEY;
+    const secretKey = process.env.REACT_APP_SECRET_KEY || "ToiYeuEMToiYeuEM";
     // Giải mã AES, kết quả là một WordArray
     const bytes = CryptoJS.AES.decrypt(encryptedRole, secretKey);
     // Chuyển đổi WordArray thành chuỗi UTF-8 chứa giá trị đã mã hóa base64
