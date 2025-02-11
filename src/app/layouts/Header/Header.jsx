@@ -10,7 +10,7 @@ export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = Cookies.get("accessToken");
+    const token = Cookies.get("_aT");
     setIsLoggedIn(!!token);
   }, []);
 

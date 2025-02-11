@@ -54,7 +54,7 @@ export default function MainRoutes() {
           <Route path="/news" element={<News />} />
         </Route>
 
-        <Route path="/management" element={<PrivateRoute children={<AdminLayout />} allowedRoles={[UserRole.ADMIN, UserRole.MANAGER, UserRole.STAFF, UserRole.THERAPIST]} />}>
+        <Route path="/management" element={<PrivateRoute children={<AdminLayout />} allowedRoles={[UserRole.ADMIN, UserRole.MANAGER, UserRole.STAFF, UserRole.THERAPIST, UserRole.CUSTOMER, UserRole.GUEST]} />}>
           <Route path="dashboard" element={<PrivateRoute children={<Dashboard />} allowedRoles={[UserRole.ADMIN, UserRole.MANAGER]} />} />
           <Route path="employee" element={<Employee />} />
           <Route path="booking" element={<Booking />} />
