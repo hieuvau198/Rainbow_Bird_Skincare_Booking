@@ -17,7 +17,6 @@ export default async function apiSignUp(userData) {
         }
 
         const data = await response.json();
-        message.success("Signup successful!");
         return data;
     } catch (error) {
         console.error("Error during signup:", error);

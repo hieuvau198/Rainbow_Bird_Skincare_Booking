@@ -13,7 +13,7 @@ export default function PrivateRoute({ allowedRoles, children }) {
 
   const userRole = DecodeRole();
 
-  if (!userRole || !allowedRoles.includes(userRole)) {
+  if (userRole === null || userRole === undefined || !allowedRoles.includes(userRole)) {
     message.warning("You do not have permission to access this page.");
     return <Navigate to="/" replace />;
   }

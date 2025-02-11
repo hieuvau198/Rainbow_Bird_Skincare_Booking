@@ -18,10 +18,11 @@ export const googleLogin = async (response, CLIENT_ID, setLoading, navigate) => 
         const data = await serverResponse.json();
         saveTokens(data);
         message.success("Google login successful!");
-        if (data.user.role === UserRole.ADMIN || data.user.role === UserRole.MANAGER || data.user.role === UserRole.STAFF) {
-            navigate("/management/dashboard");
-        } else {
+        const userRole = data.user.role;
+        if (userRole === UserRole.CUSTOMER) {
             navigate("/");
+        } else {
+            navigate("/management/dashboard");
         }
     } catch (err) {
         message.error(err.message || "Google login failed!");
@@ -44,12 +45,13 @@ export const loginUser = async (values, setLoading, navigate) => {
         }
         const data = await response.json();
         saveTokens(data);
-        message.success("Login successful!");
-        if (data.user.role === UserRole.ADMIN || data.user.role === UserRole.MANAGER || data.user.role === UserRole.STAFF) {
-            navigate("/management/dashboard");
-        } else {
+        const userRole = data.user.role;
+        if (userRole === UserRole.CUSTOMER) {
             navigate("/");
+        } else {
+            navigate("/management/dashboard");
         }
+        message.success("Login successful!");
     } catch (err) {
         message.error(err.message || "Login failed!");
     } finally {
