@@ -10,7 +10,7 @@ export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = Cookies.get("accessToken");
+    const token = Cookies.get("_aT");
     setIsLoggedIn(!!token);
   }, []);
 
@@ -53,7 +53,7 @@ export default function Header() {
     ];
 
   return (
-    <div className="bg-gradient-to-l from-lime-200 via-sky-100 to-green-200 shadow-md">
+    <div className="bg-gradient-to-l from-lime-200 via-sky-100 to-green-200 dark:bg-slate-600 shadow-md">
       <div className="container mx-auto px-6 md:px-12 lg:px-24 py-4 flex justify-between items-center">
         <div className="flex items-center">
           <Link to="/" className="text-2xl font-bold text-lime-600">
