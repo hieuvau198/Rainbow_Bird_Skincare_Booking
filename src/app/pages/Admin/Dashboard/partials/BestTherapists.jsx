@@ -32,7 +32,7 @@ export default function BestTherapists() {
     }
 
     return (
-        <div className="p-4 bg-white rounded-lg shadow-md">
+        <div className="p-4 bg-white rounded-2xl shadow-md">
             <h3 className="font-bold mb-4">Best Therapists</h3>
             <table className="w-full border-collapse">
                 <thead>
