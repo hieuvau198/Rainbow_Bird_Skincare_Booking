@@ -49,7 +49,7 @@ export default function BlogAndNews() {
     <div className="px-24 p-6 min-h-screen space-y-12">
       {/* Phần Tin Tức (News) */}
       <div className="p-6 bg-gray-50 rounded-2xl shadow-md">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">Latest Offers</h2>
+        <h2 className="text-2xl font-bold mb-6 text-gray-800">NEWS</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {newsData.map(news => (
             <div
