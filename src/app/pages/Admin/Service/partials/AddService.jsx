@@ -14,7 +14,7 @@ const normFile = (e) => {
 
 const AddService = ({ open, onClose, onSubmit }) => {
   const [form] = Form.useForm();
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState("**Add you description**");
 
   const handleOk = async () => {
     try {
