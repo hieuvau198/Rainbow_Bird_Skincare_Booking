@@ -14,7 +14,7 @@ export default function RevenueChart() {
   ];
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md">
+    <div className="p-4 bg-white rounded-2xl shadow-md">
       <h3 className="font-bold mb-2">Revenue by Month</h3>
       <Chart options={options} series={series} type="line" height={250} />
     </div>

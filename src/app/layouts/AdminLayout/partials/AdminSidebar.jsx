@@ -147,22 +147,7 @@ const AdminSidebar = () => {
             </div>
           </Link>
 
-          <Link
-            to="/management/profile"
-            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Profile"
-              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-              }`}
-            onClick={() => {
-              sActiveMenu.set("Profile");
-            }}
-          >
-            <div className="flex items-center gap-3 w-full">
-              <UserOutlined />
-              <span className="text-lg font-semibold">Profile</span>
-            </div>
-          </Link>
-
+          {(userRole === UserRole.THERAPIST) && (
           <Link
             to="/management/schedule"
             className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Schedule"
@@ -176,6 +161,23 @@ const AdminSidebar = () => {
             <div className="flex items-center gap-3 w-full">
               <ScheduleOutlined />
               <span className="text-lg font-semibold">Schedule</span>
+            </div>
+          </Link>
+          )}
+
+          <Link
+            to="/management/profile"
+            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Profile"
+              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
+            onClick={() => {
+              sActiveMenu.set("Profile");
+            }}
+          >
+            <div className="flex items-center gap-3 w-full">
+              <UserOutlined />
+              <span className="text-lg font-semibold">Profile</span>
             </div>
           </Link>
 
