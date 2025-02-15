@@ -2,6 +2,7 @@ import { UserOutlined, StarOutlined, DollarOutlined , ClockCircleOutlined, LeftO
 import React, { useEffect, useState, useRef } from "react";
 import mockData from "./mock_service.json";
 import { Link } from "react-router-dom";
+const url3 ="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 
 export default function Service() {
 
@@ -13,8 +14,11 @@ export default function Service() {
   return (
     <div className="px-24 bg-grey-10 min-h-screen mt-2 grid grid-cols-1 gap-4 w-full">
       {/* Large Banner */}
-      <div className="w-full">
-        <img src="https://media.hcdn.vn/catalog/category/1320x250-1.jpg" alt="Banner" className="rounded-lg shadow-lg" />
+      <div className="h-[400px] my-2 bg-center bg-cover bg-no-repeat bg-local rounded-lg shadow-lg"
+      style={{ backgroundImage: `url(${url3})` }}>
+        {/* <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+        alt="Banner" 
+        className="rounded-lg shadow-lg w-full" /> */}
       </div>
 
       <div className="w-full grid grid-cols-4 gap-4">
