@@ -25,6 +25,7 @@ export default function ViewBooking({ booking, onClose }) {
         <Descriptions.Item label="Date">{booking.date}</Descriptions.Item>
         <Descriptions.Item label="Time">{booking.time}</Descriptions.Item>
         <Descriptions.Item label="Status">{booking.status}</Descriptions.Item>
+        <Descriptions.Item label="Therapist">{booking.TherapistName}</Descriptions.Item>
       </Descriptions>
     </Modal>
   );

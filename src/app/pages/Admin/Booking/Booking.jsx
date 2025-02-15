@@ -107,33 +107,15 @@ export default function Booking() {
         return <Tag color={color}>{status}</Tag>;
       },
     },
+
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button
-            size="normal"
-            style={{
-              backgroundColor: "#FBA506",
-              borderColor: "#FBA506",
-              color: "#fff",
-            }}
-            onClick={() => handleAction(record, "view")}
-          >
-            View details
-          </Button>
-          <Button
-            size="normal"
-            style={{
-              backgroundColor: "#FF4D4F",
-              borderColor: "#FF4D4F",
-              color: "#fff",
-            }}
-            // Nếu booking có status "Completed", disable nút Delete
-            disabled={record.status === "Completed"}
-            onClick={() => handleAction(record, "cancel")}
-          >
+          <Button color="gold" variant="solid" type="link" onClick={() =>
+            handleAction(record, "view")}>View details</Button>
+          <Button color="danger" variant="solid" type="link" danger>
             Delete
           </Button>
         </Space>
@@ -153,7 +135,7 @@ export default function Booking() {
             + Add Booking
           </Button>
         </div>
-        
+
         <Table
           dataSource={dataSource}
           columns={columns}
