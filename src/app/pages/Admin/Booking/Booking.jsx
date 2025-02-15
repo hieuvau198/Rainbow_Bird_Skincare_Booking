@@ -1,8 +1,10 @@
-import React from "react";
-import { Table, Tag, Button, message } from "antd";
+import React, { useState } from "react";
+import { Table, Tag, Button, message, Space, Modal } from "antd";
+import AddBooking from "../Booking/partials/AddBooking";
+import ViewBooking from "../Booking/partials/ViewBooking";
 
 export default function Booking() {
-  const dataSource = [
+  const [dataSource, setDataSource] = useState([
     {
       key: "1",
       id: "B001",
@@ -30,13 +32,29 @@ export default function Booking() {
       time: "2:00 PM",
       status: "Completed",
     },
-  ];
+  ]);
+
+  const [showAddBooking, setShowAddBooking] = useState(false);
+  const [showViewBooking, setShowViewBooking] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   const handleAction = (record, action) => {
     if (action === "view") {
-      message.info(`Viewing details of booking ID: ${record.id}`);
+      setSelectedBooking(record);
+      setShowViewBooking(true);
     } else if (action === "cancel") {
-      message.warning(`Cancelling booking ID: ${record.id}`);
+      Modal.confirm({
+        title: "Confirm Deletion",
+        content: `Are you sure you want to delete booking ID: ${record.id}?`,
+        okText: "Yes",
+        cancelText: "No",
+        onOk: () => {
+          setDataSource((prevData) =>
+            prevData.filter((item) => item.id !== record.id)
+          );
+          message.success(`Deleted booking ID: ${record.id}`);
+        },
+      });
     }
   };
 
@@ -91,27 +109,34 @@ export default function Booking() {
     },
     {
       title: "Action",
-      key: "actions",
+      key: "action",
       render: (_, record) => (
-        <div>
+        <Space size="middle">
           <Button
-            type="primary"
-            size="small"
-            className="mr-2"
+            size="normal"
+            style={{
+              backgroundColor: "#FBA506",
+              borderColor: "#FBA506",
+              color: "#fff",
+            }}
             onClick={() => handleAction(record, "view")}
           >
-            View
+            View details
           </Button>
           <Button
-            type="default"
-            size="small"
-            danger
+            size="normal"
+            style={{
+              backgroundColor: "#FF4D4F",
+              borderColor: "#FF4D4F",
+              color: "#fff",
+            }}
+            // Nếu booking có status "Completed", disable nút Delete
             disabled={record.status === "Completed"}
             onClick={() => handleAction(record, "cancel")}
           >
-            Cancel
+            Delete
           </Button>
-        </div>
+        </Space>
       ),
     },
   ];
@@ -122,30 +147,54 @@ export default function Booking() {
         margin: "20px auto",
         padding: "16px",
         backgroundColor: "#f0f0f0",
-        maxWidth: "1600px", // Set max width for the table container
+        maxWidth: "1600px",
       }}
     >
       <div
         style={{
-          backgroundColor: "#fff", // White background for the table
+          backgroundColor: "#fff",
           borderRadius: "16px",
           padding: "18px",
           display: "flex",
-          justifyContent: "center", // Center table horizontally
+          flexDirection: "column",
         }}
       >
-        <div style={{ width: "100%" }}>
-          <h1 style={{ fontSize: "22px", fontWeight: "bold", marginBottom: "20px" }}>
+        {/* Dòng chứa tiêu đề và nút Add Booking */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "20px",
+          }}
+        >
+          <h1 style={{ fontSize: "22px", fontWeight: "bold", margin: 0 }}>
             Skincare Service Bookings
           </h1>
-          <Table
-            dataSource={dataSource}
-            columns={columns}
-            bordered
-            pagination={{ pageSize: 5 }}
-          />
+          <Button
+            type="primary"
+            size="normal"
+            onClick={() => setShowAddBooking(true)}
+          >
+            + Add Booking
+          </Button>
         </div>
+
+        <Table
+          dataSource={dataSource}
+          columns={columns}
+          bordered
+          pagination={{ pageSize: 5 }}
+        />
       </div>
+
+      {showAddBooking && <AddBooking onClose={() => setShowAddBooking(false)} />}
+      {showViewBooking && (
+        <ViewBooking
+          booking={selectedBooking}
+          onClose={() => setShowViewBooking(false)}
+        />
+      )}
     </div>
   );
 }
