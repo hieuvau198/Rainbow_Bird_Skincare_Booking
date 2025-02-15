@@ -40,8 +40,8 @@ const ManageQuiz = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button type="link" onClick={() => handleViewDetails(record)}>View Details</Button>
-          <Button type="link" danger onClick={() => handleDeleteQuiz(record)}>Delete</Button>
+          <Button color="gold" variant="solid" type="link" onClick={() => handleViewDetails(record)}>View Details</Button>
+          <Button color="danger" variant="solid" type="link" danger onClick={() => handleDeleteQuiz(record)}>Delete</Button>
         </Space>
       ),
     },
