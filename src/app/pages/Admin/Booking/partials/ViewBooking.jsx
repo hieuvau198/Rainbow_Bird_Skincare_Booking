@@ -8,7 +8,7 @@ export default function ViewBooking({ booking, onClose }) {
   return (
     <Modal
       title="Booking Details"
-      visible
+      open
       onCancel={onClose}
       footer={[
         <Button key="close" onClick={onClose}>

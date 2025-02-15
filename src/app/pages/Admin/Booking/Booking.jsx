@@ -102,8 +102,8 @@ export default function Booking() {
           status === "Confirmed"
             ? "green"
             : status === "Pending"
-            ? "gold"
-            : "gray";
+              ? "gold"
+              : "gray";
         return <Tag color={color}>{status}</Tag>;
       },
     },
@@ -142,44 +142,18 @@ export default function Booking() {
   ];
 
   return (
-    <div
-      style={{
-        margin: "20px auto",
-        padding: "16px",
-        backgroundColor: "#f0f0f0",
-        maxWidth: "1600px",
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: "#fff",
-          borderRadius: "16px",
-          padding: "18px",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
+    <div className="p-6 max-w-[1270px]">
+      <div className="p-6 bg-white rounded-md shadow-md min-h-[580px]">
         {/* Dòng chứa tiêu đề và nút Add Booking */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "20px",
-          }}
-        >
-          <h1 style={{ fontSize: "22px", fontWeight: "bold", margin: 0 }}>
+        <div className="flex justify-between items-center mb-5">
+          <h1 className="text-[22px] font-bold m-0">
             Skincare Service Bookings
           </h1>
-          <Button
-            type="primary"
-            size="normal"
-            onClick={() => setShowAddBooking(true)}
-          >
+          <Button type="primary" size="normal" onClick={() => setShowAddBooking(true)}>
             + Add Booking
           </Button>
         </div>
-
+        
         <Table
           dataSource={dataSource}
           columns={columns}
