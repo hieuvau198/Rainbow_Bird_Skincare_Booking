@@ -136,7 +136,6 @@ export default function Service() {
       }
       setLoading(false);
     };
-
     fetchServices();
   }, []);
 
@@ -163,7 +162,7 @@ export default function Service() {
             loading={loading}
             pagination={{ pageSize: 10 }}
             bordered
-            scroll={{ y: 345 }}
+            scroll={{ x: "max-content", y: 350 }}
           />
         </div>
         <AddService
