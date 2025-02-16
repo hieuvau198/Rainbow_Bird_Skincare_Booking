@@ -8,7 +8,7 @@ export default function TherapistCard(therapist) {
             <img
                 src={therapist.profileImage}
                 alt={therapist.name}
-                className="w-full h-52 object-cover rounded-md mb-4"
+                className="w-full h-52 object-cover object-top rounded-md mb-4"
             />
             <h2 className="text-lg font-semibold text-gray-700">{therapist.name}</h2>
             <p className="text-sm text-gray-500">Specialization: {therapist.specialization}</p>

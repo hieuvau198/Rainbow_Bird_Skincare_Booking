@@ -2,6 +2,7 @@ import React from 'react';
 
 export default function HomeSpecialService() {
   return (
+    
     <div className=" py-16 px-6 md:px-12 lg:px-24 flex flex-wrap items-center">
       {/* Left Side */}
       <div className=" md:w-1/2 flex items-center justify-center relative overflow-hidden rounded-lg shadow-lg">
