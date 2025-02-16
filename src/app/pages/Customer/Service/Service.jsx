@@ -2,6 +2,7 @@ import { UserOutlined, StarOutlined, DollarOutlined , ClockCircleOutlined, LeftO
 import React, { useEffect, useState, useRef } from "react";
 import mockData from "./mock_service.json";
 import { Link } from "react-router-dom";
+import RelatedServices from "./partials/RelatedServices";
 const url3 ="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 
 export default function Service() {
@@ -120,72 +121,8 @@ export default function Service() {
         </div>
       </div>
 
-      {/* Thêm danh sách dịch vụ liên quan */}
+      {/* Related Services Section */}
       {services.length > 0 && <RelatedServices services={services} service={services[0]} />}
     </div>
   );
-
-  function RelatedServices({ services, service }) {
-    const sliderRef = useRef(null);
-  
-    const scrollLeft = () => {
-      if (sliderRef.current) {
-        sliderRef.current.scrollBy({ left: -1200, behavior: "smooth" });
-      }
-    };
-  
-    const scrollRight = () => {
-      if (sliderRef.current) {
-        sliderRef.current.scrollBy({ left: 1200, behavior: "smooth" });
-      }
-    };
-  
-    return (
-      <div className="mt-10 mb-10 shadow-lg p-6 rounded-lg bg-white">
-        <h2 className="text-xl font-bold mb-4">Gợi ý dành riêng cho bạn</h2>
-        <div className="relative">
-          <button
-            onClick={scrollLeft}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 shadow-md rounded-full"
-          >
-            <LeftOutlined />
-          </button>
-          <div
-            ref={sliderRef}
-            className="flex overflow-hidden divide-x divide-gray-300 p-2 flex-nowrap"
-          >
-            {services
-              .filter((s) => s.service_id !== service.service_id)
-              .map((related) => (
-                <div key={related.service_id} className="min-w-[240px] bg-white p-4 border-0 flex flex-col h-full">
-                  <img
-                    src={related.image}
-                    alt={related.service_name}
-                    className="w-full h-40 object-cover rounded-md mb-3"
-                  />
-                  <h3 className="text-sm font-semibold line-clamp-2">
-                    {related.service_name}
-                  </h3>
-                  <p className="text-red-500 font-bold text-sm flex items-center gap-1">
-                    <DollarOutlined /> {related.salePrice}
-                  </p>
-                  <div className="text-xs text-gray-500 mt-1">
-                    ⭐ {related.rating} ({related.reviews} đánh giá)
-                  </div>
-                  <button className="mt-6 w-full bg-blue-500 text-white p-2 rounded-md text-xs hover:bg-blue-600 transition">
-                    Xem chi tiết
-                  </button>
-                </div>
-              ))}
-          </div>
-          <button
-            onClick={scrollRight}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 shadow-md rounded-full"
-          >
-            <RightOutlined />
-          </button>
-        </div>
-      </div>
-    );
-  }
 }

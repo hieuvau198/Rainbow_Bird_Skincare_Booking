@@ -33,6 +33,7 @@ const ForgotPassword = lazy(() => import("../pages/ForgorPassword/ForgotPassword
 const PageNotFound = lazy(() => import("../layouts/PageNotFound"));
 const ServerError = lazy(() => import("../layouts/ServerError/ServerError"));
 const Maintenance = lazy(() => import("../layouts/Maintenance/Maintenance"));
+import BookingSuccess from "../pages/Customer/Service/partials/BookingSuccess";
 
 export default function MainRoutes() {
   return (
@@ -46,6 +47,7 @@ export default function MainRoutes() {
           <Route path="/profile" element={<PrivateRoute children={<Profile />} allowedRoles={[UserRole.CUSTOMER]} />} />
           <Route path="/services" element={<Service />} />
           <Route path="/services/:id" element={<ServiceDetail />} />
+          <Route path="/booking-success" element={<BookingSuccess/>} />
           <Route path="/therapists" element={<ViewTherapist />} />
           <Route path="/schedule-booking" element={<PrivateRoute children={<ScheduleBooking />} allowedRoles={[UserRole.CUSTOMER]} />} />
           <Route path="/therapists" element={<ViewTherapist />} />

@@ -48,7 +48,7 @@ export default function RelatedServices({ services, service }) {
                 <div className="text-xs text-gray-500 mt-1">
                   ⭐ {related.rating} ({related.reviews} đánh giá)
                 </div>
-                <button className="mt-6 w-full bg-blue-500 text-white p-2 rounded-md text-xs hover:bg-blue-600 transition">
+                <button className="mt-6 w-full bg-lime-300 text-gray-600 p-2 rounded-md text-xs hover:bg-lime-400 transition">
                   Xem chi tiết
                 </button>
               </div>

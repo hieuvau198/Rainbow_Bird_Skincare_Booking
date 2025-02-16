@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import {
-  ClockCircleOutlined,
-  DollarOutlined,
-  StarOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import RelatedServices from "./RelatedServices";
-import BookingModal from "./BookingModal";
+import { ClockCircleOutlined, DollarOutlined, StarOutlined, UserOutlined,} from "@ant-design/icons";
+import RelatedServices from "./partials/RelatedServices";
+import BookingModal from "./partials/BookingModal";
 import mockData from "./mock_serviceDetail.json";
+import InfoService from "./partials/InfoService";
 
 export default function ServiceDetail() {
   const { id } = useParams();
@@ -63,7 +59,7 @@ export default function ServiceDetail() {
               <DollarOutlined className="mr-2" /> {service.salePrice}
             </p>
             <p className="text-gray-700 text-md mt-2 flex items-center">
-              <ClockCircleOutlined className="mr-2" /> {service.duration_minutes} phút
+              <ClockCircleOutlined className="mr-2" /> {service.duration_minutes}
             </p>
           </div>
 
@@ -91,54 +87,12 @@ export default function ServiceDetail() {
       />
 
       {/* Thông tin dịch vụ */}
-      <div className="pt-4">
-        <div className="bg-white p-4 rounded-lg shadow-md">
-          <h2 className="text-2xl mb-5 font-bold text-gray-800">
-            Thông tin dịch vụ
-          </h2>
-          <div
-            className={`text-gray-700 text-md space-y-3 ${
-              showFullInfo ? "" : "line-clamp-3 overflow-hidden"
-            }`}
-          >
-            <ul className="list-disc pl-5 space-y-2">
-              {service.additional_info.map((info, index) => {
-                if (info.includes(":")) {
-                  const [title, content] = info.split(":");
-                  return (
-                    <li key={index} className="text-sd list-none">
-                      <span className="font-bold text-lg">{title}:</span> {content}
-                    </li>
-                  );
-                } else {
-                  return (
-                    <li key={index} className="text-sm ml-4">
-                      {info}
-                    </li>
-                  );
-                }
-              })}
-            </ul>
-          </div>
-
-          {showFullInfo && (
-            <div className="mt-4 flex justify-center">
-              <img
-                src={service.image_1}
-                alt="Dịch vụ"
-                className="w-[800px] h-auto rounded-lg shadow-md"
-              />
-            </div>
-          )}
-
-          <button
-            className="mt-4 mx-auto block border border-green-500 text-green-500 font-semibold px-4 py-2 rounded-md hover:bg-green-100 transition-all"
-            onClick={() => setShowFullInfo(!showFullInfo)}
-          >
-            {showFullInfo ? "Thu gọn nội dung" : "Xem thêm nội dung"}
-          </button>
-        </div>
-      </div>
+      <InfoService
+        additionalInfo={service.additional_info}
+        showFullInfo={showFullInfo}
+        setShowFullInfo={setShowFullInfo}
+        image={service.image_1}
+      />
 
       {/* Dịch vụ liên quan */}
       <RelatedServices services={services} service={service} />
