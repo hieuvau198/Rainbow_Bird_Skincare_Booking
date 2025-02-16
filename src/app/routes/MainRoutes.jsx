@@ -26,7 +26,6 @@ import ViewTherapist from "../pages/Customer/ViewTherapist/ViewTherapist";
 import Home from "../pages/Home";
 import Login from "../pages/Login/Login";
 import TherapistChedule from "../pages/Admin/Schedule/TherapistChedule";
-import BookingSuccess from "../pages/Customer/Service/BookingSuccess";
 
 const LoginC = lazy(() => import("../pages/Login/LoginC"));
 const SignUp = lazy(() => import("../pages/SignUp/SignUp"));
@@ -47,7 +46,6 @@ export default function MainRoutes() {
           <Route path="/profile" element={<PrivateRoute children={<Profile />} allowedRoles={[UserRole.CUSTOMER]} />} />
           <Route path="/services" element={<Service />} />
           <Route path="/services/:id" element={<ServiceDetail />} />
-          <Route path="/booking-success" element={<BookingSuccess/>}></Route>
           <Route path="/therapists" element={<ViewTherapist />} />
           <Route path="/schedule-booking" element={<PrivateRoute children={<ScheduleBooking />} allowedRoles={[UserRole.CUSTOMER]} />} />
           <Route path="/therapists" element={<ViewTherapist />} />
