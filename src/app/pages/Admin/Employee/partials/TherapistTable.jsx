@@ -73,7 +73,7 @@ const TherapistTable = () => {
     return (
         <div>
             <div className="flex justify-between my-4">
-                <div className="text-xl font-medium">Therapist List</div>
+                <div className="text-xs lg:text-xl font-medium">Therapist List</div>
                 <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddModalVisible(true)}>
                     Add Therapist
                 </Button>
@@ -85,7 +85,7 @@ const TherapistTable = () => {
                 loading={loading}
                 pagination={{ pageSize: 10 }}
                 bordered
-                scroll={{ y: 350 }}
+                scroll={{ x: "max-content", y: 350 }}
             />
             <ViewTherapistProfile
                 open={detailModalVisible}

@@ -55,9 +55,10 @@ export default function Header() {
   return (
     <div className="bg-gradient-to-l from-lime-200 via-sky-100 to-green-200 dark:bg-slate-600 shadow-md">
       <div className="container mx-auto px-6 md:px-12 lg:px-24 py-4 flex justify-between items-center">
-        <div className="flex items-center">
-          <Link to="/" className="text-2xl font-bold text-lime-600">
+        <div className="grid items-center">
+          <Link to="/" className="grid grid-flow-col text-2xl font-bold text-lime-600">
             <img src={logo} alt="Logo" className="w-16 h-16 rounded-full" />
+            <h2 className="grid items-center">Prestine care</h2>
           </Link>
         </div>
 

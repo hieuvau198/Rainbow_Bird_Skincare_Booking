@@ -4,16 +4,16 @@ import UserRole from "../../enums/userRole";
 import Loading from "../components/Loading";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 import UserLayout from "../layouts/UserLayout/UserLayout";
-import AboutUs from "../pages/About Us/AboutUs";
 import News from "../pages/Customer/BlogsAndNews/News";
 import Quiz from "../pages/Customer/Quiz/Quiz";
 import Service from "../pages/Customer/Service/Service";
-import ServiceDetail from "../pages/Customer/Service/ServiceDetail";
 import ViewTherapist from "../pages/Customer/ViewTherapist/ViewTherapist";
-import TherapistProfile from "../pages/Customer/ViewTherapist/TherapistProfile";
 import Home from "../pages/Home";
 import Login from "../pages/Login/Login";
 
+const TherapistProfile = lazy(() => import("../pages/Customer/ViewTherapist/TherapistProfile"));
+const ServiceDetail = lazy(() => import("../pages/Customer/Service/ServiceDetail"));
+const AboutUs = lazy(() => import("../pages/About Us/AboutUs"));
 const Profile = lazy(() => import("../pages/Customer/Profile/Profile"));
 const ScheduleBooking = lazy(() => import("../pages/Customer/ScheduleBooking/ScheduleBooking"));
 const Rating = lazy(() => import("../pages/Customer/Rating/Rating"));
@@ -42,7 +42,13 @@ export default function MainRoutes() {
       <Routes>
         <Route element={<UserLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<AboutUs />} />
+          <Route path="/about"
+            element={
+              <Suspense fallback={<Loading />}>
+                <AboutUs />
+              </Suspense>
+            }
+          />
           <Route path="/quiz" element={<Quiz />} />
           <Route
             path="/profile"
@@ -55,7 +61,13 @@ export default function MainRoutes() {
             }
           />
           <Route path="/services" element={<Service />} />
-          <Route path="/services/:id" element={<ServiceDetail />} />
+          <Route path="/services/:id"
+            element={
+              <Suspense fallback={<Loading />}>
+                <ServiceDetail />
+              </Suspense>
+            }
+          />
           <Route path="/therapists" element={<ViewTherapist />} />
           <Route
             path="/schedule-booking"
@@ -67,7 +79,13 @@ export default function MainRoutes() {
               </PrivateRoute>
             }
           />
-          <Route path="/therapists/:id" element={<TherapistProfile />} />
+          <Route path="/therapists/:id"
+            element={
+              <Suspense fallback={<Loading />}>
+                <TherapistProfile />
+              </Suspense>
+            }
+          />
           <Route
             path="/rating"
             element={
