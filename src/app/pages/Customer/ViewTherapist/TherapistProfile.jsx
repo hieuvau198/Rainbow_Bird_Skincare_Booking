@@ -10,37 +10,42 @@ const TherapistProfile = () => {
   const [activeTab, setActiveTab] = useState("about");
 
   useEffect(() => {
-    const foundTherapist = mockTherapists.find((t) => t.id.toString() === id);
+    const foundTherapist = mockTherapists.find(
+      (t) => t.id.toString() === id
+    );
     setTherapist(foundTherapist);
   }, [id]);
 
   if (!therapist) {
     return (
-      <div className="p-6 text-center text-red-500">Therapist not found</div>
+      <div className="p-6 text-center text-red-500">
+        Therapist not found
+      </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <header className="mb-6">
-        <Link to="/" className="text-blue-500 underline">
-          &larr; Back
-        </Link>
+        
       </header>
 
-      <div className="max-w-5xl mx-auto bg-white rounded-lg shadow overflow-hidden flex flex-col md:flex-row">
-        {/* Left Column: Hình ảnh của Therapist */}
-        <div className="md:w-1/2">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6">
+        
+        {/* Card 1: Hình ảnh */}
+        <div className="md:w-1/4 bg-teal-400 rounded-lg shadow overflow-hidden">
           <img
             src={therapist.profileImage}
             alt={therapist.name}
             className="w-full h-full object-cover"
           />
         </div>
-
-        {/* Right Column: Thông tin */}
-        <div className="md:w-1/2 flex flex-col">
-          {/* Phần header: Tên, chuyên môn và rating */}
+        {/* <div className="md:w-1/4 bg-white rounded-lg shadow p-6">
+          
+        </div> */}
+        {/* Card 2: Nội dung */}
+        <div className="md:w-3/4 bg-white rounded-lg shadow flex flex-col">
+          {/* Phần tiêu đề: Tên, chuyên môn và rating */}
           <div className="p-6">
             <h1 className="text-4xl font-bold text-lime-600">
               {therapist.name.toUpperCase()} -{" "}
@@ -102,13 +107,11 @@ const TherapistProfile = () => {
             )}
             {activeTab === "reviews" && (
               <div>
-                {/* Hiển thị danh sách đánh giá */}
                 <p>Reviews section...</p>
               </div>
             )}
             {activeTab === "schedule" && (
               <div>
-                {/* Thông tin lịch hẹn */}
                 <p>Schedule section...</p>
               </div>
             )}
@@ -142,6 +145,15 @@ const TherapistProfile = () => {
             </button>
           </div>
         </div>
+        
+      </div>
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 mt-5">
+      <div className="md:w-2/4 bg-white rounded-lg shadow p-6">
+          
+          </div>
+          <div className="md:w-2/4 bg-white rounded-lg shadow p-6">
+            
+          </div>
       </div>
     </div>
   );

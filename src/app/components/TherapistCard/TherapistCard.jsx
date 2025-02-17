@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export default function TherapistCard(therapist) {
     return(
     <Link to={`/therapists/${therapist.id}`} key={therapist.id}>
-        <div className="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center cursor-pointer hover:shadow-xl transition">
+        <div className="bg-sky-100 shadow-lg rounded-lg p-4 flex flex-col items-center cursor-pointer hover:shadow-xl transition">
             <img
                 src={therapist.profileImage}
                 alt={therapist.name}
