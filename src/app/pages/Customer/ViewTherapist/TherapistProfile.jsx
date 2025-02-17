@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Button } from "antd";
 import { MailOutlined, PhoneOutlined } from "@ant-design/icons";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 import mockTherapists from "./mock_therapist_profile.json";
@@ -8,6 +7,7 @@ import mockTherapists from "./mock_therapist_profile.json";
 const TherapistProfile = () => {
   const { id } = useParams();
   const [therapist, setTherapist] = useState(null);
+  const [activeTab, setActiveTab] = useState("about");
 
   useEffect(() => {
     const foundTherapist = mockTherapists.find((t) => t.id.toString() === id);
@@ -21,70 +21,113 @@ const TherapistProfile = () => {
   }
 
   return (
-    <div className="p-6 bg-gray-50 lg:p-24 md:p-16 min-h-screen">
-      {/* Nút Back và tiêu đề ABOUT US trong cùng một dòng */}
+    <div className="min-h-screen bg-gray-50 p-6">
+      <header className="mb-6">
+        <Link to="/" className="text-blue-500 underline">
+          &larr; Back
+        </Link>
+      </header>
 
-      {/* Main Content: Card chứa hình ảnh bên trái và phần chữ bên phải */}
-      <div className="flex flex-col md:flex-row gap-6 w-full max-w-5xl mx-auto bg-white p-6">
-        {/* Hình ảnh Therapist */}
-        <div className="md:w-1/2 flex justify-center items-center">
+      <div className="max-w-5xl mx-auto bg-white rounded-lg shadow overflow-hidden flex flex-col md:flex-row">
+        {/* Left Column: Hình ảnh của Therapist */}
+        <div className="md:w-1/2">
           <img
             src={therapist.profileImage}
             alt={therapist.name}
-            className="object-cover w-full h-auto"
+            className="w-full h-full object-cover"
           />
         </div>
 
-        {/* Thông tin bên phải */}
-        <div className="md:w-1/2 flex flex-col justify-between">
-          <div>
-            {/* Tên và Specialization */}
+        {/* Right Column: Thông tin */}
+        <div className="md:w-1/2 flex flex-col">
+          {/* Phần header: Tên, chuyên môn và rating */}
+          <div className="p-6">
             <h1 className="text-4xl font-bold text-lime-600">
               {therapist.name.toUpperCase()} -{" "}
               <span className="text-xl font-semibold text-gray-600">
                 {therapist.specialization}
               </span>
             </h1>
-
-            {/* Các thông tin chi tiết */}
-            <p className="text-lg mt-4 text-gray-700">
-              <strong>Specialties:</strong> {therapist.specialties.join(", ")}
-            </p>
-            <p className="text-lg mt-4 text-gray-700">
-              <strong>Experience:</strong> {therapist.yearsExperience} years
-            </p>
-            <p className="text-lg mt-4 text-gray-700">
-              <strong>Languages:</strong> {therapist.languages.join(", ")}
-            </p>
-            <p className="text-lg mt-4 text-gray-700">
-              <strong>Education:</strong> {therapist.education}
-            </p>
-            <p className="text-lg mt-4 text-gray-700">
-              <strong>Certifications:</strong>{" "}
-              {therapist.certifications.join(", ")}
-            </p>
-            <p className="text-gray-700 mt-4">{therapist.bio}</p>
-            <p className="text-gray-700 italic mt-4">
-              "{therapist.personalStatement}"
-            </p>
-
-            {/* Rating */}
-            <div className="flex flex-col items-start mt-4">
-              <div className="flex items-center">
-                {Array(4)
-                  .fill(null)
-                  .map((_, i) => (
-                    <FaStar key={i} className="text-yellow-500" />
-                  ))}
-                <FaStarHalfAlt className="text-yellow-500" />
-                <span className="ml-2 text-lg text-gray-600">20 reviews</span>
-              </div>
+            <div className="flex items-center mt-4">
+              {Array(4)
+                .fill(null)
+                .map((_, i) => (
+                  <FaStar key={i} className="text-yellow-500" />
+                ))}
+              <FaStarHalfAlt className="text-yellow-500" />
+              <span className="ml-2 text-lg text-gray-600">20 reviews</span>
             </div>
           </div>
 
-          {/* Email và Phone ở dòng cuối, căn giữa */}
-          <div>
-            <div className="flex justify-center items-center mt-2">
+          {/* Tab Navigation */}
+          <nav className="border-t border-b">
+            <ul className="flex">
+              {[
+                { key: "about", label: "Introduce" },
+                { key: "reviews", label: "Rating" },
+                { key: "schedule", label: "Schedules" },
+                { key: "credentials", label: "Certificates" },
+              ].map((tab) => (
+                <li
+                  key={tab.key}
+                  className={`cursor-pointer px-6 py-3 ${
+                    activeTab === tab.key
+                      ? "border-b-2 border-green-500 text-green-500"
+                      : "text-gray-600"
+                  }`}
+                  onClick={() => setActiveTab(tab.key)}
+                >
+                  {tab.label}
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Nội dung Tab */}
+          <div className="p-6 flex-grow">
+            {activeTab === "about" && (
+              <div>
+                <p className="text-gray-700">{therapist.bio}</p>
+                <p className="text-gray-700 italic mt-4">
+                  "{therapist.personalStatement}"
+                </p>
+                <p className="text-lg mt-4 text-gray-700">
+                  <strong>Specialties:</strong>{" "}
+                  {therapist.specialties.join(", ")}
+                </p>
+                <p className="text-lg mt-4 text-gray-700">
+                  <strong>Experience:</strong> {therapist.yearsExperience} years
+                </p>
+              </div>
+            )}
+            {activeTab === "reviews" && (
+              <div>
+                {/* Hiển thị danh sách đánh giá */}
+                <p>Reviews section...</p>
+              </div>
+            )}
+            {activeTab === "schedule" && (
+              <div>
+                {/* Thông tin lịch hẹn */}
+                <p>Schedule section...</p>
+              </div>
+            )}
+            {activeTab === "credentials" && (
+              <div>
+                <p>
+                  <strong>Education:</strong> {therapist.education}
+                </p>
+                <p className="mt-4">
+                  <strong>Certifications:</strong>{" "}
+                  {therapist.certifications.join(", ")}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Phần liên hệ */}
+          <div className="p-6 border-t flex flex-col items-center">
+            <div className="flex justify-center items-center mb-4">
               <div className="flex items-center mr-4">
                 <MailOutlined className="mr-1" />
                 <span>{therapist.email}</span>
@@ -94,13 +137,9 @@ const TherapistProfile = () => {
                 <span>{therapist.phone}</span>
               </div>
             </div>
-
-            {/* Nút Contact màu xanh lá ở dưới cùng */}
-            <div className="flex justify-center items-center mt-4">
-              <button className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 font-semibold">
-                Contact to
-              </button>
-            </div>
+            <button className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 font-semibold">
+              Contact
+            </button>
           </div>
         </div>
       </div>
