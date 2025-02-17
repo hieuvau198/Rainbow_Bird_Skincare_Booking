@@ -1,5 +1,5 @@
+import { Button, Form, Input, Modal, Select, message } from "antd";
 import React from "react";
-import { Modal, Form, Input, Button, Select, message } from "antd";
 
 const { Option } = Select;
 
@@ -7,11 +7,12 @@ export default function AddManager({ open, onClose, onSubmit }) {
   const [form] = Form.useForm();
 
   const handleFinish = (values) => {
-    console.log("Manager data submitted:", values);
+    const managerData = { ...values, role: 1 };
+    console.log("Manager data submitted:", managerData);
     message.success("Manager added successfully!");
     form.resetFields();
     if (onSubmit) {
-      onSubmit(values);
+      onSubmit(managerData);
     }
     onClose();
   };
@@ -34,7 +35,28 @@ export default function AddManager({ open, onClose, onSubmit }) {
         onFinish={handleFinish}
         className="space-y-4"
       >
+
         <div className="grid grid-cols-2 gap-4">
+          <Form.Item
+            label="Username"
+            name="username"
+            rules={[{ required: true, message: "Please enter username" }]}
+          >
+            <Input
+              placeholder="Enter username"
+              className="rounded-md border-gray-300"
+            />
+          </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: "Please enter password" }]}
+          >
+            <Input.Password
+              placeholder="Enter password"
+              className="rounded-md border-gray-300"
+            />
+          </Form.Item>
           <Form.Item
             label="Full Name"
             name="fullName"
@@ -67,19 +89,11 @@ export default function AddManager({ open, onClose, onSubmit }) {
               className="rounded-md border-gray-300"
             />
           </Form.Item>
-          <Form.Item
-            label="Availability"
-            name="isAvailable"
-            rules={[{ required: true, message: "Please select availability" }]}
-          >
-            <Select placeholder="Select availability" className="rounded-md">
-              <Option value={true}>Available</Option>
-              <Option value={false}>Unavailable</Option>
-            </Select>
-          </Form.Item>
         </div>
         <div className="flex justify-end space-x-4">
-          <Button danger onClick={onClose}>Cancel</Button>
+          <Button danger onClick={onClose}>
+            Cancel
+          </Button>
           <Button type="primary" htmlType="submit">
             Add Manager
           </Button>
