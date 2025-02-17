@@ -20,7 +20,7 @@ export default function HomeSpecialService() {
 
       {/* Right Side */}
       <div className=" md:w-1/2 p-8 md:p-12">
-        <h2 className="text-4xl font-semibold text-gray-800 mb-10 text-center pb-4">
+        <h2 className="text-4xl font-roboto text-gray-800 mb-10 text-center pb-4">
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/** Service Items */}
@@ -32,7 +32,7 @@ export default function HomeSpecialService() {
               <img
                 src={service.image}
                 alt={service.title}
-                className="w-full h-48 object-cover rounded-md mb-4 transition-transform duration-300 hover:scale-110"
+                className="w-full h-48 object-cover mb-4 transition-transform duration-300 hover:scale-110"
               />
               <h3 className="text-2xl font-semibold text-gray-800 text-center">{service.title}</h3>
             </div>
