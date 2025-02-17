@@ -4,7 +4,7 @@ import { ClockCircleOutlined, DollarOutlined, StarOutlined, UserOutlined,} from 
 import RelatedServices from "./partials/RelatedServices";
 import BookingModal from "./partials/BookingModal";
 import mockData from "./mock_serviceDetail.json";
-import InfoService from "./partials/InfoService";
+import InfoSerDetail from "./partials/InfoSerDetail";
 
 export default function ServiceDetail() {
   const { id } = useParams();
@@ -87,7 +87,7 @@ export default function ServiceDetail() {
       />
 
       {/* Thông tin dịch vụ */}
-      <InfoService
+      <InfoSerDetail
         additionalInfo={service.additional_info}
         showFullInfo={showFullInfo}
         setShowFullInfo={setShowFullInfo}

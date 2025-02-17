@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function InfoService({ additionalInfo, showFullInfo, setShowFullInfo, image }) {
+export default function InfoSerDetail({ additionalInfo, showFullInfo, setShowFullInfo, image }) {
   return (
     <div className="pt-4">
       <div className="bg-white p-4 rounded-lg shadow-md">

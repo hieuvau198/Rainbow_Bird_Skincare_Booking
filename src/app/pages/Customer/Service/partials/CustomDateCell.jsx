@@ -7,7 +7,7 @@ export default function CustomDateCell({ current, selectedDate }) {
 
   return (
     <div
-      className={`p-1 rounded ${
+      className={`p-0 rounded ${
         isSelected
           ? "bg-lime-400 text-white" // Selected date
           : isToday
