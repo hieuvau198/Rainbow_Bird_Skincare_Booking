@@ -1,7 +1,7 @@
 import { PlusOutlined } from "@ant-design/icons";
 import MDEditor from "@uiw/react-md-editor";
 import { Button, Form, Input, InputNumber, Modal, Select, Upload, message } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 
 const normFile = (e) => {
@@ -14,7 +14,15 @@ const normFile = (e) => {
 
 const AddService = ({ open, onClose, onSubmit }) => {
   const [form] = Form.useForm();
-  const [description, setDescription] = useState("**Add you description**");
+  const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    if (open) {
+      form.resetFields();
+      form.setFieldsValue({ currency: "USD" });
+      setDescription("**Add your description**");
+    }
+  }, [open, form]);
 
   const handleOk = async () => {
     try {
@@ -33,7 +41,7 @@ const AddService = ({ open, onClose, onSubmit }) => {
         formData.append("ServiceImage", fileObject);
       }
       formData.append("Price", values.price);
-      formData.append("Currency", values.currency);
+      formData.append("Currency", values.currency || "USD");
       formData.append("DurationMinutes", values.durationMinutes);
       formData.append("Location", values.location);
       formData.append("IsActive", values.isActive.toString());
