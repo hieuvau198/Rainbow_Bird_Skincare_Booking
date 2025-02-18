@@ -19,10 +19,14 @@ export const googleLogin = async (response, CLIENT_ID, setLoading, navigate) => 
         saveTokens(data);
         message.success("Google login successful!");
         const userRole = data.user.role;
-        if (userRole === UserRole.CUSTOMER) {
-            navigate("/");
-        } else {
+        if (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) {
             navigate("/management/dashboard");
+        } else if(userRole === UserRole.STAFF){
+            navigate("/management/booking");
+        }else if(userRole === UserRole.THERAPIST){
+            navigate("/management/schedule");
+        }else {
+            navigate("/");
         }
     } catch (err) {
         message.error(err.message || "Google login failed!");
@@ -46,10 +50,14 @@ export const loginUser = async (values, setLoading, navigate) => {
         const data = await response.json();
         saveTokens(data);
         const userRole = data.user.role;
-        if (userRole === UserRole.CUSTOMER) {
-            navigate("/");
-        } else {
+        if (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) {
             navigate("/management/dashboard");
+        } else if(userRole === UserRole.STAFF){
+            navigate("/management/booking");
+        }else if(userRole === UserRole.THERAPIST){
+            navigate("/management/schedule");
+        }else {
+            navigate("/");
         }
         message.success("Login successful!");
     } catch (err) {

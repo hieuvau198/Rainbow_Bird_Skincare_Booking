@@ -13,33 +13,24 @@ const TherapistTable = () => {
     const [addModalVisible, setAddModalVisible] = useState(false);
 
     const columns = [
-        { title: "ID", dataIndex: "id", key: "id", width: 50 },
+        { title: "ID", dataIndex: "id", key: "id", width: 150 },
         { title: "Name", dataIndex: "name", key: "name" },
         { title: "Email", dataIndex: "email", key: "email", width: 250 },
         { title: "Mobile", dataIndex: "mobile", key: "mobile" },
         {
-            title: "Status",
-            dataIndex: "status",
-            key: "status",
-            width: 100,
-            render: (status) => (
-                <Tag color={status === "Active" ? "green" : "volcano"}>{status}</Tag>
-            ),
-        },
-        {
             title: "Action",
             key: "action",
-            render: (_, record) => (
-                <Space size="middle">
-                    <Button color="gold" variant="solid" type="link" onClick={() => {
-                        setSelectedTherapistId(record.id);
-                        setDetailModalVisible(true);
-                    }}>View details</Button>
-                    {/* <Button color="danger" variant="solid" type="link" danger>
-                        Delete
-                    </Button> */}
-                </Space>
-            ),
+            // render: (_, record) => (
+            //     <Space size="middle">
+            //         <Button color="gold" variant="solid" type="link" onClick={() => {
+            //             setSelectedTherapistId(record.id);
+            //             setDetailModalVisible(true);
+            //         }}>View details</Button>
+            //         <Button color="danger" variant="solid" type="link" danger>
+            //             Delete
+            //         </Button>
+            //     </Space>
+            // ),
         },
     ];
 
@@ -52,7 +43,6 @@ const TherapistTable = () => {
                 name: item.user.fullName,
                 email: item.user.email,
                 mobile: item.user.phone,
-                status: item.isAvailable ? "Active" : "Inactive",
             }));
             setData(formattedData);
         } catch (error) {
@@ -73,10 +63,10 @@ const TherapistTable = () => {
     return (
         <div>
             <div className="flex justify-between my-4">
-                <div className="text-xl font-medium">Therapist List</div>
-                <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddModalVisible(true)}>
+                <div className="text-xs lg:text-xl font-medium">Therapist List</div>
+                {/* <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddModalVisible(true)}>
                     Add Therapist
-                </Button>
+                </Button> */}
             </div>
             <Table
                 rowKey="id"

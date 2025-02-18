@@ -88,10 +88,12 @@ export default function Service() {
     },
     {
       title: "Price",
-      dataIndex: "price",
       key: "price",
       width: 150,
-    },
+      render: (text, record) => (
+        <span>{record.price} {record.currency}</span>
+      )
+    },    
     {
       title: "Status",
       dataIndex: "isActive",
@@ -172,7 +174,7 @@ export default function Service() {
           onSubmit={handleAddService}
         />
         <ServiceDetails
-          visible={isDetailModalVisible}
+          open={isDetailModalVisible}
           onClose={() => setIsDetailModalVisible(false)}
           service={selectedService}
           onServiceUpdate={handleServiceUpdate}

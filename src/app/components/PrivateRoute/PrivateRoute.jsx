@@ -15,7 +15,17 @@ export default function PrivateRoute({ allowedRoles, children }) {
 
   if (userRole === null || userRole === undefined || !allowedRoles.includes(userRole)) {
     message.warning("You do not have permission to access this page.");
-    return <Navigate to="/" replace />;
+    if (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) {
+      return <Navigate to="/management/dashboard" replace />;
+    } else if (userRole === UserRole.STAFF) {
+      return <Navigate to="/management/service" replace />;
+    } else if (userRole === UserRole.THERAPIST) {
+      return <Navigate to="/management/schedule" replace />;
+    } else if (userRole === UserRole.CUSTOMER) {
+      return <Navigate to="/" replace />;
+    } else {
+      return <Navigate to="/" replace />;
+    }
   }
 
   return children;
