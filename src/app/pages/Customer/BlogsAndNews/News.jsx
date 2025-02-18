@@ -1,60 +1,72 @@
-import React from 'react';
+import React from "react";
 
 const newsData = [
   {
     id: 1,
     title: "Unlock Your Beauty Potential",
-    description: "Elevate your routine with our curated beauty essentials. Limited-time offers on radiant skincare.",
+    description:
+      "Elevate your routine with our curated beauty essentials. Limited-time offers on radiant skincare.",
     date: "View Products",
-    image: "https://via.placeholder.com/400x250?text=Beauty+1",
+    image:
+      "https://media.licdn.com/dms/image/v2/D4D12AQGr-5PdbOl-kQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1688971998450?e=2147483647&v=beta&t=jTIxsHUfQVkOMZRhreh54zFO3XER-yY8KeBA-Xcesu4",
   },
   {
     id: 2,
     title: "Exclusive Deals on Luxe Essentials",
-    description: "Transform your beauty routine with our premium skincare and cosmetic essentials.",
+    description:
+      "Transform your beauty routine with our premium skincare and cosmetic essentials.",
     date: "Shop Now",
-    image: "https://via.placeholder.com/400x250?text=Beauty+2",
+    image:
+      "https://klemor.in/cdn/shop/files/8D0A7374final...jpg?v=1722260369&width=1946",
   },
 ];
 
 const blogData = [
   {
     id: 1,
-    image: "https://via.placeholder.com/400x250",
+    image:
+      "https://bionyxskincare.com/wp-content/uploads/2023/10/ingredients.jpg",
     author: "By Qodex Web - December 04, 2023",
     title: "The Science of Beauty: Ingredients That Transform Your Look",
-    description: "Any, meaning - it doesn't matter what color or print it is. It'll work. Augue...",
+    description:
+      "Any, meaning - it doesn't matter what color or print it is. It'll work. Augue...",
     buttonText: "Read More",
   },
   {
     id: 2,
-    image: "https://via.placeholder.com/400x250",
+    image:
+      "https://www.anveya.com/cdn/shop/articles/beautiful-woman-doing-self-care-treatment-indoors.jpg?v=1640350354",
     author: "By Qodex Web - December 04, 2023",
     title: "Self-Care Sundays: Pamper Yourself with Our Top Picks",
-    description: "Any, meaning - it doesn't matter what color or print it is. It'll work. Augue...",
+    description:
+      "Any, meaning - it doesn't matter what color or print it is. It'll work. Augue...",
     buttonText: "Read More",
   },
   {
     id: 3,
-    image: "https://via.placeholder.com/400x250",
+    image:
+      "https://img.freepik.com/premium-photo/trendy-collage-made-natural-cosmetics-beauty-products-body-face-care_1270664-23029.jpg",
     author: "By Qodex Web - December 04, 2023",
     title: "Behind the Scenes: Crafting Our Exclusive Beauty Products",
-    description: "Any, meaning - it doesn't matter what color or print it is. It'll work. Augue...",
+    description:
+      "Any, meaning - it doesn't matter what color or print it is. It'll work. Augue...",
     buttonText: "Read More",
   },
 ];
 
 export default function BlogAndNews() {
   return (
-    <div className="px-24 p-6 min-h-screen space-y-12">
-      {/* Phần Tin Tức (News) */}
-      <div className="p-6 bg-gray-50 rounded-2xl shadow-md">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">NEWS</h2>
+    <div className="container mx-auto px-24 p-6 min-h-screen space-y-12">
+      {/* News Section */}
+      <section className="p-6 bg-gray-50 rounded-2xl shadow-md">
+        <h2 className="text-2xl font-bold mb-6 text-gray-800">
+          News
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {newsData.map(news => (
+          {newsData.map((news) => (
             <div
               key={news.id}
-              className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition"
+              className="relative bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition"
             >
               <img
                 src={news.image}
@@ -62,30 +74,30 @@ export default function BlogAndNews() {
                 className="w-full h-56 object-cover"
               />
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-800">{news.title}</h3>
+                <h3 className="text-xl font-bold text-gray-800">
+                  {news.title}
+                </h3>
                 <p className="text-gray-600 mt-2">{news.description}</p>
-                <button className="mt-4 text-sm font-medium text-blue-600 underline">
+                <button className="mt-4 text-sm font-medium text-white bg-lime-700 px-4 py-2 rounded-lg">
                   {news.date}
                 </button>
               </div>
             </div>
           ))}
         </div>
-        <div className="flex justify-center mt-8 space-x-6">
-          <img src="https://via.placeholder.com/80?text=Icon1" alt="Icon1" className="h-12 w-12" />
-          <img src="https://via.placeholder.com/80?text=Icon2" alt="Icon2" className="h-12 w-12" />
-          <img src="https://via.placeholder.com/80?text=Icon3" alt="Icon3" className="h-12 w-12" />
-          <img src="https://via.placeholder.com/80?text=Icon4" alt="Icon4" className="h-12 w-12" />
-          <img src="https://via.placeholder.com/80?text=Icon5" alt="Icon5" className="h-12 w-12" />
-        </div>
-      </div>
+      </section>
 
-      {/* Phần Blog */}
-      <div className="bg-neutral-50 py-10 px-5 rounded-2xl shadow-md">
-        <h2 className="text-center text-3xl font-bold text-gray-800 mb-8">BLOG POSTS</h2>
+      {/* Blog Posts Section */}
+      <section className="bg-neutral-50 py-10 px-5 rounded-2xl shadow-md">
+        <h2 className="text-center text-3xl font-bold text-gray-800 mb-8">
+          BLOG POSTS
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {blogData.map(blog => (
-            <div key={blog.id} className="bg-white shadow-md rounded-2xl overflow-hidden">
+          {blogData.map((blog) => (
+            <div
+              key={blog.id}
+              className="bg-white shadow-md rounded-2xl overflow-hidden"
+            >
               <img
                 src={blog.image}
                 alt={blog.title}
@@ -96,15 +108,17 @@ export default function BlogAndNews() {
                 <h3 className="text-xl font-semibold text-gray-800 mb-3">
                   {blog.title}
                 </h3>
-                <p className="text-gray-600 text-sm mb-5">{blog.description}</p>
-                <button className="text-sm font-medium text-white bg-gray-800 px-4 py-2 rounded-lg">
+                <p className="text-gray-600 text-sm mb-5">
+                  {blog.description}
+                </p>
+                <button className="text-sm font-medium text-white bg-lime-700 px-4 py-2 rounded-lg">
                   {blog.buttonText}
                 </button>
               </div>
             </div>
           ))}
         </div>
-      </div>
+      </section>
     </div>
   );
 }
