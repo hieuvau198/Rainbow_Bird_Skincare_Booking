@@ -9,7 +9,7 @@ export default async function logOut() {
     //   method: "POST",
     //   headers: {
     //     "Content-Type": "application/json",
-    //     "Authorization": `Bearer ${Cookies.get("_aT")}`,
+    //     "Authorization": `Bearer ${Cookies.get("__atok")}`,
     //   },
     // });
 
@@ -17,9 +17,9 @@ export default async function logOut() {
     //   throw new Error("Logout failed! Please try again.");
     // }
 
-    Cookies.remove("_aT");
-    Cookies.remove("_rT");
-    Cookies.remove("_uR");
+    Cookies.remove("__atok");
+    Cookies.remove("__rtok");
+    Cookies.remove("__urol");
     
     window.location.href = "/";
   } catch (error) {
