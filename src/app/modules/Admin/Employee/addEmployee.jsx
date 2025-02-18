@@ -10,7 +10,7 @@ const addEmployee = async (formData) => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${Cookies.get("_aT")}`,
+                "Authorization": `Bearer ${Cookies.get("__atok")}`,
             },
             body: JSON.stringify(formData),
         });

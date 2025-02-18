@@ -5,7 +5,7 @@ import { Navigate } from "react-router-dom";
 import DecodeRole from "../DecodeRole";
 
 export default function PrivateRoute({ allowedRoles, children }) {
-  const accessToken = Cookies.get("_aT");
+  const accessToken = Cookies.get("__atok");
 
   if (!accessToken) {
     return <Navigate to="/login" replace />;

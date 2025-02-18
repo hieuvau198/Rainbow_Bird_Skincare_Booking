@@ -70,7 +70,7 @@ const CustomerTable = () => {
           loading={loading}
           pagination={{ pageSize: 10 }}
           bordered
-          scroll={{ y: 350 }}
+          scroll={{ x: "max-content", y: 350 }}
         />
       </div>
     </div>

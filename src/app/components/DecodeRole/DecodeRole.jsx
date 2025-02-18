@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
 
 export const DecodeRole = () => {
-    const encryptedRole = Cookies.get("_uR");
+    const encryptedRole = Cookies.get("__urol");
 
     if (!encryptedRole) return null;
 
