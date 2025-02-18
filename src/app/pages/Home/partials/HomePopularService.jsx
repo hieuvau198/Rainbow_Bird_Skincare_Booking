@@ -77,8 +77,8 @@ export default function HomePopularService() {
                     <span className="ml-2 text-sm text-gray-600">1434 reviews</span>
                   </div>
                   <div className="flex items-center space-x-2 mt-2">
-                    <span className="text-gray-400 line-through">€19.95</span>
-                    <span className="text-lime-500 font-semibold">€18.85</span>
+                    <span className="text-gray-400 line-through">$19.95</span>
+                    <span className="text-lime-500 font-semibold">$18.85</span>
                   </div>
                 </div>
               </div>        

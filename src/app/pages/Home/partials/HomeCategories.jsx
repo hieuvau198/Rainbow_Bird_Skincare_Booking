@@ -14,16 +14,16 @@ export default function SkincareCategories() {
       title: "Acne Removal",
       items: [
         { name: "Deep Acne Treatment", price: "$60.00", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5HULFwMfPh7oL4hZEZx-3WXfnK9uEWaX-cA&s" },
-        { name: "Blue Light Therapy", price: "$40.00", image: "https://via.placeholder.com/100" },
-        { name: "Instant Acne Reduction Products", price: "$25.00", image: "https://via.placeholder.com/100" }
+        { name: "Blue Light Therapy", price: "$40.00", image: "https://images.squarespace-cdn.com/content/v1/55b167e3e4b02d875c748259/1569471499777-Z3GTZH9NYKEIGW9UJMMX/MediLUX-Treatment-Blue-Light-01-1920x1280.jpg" },
+        { name: "Instant Acne Reduction Products", price: "$25.00", image: "https://assets.vogue.com/photos/65f474597db3eabf5a5b1dcc/3:2/w_1332,h_888,c_limit/versed%20(1).jpg" }
       ]
     },
     {
       title: "Skin Rejuvenation",
       items: [
-        { name: "Laser Rejuvenation Treatment", price: "$70.00", image: "https://via.placeholder.com/100" },
-        { name: "Collagen Skin Rejuvenation", price: "$50.00", image: "https://via.placeholder.com/100" },
-        { name: "Lifting Mask", price: "$35.00", image: "https://via.placeholder.com/100" }
+        { name: "Laser Rejuvenation Treatment", price: "$70.00", image: "https://curvz.com.au/wp-content/uploads/2023/09/DSC05427-1-scaled-e1698745613523.jpg" },
+        { name: "Collagen Skin Rejuvenation", price: "$50.00", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJSo40NhkamhkiWQ91_w6gpC3HZGnv8Ya8iA&s" },
+        { name: "Lifting Mask", price: "$35.00", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSznUpqnbYS5MBB1KmdxqUmjEVVfdb7rIzHA&s" }
       ]
     }
   ];
