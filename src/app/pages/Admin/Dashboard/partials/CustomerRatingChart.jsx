@@ -12,9 +12,9 @@ export default function CustomerRatingChart() {
   const series = [5, 10, 20, 40, 80];
 
   return (
-    <div className="p-4 bg-white min-h-[330px] rounded-2xl shadow-md">
+    <div className="p-4 bg-white min-h-[332px] rounded-2xl shadow-md">
       <h3 className="font-bold mb-2">Customer Ratings</h3>
-      <Chart options={options} series={series} type="pie" height={250} />
+      <Chart options={options} series={series} type="pie" height={300} />
     </div>
   );
 }

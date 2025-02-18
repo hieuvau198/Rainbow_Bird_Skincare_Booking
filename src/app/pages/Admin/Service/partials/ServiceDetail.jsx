@@ -9,7 +9,7 @@ import renderEditForm from "./ServiceDetailPartials/RenderEditForm";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-export default function ServiceDetails({ visible, onClose, service, onServiceUpdate }) {
+export default function ServiceDetails({ open, onClose, service, onServiceUpdate }) {
   const [localService, setLocalService] = useState(service);
   const [isEdit, setIsEdit] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
@@ -23,7 +23,7 @@ export default function ServiceDetails({ visible, onClose, service, onServiceUpd
   }, [service]);
 
   useEffect(() => {
-    if (localService && visible && isEdit) {
+    if (localService && open && isEdit) {
       form.resetFields();
       form.setFieldsValue({
         serviceName: localService.serviceName,
@@ -37,7 +37,7 @@ export default function ServiceDetails({ visible, onClose, service, onServiceUpd
       setUploadedImageFile(null);
       setUploadedImagePreview(null);
     }
-  }, [localService, visible, isEdit, form]);
+  }, [localService, open, isEdit, form]);
 
   const fetchServiceDetail = async () => {
     try {
@@ -109,7 +109,7 @@ export default function ServiceDetails({ visible, onClose, service, onServiceUpd
 
   return (
     <Modal
-      open={visible}
+      open={open}
       onCancel={() => {
         setIsEdit(false);
         onClose();

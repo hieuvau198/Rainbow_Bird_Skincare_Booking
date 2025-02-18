@@ -6,20 +6,20 @@ const newsData = [
     title: "Unlock Your Beauty Potential",
     description: "Elevate your routine with our curated beauty essentials. Limited-time offers on radiant skincare.",
     date: "View Products",
-    image: "https://via.placeholder.com/400x250?text=Beauty+1",
+    image: "https://media.licdn.com/dms/image/v2/D4D12AQGr-5PdbOl-kQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1688971998450?e=2147483647&v=beta&t=jTIxsHUfQVkOMZRhreh54zFO3XER-yY8KeBA-Xcesu4",
   },
   {
     id: 2,
     title: "Exclusive Deals on Luxe Essentials",
     description: "Transform your beauty routine with our premium skincare and cosmetic essentials.",
     date: "Shop Now",
-    image: "https://via.placeholder.com/400x250?text=Beauty+2",
+    image: "https://klemor.in/cdn/shop/files/8D0A7374final...jpg?v=1722260369&width=1946",
   },
 ];
 
 export default function HomeCenterNews() {
   return (
-    <div className="p-6 bg-gray-50 rounded-2xl shadow-md">
+    <div className="p-6 rounded-2xl shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Latest Offers</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {newsData.map((news) => (
@@ -34,20 +34,13 @@ export default function HomeCenterNews() {
             />
             <div className="p-6">
               <h3 className="text-xl font-bold text-gray-800">{news.title}</h3>
-              <p className="text-gray-600 mt-2">{news.description}</p>
-              <button className="mt-4 text-sm font-medium text-blue-600 underline">
-                {news.date}
+              <p className="text-gray-600 mb-3 mt-1">{news.description}</p>
+              <button className="text-sm font-medium text-white bg-lime-700 px-4 py-2 rounded-lg">
+              {news.date}
               </button>
             </div>
           </div>
         ))}
-      </div>
-      <div className="flex justify-center mt-8 space-x-6">
-        <img src="https://via.placeholder.com/80?text=Icon1" alt="Icon1" className="h-12 w-12" />
-        <img src="https://via.placeholder.com/80?text=Icon2" alt="Icon2" className="h-12 w-12" />
-        <img src="https://via.placeholder.com/80?text=Icon3" alt="Icon3" className="h-12 w-12" />
-        <img src="https://via.placeholder.com/80?text=Icon4" alt="Icon4" className="h-12 w-12" />
-        <img src="https://via.placeholder.com/80?text=Icon5" alt="Icon5" className="h-12 w-12" />
       </div>
     </div>
   );
