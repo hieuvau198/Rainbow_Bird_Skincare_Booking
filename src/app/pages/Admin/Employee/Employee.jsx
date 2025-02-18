@@ -24,7 +24,7 @@ export default function Employee() {
     <div className="p-6 max-w-[1270px]">
       <div className="p-6 bg-white rounded-md shadow-md min-h-[580px]">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold">Empolyee</h2>
+        <h2 className="text-xl font-semibold">Empolyee</h2>
           <div className="flex space-x-4">
             <Button
               type={activeCategory === "therapists" ? "primary" : "default"}

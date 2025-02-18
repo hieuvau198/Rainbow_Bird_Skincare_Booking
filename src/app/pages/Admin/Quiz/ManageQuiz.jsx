@@ -126,12 +126,12 @@ const ManageQuiz = () => {
           bordered
         />
         <AddQuiz
-          visible={isAddModalVisible}
+          open={isAddModalVisible}
           onClose={() => setIsAddModalVisible(false)}
           onSubmit={handleAddQuiz}
         />
         <QuizDetail
-          visible={isDetailModalVisible}
+          open={isDetailModalVisible}
           onClose={() => setIsDetailModalVisible(false)}
           quiz={selectedQuiz}
           onQuizUpdate={(updatedQuiz) => {

@@ -1,8 +1,7 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, message, Table, Tag } from "antd";
+import { Button, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import userRole from "../../../../../enums/userRole";
-import addEmployee from "../../../../modules/Admin/Employee/addEmployee";
 import getAllUser from "../../../../modules/Admin/Employee/getAllUser";
 import AddManager from "./ManagerPartials/AddManager";
 
@@ -12,10 +11,19 @@ const ManagerTable = () => {
   const [addModalVisible, setAddModalVisible] = useState(false);
 
   const columns = [
-    { title: "ID", dataIndex: "id", key: "id", width: 150 },
+    { title: "ID", dataIndex: "id", key: "id", width: 50 },
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Email", dataIndex: "email", key: "email", width: 250 },
     { title: "Mobile", dataIndex: "mobile", key: "mobile" },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      width: 100,
+      render: (status) => (
+        <Tag color={status === "Active" ? "green" : "volcano"}>{status}</Tag>
+      ),
+    },
     {
       title: "Action",
       key: "action",
@@ -45,6 +53,7 @@ const ManagerTable = () => {
         name: user.fullName,
         email: user.email,
         mobile: user.phone,
+        status: "Active",
       }));
       setData(formattedData);
     } catch (error) {
@@ -58,21 +67,8 @@ const ManagerTable = () => {
     loadManagerData();
   }, []);
 
-  const handleAddManager = async (values) => {
-    try {
-      const newManager = await addEmployee(values);
-      console.log("Data sent to API:", values);
-      setData((prevData) => [
-        ...prevData,
-        { key: newManager.username, ...newManager },
-      ]);
-      setAddModalVisible(false);
-      loadManagerData();
-      message.success("Manager added successfully!");
-    } catch (error) {
-      console.error("Error adding Manager:", error);
-      message.error("Error adding Manager!");
-    }
+  const handleAddManager = (values) => {
+    console.log("New therapist data:", values);
   };
 
   return (
@@ -90,7 +86,7 @@ const ManagerTable = () => {
         loading={loading}
         pagination={{ pageSize: 10 }}
         bordered
-        scroll={{ y: 350 }}
+        scroll={{ x: "max-content", y: 350 }}
       />
       <AddManager
         open={addModalVisible}

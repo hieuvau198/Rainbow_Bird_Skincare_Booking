@@ -1,6 +1,6 @@
 {
-  "name": "mklirrwwmp.github",
-  "version": "0.0.0",
+  "name": "prestinecare",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
     "@react-oauth/google": "^0.12.1",
@@ -16,7 +16,6 @@
     "js-cookie": "^3.0.5",
     "react": "18.3.1",
     "react-apexcharts": "^1.7.0",
-    "react-datepicker": "^8.0.0",
     "react-dom": "18.3.1",
     "react-icons": "^5.4.0",
     "react-router-dom": "6.26.1",
