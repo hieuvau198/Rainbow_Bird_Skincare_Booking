@@ -17,8 +17,8 @@ export default function RelatedServices({ services, service }) {
   };
 
   return (
-    <div className="mt-2 mb-10 shadow-lg p-6 rounded-lg bg-white">
-      <h2 className="text-xl font-bold mb-4">Gợi ý dành riêng cho bạn</h2>
+    <div className="mt-2 mb-10 p-6 bg-white">
+      <h2 className="text-2xl font-bold mb-4">Suggestions specifically for you</h2>
       <div className="relative">
         <button
           onClick={scrollLeft}
@@ -28,28 +28,30 @@ export default function RelatedServices({ services, service }) {
         </button>
         <div
           ref={sliderRef}
-          className="flex overflow-hidden divide-x divide-gray-300 p-2 flex-nowrap"
+          className="flex overflow-hidden divide-x divide-gray-300 p-2 flex-nowrap items-stretch"
         >
           {services
             .filter((s) => s.service_id !== service.service_id)
             .map((related) => (
-              <div key={related.service_id} className="min-w-[240px] bg-white p-4 border-0 flex flex-col h-full">
+              <div key={related.service_id} className="min-w-[240px] bg-white p-4 border-0 flex flex-col justify-between h-full">
                 <img
                   src={related.image}
                   alt={related.service_name}
                   className="w-full h-40 object-cover rounded-md mb-3"
                 />
-                <h3 className="text-sm font-semibold line-clamp-2">
-                  {related.service_name}
-                </h3>
-                <p className="text-red-500 font-bold text-sm flex items-center gap-1">
-                  <DollarOutlined /> {related.salePrice}
-                </p>
-                <div className="text-xs text-gray-500 mt-1">
-                  ⭐ {related.rating} ({related.reviews} đánh giá)
+                <div className="flex-grow">
+                  <h3 className="text-sm font-semibold line-clamp-2">
+                    {related.service_name}
+                  </h3>
+                  <p className="text-red-500 font-bold text-sm flex items-center gap-1 mt-2">
+                    <DollarOutlined /> {related.price}
+                  </p>
+                  <div className="text-xs text-gray-500 mt-1">
+                    ⭐ {related.rating} ({related.reviews} Rating)
+                  </div>
                 </div>
-                <button className="mt-6 w-full bg-lime-300 text-gray-600 p-2 rounded-md text-xs hover:bg-lime-400 transition">
-                  Xem chi tiết
+                <button className="mt-4 w-full bg-lime-300 text-gray-600 p-2 rounded-md text-xs hover:bg-lime-400 transition">
+                  View Details
                 </button>
               </div>
             ))}
