@@ -171,7 +171,7 @@ export default function Service() {
           onSubmit={handleAddService}
         />
         <ServiceDetails
-          visible={isDetailModalVisible}
+          open={isDetailModalVisible}
           onClose={() => setIsDetailModalVisible(false)}
           service={selectedService}
           onServiceUpdate={handleServiceUpdate}

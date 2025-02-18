@@ -1,105 +1,117 @@
 {
-    "questions": [
-      {
-        "question": "How does your skin feel when you wake up in the morning?",
-        "options": [
-          "Oily and greasy",
-          "Dry and tight",
-          "Smooth and balanced",
-          "Oily in some areas and dry in others",
-          "Red or irritated"
-        ]
-      },
-      {
-        "question": "How often do you need to moisturize your skin?",
-        "options": [
-          "Rarely, it feels oily without it",
-          "Multiple times a day to avoid dryness",
-          "Once a day is enough",
-          "Only certain areas need moisturizing",
-          "I avoid moisturizing due to irritation"
-        ]
-      },
-      {
-        "question": "How does your skin react to hot weather?",
-        "options": [
-          "It becomes very shiny and greasy",
-          "It feels even drier and uncomfortable",
-          "It stays the same, no major changes",
-          "My T-zone gets oily but cheeks stay dry",
-          "It gets red and sensitive"
-        ]
-      },
-      {
-        "question": "What is your skin like after washing your face?",
-        "options": [
-          "Oily again within an hour",
-          "Feels tight and flaky",
-          "Feels refreshed and smooth",
-          "Some areas are oily, others are dry",
-          "Red or irritated immediately"
-        ]
-      },
-      {
-        "question": "Do you experience breakouts?",
-        "options": [
-          "Frequently, especially in oily areas",
-          "Rarely, but skin feels rough",
-          "Almost never",
-          "Occasionally in my T-zone",
-          "Breakouts accompanied by redness"
-        ]
-      },
-      {
-        "question": "How do your pores look?",
-        "options": [
-          "Large and visible, especially on the nose and forehead",
-          "Small and barely noticeable",
-          "Normal-sized and not noticeable",
-          "Large in the T-zone but small on cheeks",
-          "Normal but skin is sensitive around them"
-        ]
-      },
-      {
-        "question": "How does your skin feel after applying sunscreen?",
-        "options": [
-          "Greasy and heavy",
-          "Even drier and tight",
-          "Comfortable and protected",
-          "Greasy in some areas, fine in others",
-          "Irritated or stinging"
-        ]
-      },
-      {
-        "question": "How does your skin feel during colder weather?",
-        "options": [
-          "Still oily but slightly less",
-          "Extremely dry and flaky",
-          "No significant change",
-          "Dry on cheeks but oily on forehead and nose",
-          "More sensitive and red"
-        ]
-      },
-      {
-        "question": "What does your skin feel like by the end of the day?",
-        "options": [
-          "Very oily and shiny",
-          "Tight, dry, and uncomfortable",
-          "Still smooth and balanced",
-          "Oily in some areas, dry in others",
-          "Irritated or itchy"
-        ]
-      },
-      {
-        "question": "Do you have any sensitivity to skincare products?",
-        "options": [
-          "Rarely, my skin can handle most products",
-          "No, but I need heavy moisturizers",
-          "No issues with any products",
-          "Some products affect certain areas",
-          "Yes, my skin reacts easily to new products"
-        ]
-      }
-    ]
-  }
-  
+  "quizzes": [
+    {
+      "id": 1,
+      "name": "Skin Type Assessment",
+      "category": "Skin Type",
+      "image": "https://example.com/skin_type.jpg",
+      "plays": 125000,
+      "questions": [
+        {
+          "question": "How does your skin feel when you wake up in the morning?",
+          "options": [
+            "Oily and greasy",
+            "Dry and tight",
+            "Smooth and balanced",
+            "Oily in some areas and dry in others",
+            "Red or irritated"
+          ],
+          "correct": "Smooth and balanced"
+        },
+        {
+          "question": "How often do you need to moisturize your skin?",
+          "options": [
+            "Rarely, it feels oily without it",
+            "Multiple times a day to avoid dryness",
+            "Once a day is enough",
+            "Only certain areas need moisturizing",
+            "I avoid moisturizing due to irritation"
+          ],
+          "correct": "Once a day is enough"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Skin Sensitivity Analysis",
+      "category": "Sensitivity",
+      "image": "https://example.com/skin_sensitivity.jpg",
+      "plays": 213000,
+      "questions": [
+        {
+          "question": "How does your skin react to hot weather?",
+          "options": [
+            "It becomes very shiny and greasy",
+            "It feels even drier and uncomfortable",
+            "It stays the same, no major changes",
+            "My T-zone gets oily but cheeks stay dry",
+            "It gets red and sensitive"
+          ],
+          "correct": "It stays the same, no major changes"
+        },
+        {
+          "question": "What is your skin like after washing your face?",
+          "options": [
+            "Oily again within an hour",
+            "Feels tight and flaky",
+            "Feels refreshed and smooth",
+            "Some areas are oily, others are dry",
+            "Red or irritated immediately"
+          ],
+          "correct": "Feels refreshed and smooth"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Acne & Breakout Evaluation",
+      "category": "Acne",
+      "image": "https://example.com/acne_breakout.jpg",
+      "plays": 47000,
+      "questions": [
+        {
+          "question": "Do you experience breakouts?",
+          "options": [
+            "Frequently, especially in oily areas",
+            "Rarely, but skin feels rough",
+            "Almost never",
+            "Occasionally in my T-zone",
+            "Breakouts accompanied by redness"
+          ],
+          "correct": "Almost never"
+        },
+        {
+          "question": "How do your pores look?",
+          "options": [
+            "Large and visible, especially on the nose and forehead",
+            "Small and barely noticeable",
+            "Normal-sized and not noticeable",
+            "Large in the T-zone but small on cheeks",
+            "Normal but skin is sensitive around them"
+          ],
+          "correct": "Normal-sized and not noticeable"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Anti-Aging Skin Assessment",
+      "category": "Anti-Aging",
+      "image": "https://example.com/anti_aging.jpg",
+      "plays": 89000,
+      "questions": [
+        {
+          "question": "How concerned are you about fine lines and wrinkles?",
+          "options": [
+            "Not concerned at all",
+            "Somewhat concerned",
+            "Very concerned",
+            "Extremely concerned",
+            "I already take active measures to prevent them"
+          ],
+          "correct": "Somewhat concerned"
+        }
+      ]
+    }
+  ]
+}

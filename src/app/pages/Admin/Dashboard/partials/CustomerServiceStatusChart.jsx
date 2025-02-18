@@ -14,7 +14,6 @@ export default function CustomerServiceStatusChart() {
             width: 2,
         },
         xaxis: {
-            // Giả sử ngày làm việc từ 9:00 đến 17:00, chia theo giờ
             categories: ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"],
         },
         dataLabels: {

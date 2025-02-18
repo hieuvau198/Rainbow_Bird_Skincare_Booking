@@ -10,7 +10,7 @@ export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = Cookies.get("_aT");
+    const token = Cookies.get("__atok");
     setIsLoggedIn(!!token);
   }, []);
 
@@ -55,10 +55,10 @@ export default function Header() {
   return (
     <div className="bg-gradient-to-l from-lime-200 via-sky-100 to-green-200 dark:bg-slate-600 shadow-md">
       <div className="container mx-auto px-6 md:px-12 lg:px-24 py-4 flex justify-between items-center">
-        <div className="grid items-center">
-          <Link to="/" className="grid grid-flow-col text-2xl font-bold text-lime-600">
+        <div className="flex items-center">
+          <Link to="/" className="grid grid-flow-col items-center text-2xl font-bold text-lime-600">
             <img src={logo} alt="Logo" className="w-16 h-16 rounded-full" />
-            <h2 className="grid items-center">Prestine care</h2>
+            <h1 className="pl-2">Pretine Care</h1>
           </Link>
         </div>
 
@@ -113,12 +113,20 @@ export default function Header() {
               />
             </Dropdown>
           ) : (
-            <Link
-              to="/login"
-              className="bg-lime-500 text-white px-4 py-2 rounded-lg hover:bg-lime-600 transition duration-200"
-            >
-              Login
-            </Link>
+            <div className="p-">
+                <Link
+                  to="/login"
+                  className="border border-lime-500 text-gray-700 hover:text-gray-600 px-5 py-3 rounded-md hover:bg-lime-300/90 transition duration-200"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/sign-up"
+                  className="bg-lime-500 text-white px-4 py-3 ml-3 rounded-md hover:bg-lime-600 transition duration-200"
+                >
+                  Sign-Up
+                </Link>
+            </div>
           )}
         </nav>
 

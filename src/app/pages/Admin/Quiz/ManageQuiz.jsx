@@ -3,6 +3,7 @@ import { Button, Table, Tag, Space, Modal, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import AddQuiz from "./partials/AddQuiz";
 import QuizDetail from "./partials/QuizDetail";
+import getAllQuiz from "../../../modules/Quizzs/getAllQuiz"
 
 const ManageQuiz = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -23,45 +24,54 @@ const ManageQuiz = () => {
       key: "quizName",
     },
     {
-      title: "Duration (mins)",
-      dataIndex: "duration",
-      key: "duration",
+      title: "Category",
+      dataIndex: "category",
+      key: "category",
+    },
+    {
+      title: "Total Points",
+      dataIndex: "totalPoints",
+      key: "totalPoints",
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      width: 100,
       render: (status) => (
-        <Tag color={status === "active" ? "green" : "volcano"}>{status.toUpperCase()}</Tag>
+        <Tag color={status ? "green" : "volcano"}>
+          {status ? "Active" : "Inactive"}
+        </Tag>
       ),
     },
     {
       title: "Action",
       key: "action",
-      render: (_, record) => (
-        <Space size="middle">
-          <Button type="link" onClick={() => handleViewDetails(record)}>View Details</Button>
-          <Button type="link" danger onClick={() => handleDeleteQuiz(record)}>Delete</Button>
-        </Space>
-      ),
+      // render: (_, record) => (
+      //   <Space size="middle">
+      //     <Button color="gold" variant="solid" type="link">View Details</Button>
+      //     <Button type="link" danger onClick={() => handleDeleteQuiz(record)}>Delete</Button>
+      //   </Space>
+      // ),
     },
   ];
 
   const fetchQuizzes = async () => {
     setLoading(true);
     try {
-      // Simulate fetching data from an API
-      const mockData = [
-        { id: 1, quizName: "Quiz 1", duration: 30, status: "active" },
-        { id: 2, quizName: "Quiz 2", duration: 45, status: "inactive" },
-        { id: 3, quizName: "Quiz 3", duration: 60, status: "active" },
-      ];
-      setQuizzes(mockData);
+      const data = await getAllQuiz();
+      const quizData = data.map((quiz) => ({
+        id: quiz.quizId,
+        quizName: quiz.name,
+        category: quiz.category,
+        totalPoints: quiz.totalPoints,
+        status: quiz.isActive,
+      }));
+      setQuizzes(quizData);
     } catch (error) {
-      message.error("Failed to load quizzes.");
-    } finally {
-      setLoading(false);
+      console.error("Error fetching quizs:", error);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -99,13 +109,13 @@ const ManageQuiz = () => {
       <div className="p-6 bg-white rounded-md shadow-md min-h-[580px]">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold">Manage Quizzes</h2>
-          <Button
+          {/* <Button
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => setIsAddModalVisible(true)}
           >
             Add Quiz
-          </Button>
+          </Button> */}
         </div>
         <Table
           columns={columns}
@@ -116,12 +126,12 @@ const ManageQuiz = () => {
           bordered
         />
         <AddQuiz
-          visible={isAddModalVisible}
+          open={isAddModalVisible}
           onClose={() => setIsAddModalVisible(false)}
           onSubmit={handleAddQuiz}
         />
         <QuizDetail
-          visible={isDetailModalVisible}
+          open={isDetailModalVisible}
           onClose={() => setIsDetailModalVisible(false)}
           quiz={selectedQuiz}
           onQuizUpdate={(updatedQuiz) => {

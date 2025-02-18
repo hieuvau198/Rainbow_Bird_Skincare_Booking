@@ -3,9 +3,9 @@ import { message } from "antd";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-export default async function getTherapistProfile(id) {
+export default async function getAllQuiz() {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/TherapistProfile/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/api/Quiz`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

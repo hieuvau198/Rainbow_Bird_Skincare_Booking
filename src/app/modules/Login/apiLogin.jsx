@@ -3,7 +3,7 @@ import CryptoJS from "crypto-js";
 import Cookies from "js-cookie";
 import UserRole from "../../../enums/userRole";
 
-const secretKey = process.env.REACT_APP_SECRET_KEY;
+const secretKey = process.env.REACT_APP_SECRET_KEY || "ToiYeuEMToiYeuEM";
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export const googleLogin = async (response, CLIENT_ID, setLoading, navigate) => {
@@ -19,10 +19,14 @@ export const googleLogin = async (response, CLIENT_ID, setLoading, navigate) => 
         saveTokens(data);
         message.success("Google login successful!");
         const userRole = data.user.role;
-        if (userRole === UserRole.CUSTOMER) {
-            navigate("/");
-        } else {
+        if (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) {
             navigate("/management/dashboard");
+        } else if(userRole === UserRole.STAFF){
+            navigate("/management/booking");
+        }else if(userRole === UserRole.THERAPIST){
+            navigate("/management/schedule");
+        }else {
+            navigate("/");
         }
     } catch (err) {
         message.error(err.message || "Google login failed!");
@@ -46,10 +50,14 @@ export const loginUser = async (values, setLoading, navigate) => {
         const data = await response.json();
         saveTokens(data);
         const userRole = data.user.role;
-        if (userRole === UserRole.CUSTOMER) {
-            navigate("/");
-        } else {
+        if (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) {
             navigate("/management/dashboard");
+        } else if(userRole === UserRole.STAFF){
+            navigate("/management/booking");
+        }else if(userRole === UserRole.THERAPIST){
+            navigate("/management/schedule");
+        }else {
+            navigate("/");
         }
         message.success("Login successful!");
     } catch (err) {
@@ -69,20 +77,20 @@ const saveTokens = (data) => {
     if (data.user && data.user.role !== undefined) {
         const encodedRole = encodeRoleToBase64(data.user.role);
         const encryptedRole = CryptoJS.AES.encrypt(encodedRole, secretKey).toString();
-        Cookies.set("_uR", encryptedRole, {
+        Cookies.set("__urol", encryptedRole, {
             expires: oneHour,
             sameSite: "Strict",
             secure: true
         });
     }
 
-    Cookies.set("_aT", data.accessToken, {
+    Cookies.set("__atok", data.accessToken, {
         expires: oneHour,
         sameSite: "Strict",
         secure: true
     });
 
-    Cookies.set("_rT", data.refreshToken, {
+    Cookies.set("__rtok", data.refreshToken, {
         expires: oneHour,
         sameSite: "Strict",
         secure: true
@@ -129,9 +137,9 @@ export async function refreshToken() {
         return data.accessToken;
     } catch (error) {
         message.error("Session expired. Please log in again.");
-        Cookies.remove("_aT");
-        Cookies.remove("_rT");
-        Cookies.remove("_uR");
+        Cookies.remove("__atok");
+        Cookies.remove("__rtok");
+        Cookies.remove("__urol");
         window.location.href = "/login";
         throw error;
     }
@@ -140,7 +148,7 @@ export async function refreshToken() {
 // ========================= Hàm fetchWithAuth =========================
 export async function fetchWithAuth(url, options = {}) {
     // Lấy accessToken hiện tại từ Cookies
-    let accessToken = Cookies.get("_aT");
+    let accessToken = Cookies.get("__atok");
 
     // Thiết lập header mặc định
     const headers = {
