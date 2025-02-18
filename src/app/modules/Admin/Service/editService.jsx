@@ -13,7 +13,7 @@ const editService = async (id, payload) => {
         if (!(payload instanceof FormData)) {
             options.headers = {
                 "Content-Type": "application/json",
-                // "Authorization": `Bearer ${Cookies.get("_aT")}`,
+                // "Authorization": `Bearer ${Cookies.get("__atok")}`,
             };
         }
 

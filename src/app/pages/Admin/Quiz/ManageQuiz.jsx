@@ -47,12 +47,12 @@ const ManageQuiz = () => {
     {
       title: "Action",
       key: "action",
-      render: (_, record) => (
-        <Space size="middle">
-          <Button color="gold" variant="solid" type="link">View Details</Button>
-          {/* <Button type="link" danger onClick={() => handleDeleteQuiz(record)}>Delete</Button> */}
-        </Space>
-      ),
+      // render: (_, record) => (
+      //   <Space size="middle">
+      //     <Button color="gold" variant="solid" type="link">View Details</Button>
+      //     <Button type="link" danger onClick={() => handleDeleteQuiz(record)}>Delete</Button>
+      //   </Space>
+      // ),
     },
   ];
 

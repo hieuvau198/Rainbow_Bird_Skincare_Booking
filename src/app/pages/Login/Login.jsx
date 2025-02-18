@@ -3,13 +3,17 @@ import React, { useEffect, useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { googleLogin, loginUser } from "../../modules/Login/apiLogin";
+import CryptoJS from "crypto-js"; 
+import Cookies from "js-cookie";
 
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+const SECRET_KEY = process.env.REACT_APP_SECRET_KEY; 
 
 export default function Login() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -31,7 +35,31 @@ export default function Login() {
     return () => document.body.removeChild(script);
   }, []);
 
+  useEffect(() => {
+    const savedUsername = Cookies.get("__run");
+    const encryptedPassword = Cookies.get("__rpw");
+
+    if (savedUsername && encryptedPassword) {
+      try {
+        const decryptedPassword = CryptoJS.AES.decrypt(encryptedPassword, SECRET_KEY).toString(CryptoJS.enc.Utf8);
+        form.setFieldsValue({ username: savedUsername, password: decryptedPassword });
+        setRememberMe(true);
+      } catch (error) {
+        console.error("Lỗi giải mã mật khẩu:", error);
+      }
+    }
+  }, [form]);
+
   const onFormFinish = async (values) => {
+    if (rememberMe) {
+      Cookies.set("__run", values.username, { expires: 7, secure: true, sameSite: "Strict" });
+      const encryptedPassword = CryptoJS.AES.encrypt(values.password, SECRET_KEY).toString();
+      Cookies.set("__rpw", encryptedPassword, { expires: 7, secure: true, sameSite: "Strict" });
+    } else {
+      Cookies.remove("__run");
+      Cookies.remove("__rpw");
+    }
+
     await loginUser(values, setLoading, navigate);
   };
 
@@ -65,7 +93,7 @@ export default function Login() {
               <Input.Password placeholder="Enter your password" size="large" className="rounded-md border-gray-300 focus:ring-sky-500 focus:border-sky-500" />
             </Form.Item>
             <div className="flex justify-between items-center mb-2">
-              <Checkbox>Remember Me</Checkbox>
+              <Checkbox checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)}>Remember Me</Checkbox>
               <Link to="/forgot-password" className="text-sm text-sky-500 hover:underline">Forgot Password?</Link>
             </div>
             <Form.Item>

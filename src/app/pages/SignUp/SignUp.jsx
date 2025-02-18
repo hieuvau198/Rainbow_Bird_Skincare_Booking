@@ -72,7 +72,7 @@ export default function SignUp() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Form.Item
                 name="username"
-                label="Username"
+                label="User Name"
                 rules={[{ required: true, message: "Please enter your username!" }]}
               >
                 <Input placeholder="Enter your username" size="large" />

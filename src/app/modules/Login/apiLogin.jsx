@@ -77,20 +77,20 @@ const saveTokens = (data) => {
     if (data.user && data.user.role !== undefined) {
         const encodedRole = encodeRoleToBase64(data.user.role);
         const encryptedRole = CryptoJS.AES.encrypt(encodedRole, secretKey).toString();
-        Cookies.set("_uR", encryptedRole, {
+        Cookies.set("__urol", encryptedRole, {
             expires: oneHour,
             sameSite: "Strict",
             secure: true
         });
     }
 
-    Cookies.set("_aT", data.accessToken, {
+    Cookies.set("__atok", data.accessToken, {
         expires: oneHour,
         sameSite: "Strict",
         secure: true
     });
 
-    Cookies.set("_rT", data.refreshToken, {
+    Cookies.set("__rtok", data.refreshToken, {
         expires: oneHour,
         sameSite: "Strict",
         secure: true
@@ -137,9 +137,9 @@ export async function refreshToken() {
         return data.accessToken;
     } catch (error) {
         message.error("Session expired. Please log in again.");
-        Cookies.remove("_aT");
-        Cookies.remove("_rT");
-        Cookies.remove("_uR");
+        Cookies.remove("__atok");
+        Cookies.remove("__rtok");
+        Cookies.remove("__urol");
         window.location.href = "/login";
         throw error;
     }
@@ -148,7 +148,7 @@ export async function refreshToken() {
 // ========================= Hàm fetchWithAuth =========================
 export async function fetchWithAuth(url, options = {}) {
     // Lấy accessToken hiện tại từ Cookies
-    let accessToken = Cookies.get("_aT");
+    let accessToken = Cookies.get("__atok");
 
     // Thiết lập header mặc định
     const headers = {

@@ -4,17 +4,18 @@ import UserRole from "../../enums/userRole";
 import Loading from "../components/Loading";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 import UserLayout from "../layouts/UserLayout/UserLayout";
-import Profile from "../pages/Customer/Profile/Profile";
-import Quiz from "../pages/Customer/Quiz/Quiz";
-import Service from "../pages/Customer/Service/Service";
-import ServiceDetail from "../pages/Customer/Service/ServiceDetail";
-import ViewTherapist from "../pages/Customer/ViewTherapist/ViewTherapist";
-import TherapistProfile from "../pages/Customer/ViewTherapist/TherapistProfile";
 import Home from "../pages/Home";
 import Login from "../pages/Login/Login";
 
-const News = lazy(() => import("../layouts/AdminLayout"));
-const AboutUs = lazy(() => import("../pages/Customer/BlogsAndNews/News"));
+const Profile = lazy(() => import("../pages/Customer/Profile/Profile"));
+const ViewTherapist = lazy(() => import("../pages/Customer/ViewTherapist/ViewTherapist"));
+const TherapistProfile = lazy(() => import("../pages/Customer/ViewTherapist/TherapistProfile"));
+const Service = lazy(() => import("../pages/Customer/Service/Service"));
+const ServiceDetail = lazy(() => import("../pages/Customer/Service/ServiceDetail"));
+
+const Quiz = lazy(() => import("../pages/Customer/Quiz/Quiz"));
+const News = lazy(() => import("../pages/Customer/BlogsAndNews/News"));
+const AboutUs = lazy(() => import("../pages/AboutUs/AboutUs"));
 const BookingSuccess = lazy(() => import("../pages/Customer/Service/partials/BookingSuccess"));
 const QuizDetail = lazy(() => import("../pages/Customer/Quiz/partials/QuizDetail"));
 const Rating = lazy(() => import("../pages/Customer/Rating/Rating"));
@@ -49,43 +50,65 @@ export default function MainRoutes() {
               <AboutUs />
             </Suspense>
           } />
-          <Route path="/quiz" element={<Quiz />} />
-          <Route path="/quiz/:id" element={
+          <Route path="/quiz" element={
             <Suspense fallback={<Loading />}>
-              <PrivateRoute allowedRoles={[UserRole.CUSTOMER]}>
-                <QuizDetail />
-              </PrivateRoute>
+              <Quiz />
             </Suspense>
           } />
+          <Route path="/quiz/:id" element={
+            <PrivateRoute allowedRoles={[UserRole.CUSTOMER]}>
+              <Suspense fallback={<Loading />}>
+                <QuizDetail />
+              </Suspense>
+            </PrivateRoute>
+          } />
           <Route path="/booking-success" element={
-            <Suspense fallback={<Loading />}>
-              <PrivateRoute allowedRoles={[UserRole.CUSTOMER]}>
+            <PrivateRoute allowedRoles={[UserRole.CUSTOMER]}>
+              <Suspense fallback={<Loading />}>
                 <BookingSuccess />
-              </PrivateRoute>
-            </Suspense>
+              </Suspense>
+            </PrivateRoute>
           } />
           <Route path="/profile" element={
             <PrivateRoute allowedRoles={[UserRole.CUSTOMER]}>
-              <Profile />
+              <Suspense fallback={<Loading />}>
+                <Profile />
+              </Suspense>
             </PrivateRoute>
           } />
-          <Route path="/services" element={<Service />} />
-          <Route path="/services/:id" element={<ServiceDetail />} />
-          <Route path="/therapists" element={<ViewTherapist />} />
-          <Route path="/schedule-booking" element={
+          <Route path="/services" element={
             <Suspense fallback={<Loading />}>
-              <PrivateRoute allowedRoles={[UserRole.CUSTOMER]}>
-                <ScheduleBooking />
-              </PrivateRoute>
+              <Service />
             </Suspense>
           } />
-          <Route path="/therapists/:id" element={<TherapistProfile />} />
-          <Route path="/rating" element={
+          <Route path="/services/:id" element={
             <Suspense fallback={<Loading />}>
-              <PrivateRoute allowedRoles={[UserRole.CUSTOMER]}>
-                <Rating />
-              </PrivateRoute>
+              <ServiceDetail />
             </Suspense>
+          } />
+          <Route path="/therapists" element={
+            <Suspense fallback={<Loading />}>
+              <ViewTherapist />
+            </Suspense>
+          } />
+          <Route path="/schedule-booking" element={
+            <PrivateRoute allowedRoles={[UserRole.CUSTOMER]}>
+              <Suspense fallback={<Loading />}>
+                <ScheduleBooking />
+              </Suspense>
+            </PrivateRoute>
+          } />
+          <Route path="/therapists/:id" element={
+            <Suspense fallback={<Loading />}>
+              <TherapistProfile />
+            </Suspense>
+          } />
+          <Route path="/rating" element={
+            <PrivateRoute allowedRoles={[UserRole.CUSTOMER]}>
+              <Suspense fallback={<Loading />}>
+                <Rating />
+              </Suspense>
+            </PrivateRoute>
           } />
           <Route path="/news" element={
             <Suspense fallback={<Loading />}>
