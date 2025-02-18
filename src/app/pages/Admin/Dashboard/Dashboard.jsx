@@ -5,7 +5,6 @@ import TopServices from "./partials/TopServices";
 import CustomerRatingChart from "./partials/CustomerRatingChart";
 import BestTherapists from "./partials/BestTherapists";
 import RevenueByDayChart from "./partials/RevenueByDayChart";
-import CustomerServiceStatusChart from "./partials/CustomerServiceStatusChart";
 
 export default function Dashboard() {
   return (
@@ -15,13 +14,9 @@ export default function Dashboard() {
           <OverviewMetrics />
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="col-span-1">
+      <div className="grid grid-cols-3">
+        <div className="lg:col-span-1">
           <RevenueByDayChart />
-        </div>
-        <div className="col-span-1">
-        {/*biểu đồ miền*/}
-        <CustomerServiceStatusChart />
         </div>
       </div>
 

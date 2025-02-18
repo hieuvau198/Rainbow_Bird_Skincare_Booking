@@ -1,22 +1,20 @@
 import {
-  BookOutlined,
   FileTextOutlined,
-  IdcardOutlined,
+  LineChartOutlined,
   MessageOutlined,
   PieChartOutlined,
   ScheduleOutlined,
   ShoppingCartOutlined,
-  SolutionOutlined,
-  UserOutlined
+  UserOutlined,
 } from "@ant-design/icons";
 import React, { useEffect } from "react";
 import { TbLogout } from "react-icons/tb";
 import { Link, useLocation } from "react-router-dom";
-import UserRole from "../../../../enums/userRole";
-import { sActiveMenu } from "../../../../store/Store";
 import logo from "../../../assets/img/logo.png";
-import DecodeRole from "../../../components/DecodeRole";
+import { sActiveMenu } from "../../../../store/Store";
 import logOut from "../../../modules/Logout";
+import DecodeRole from "../../../components/DecodeRole";
+import UserRole from "../../../../enums/userRole";
 
 const AdminSidebar = () => {
   const activeMenu = sActiveMenu.use();
@@ -31,7 +29,6 @@ const AdminSidebar = () => {
       "/management/booking": "Bookings",
       "/management/service": "Services",
       "/management/employee": "Employee",
-      "/management/customer": "Customer",
       "/management/feedback": "Feedback",
       "/management/profile": "Profile",
       "/management/quiz": "Quiz",
@@ -70,130 +67,102 @@ const AdminSidebar = () => {
             </Link>
           )}
 
-          {(userRole !== UserRole.THERAPIST) && (
-            <Link
-              to="/management/booking"
-              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Bookings"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-                }`}
-              onClick={() => {
-                sActiveMenu.set("Bookings");
-              }}
-            >
-              <div className="flex items-center gap-3 w-full">
-                <ShoppingCartOutlined />
-                <span className="text-lg font-semibold">Bookings</span>
-              </div>
-            </Link>
-          )}
+          <Link
+            to="/management/booking"
+            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Bookings"
+              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
+            onClick={() => {
+              sActiveMenu.set("Bookings");
+            }}
+          >
+            <div className="flex items-center gap-3 w-full">
+              <ShoppingCartOutlined />
+              <span className="text-lg font-semibold">Bookings</span>
+            </div>
+          </Link>
 
-          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
-            <Link
-              to="/management/quiz"
-              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Quiz"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-                }`}
-              onClick={() => {
-                sActiveMenu.set("Quiz");
-              }}
-            >
-              <div className="flex items-center gap-3 w-full">
-                <BookOutlined />
-                <span className="text-lg font-semibold">Quiz</span>
-              </div>
-            </Link>
-          )}
+          <Link
+            to="/management/quiz"
+            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Quiz"
+              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
+            onClick={() => {
+              sActiveMenu.set("Quiz");
+            }}
+          >
+            <div className="flex items-center gap-3 w-full">
+              <FileTextOutlined />
+              <span className="text-lg font-semibold">Quiz</span>
+            </div>
+          </Link>
 
-          {(userRole !== UserRole.THERAPIST) && (
-            <Link
-              to="/management/service"
-              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Services"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-                }`}
-              onClick={() => {
-                sActiveMenu.set("Services");
-              }}
-            >
-              <div className="flex items-center gap-3 w-full">
-                <FileTextOutlined />
-                <span className="text-lg font-semibold">Services</span>
-              </div>
-            </Link>
-          )}
+          <Link
+            to="/management/service"
+            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Services"
+              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
+            onClick={() => {
+              sActiveMenu.set("Services");
+            }}
+          >
+            <div className="flex items-center gap-3 w-full">
+              <FileTextOutlined />
+              <span className="text-lg font-semibold">Services</span>
+            </div>
+          </Link>
 
-          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
-            <Link
-              to="/management/employee"
-              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Employee"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-                }`}
-              onClick={() => {
-                sActiveMenu.set("Employee");
-              }}
-            >
-              <div className="flex items-center gap-3 w-full">
-                <IdcardOutlined />
-                <span className="text-lg font-semibold">Employee</span>
-              </div>
-            </Link>
-          )}
+          <Link
+            to="/management/employee"
+            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Employee"
+              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
+            onClick={() => {
+              sActiveMenu.set("Employee");
+            }}
+          >
+            <div className="flex items-center gap-3 w-full">
+              <LineChartOutlined />
+              <span className="text-lg font-semibold">Employee</span>
+            </div>
+          </Link>
 
-          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
-            <Link
-              to="/management/customer"
-              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Customer"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-                }`}
-              onClick={() => {
-                sActiveMenu.set("Customer");
-              }}
-            >
-              <div className="flex items-center gap-3 w-full">
-                <SolutionOutlined />
-                <span className="text-lg font-semibold">Customer</span>
-              </div>
-            </Link>
-          )}
-
-          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
-            <Link
-              to="/management/feedback"
-              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Feedback"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-                }`}
-              onClick={() => {
-                sActiveMenu.set("Feedback");
-              }}
-            >
-              <div className="flex items-center gap-3 w-full">
-                <MessageOutlined />
-                <span className="text-lg font-semibold">Feedback</span>
-              </div>
-            </Link>
-          )}
+          <Link
+            to="/management/feedback"
+            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Feedback"
+              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
+            onClick={() => {
+              sActiveMenu.set("Feedback");
+            }}
+          >
+            <div className="flex items-center gap-3 w-full">
+              <MessageOutlined />
+              <span className="text-lg font-semibold">Feedback</span>
+            </div>
+          </Link>
 
           {(userRole === UserRole.THERAPIST) && (
-            <Link
-              to="/management/schedule"
-              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Schedule"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-                }`}
-              onClick={() => {
-                sActiveMenu.set("Schedule");
-              }}
-            >
-              <div className="flex items-center gap-3 w-full">
-                <ScheduleOutlined />
-                <span className="text-lg font-semibold">Schedule</span>
-              </div>
-            </Link>
+          <Link
+            to="/management/schedule"
+            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Schedule"
+              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
+            onClick={() => {
+              sActiveMenu.set("Schedule");
+            }}
+          >
+            <div className="flex items-center gap-3 w-full">
+              <ScheduleOutlined />
+              <span className="text-lg font-semibold">Schedule</span>
+            </div>
+          </Link>
           )}
 
           <Link

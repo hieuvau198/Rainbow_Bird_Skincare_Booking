@@ -40,7 +40,7 @@ export default function HomePopularService() {
       <div className="relative flex justify-center w-full max-w-7xl px-8">
         <button
           onClick={scrollLeft}
-          className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-lime-500 text-white p-3 rounded-full shadow-md hover:bg-lime-600 transition duration-300 z-10"
+          className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-green-700 text-white p-3 rounded-full shadow-md hover:bg-green-600 transition duration-300 z-10"
         >
           <FaChevronLeft size={20} />
         </button>
@@ -88,7 +88,7 @@ export default function HomePopularService() {
 
         <button
           onClick={scrollRight}
-          className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-lime-500 text-white p-3 rounded-full shadow-md hover:bg-lime-600 transition duration-300 z-10"
+          className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-green-700 text-white p-3 rounded-full shadow-md hover:bg-green-600 transition duration-300 z-10"
         >
           <FaChevronRight size={20} />
         </button>
@@ -99,7 +99,7 @@ export default function HomePopularService() {
         {Array.from({ length: Math.ceil(services.length / 3) }).map((_, index) => (
           <span
             key={index}
-            className={`h-3 w-3 rounded-full ${activeIndex === index ? 'bg-lime-600' : 'bg-gray-400'} transition duration-300`}
+            className={`h-3 w-3 rounded-full ${activeIndex === index ? 'bg-green-700' : 'bg-gray-400'} transition duration-300`}
           ></span>
         ))}
       </div>

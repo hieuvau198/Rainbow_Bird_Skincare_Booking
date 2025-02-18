@@ -90,7 +90,7 @@ const ManagerTable = () => {
         loading={loading}
         pagination={{ pageSize: 10 }}
         bordered
-        scroll={{ x: "max-content", y: 350 }}
+        scroll={{ y: 350 }}
       />
       <AddManager
         open={addModalVisible}

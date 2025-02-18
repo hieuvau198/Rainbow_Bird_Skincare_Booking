@@ -4,7 +4,7 @@ import Loading from "../../../../components/Loading"; // Assume Loading is a sha
 import QuizRenderDetails from "./QuizDetailsPartials/QuizRenderDetails";
 import QuizRenderEditForm from "./QuizDetailsPartials/QuizRenderEditForm";
 
-const QuizDetail = ({ visible, onClose, quiz, onQuizUpdate }) => {
+const QuizDetail = ({ open, onClose, quiz, onQuizUpdate }) => {
   const [localQuiz, setLocalQuiz] = useState(quiz);
   const [isEdit, setIsEdit] = useState(false);
   const [form] = Form.useForm();
@@ -14,7 +14,7 @@ const QuizDetail = ({ visible, onClose, quiz, onQuizUpdate }) => {
   }, [quiz]);
 
   useEffect(() => {
-    if (localQuiz && visible && isEdit) {
+    if (localQuiz && open && isEdit) {
       form.resetFields();
       form.setFieldsValue({
         quizName: localQuiz.quizName,
@@ -22,7 +22,7 @@ const QuizDetail = ({ visible, onClose, quiz, onQuizUpdate }) => {
         status: localQuiz.status,
       });
     }
-  }, [localQuiz, visible, isEdit, form]);
+  }, [localQuiz, open, isEdit, form]);
 
   const handleSaveEdit = async () => {
     try {
@@ -38,7 +38,7 @@ const QuizDetail = ({ visible, onClose, quiz, onQuizUpdate }) => {
 
   return (
     <Modal
-      visible={visible}
+      open={open}
       onCancel={() => {
         setIsEdit(false);
         onClose();

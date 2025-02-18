@@ -3,7 +3,7 @@ import CryptoJS from "crypto-js";
 import Cookies from "js-cookie";
 import UserRole from "../../../enums/userRole";
 
-const secretKey = process.env.REACT_APP_SECRET_KEY;
+const secretKey = process.env.REACT_APP_SECRET_KEY || "ToiYeuEMToiYeuEM";
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export const googleLogin = async (response, CLIENT_ID, setLoading, navigate) => {

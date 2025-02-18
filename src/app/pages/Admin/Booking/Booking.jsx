@@ -102,20 +102,38 @@ export default function Booking() {
           status === "Confirmed"
             ? "green"
             : status === "Pending"
-              ? "gold"
-              : "gray";
+            ? "gold"
+            : "gray";
         return <Tag color={color}>{status}</Tag>;
       },
     },
-
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button color="gold" variant="solid" type="link" onClick={() =>
-            handleAction(record, "view")}>View details</Button>
-          <Button color="danger" variant="solid" type="link" danger>
+          <Button
+            size="normal"
+            style={{
+              backgroundColor: "#FBA506",
+              borderColor: "#FBA506",
+              color: "#fff",
+            }}
+            onClick={() => handleAction(record, "view")}
+          >
+            View details
+          </Button>
+          <Button
+            size="normal"
+            style={{
+              backgroundColor: "#FF4D4F",
+              borderColor: "#FF4D4F",
+              color: "#fff",
+            }}
+            // Nếu booking có status "Completed", disable nút Delete
+            disabled={record.status === "Completed"}
+            onClick={() => handleAction(record, "cancel")}
+          >
             Delete
           </Button>
         </Space>
@@ -124,14 +142,40 @@ export default function Booking() {
   ];
 
   return (
-    <div className="p-6 max-w-[1270px]">
-      <div className="p-6 bg-white rounded-md shadow-md min-h-[580px]">
+    <div
+      style={{
+        margin: "20px auto",
+        padding: "16px",
+        backgroundColor: "#f0f0f0",
+        maxWidth: "1600px",
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "#fff",
+          borderRadius: "16px",
+          padding: "18px",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         {/* Dòng chứa tiêu đề và nút Add Booking */}
-        <div className="flex justify-between items-center mb-5">
-          <h1 className="text-[22px] font-bold m-0">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "20px",
+          }}
+        >
+          <h1 style={{ fontSize: "22px", fontWeight: "bold", margin: 0 }}>
             Skincare Service Bookings
           </h1>
-          <Button type="primary" size="normal" onClick={() => setShowAddBooking(true)}>
+          <Button
+            type="primary"
+            size="normal"
+            onClick={() => setShowAddBooking(true)}
+          >
             + Add Booking
           </Button>
         </div>

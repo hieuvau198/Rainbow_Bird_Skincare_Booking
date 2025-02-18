@@ -14,9 +14,9 @@ function RevenueByDayChart() {
   ];
 
   return (
-    <div className=" bg-white p-6 rounded-2xl shadow-md">
+    <div className="bg-white p-6 rounded-2xl shadow-md">
       <h3 className="font-bold text-lg mb-4 text-gray-800">Revenue by Day</h3>
-      <Chart options={options} series={series} type="bar" height={225} />
+      <Chart options={options} series={series} type="bar" height={220} />
     </div>
   );
 }

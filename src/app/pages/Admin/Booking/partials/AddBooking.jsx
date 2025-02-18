@@ -11,7 +11,7 @@ export default function AddBooking({ onClose }) {
   };
 
   return (
-    <Modal title="Add Booking" open onCancel={onClose} footer={null}>
+    <Modal title="Add Booking" visible onCancel={onClose} footer={null}>
       <Form form={form} layout="vertical" onFinish={handleSubmit}>
         <Form.Item
           name="customerName"

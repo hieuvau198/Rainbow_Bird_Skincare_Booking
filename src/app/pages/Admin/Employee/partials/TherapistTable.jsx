@@ -75,7 +75,7 @@ const TherapistTable = () => {
                 loading={loading}
                 pagination={{ pageSize: 10 }}
                 bordered
-                scroll={{ x: "max-content", y: 350 }}
+                scroll={{ y: 350 }}
             />
             <ViewTherapistProfile
                 open={detailModalVisible}
