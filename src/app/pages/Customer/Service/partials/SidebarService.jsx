@@ -31,7 +31,7 @@ const SidebarService = () => {
               { img: "https://media.istockphoto.com/id/1203733319/fr/photo/recherche-de-drogue-naturelle-extraction-organique-et-scientifique-normale-dans-la-verrerie.webp?a=1&b=1&s=612x612&w=0&k=20&c=tVCUVhZRhG_DnL1kcRBzGdhpd-0_AuOQFru-mlUErI8=", title: "Natural Medicine Therapy", },
             ].map((guide, index) => (
               <div key={index} className="cursor-pointer">
-                <hr className="my-4 border-white" />
+                <hr className="my-4 border-lime-200" />
                 <img src={guide.img} alt={`Guide ${index + 1}`} className="w-full h-32 rounded" />
                 <span className="block mt-2 bg-white bg-opacity-80 px-2 py-1 rounded text-sm">
                   {guide.title}

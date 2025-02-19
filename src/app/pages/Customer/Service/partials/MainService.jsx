@@ -62,7 +62,7 @@ export default function MainContent({ services }) {
       {/* Service List */}
       <div className={`grid ${gridCols} gap-4`}>
         {sortedServices.map((service) => (
-          <div key={service.service_id} className={`bg-white p-4 ${isListView ? 'flex items-start space-x-4' : ''}`}>
+          <div key={service.service_id} className={`bg-white p-4 border border-lime-200 rounded-md shadow-sm ${isListView ? 'flex items-start space-x-4' : ''}`}>
             <Link to={`/services/${service.service_id}`} key={service.service_id} target="_top" className="block w-full">
               <div className={`bg-white cursor-pointer ${isListView ? 'flex' : ''}`}>
                 {/* Image */}
