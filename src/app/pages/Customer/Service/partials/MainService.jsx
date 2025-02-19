@@ -70,7 +70,7 @@ export default function MainContent({ services }) {
                   <img
                     src={service.image}
                     alt={service.service_name}
-                    className={`w-full h-auto object-contain rounded-md my-2 transition-transform duration-300 hover:scale-105 ${isListView ? 'h-72 w-full' : ''}`}
+                    className={`w-full h-auto object-contain rounded-md my-2 transition-transform duration-300 hover:scale-105 ${isListView ? 'h-64 w-full' : ''}`}
                   />
                 </div>
 

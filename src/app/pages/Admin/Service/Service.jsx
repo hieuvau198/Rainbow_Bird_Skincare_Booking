@@ -91,7 +91,9 @@ export default function Service() {
       dataIndex: "price",
       key: "price",
       width: 150,
+      render: (_, record) => `${record.price} ${record.currency || 'USD'}`,
     },
+
     {
       title: "Status",
       dataIndex: "isActive",

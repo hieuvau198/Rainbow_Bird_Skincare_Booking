@@ -6,19 +6,19 @@ export default function RelatedServices({ services, service }) {
 
   const scrollLeft = () => {
     if (sliderRef.current) {
-      sliderRef.current.scrollBy({ left: -1200, behavior: "smooth" });
+      sliderRef.current.scrollBy({ left: -500, behavior: "smooth" });
     }
   };
 
   const scrollRight = () => {
     if (sliderRef.current) {
-      sliderRef.current.scrollBy({ left: 1200, behavior: "smooth" });
+      sliderRef.current.scrollBy({ left: 500, behavior: "smooth" });
     }
   };
 
   return (
     <div className="mt-2 mb-10 p-6 bg-white">
-      <h2 className="text-2xl font-bold mb-4">Suggestions specifically for you</h2>
+      <h2 className="text-4xl flex justify-center font-bold mb-4">Suggestions specifically for you</h2>
       <div className="relative">
         <button
           onClick={scrollLeft}
@@ -28,16 +28,16 @@ export default function RelatedServices({ services, service }) {
         </button>
         <div
           ref={sliderRef}
-          className="flex overflow-hidden divide-x divide-gray-300 p-2 flex-nowrap items-stretch"
+          className="flex overflow-hidden p-2 flex-nowrap items-stretch"
         >
           {services
             .filter((s) => s.service_id !== service.service_id)
             .map((related) => (
-              <div key={related.service_id} className="min-w-[240px] bg-white p-4 border-0 flex flex-col justify-between h-full">
+              <div key={related.service_id} className="min-w-[320px] bg-white p-4 border-0 flex flex-col justify-between h-full">
                 <img
                   src={related.image}
                   alt={related.service_name}
-                  className="w-full h-40 object-cover rounded-md mb-3"
+                  className="w-full h-64 object-cover rounded-md mb-3"
                 />
                 <div className="flex-grow">
                   <h3 className="text-sm font-semibold line-clamp-2">

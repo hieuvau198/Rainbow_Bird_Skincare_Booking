@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function HomeRecentBlogs() {
     return (
-        <div className=" py-10 px-5">
+        <div className=" py-10 px-5 bg-slate-200">
             <h2 className="text-center text-3xl font-bold text-gray-800 mb-8">BLOG POSTS</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Blog Post 1 */}
