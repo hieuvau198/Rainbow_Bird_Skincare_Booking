@@ -1,9 +1,10 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Table, Tag } from "antd";
+import { Button, message, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import userRole from "../../../../../enums/userRole";
 import getAllUser from "../../../../modules/Admin/Employee/getAllUser";
 import AddStaff from "./StaffPartials/AddStaff";
+import addEmployee from "../../../../modules/Admin/Employee/addEmployee";
 
 const StaffTable = () => {
   const [data, setData] = useState([]);
@@ -11,19 +12,10 @@ const StaffTable = () => {
   const [addModalVisible, setAddModalVisible] = useState(false);
 
   const columns = [
-    { title: "ID", dataIndex: "id", key: "id", width: 50 },
+    { title: "ID", dataIndex: "id", key: "id", width: 150 },
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Email", dataIndex: "email", key: "email", width: 250 },
     { title: "Mobile", dataIndex: "mobile", key: "mobile" },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      width: 100,
-      render: (status) => (
-        <Tag color={status === "Active" ? "green" : "volcano"}>{status}</Tag>
-      ),
-    },
     {
       title: "Action",
       key: "action",
@@ -50,7 +42,6 @@ const StaffTable = () => {
         name: user.fullName,
         email: user.email,
         mobile: user.phone,
-        status: "Active", 
       }));
       setData(formattedData);
     } catch (error) {
@@ -64,8 +55,21 @@ const StaffTable = () => {
     loadStaffData();
   }, []);
 
-  const handleAddStaff = (values) => {
-    console.log("New therapist data:", values);
+  const handleAddStaff = async (values) => {
+    try {
+      const newStaff = await addEmployee(values);
+      console.log("Data sent to API:", values);
+      setData((prevData) => [
+        ...prevData,
+        { key: newStaff.username, ...newStaff },
+      ]);
+      setAddModalVisible(false);
+      loadStaffData();
+      message.success("Staff added successfully!");
+    } catch (error) {
+      console.error("Error adding staff:", error);
+      message.error("Error adding staff!");
+    }
   };
 
   return (

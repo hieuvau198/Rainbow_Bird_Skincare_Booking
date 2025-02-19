@@ -74,9 +74,9 @@ const TherapistTable = () => {
         <div>
             <div className="flex justify-between my-4">
                 <div className="text-xs lg:text-xl font-medium">Therapist List</div>
-                <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddModalVisible(true)}>
+                {/* <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddModalVisible(true)}>
                     Add Therapist
-                </Button>
+                </Button> */}
             </div>
             <Table
                 rowKey="id"
