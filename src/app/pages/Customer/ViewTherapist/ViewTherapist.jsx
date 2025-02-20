@@ -26,7 +26,7 @@ const ViewTherapist = () => {
   const sortedTherapists = sortTherapists(mockTherapists, sortOption);
 
   return (
-    <div className="p-6 lg:p-24 md:p-16 bg-gray-100 min-h-screen">
+    <div className="p-6 lg:p-24 md:p-16 bg-slate-50 min-h-screen">
       <h1 className="text-2xl font-bold text-gray-700 mb-6">Our Therapists</h1>
       
       {/* Dropdown chọn kiểu sắp xếp */}

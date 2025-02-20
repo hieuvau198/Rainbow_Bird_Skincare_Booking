@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function HomeRecentBlogs() {
   return (
-    <div className="py-10 bg-slate-50">
+    <div className="pt-10 pb-24 bg-slate-50">
       {/* Container giới hạn độ rộng và căn giữa */}
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <h2 className="text-3xl text-center font-bold font-Arial mb-10 text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600">

@@ -1,4 +1,6 @@
 import React from "react";
+// Có thể import icon từ react-icons (nếu bạn muốn dùng icon FontAwesome, ví dụ):
+import { FaGift, FaLeaf, FaGlobe, FaTruck } from "react-icons/fa";
 
 export default function SkincareCategories() {
   const categories = [
@@ -74,8 +76,9 @@ export default function SkincareCategories() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="p-4 max-w-7xl ml-40 mx-auto">
+    <div className="min-h-screen bg-slate-50 flex flex-col">
+      {/* Nội dung chính */}
+      <div className="p-4 max-w-7xl mx-auto flex-grow">
         <h1 className="text-center text-3xl font-bold font-Arial mb-10 text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600">
           ELEVATE YOUR BEAUTY RITUAL
         </h1>
@@ -92,8 +95,10 @@ export default function SkincareCategories() {
               </h2>
               <div className="space-y-6">
                 {category.items.map((item, idx) => (
-                  <div key={idx} className="transition-transform duration-300 hover:scale-105">
-                    {/* Nội dung sản phẩm */}
+                  <div
+                    key={idx}
+                    className="transition-transform duration-300 hover:scale-105"
+                  >
                     <div className="flex items-center space-x-4">
                       <img
                         src={item.image}
@@ -101,18 +106,38 @@ export default function SkincareCategories() {
                         className="w-20 h-20 object-cover rounded-lg transition-transform duration-300 hover:scale-110"
                       />
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-700">{item.name}</h3>
+                        <h3 className="text-lg font-semibold text-gray-700">
+                          {item.name}
+                        </h3>
                         <p className="text-gray-500">{item.price}</p>
                       </div>
                     </div>
-
-                    {/* Gạch ngang */}
                     <hr className="my-8 border-gray-300" />
                   </div>
                 ))}
               </div>
             </div>
           ))}
+        </div>
+      </div>
+      {/* Thanh trên cùng với 4 icons */}
+      <div className="w-full bg-[rgb(191,238,174)] py-10">
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+          {/* 1. Gifts for you */}
+          <div className="flex flex-col items-center">
+            <FaGift className="text-4xl text-green-600 mb-2" />
+            <p className="text-lg font-semibold text-green-700">Gifts For You</p>
+          </div>
+          {/* 2. 100% Organic */}
+          <div className="flex flex-col items-center">
+            <FaLeaf className="text-4xl text-green-600 mb-2" />
+            <p className="text-lg font-semibold text-green-700">100% Organic</p>
+          </div>
+          {/* 3. Online Acquisition */}
+          <div className="flex flex-col items-center">
+            <FaGlobe className="text-4xl text-green-600 mb-2" />
+            <p className="text-lg font-semibold text-green-700">Online Acquisition</p>
+          </div>
         </div>
       </div>
     </div>
