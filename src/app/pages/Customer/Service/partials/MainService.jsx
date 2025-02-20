@@ -62,7 +62,7 @@ export default function MainContent({ services }) {
       {/* Service List */}
       <div className={`grid ${gridCols} gap-4`}>
         {sortedServices.map((service) => (
-          <div key={service.service_id} className={`bg-white p-4 ${isListView ? 'flex items-start space-x-4' : ''}`}>
+          <div key={service.service_id} className={`bg-white p-4 border border-lime-200 rounded-md shadow-sm ${isListView ? 'flex items-start space-x-4' : ''}`}>
             <Link to={`/services/${service.service_id}`} key={service.service_id} target="_top" className="block w-full">
               <div className={`bg-white cursor-pointer ${isListView ? 'flex' : ''}`}>
                 {/* Image */}
@@ -70,7 +70,7 @@ export default function MainContent({ services }) {
                   <img
                     src={service.image}
                     alt={service.service_name}
-                    className={`w-full h-auto object-contain rounded-md my-2 transition-transform duration-300 hover:scale-105 ${isListView ? 'h-72 w-full' : ''}`}
+                    className={`w-full h-auto object-contain rounded-md my-2 transition-transform duration-300 hover:scale-105 ${isListView ? 'h-64 w-full' : ''}`}
                   />
                 </div>
 

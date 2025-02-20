@@ -19,7 +19,7 @@ const newsData = [
 
 export default function HomeCenterNews() {
   return (
-    <div className="p-6 rounded-2xl shadow-md">
+    <div className="p-6 bg-slate-200">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">News</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {newsData.map((news) => (

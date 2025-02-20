@@ -30,7 +30,7 @@ export default function ContentSerDetail({ service, setIsModalOpen, removeScroll
             {/* List hình ảnh nhỏ */}
             <div ref={thumbnailsRef} className={`flex flex-col space-y-2 overflow-hidden h-96 ${removeScrollBar ? 'scrollbar-hidden' : ''}`}>
             {service.extra_images.map((img, index) => (
-                <div key={index} className={`p-1 rounded-md ${currentImageIndex === index ? 'border-2 border-black' : 'border'}`}>
+                <div key={index} className={`p-1 rounded-md ${currentImageIndex === index ? 'border-lime-300 border-2' : ''}`}>
                 <img
                     src={img}
                     alt={`Extra ${index}`}

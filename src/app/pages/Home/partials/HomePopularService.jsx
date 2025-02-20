@@ -33,7 +33,7 @@ export default function HomePopularService() {
   }, []);
 
   return (
-    <div className="bg-gray-100 py-10 flex flex-col items-center">
+    <div className="bg-sky-200/45 py-10 flex flex-col items-center">
       <h2 className="text-3xl font-bold font-roboto text-gray-800 mb-10">
          HOT SERVICES
       </h2>

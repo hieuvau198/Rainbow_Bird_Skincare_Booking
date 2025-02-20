@@ -18,7 +18,6 @@ const addEmployee = async (formData) => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        message.success("Employee added successfully!");
         return data;
     } catch (error) {
         message.error(error.message || "Error adding Employee!");

@@ -40,7 +40,7 @@ const renderDetails = (localService) => {
                 <DollarOutlined className="mr-1" /> Price:
               </span>
               <span className="ml-4">
-                {localService.currency}{localService.price}
+              {localService.price} {localService.currency}
               </span>
             </div>
             <div className="flex items-center">
