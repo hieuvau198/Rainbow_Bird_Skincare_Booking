@@ -2,6 +2,7 @@ import { message } from "antd";
 import CryptoJS from "crypto-js";
 import Cookies from "js-cookie";
 import UserRole from "../../../enums/userRole";
+import { autoRefreshToken } from "./refreshToken";
 
 const secretKey = process.env.REACT_APP_SECRET_KEY || "ToiYeuEMToiYeuEM";
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -17,6 +18,7 @@ export const googleLogin = async (response, CLIENT_ID, setLoading, navigate) => 
         if (!serverResponse.ok) throw new Error("Google login failed!");
         const data = await serverResponse.json();
         saveTokens(data);
+        autoRefreshToken();
         message.success("Google login successful!");
         const userRole = data.user.role;
         if (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) {
@@ -49,6 +51,7 @@ export const loginUser = async (values, setLoading, navigate) => {
         }
         const data = await response.json();
         saveTokens(data);
+        autoRefreshToken();
         const userRole = data.user.role;
         if (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) {
             navigate("/management/dashboard");
@@ -71,7 +74,7 @@ const encodeRoleToBase64 = (role) => {
     return btoa(String(role));
 };
 
-const saveTokens = (data) => {
+export const saveTokens = (data) => {
     const oneHour = 1 / 24;
 
     if (data.user && data.user.role !== undefined) {
@@ -96,83 +99,3 @@ const saveTokens = (data) => {
         secure: true
     });
 };
-
-// ========================= Hàm refreshToken =========================
-export async function refreshToken() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/api/Auth/refresh-token`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ refreshToken: Cookies.get("refreshToken") }),
-        });
-
-        if (!response.ok) {
-            throw new Error("Refresh token failed!");
-        }
-
-        const data = await response.json();
-        const oneHour = 1 / 24;
-
-        if (data.user && data.user.role !== undefined) {
-            Cookies.set("userRole", data.user.role, {
-                expires: oneHour,
-                sameSite: "Strict",
-                secure: true
-            });
-        }
-
-        Cookies.set("accessToken", data.accessToken, {
-            expires: oneHour,
-            sameSite: "Strict",
-            secure: true
-        });
-        Cookies.set("refreshToken", data.refreshToken, {
-            expires: oneHour,
-            sameSite: "Strict",
-            secure: true
-        });
-
-        return data.accessToken;
-    } catch (error) {
-        message.error("Session expired. Please log in again.");
-        Cookies.remove("__atok");
-        Cookies.remove("__rtok");
-        Cookies.remove("__urol");
-        window.location.href = "/login";
-        throw error;
-    }
-}
-
-// ========================= Hàm fetchWithAuth =========================
-export async function fetchWithAuth(url, options = {}) {
-    // Lấy accessToken hiện tại từ Cookies
-    let accessToken = Cookies.get("__atok");
-
-    // Thiết lập header mặc định
-    const headers = {
-        "Content-Type": "application/json",
-        ...(options.headers || {}),
-    };
-
-    if (accessToken) {
-        headers.Authorization = `Bearer ${accessToken}`;
-    }
-
-    // Thực hiện fetch
-    let response = await fetch(url, { ...options, headers });
-
-    // Nếu lỗi 401, thử refresh token và retry request
-    if (response.status === 401) {
-        try {
-            accessToken = await refreshToken();
-            headers.Authorization = `Bearer ${accessToken}`;
-            response = await fetch(url, { ...options, headers });
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    return response;
-}
