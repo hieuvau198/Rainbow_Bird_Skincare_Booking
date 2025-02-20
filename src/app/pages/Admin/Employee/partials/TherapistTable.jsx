@@ -23,7 +23,7 @@ const TherapistTable = () => {
             key: "status",
             width: 100,
             render: (status) => (
-                <Tag color={status === "Active" ? "green" : "volcano"}>{status}</Tag>
+                <Tag color={status === "Active" ? "green" : "red"}>{status}</Tag>
             ),
         },
         {
@@ -31,7 +31,7 @@ const TherapistTable = () => {
             key: "action",
             render: (_, record) => (
                 <Space size="middle">
-                    <Button color="gold" variant="solid" type="link" onClick={() => {
+                    <Button color="primary" variant="solid" type="link" onClick={() => {
                         setSelectedTherapistId(record.id);
                         setDetailModalVisible(true);
                     }}>View details</Button>
