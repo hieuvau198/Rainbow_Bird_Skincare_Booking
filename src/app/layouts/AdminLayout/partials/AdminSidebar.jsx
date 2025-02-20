@@ -160,7 +160,7 @@ const AdminSidebar = () => {
             </Link>
           )}
 
-          {/* {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
+          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
             <Link
               to="/management/feedback"
               className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Feedback"
@@ -176,7 +176,7 @@ const AdminSidebar = () => {
                 <span className="text-lg font-semibold">Feedback</span>
               </div>
             </Link>
-          )} */}
+          )}
 
           {(userRole === UserRole.THERAPIST) && (
             <Link
@@ -196,7 +196,7 @@ const AdminSidebar = () => {
             </Link>
           )}
 
-          {/* <Link
+          <Link
             to="/management/profile"
             className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Profile"
               ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
@@ -210,7 +210,7 @@ const AdminSidebar = () => {
               <UserOutlined />
               <span className="text-lg font-semibold">Profile</span>
             </div>
-          </Link> */}
+          </Link>
 
           <div className="cursor-pointer hover:bg-gray-200 rounded-lg">
             <a

@@ -100,7 +100,7 @@ export default function Service() {
       key: "status",
       width: 150,
       render: (isActive) => (
-        <Tag color={isActive ? "green" : "volcano"}>
+        <Tag color={isActive ? "green" : "red"}>
           {isActive ? "Available" : "Unavailable"}
         </Tag>
       ),
@@ -110,11 +110,11 @@ export default function Service() {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button color="gold" variant="solid" type="link" onClick={() => handleViewDetails(record.serviceId)}>
+          <Button color="primary" variant="solid" type="link" onClick={() => handleViewDetails(record.serviceId)}>
             View details
           </Button>
           {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
-            <Button color="danger" variant="solid" type="link" danger onClick={() => showDeleteConfirm(record)}>
+            <Button color="red" variant="solid" type="link" danger onClick={() => showDeleteConfirm(record)}>
               Delete
             </Button>
           )}
