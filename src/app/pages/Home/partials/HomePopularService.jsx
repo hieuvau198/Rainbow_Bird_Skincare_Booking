@@ -33,14 +33,17 @@ export default function HomePopularService() {
   }, []);
 
   return (
-    <div className="bg-sky-200/45 py-10 flex flex-col items-center">
-      <h2 className="text-3xl font-bold font-roboto text-gray-800 mb-10">
-         HOT SERVICES
-      </h2>
+    <div className="bg-slate-50 py-10 flex flex-col items-center">
+<h2
+  className="text-3xl font-bold font-Arial mb-10 text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600">
+  HOT SERVICES
+</h2>
+
+
       <div className="relative flex justify-center w-full max-w-7xl px-8">
         <button
           onClick={scrollLeft}
-          className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-green-700 text-white p-3 rounded-full shadow-md hover:bg-green-600 transition duration-300 z-10"
+          className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-green-50 text-gray p-3 rounded-full shadow-md hover:bg-green-300 transition duration-300 z-10"
         >
           <FaChevronLeft size={20} />
         </button>
@@ -53,19 +56,32 @@ export default function HomePopularService() {
           {services.map((service) => (
             <div
               key={service.id}
-              className=" overflow-hidden flex-none transform transition duration-300 hover: snap-start"
-              style={{ width: '400px', height: '550px' }}
+              className="overflow-hidden flex-none transform transition duration-300 snap-start"
+              style={{ width: '390px', height: '550px' }}
             >
-              <img
-                src={service.image}
-                alt={service.name}
-                className="w-full h-2/3 object-cover"
-              />
-              <div className="p-4 text-center">
+              {/* Khối chứa ảnh + nút Buy Now */}
+              <div className="relative h-2/3 group">
+                <img
+                  src={service.image}
+                  alt={service.name}
+                  className="w-full h-full object-cover"
+                />
+                {/* Nút Buy Now nằm sát đáy hình, chỉ hiện khi hover */}
+                <button
+                  className="absolute bottom-4 left-1/2 transform -translate-x-1/2 
+                             bg-white text-gray-800 px-4 py-2 rounded-full shadow
+                             opacity-0 group-hover:opacity-100 transition duration-300"
+                >
+                  Buy Now
+                </button>
+              </div>
+
+              {/* Thông tin sản phẩm */}
+              <div className="p-4 text-center relative">
                 <h3 className="text-2xl font-roboto text-gray-800">{service.name}</h3>
-                <span className="absolute top-0 left-0 bg-lime-500 text-white px-2 py-1 text-sm font-roboto">
-    -6%
-  </span>
+                {/* <span className="absolute top-0 left-0 bg-lime-500 text-white px-2 py-1 text-sm font-roboto">
+                  -6%
+                </span> */}
                 <div className="flex flex-col items-center mt-2">
                   <div className="flex items-center">
                     {/* 4 sao đầy */}
@@ -88,21 +104,23 @@ export default function HomePopularService() {
 
         <button
           onClick={scrollRight}
-          className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-green-700 text-white p-3 rounded-full shadow-md hover:bg-green-600 transition duration-300 z-10"
+          className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-green-50 text-gray p-3 rounded-full shadow-md hover:bg-green-300 transition duration-300 z-10"
         >
           <FaChevronRight size={20} />
         </button>
       </div>
 
       {/* Pagination Dots - tính số trang = Math.ceil(số sản phẩm / 3) */}
-      <div className="flex space-x-2">
+      {/* <div className="flex space-x-2 mt-4">
         {Array.from({ length: Math.ceil(services.length / 3) }).map((_, index) => (
           <span
             key={index}
-            className={`h-3 w-3 rounded-full ${activeIndex === index ? 'bg-green-700' : 'bg-gray-400'} transition duration-300`}
+            className={`h-3 w-3 rounded-full ${
+              activeIndex === index ? 'bg-green-700' : 'bg-gray-400'
+            } transition duration-300`}
           ></span>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }

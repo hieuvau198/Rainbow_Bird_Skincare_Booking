@@ -2,10 +2,9 @@ import React from 'react';
 
 export default function HomeSpecialService() {
   return (
-    
-    <div className=" py-16 px-6 md:px-12 lg:px-24 flex flex-wrap items-center">
+    <div className="py-16 px-6 md:px-12 bg-slate-50 lg:px-24 flex flex-wrap items-center">
       {/* Left Side */}
-      <div className=" md:w-1/2 flex items-center justify-center relative overflow-hidden rounded-lg shadow-lg">
+      <div className="md:w-1/2 translate-x-12 flex items-center justify-center relative overflow-hidden rounded-lg shadow-lg">
         <img
           src="https://hips.hearstapps.com/hmg-prod/images/2-natural-skincare-brands-670eadb4e4fcf.jpg?crop=0.6666666666666666xw:1xh;center,top&resize=1200:*"
           alt="Skincare Collection"
@@ -19,22 +18,26 @@ export default function HomeSpecialService() {
       </div>
 
       {/* Right Side */}
-      <div className=" md:w-1/2 p-8 md:p-12">
+      <div className="md:w-1/2 p-8 md:p-12 translate-x-6">
         <h2 className="text-4xl font-roboto text-gray-800 mb-10 text-center pb-4">
+          {/* Bạn có thể thêm tiêu đề phụ tại đây */}
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/** Service Items */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* Service Items */}
           {services.map((service, index) => (
             <div
               key={index}
-              className=" p-6 rounded-lg shadow-lg transition-transform duration-300"
+              className="p-6 animate-fade-in"
+              style={{ animationDelay: `${index * 200}ms` }} // Tạo hiệu ứng stagger
             >
               <img
                 src={service.image}
                 alt={service.title}
                 className="w-full h-48 object-cover mb-4 transition-transform duration-300 hover:scale-110"
               />
-              <h3 className="text-2xl font-semibold text-gray-800 text-center">{service.title}</h3>
+              <h3 className="text-2xl font-semibold text-gray-800 text-center">
+                {service.title}
+              </h3>
             </div>
           ))}
         </div>
