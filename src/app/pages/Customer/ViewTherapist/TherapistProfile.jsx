@@ -27,22 +27,18 @@ const TherapistProfile = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <header className="mb-6">
-        
+        {/* Header content nếu cần */}
       </header>
 
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6">
-        
         {/* Card 1: Hình ảnh */}
-        <div className="md:w-1/4 bg-teal-400 rounded-lg shadow overflow-hidden">
+        <div className="md:w-1/4 bg-teal-200 rounded-lg shadow overflow-hidden self-start h-96">
           <img
             src={therapist.profileImage}
             alt={therapist.name}
             className="w-full h-full object-cover"
           />
         </div>
-        {/* <div className="md:w-1/4 bg-white rounded-lg shadow p-6">
-          
-        </div> */}
         {/* Card 2: Nội dung */}
         <div className="md:w-3/4 bg-white rounded-lg shadow flex flex-col">
           {/* Phần tiêu đề: Tên, chuyên môn và rating */}
@@ -140,20 +136,19 @@ const TherapistProfile = () => {
                 <span>{therapist.phone}</span>
               </div>
             </div>
-            <button className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 font-semibold">
+            {/* <button className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 font-semibold">
               Contact
-            </button>
+            </button> */}
           </div>
         </div>
-        
       </div>
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 mt-5">
-      <div className="md:w-2/4 bg-white rounded-lg shadow p-6">
-          
-          </div>
-          <div className="md:w-2/4 bg-white rounded-lg shadow p-6">
-            
-          </div>
+        <div className="md:w-2/4 bg-white rounded-lg shadow p-6">
+          {/* Nội dung bổ sung 1 */}
+        </div>
+        <div className="md:w-2/4 bg-white rounded-lg shadow p-6">
+          {/* Nội dung bổ sung 2 */}
+        </div>
       </div>
     </div>
   );

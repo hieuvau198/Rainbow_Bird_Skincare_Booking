@@ -1,5 +1,15 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { FaChevronLeft, FaChevronRight, FaStar, FaStarHalfAlt } from 'react-icons/fa';
+import { 
+  FaChevronLeft, 
+  FaChevronRight, 
+  FaStar, 
+  FaStarHalfAlt,
+  // Thêm 4 icon
+  FaGift, 
+  FaLeaf, 
+  FaGlobe, 
+  FaTruck 
+} from 'react-icons/fa';
 
 export default function HomePopularService() {
   const services = [
@@ -33,75 +43,112 @@ export default function HomePopularService() {
   }, []);
 
   return (
-    <div className="bg-sky-200/45 py-10 flex flex-col items-center">
-      <h2 className="text-3xl font-bold font-roboto text-gray-800 mb-10">
-         HOT SERVICES
-      </h2>
-      <div className="relative flex justify-center w-full max-w-7xl px-8">
-        <button
-          onClick={scrollLeft}
-          className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-green-700 text-white p-3 rounded-full shadow-md hover:bg-green-600 transition duration-300 z-10"
-        >
-          <FaChevronLeft size={20} />
-        </button>
-
-        <div
-          ref={scrollContainerRef}
-          className="flex overflow-x-scroll space-x-6 px-4 snap-x snap-mandatory hide-scrollbar"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', overflow: 'hidden' }}
-        >
-          {services.map((service) => (
-            <div
-              key={service.id}
-              className=" overflow-hidden flex-none transform transition duration-300 hover: snap-start"
-              style={{ width: '400px', height: '550px' }}
-            >
-              <img
-                src={service.image}
-                alt={service.name}
-                className="w-full h-2/3 object-cover"
-              />
-              <div className="p-4 text-center">
-                <h3 className="text-2xl font-roboto text-gray-800">{service.name}</h3>
-                <span className="absolute top-0 left-0 bg-lime-500 text-white px-2 py-1 text-sm font-roboto">
-    -6%
-  </span>
-                <div className="flex flex-col items-center mt-2">
-                  <div className="flex items-center">
-                    {/* 4 sao đầy */}
-                    {Array(4).fill(null).map((_, i) => (
-                      <FaStar key={i} className="text-yellow-500" />
-                    ))}
-                    {/* 1 sao rưỡi */}
-                    <FaStarHalfAlt className="text-yellow-500" />
-                    <span className="ml-2 text-sm text-gray-600">1434 reviews</span>
-                  </div>
-                  <div className="flex items-center space-x-2 mt-2">
-                    <span className="text-gray-400 line-through">$19.95</span>
-                    <span className="text-lime-500 font-semibold">$18.85</span>
-                  </div>
-                </div>
-              </div>        
-            </div>
-          ))}
+    <div>
+      {/* Thanh trên cùng với 4 icons */}
+      <div className="w-full bg-[rgb(191,238,174)] py-10">
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+          {/* 1. Gifts for you */}
+          <div className="flex flex-col items-center">
+            <FaGift className="text-4xl text-green-600 mb-2" />
+            <p className="text-lg font-semibold text-green-700">Gifts For You</p>
+          </div>
+          {/* 2. 100% Organic */}
+          <div className="flex flex-col items-center">
+            <FaLeaf className="text-4xl text-green-600 mb-2" />
+            <p className="text-lg font-semibold text-green-700">100% Organic</p>
+          </div>
+          {/* 3. Online Acquisition */}
+          <div className="flex flex-col items-center">
+            <FaGlobe className="text-4xl text-green-600 mb-2" />
+            <p className="text-lg font-semibold text-green-700">Online Acquisition</p>
+          </div>
         </div>
-
-        <button
-          onClick={scrollRight}
-          className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-green-700 text-white p-3 rounded-full shadow-md hover:bg-green-600 transition duration-300 z-10"
-        >
-          <FaChevronRight size={20} />
-        </button>
       </div>
 
-      {/* Pagination Dots - tính số trang = Math.ceil(số sản phẩm / 3) */}
-      <div className="flex space-x-2">
-        {Array.from({ length: Math.ceil(services.length / 3) }).map((_, index) => (
-          <span
-            key={index}
-            className={`h-3 w-3 rounded-full ${activeIndex === index ? 'bg-green-700' : 'bg-gray-400'} transition duration-300`}
-          ></span>
-        ))}
+      {/* Phần HOT SERVICES */}
+      <div className="bg-slate-50 py-8 flex flex-col items-center">
+        <h2
+          className="text-3xl font-bold font-Arial mb-10 text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600"
+        >
+          HOT SERVICES
+        </h2>
+
+        <div className="relative flex justify-center w-full max-w-7xl px-8">
+          <button
+            onClick={scrollLeft}
+            className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-green-50 text-gray p-3 rounded-full shadow-md hover:bg-green-300 transition duration-300 z-10"
+          >
+            <FaChevronLeft size={20} />
+          </button>
+
+          <div
+            ref={scrollContainerRef}
+            className="flex overflow-x-scroll space-x-6 px-4 snap-x snap-mandatory hide-scrollbar"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', overflow: 'hidden' }}
+          >
+            {services.map((service) => (
+              <div
+                key={service.id}
+                className="overflow-hidden flex-none transform transition duration-300 snap-start"
+                style={{ width: '390px', height: '550px' }}
+              >
+                {/* Khối chứa ảnh + nút Buy Now */}
+                <div className="relative h-2/3 group">
+                  <img
+                    src={service.image}
+                    alt={service.name}
+                    className="w-full h-full object-cover"
+                  />
+                  {/* Nút Buy Now nằm sát đáy hình, chỉ hiện khi hover */}
+                  <button
+                    className="absolute bottom-4 left-1/2 transform -translate-x-1/2 
+                               bg-white text-gray-800 px-4 py-2 rounded-full shadow
+                               opacity-0 group-hover:opacity-100 transition duration-300"
+                  >
+                    Buy Now
+                  </button>
+                </div>
+
+                {/* Thông tin sản phẩm */}
+                <div className="p-4 text-center relative">
+                  <h3 className="text-2xl font-roboto text-gray-800">{service.name}</h3>
+                  <div className="flex flex-col items-center mt-2">
+                    <div className="flex items-center">
+                      {Array(4).fill(null).map((_, i) => (
+                        <FaStar key={i} className="text-yellow-500" />
+                      ))}
+                      <FaStarHalfAlt className="text-yellow-500" />
+                      <span className="ml-2 text-sm text-gray-600">1434 reviews</span>
+                    </div>
+                    <div className="flex items-center space-x-2 mt-2">
+                      <span className="text-gray-400 line-through">$19.95</span>
+                      <span className="text-lime-500 font-semibold">$18.85</span>
+                    </div>
+                  </div>
+                </div>        
+              </div>
+            ))}
+          </div>
+
+          <button
+            onClick={scrollRight}
+            className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-green-50 text-gray p-3 rounded-full shadow-md hover:bg-green-300 transition duration-300 z-10"
+          >
+            <FaChevronRight size={20} />
+          </button>
+        </div>
+
+        {/* Pagination Dots - (Nếu muốn hiển thị lại, bỏ comment) */}
+        {/* <div className="flex space-x-2 mt-4">
+          {Array.from({ length: Math.ceil(services.length / 3) }).map((_, index) => (
+            <span
+              key={index}
+              className={`h-3 w-3 rounded-full ${
+                activeIndex === index ? 'bg-green-700' : 'bg-gray-400'
+              } transition duration-300`}
+            ></span>
+          ))}
+        </div> */}
       </div>
     </div>
   );

@@ -13,10 +13,10 @@ export default function Home() {
       <HomeBanner />
       <HomePopularService />
       <HomeSpecialService />
+      <HomeCenterNews />
       <HomeBestTherapists />
       <HomeCategories />
       <HomeRecentBlogs />
-      <HomeCenterNews />
     </>
   );
 }
