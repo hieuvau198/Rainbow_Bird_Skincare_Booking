@@ -143,7 +143,7 @@ export default function Service() {
 
   return (
     <div className="p-6 max-w-[1270px]">
-      <div className="p-6 bg-white rounded-md shadow-md min-h-[580px]">
+      <div className="p-6 bg-white rounded-md shadow-md min-h-[640px]">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold">Skincare Services</h2>
           {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
@@ -164,7 +164,7 @@ export default function Service() {
             loading={loading}
             pagination={{ pageSize: 10 }}
             bordered
-            scroll={{ x: "max-content", y: 350 }}
+            scroll={{ x: "max-content", y: 400 }}
           />
         </div>
         <AddService

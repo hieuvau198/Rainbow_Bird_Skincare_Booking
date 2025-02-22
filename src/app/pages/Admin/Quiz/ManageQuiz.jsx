@@ -106,7 +106,7 @@ const ManageQuiz = () => {
 
   return (
     <div className="p-6 max-w-[1270px]">
-      <div className="p-6 bg-white rounded-md shadow-md min-h-[580px]">
+      <div className="p-6 bg-white rounded-md shadow-md min-h-[640px]">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold">Manage Quizzes</h2>
           {/* <Button

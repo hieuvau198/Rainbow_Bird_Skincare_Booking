@@ -62,7 +62,7 @@ const CustomerTable = () => {
 
   return (
     <div className="p-6 max-w-[1270px]">
-      <div className="p-6 bg-white rounded-md shadow-md min-h-[580px]">
+      <div className="p-6 bg-white rounded-md shadow-md min-h-[640px]">
         <h2 className="text-xl font-semibold mb-6">Customer List</h2>
         <Table
           columns={columns}
@@ -70,7 +70,7 @@ const CustomerTable = () => {
           loading={loading}
           pagination={{ pageSize: 10 }}
           bordered
-          scroll={{ x: "max-content", y: 350 }}
+          scroll={{ x: "max-content", y: 400 }}
         />
       </div>
     </div>

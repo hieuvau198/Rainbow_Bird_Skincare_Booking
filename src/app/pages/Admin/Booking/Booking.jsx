@@ -125,7 +125,7 @@ export default function Booking() {
 
   return (
     <div className="p-6 max-w-[1270px]">
-      <div className="p-6 bg-white rounded-md shadow-md min-h-[580px]">
+      <div className="p-6 bg-white rounded-md shadow-md min-h-[640px]">
         {/* Dòng chứa tiêu đề và nút Add Booking */}
         <div className="flex justify-between items-center mb-5">
           <h1 className="text-[22px] font-bold m-0">
@@ -141,6 +141,7 @@ export default function Booking() {
           columns={columns}
           bordered
           pagination={{ pageSize: 5 }}
+          scroll={{ x: "max-content", y: 400 }}
         />
       </div>
 

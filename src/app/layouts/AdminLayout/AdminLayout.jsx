@@ -8,8 +8,8 @@ const AdminLayout = () => {
     <div className="flex flex-col lg:flex-row">
       <AdminSidebar />
       <div className="admin-layout flex-1 lg:pl-64 bg-slate-200">
-          <AdminHeader />
-          <div className="pt-16 custom-scrollbar-admin">
+          {/* <AdminHeader /> */}
+          <div className="custom-scrollbar-admin">
             <Outlet />
           </div>
       </div>
