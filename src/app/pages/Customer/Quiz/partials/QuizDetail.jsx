@@ -1,34 +1,135 @@
-import React, { useState } from "react";
+// QuizDetail.jsx
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import mockData from "../mock_quiz.json";
-import { Card, Button, Radio, Progress, Typography } from "antd";
+import { Card, Button, Radio, Progress, Typography, Spin, message, Alert } from "antd";
 import { CheckCircleTwoTone, CloseCircleTwoTone } from "@ant-design/icons";
+import { loadFullQuizData, startCustomerQuiz, submitCustomerAnswer } from "./QuizDataManager";
 
 const QuizDetail = () => {
   const { id } = useParams();
-  console.log("Quiz ID from params:", id); // Log ID
-  const quiz = mockData.quizzes.find((q) => q.id.toString() === id);
-  console.log("Quiz data:", quiz); // Log quiz data
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [quiz, setQuiz] = useState(null);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedAnswerId, setSelectedAnswerId] = useState(null);
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const [customerQuizId, setCustomerQuizId] = useState(null);
+  const [answeredQuestions, setAnsweredQuestions] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
 
-  if (!quiz || !quiz.questions || quiz.questions.length === 0) {
-    return <div className="p-6 text-center text-red-500 text-lg">❌ Quiz không tồn tại hoặc chưa được tải!</div>;
-  }
+  // Hard-coded customer ID for demo purposes
+  // In a real application, this would come from authentication
+  const CUSTOMER_ID = 3; 
 
-  const handleNextQuestion = () => {
-    if (selectedAnswer === quiz.questions[currentQuestion].correct) {
-      setScore(score + 1);
-    }
-    if (currentQuestion + 1 < quiz.questions.length) {
-      setCurrentQuestion(currentQuestion + 1);
-      setSelectedAnswer(null);
-    } else {
-      setShowResult(true);
+  useEffect(() => {
+    const initializeQuiz = async () => {
+      try {
+        setLoading(true);
+        
+        // Load quiz data with questions and answers
+        const quizData = await loadFullQuizData(id);
+        setQuiz(quizData);
+        
+        // Start a customer quiz session
+        const quizSessionId = await startCustomerQuiz(CUSTOMER_ID, id);
+        setCustomerQuizId(quizSessionId);
+        
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+        message.error("Không thể tải bài kiểm tra: " + err.message);
+      }
+    };
+
+    initializeQuiz();
+  }, [id]);
+
+  const getCurrentQuestion = () => {
+    return quiz?.questions[currentQuestionIndex] || null;
+  };
+
+  const handleSelectAnswer = (answerId) => {
+    setSelectedAnswerId(answerId);
+  };
+
+  const handleNextQuestion = async () => {
+    if (!selectedAnswerId) return;
+    
+    try {
+      setSubmitting(true);
+      const currentQuestion = getCurrentQuestion();
+      
+      // Find the selected answer to determine points
+      const selectedAnswer = currentQuestion.answers.find(
+        a => a.answerId === selectedAnswerId
+      );
+      
+      // Record points for this answer
+      const pointsEarned = selectedAnswer?.points || 0;
+      
+      // Submit the answer to the backend
+      await submitCustomerAnswer(
+        customerQuizId, 
+        currentQuestion.questionId, 
+        selectedAnswerId, 
+        pointsEarned
+      );
+      
+      // Update local state
+      const updatedAnsweredQuestions = [...answeredQuestions];
+      updatedAnsweredQuestions[currentQuestionIndex] = {
+        questionId: currentQuestion.questionId,
+        answerId: selectedAnswerId,
+        isCorrect: selectedAnswer?.isCorrect || false,
+        pointsEarned: pointsEarned
+      };
+      
+      setAnsweredQuestions(updatedAnsweredQuestions);
+      setScore(score + pointsEarned);
+      
+      // Move to next question or show results
+      if (currentQuestionIndex + 1 < quiz.questions.length) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setSelectedAnswerId(null);
+      } else {
+        setShowResult(true);
+      }
+      
+      setSubmitting(false);
+    } catch (err) {
+      message.error("Không thể lưu câu trả lời: " + err.message);
+      setSubmitting(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="p-6 flex justify-center items-center min-h-screen bg-gray-100">
+        <Spin size="large" tip="Đang tải bài kiểm tra..." />
+      </div>
+    );
+  }
+
+  if (error || !quiz || !quiz.questions || quiz.questions.length === 0) {
+    return (
+      <div className="p-6 text-center text-red-500 text-lg">
+        <Alert
+          message="Lỗi"
+          description={error || "Quiz không tồn tại hoặc chưa được tải!"}
+          type="error"
+          showIcon
+        />
+      </div>
+    );
+  }
+
+  const currentQuestion = getCurrentQuestion();
+  const totalPossiblePoints = quiz.questions.reduce(
+    (total, q) => total + Math.max(...q.answers.map(a => a.points || 0), 0), 
+    0
+  );
 
   return (
     <div className="p-6 flex justify-center items-center min-h-screen bg-gray-100">
@@ -39,42 +140,49 @@ const QuizDetail = () => {
               {quiz.name}
             </Typography.Title>
             <p className="text-center text-gray-500 mb-4">{quiz.category}</p>
-            <img
-              src={quiz.image}
-              alt={quiz.name}
-              className="w-full h-52 object-cover rounded-md mb-4"
-            />
+            
             <Progress
-              percent={((currentQuestion + 1) / quiz.questions.length) * 100}
-              showInfo={false}
+              percent={((currentQuestionIndex + 1) / quiz.questions.length) * 100}
+              showInfo={true}
+              format={() => `${currentQuestionIndex + 1}/${quiz.questions.length}`}
               strokeColor="#1890ff"
             />
+            
             <Typography.Title level={4} className="mt-4 text-gray-700">
-              {quiz.questions[currentQuestion].question}
+              {currentQuestion.content}
             </Typography.Title>
+            
+            <div className="mt-2 mb-4">
+              <Typography.Text type="secondary">
+                Điểm: {currentQuestion.points}
+              </Typography.Text>
+            </div>
+            
             <Radio.Group
-              className="w-full flex flex-col gap-3"
-              value={selectedAnswer}
-              onChange={(e) => setSelectedAnswer(e.target.value)}
+              className="w-full flex flex-col gap-3 mt-4"
+              value={selectedAnswerId}
+              onChange={(e) => handleSelectAnswer(e.target.value)}
             >
-              {quiz.questions[currentQuestion].options.map((option, index) => (
+              {currentQuestion.answers.map((answer) => (
                 <Radio.Button
-                  key={index}
-                  value={option}
-                  className="p-2 border rounded-md w-full hover:bg-gray-200"
+                  key={answer.answerId}
+                  value={answer.answerId}
+                  className="p-2 border rounded-md w-full hover:bg-gray-200 text-left"
                 >
-                  {option}
+                  {answer.content}
                 </Radio.Button>
               ))}
             </Radio.Group>
+            
             <Button
               type="primary"
               size="large"
               className="mt-6 w-full bg-blue-500 hover:bg-blue-700"
               onClick={handleNextQuestion}
-              disabled={selectedAnswer === null}
+              disabled={selectedAnswerId === null || submitting}
+              loading={submitting}
             >
-              {currentQuestion + 1 === quiz.questions.length ? "Xem Kết Quả" : "Câu Tiếp Theo"}
+              {currentQuestionIndex + 1 === quiz.questions.length ? "Xem Kết Quả" : "Câu Tiếp Theo"}
             </Button>
           </div>
         ) : (
@@ -82,14 +190,21 @@ const QuizDetail = () => {
             <Typography.Title level={2} className="text-green-500">
               Kết Quả
             </Typography.Title>
+            
             <Typography.Title level={3}>
-              Bạn đã trả lời đúng {score} / {quiz.questions.length} câu!
+              Bạn đã trả lời đúng {answeredQuestions.filter(q => q.isCorrect).length} / {quiz.questions.length} câu!
             </Typography.Title>
-            {score >= quiz.questions.length / 2 ? (
+            
+            <Typography.Title level={4}>
+              Số điểm: {score} / {totalPossiblePoints}
+            </Typography.Title>
+            
+            {score >= totalPossiblePoints / 2 ? (
               <CheckCircleTwoTone twoToneColor="#52c41a" style={{ fontSize: "48px" }} />
             ) : (
               <CloseCircleTwoTone twoToneColor="#ff4d4f" style={{ fontSize: "48px" }} />
             )}
+            
             <Button
               type="primary"
               size="large"

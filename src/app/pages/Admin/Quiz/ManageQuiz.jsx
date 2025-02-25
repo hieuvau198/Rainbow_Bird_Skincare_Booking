@@ -1,60 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Button, Table, Tag, Space, Modal, message } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import AddQuiz from "./partials/AddQuiz";
-import QuizDetail from "./partials/QuizDetail";
-import getAllQuiz from "../../../modules/Quizzs/getAllQuiz"
+import { Button, message } from "antd";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import getAllQuiz from "../../../modules/Quizzs/getAllQuiz";
+import QuizList from "./partials/QuizList";
+import QuizRenderDetails from "./partials/QuizDetailsPartials/QuizRenderDetails";
+import getQuizById from "../../../modules/Quizzs/getQuizById";
+import getQuestionByQuizId from "../../../modules/Quizzs/getQuestionByQuizId";
+import getAnsByQuesId from "../../../modules/Quizzs/getAnsByQuesId";
 
 const ManageQuiz = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
-  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
 
-  const columns = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-    },
-    {
-      title: "Quiz Name",
-      dataIndex: "quizName",
-      key: "quizName",
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
-    },
-    {
-      title: "Total Points",
-      dataIndex: "totalPoints",
-      key: "totalPoints",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      width: 100,
-      render: (status) => (
-        <Tag color={status ? "green" : "volcano"}>
-          {status ? "Active" : "Inactive"}
-        </Tag>
-      ),
-    },
-    {
-      title: "Action",
-      key: "action",
-      // render: (_, record) => (
-      //   <Space size="middle">
-      //     <Button color="gold" variant="solid" type="link">View Details</Button>
-      //     <Button type="link" danger onClick={() => handleDeleteQuiz(record)}>Delete</Button>
-      //   </Space>
-      // ),
-    },
-  ];
+  useEffect(() => {
+    fetchQuizzes();
+  }, []);
 
   const fetchQuizzes = async () => {
     setLoading(true);
@@ -69,77 +30,48 @@ const ManageQuiz = () => {
       }));
       setQuizzes(quizData);
     } catch (error) {
-      console.error("Error fetching quizs:", error);
+      console.error("Error fetching quizzes:", error);
     }
     setLoading(false);
   };
 
-  useEffect(() => {
-    fetchQuizzes();
-  }, []);
+  const handleViewDetails = async (quizId) => {
+    setLoading(true);
+    try {
+      console.log("Fetching quiz details for ID:", quizId);
 
-  const handleAddQuiz = (quiz) => {
-    const newQuiz = { id: quizzes.length + 1, ...quiz };
-    setQuizzes([...quizzes, newQuiz]);
-    setIsAddModalVisible(false);
-    message.success("Quiz added successfully!");
+      const quizData = await getQuizById(quizId);
+      let questionData = await getQuestionByQuizId(quizId);
+
+      setSelectedQuiz({ ...quizData, questions: questionData });
+    } catch (error) {
+      console.error("Error fetching quiz details:", error);
+      message.error("Failed to load quiz details.");
+    }
+    setLoading(false);
   };
 
-  const handleViewDetails = (quiz) => {
-    setSelectedQuiz(quiz);
-    setIsDetailModalVisible(true);
-  };
-
-  const handleDeleteQuiz = (quiz) => {
-    Modal.confirm({
-      title: "Confirm Delete",
-      content: `Are you sure you want to delete quiz: ${quiz.quizName}?`,
-      okText: "Delete",
-      okType: "danger",
-      cancelText: "Cancel",
-      onOk: () => {
-        setQuizzes(quizzes.filter((q) => q.id !== quiz.id));
-        message.success("Quiz deleted successfully!");
-      },
-    });
-  };
 
   return (
     <div className="p-6 max-w-[1270px]">
-      <div className="p-6 bg-white rounded-md shadow-md min-h-[580px]">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold">Manage Quizzes</h2>
-          {/* <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => setIsAddModalVisible(true)}
-          >
-            Add Quiz
-          </Button> */}
-        </div>
-        <Table
-          columns={columns}
-          dataSource={quizzes}
-          loading={loading}
-          rowKey="id"
-          pagination={{ pageSize: 10 }}
-          bordered
-        />
-        <AddQuiz
-          open={isAddModalVisible}
-          onClose={() => setIsAddModalVisible(false)}
-          onSubmit={handleAddQuiz}
-        />
-        <QuizDetail
-          open={isDetailModalVisible}
-          onClose={() => setIsDetailModalVisible(false)}
-          quiz={selectedQuiz}
-          onQuizUpdate={(updatedQuiz) => {
-            setQuizzes((prevQuizzes) =>
-              prevQuizzes.map((q) => (q.id === updatedQuiz.id ? updatedQuiz : q))
-            );
-          }}
-        />
+      <div className="p-6 bg-white rounded-md shadow-md min-h-[640px]">
+        {selectedQuiz ? (
+          <>
+            <Button
+              variant="solid"
+              color="primary"
+              type="text"
+              icon={<ArrowLeftOutlined />}
+              onClick={() => setSelectedQuiz(null)}
+              className="mb-4"
+            >
+              Back to Manage Quizzes
+            </Button>
+            <QuizRenderDetails quiz={selectedQuiz} />
+          </>
+        ) : (
+          <QuizList quizzes={quizzes} loading={loading} onViewDetails={handleViewDetails} />
+        )}
       </div>
     </div>
   );
