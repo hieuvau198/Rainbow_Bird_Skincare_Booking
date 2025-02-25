@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal, message, Form } from "antd";
-import Loading from "../../../../components/Loading"; // Assume Loading is a shared component
+import Loading from "../../../../components/Loading";
 import QuizRenderDetails from "./QuizDetailsPartials/QuizRenderDetails";
 import QuizRenderEditForm from "./QuizDetailsPartials/QuizRenderEditForm";
 

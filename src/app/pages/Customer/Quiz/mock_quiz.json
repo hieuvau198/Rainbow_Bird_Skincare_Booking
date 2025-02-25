@@ -4,7 +4,7 @@
       "id": 1,
       "name": "Skin Type Assessment",
       "category": "Skin Type",
-      "image": "https://example.com/skin_type.jpg",
+      "image": "https://media.istockphoto.com/id/1979768570/fr/photo/produits-de-beaut%C3%A9-de-la-peau-en-rang%C3%A9e-sur-l%C3%A9tag%C3%A8re-du-salon-de-beaut%C3%A9.webp?a=1&b=1&s=612x612&w=0&k=20&c=PbZfQXOfJX--efChWUhyooZHT71rhZT2bXxTp-q95NI=",
       "plays": 125000,
       "questions": [
         {
@@ -17,17 +17,86 @@
             "Red or irritated"
           ],
           "correct": "Smooth and balanced"
-        },
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Skin Assessment",
+      "category": "Skin Type",
+      "image": "https://media.istockphoto.com/id/690787172/fr/photo/conteneurs-bouteille-cosm%C3%A9tique-%C3%A0-base-de-plantes-verte-feuilles-%C3%A9tiquette-vierge-pour-la.webp?a=1&b=1&s=612x612&w=0&k=20&c=VV6YxJtlMD5IB0MSFulbxX7JK923mve8GRgXAnvIQn8=",
+      "plays": 15000,
+      "questions": [
         {
-          "question": "How often do you need to moisturize your skin?",
+          "question": "How does your skin feel when you wake up in the morning?",
           "options": [
-            "Rarely, it feels oily without it",
-            "Multiple times a day to avoid dryness",
-            "Once a day is enough",
-            "Only certain areas need moisturizing",
-            "I avoid moisturizing due to irritation"
+            "Oily and greasy",
+            "Dry and tight",
+            "Smooth and balanced",
+            "Oily in some areas and dry in others",
+            "Red or irritated"
           ],
-          "correct": "Once a day is enough"
+          "correct": "Smooth and balanced"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "SkinCare Assessment",
+      "category": "Skin Type",
+      "image": "https://media.istockphoto.com/id/2094257799/fr/photo/produits-de-soins-du-visage-sur-une-%C3%A9tag%C3%A8re.webp?a=1&b=1&s=612x612&w=0&k=20&c=7bS_lRM_4sWUSDaGRCfsGzlRLuhmnvshkOyazIJIoqc=",
+      "plays": 5000,
+      "questions": [
+        {
+          "question": "How does your skin feel when you wake up in the morning?",
+          "options": [
+            "Oily and greasy",
+            "Dry and tight",
+            "Smooth and balanced",
+            "Oily in some areas and dry in others",
+            "Red or irritated"
+          ],
+          "correct": "Smooth and balanced"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Assessment",
+      "category": "Skin Type",
+      "image": "https://media.istockphoto.com/id/2132753732/fr/photo/jar-with-body-face-cream-scrub.webp?a=1&b=1&s=612x612&w=0&k=20&c=FtvyRTbAD2EvRfJtp6GgiRvDMUUlfBf5Juztdv14kJU=",
+      "plays": 125000,
+      "questions": [
+        {
+          "question": "How does your skin feel when you wake up in the morning?",
+          "options": [
+            "Oily and greasy",
+            "Dry and tight",
+            "Smooth and balanced",
+            "Oily in some areas and dry in others",
+            "Red or irritated"
+          ],
+          "correct": "Smooth and balanced"
+        }
+      ]
+    },    
+    {
+      "id": 9,
+      "name": "Assessment",
+      "category": "Skin Type",
+      "image": "https://media.istockphoto.com/id/1203733319/fr/photo/recherche-de-drogue-naturelle-extraction-organique-et-scientifique-normale-dans-la-verrerie.webp?a=1&b=1&s=612x612&w=0&k=20&c=tVCUVhZRhG_DnL1kcRBzGdhpd-0_AuOQFru-mlUErI8=",
+      "plays": 125000,
+      "questions": [
+        {
+          "question": "How does your skin feel when you wake up in the morning?",
+          "options": [
+            "Oily and greasy",
+            "Dry and tight",
+            "Smooth and balanced",
+            "Oily in some areas and dry in others",
+            "Red or irritated"
+          ],
+          "correct": "Smooth and balanced"
         }
       ]
     },
@@ -48,17 +117,6 @@
             "It gets red and sensitive"
           ],
           "correct": "It stays the same, no major changes"
-        },
-        {
-          "question": "What is your skin like after washing your face?",
-          "options": [
-            "Oily again within an hour",
-            "Feels tight and flaky",
-            "Feels refreshed and smooth",
-            "Some areas are oily, others are dry",
-            "Red or irritated immediately"
-          ],
-          "correct": "Feels refreshed and smooth"
         }
       ]
     },
@@ -79,17 +137,6 @@
             "Breakouts accompanied by redness"
           ],
           "correct": "Almost never"
-        },
-        {
-          "question": "How do your pores look?",
-          "options": [
-            "Large and visible, especially on the nose and forehead",
-            "Small and barely noticeable",
-            "Normal-sized and not noticeable",
-            "Large in the T-zone but small on cheeks",
-            "Normal but skin is sensitive around them"
-          ],
-          "correct": "Normal-sized and not noticeable"
         }
       ]
     },
@@ -110,6 +157,26 @@
             "I already take active measures to prevent them"
           ],
           "correct": "Somewhat concerned"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Moisturizing Habits",
+      "category": "Skin Health",
+      "image": "https://example.com/moisturizing.jpg",
+      "plays": 65000,
+      "questions": [
+        {
+          "question": "How often do you moisturize your skin?",
+          "options": [
+            "Never",
+            "Once a day",
+            "Twice a day",
+            "Only in winter",
+            "Whenever it feels dry"
+          ],
+          "correct": "Once a day"
         }
       ]
     }
