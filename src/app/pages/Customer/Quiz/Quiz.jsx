@@ -1,61 +1,67 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import mockData from "./mock_quiz.json";
-import { Card } from "antd";
+import { fetchActiveQuizzes } from "./quizApi";
+import { Spin } from "antd";
 import { HeartOutlined, SearchOutlined } from "@ant-design/icons";
 
-const categories = [
-  { name: "Skin Type", key: "Skin Type" },
-  { name: "Sensitivity", key: "Sensitivity" },
-  { name: "Acne", key: "Acne" },
-  { name: "Anti-Aging", key: "Anti-Aging" },
-  { name: "Moisturizing Habits", key: "Skin Health" }
-];
-
 const Quiz = () => {
-  if (!mockData || !mockData.quizzes) {
-    return <div className="p-6 text-center">Đang tải dữ liệu...</div>;
+  const [quizzes, setQuizzes] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchQuizzes = async () => {
+      const data = await fetchActiveQuizzes();
+      setQuizzes(data);
+      setLoading(false);
+    };
+
+    fetchQuizzes();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Spin size="large" />
+      </div>
+    );
   }
 
   return (
     <div className="p-6 min-h-screen bg-white">
-      <h2 className="text-2xl font-bold text-center mb-6">Quiz Categories</h2>
-      <p className="text-center text-gray-600 mb-10">Hiển thị các loại quiz theo danh mục</p>
+      <h2 className="text-4xl font-bold text-center text-gray-800 mb-6">Explore Our Quizzes</h2>
+      <p className="text-center text-gray-600 mb-10">Discover quizzes tailored for your skincare needs</p>
 
-      {/* Grid có 5 hàng dọc */}
-      <div className="grid grid-rows-5 gap-6">
-        {categories.map((category, index) => (
-          <div key={category.key}>
-            <div className="p-4 bg-white shadow-md rounded-lg border border-lime-200">
-              <h3 className="text-lg font-semibold text-center text-blue-600 mb-4">{category.name}</h3>
+      <div className="space-y-6">
+        {quizzes.map((quiz) => (
+          <div
+            key={quiz.quizId}
+            className="flex flex-col md:flex-row items-center bg-white border border-lime-200 shadow-md rounded-xl overflow-hidden transition duration-300 hover:border-lime-400"
+          >
+            {/* Ảnh Quiz */}
+            <div className="md:w-1/3 w-full relative">
+              <img src={quiz.imageUrl} alt={quiz.name} className="w-full h-72 object-cover border border-lime-200 rounded-md shadow-sm" />
+            </div>
 
-              {/* Quiz hiển thị theo hàng ngang */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {mockData.quizzes
-                  .filter((quiz) => quiz.category === category.key)
-                  .slice(0, 5) // Hiển thị tối đa 5 quiz trong mỗi hàng
-                  .map((quiz) => (
-                    <Card
-                      key={quiz.id}
-                      hoverable
-                      className="relative shadow-lg rounded-lg overflow-hidden"
-                      cover={<img alt={quiz.name} src={quiz.image} className="h-32 object-cover" />}
-                    >
-                      <div className="absolute top-2 right-2 flex space-x-2">
-                        <HeartOutlined className="text-gray-500 hover:text-red-500 cursor-pointer" />
-                        <SearchOutlined className="text-gray-500 hover:text-blue-500 cursor-pointer" />
-                      </div>
+            {/* Nội dung Quiz */}
+            <div className="md:w-2/3 w-full p-6">
+              {/* Tiêu đề quiz đặt lên ngang ảnh */}
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-4xl font-semibold text-gray-800">{quiz.name}</h3>
+                <div className="flex space-x-3">
+                  <HeartOutlined className="text-gray-500 hover:text-red-500 cursor-pointer text-2xl" />
+                  <SearchOutlined className="text-gray-500 hover:text-blue-500 cursor-pointer text-2xl" />
+                </div>
+              </div>
 
-                      <h3 className="text-sm font-semibold mt-2 truncate text-gray-800">{quiz.name}</h3>
-                      <p className="text-xs text-gray-600">{quiz.questions.length} Câu hỏi - {quiz.plays} lượt chơi</p>
+              <p className="text-gray-600 text-sm mt-2">{quiz.description}</p>
+              <p className="text-gray-500 text-sm mt-1">Points: {quiz.totalPoints} | {quiz.category}</p>
 
-                      <Link to={`/quiz/${quiz.id}`}>
-                        <button className="mt-3 w-full py-1 text-white bg-blue-600 hover:bg-blue-800 rounded text-xs">
-                          Bắt đầu
-                        </button>
-                      </Link>
-                    </Card>
-                  ))}
+              <div className="flex items-center mt-4 space-x-4">
+                <Link to={`/quiz/${quiz.quizId}`}>
+                  <button className="py-2 px-4 bg-lime-500 hover:bg-lime-600 text-white rounded-lg shadow-md transition duration-300">
+                    Start Quiz
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
