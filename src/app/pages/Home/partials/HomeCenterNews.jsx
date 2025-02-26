@@ -37,13 +37,13 @@ export default function HomeCenterNews() {
             <div
               key={news.id}
               // group để kích hoạt hover trên toàn thẻ
-              className="relative h-[350px] md:h-[400px] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition group"
+              className="relative h-[350px] md:h-[400px] rounded-l overflow-hidden shadow-lg hover:shadow-xl transition group"
             >
               {/* Ảnh nền đặt tuyệt đối, phủ toàn bộ */}
               <img
                 src={news.image}
                 alt={news.title}
-                className="absolute w-full h-full object-left transition-transform duration-500 group-hover:scale-105"
+                className="absolute w-full h-full object-left transition-transform duration-500 group-hover:scale-105 blur-[2px]"
               />
 
               {/* Nội dung text hiển thị đè lên */}

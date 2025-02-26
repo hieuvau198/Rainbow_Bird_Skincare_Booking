@@ -45,25 +45,6 @@ export default function HomePopularService() {
   return (
     <div>
       {/* Thanh trên cùng với 4 icons */}
-      <div className="w-full bg-[rgb(191,238,174)] py-10">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-          {/* 1. Gifts for you */}
-          <div className="flex flex-col items-center">
-            <FaGift className="text-4xl text-green-600 mb-2" />
-            <p className="text-lg font-semibold text-green-700">Gifts For You</p>
-          </div>
-          {/* 2. 100% Organic */}
-          <div className="flex flex-col items-center">
-            <FaLeaf className="text-4xl text-green-600 mb-2" />
-            <p className="text-lg font-semibold text-green-700">100% Organic</p>
-          </div>
-          {/* 3. Online Acquisition */}
-          <div className="flex flex-col items-center">
-            <FaGlobe className="text-4xl text-green-600 mb-2" />
-            <p className="text-lg font-semibold text-green-700">Online Acquisition</p>
-          </div>
-        </div>
-      </div>
 
       {/* Phần HOT SERVICES */}
       <div className="bg-slate-50 py-8 flex flex-col items-center">
