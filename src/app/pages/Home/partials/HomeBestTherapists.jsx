@@ -4,9 +4,9 @@ import mockTherapists from '../../Customer/ViewTherapist/mock_therapist.json';
 
 export default function HomeBestTherapists() {
   return (
-    <div className="p-6 lg:p-24 md:p-16 bg-slate-50 min-h-screen flex items-center justify-center">
+    <div className="p-6 lg:p-24 md:p-16 bg-green-100/70 min-h-screen flex items-center justify-center">
       {/* Container bao quanh phần Our Therapists và danh sách therapists */}
-      <div className="p-8 border-2 border-green-200 bg-green-200 rounded-md shadow-lg md:p-10 w-full lg:border-4 max-w-6xl">
+      <div className="p-10 border-2 border-green-200 bg-green-200 rounded-md shadow-lg md:p-10 w-full lg:border-4 max-w-[1250px]">
         {/* Tiêu đề được làm nổi bật với kích cỡ chữ lớn và border dưới */}
         <h1 className="text-3xl text-center font-bold font-Arial mb-10 text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600">
           OUR THERAPISTS
