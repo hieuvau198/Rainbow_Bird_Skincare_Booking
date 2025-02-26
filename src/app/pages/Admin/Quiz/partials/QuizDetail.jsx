@@ -18,7 +18,6 @@ const QuizDetail = ({ open, onClose, quiz, onQuizUpdate }) => {
       form.resetFields();
       form.setFieldsValue({
         quizName: localQuiz.quizName,
-        duration: localQuiz.duration,
         status: localQuiz.status,
       });
     }
