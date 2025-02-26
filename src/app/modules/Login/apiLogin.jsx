@@ -94,7 +94,6 @@ export const saveTokens = (data) => {
     });
 
     Cookies.set("__rtok", data.refreshToken, {
-        expires: oneHour,
         sameSite: "Strict",
         secure: true
     });
