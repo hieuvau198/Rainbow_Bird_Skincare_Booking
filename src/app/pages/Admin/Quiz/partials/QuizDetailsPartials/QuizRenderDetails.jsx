@@ -36,7 +36,7 @@ const QuizRenderDetails = ({ quiz }) => {
       </div>
 
       <div className="mt-6">
-        <h3 className="text-lg font-semibold">Questions</h3>
+        <h3 className="text-lg font-semibold">Questions:</h3>
         <Collapse
           accordion
           onChange={(questionIds) => {
