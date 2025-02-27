@@ -73,7 +73,7 @@ const QuizDetail = () => {
 
   return (
     <div className="p-6 flex justify-center items-center min-h-screen bg-white">
-      <Card className="max-w-6xl w-full shadow-2xl rounded-2xl p-24 bg-amber border border-lime-300">
+      <Card className="max-w-6xl w-full shadow-2xl rounded-2xl p-20 bg-amber border border-lime-300">
         {showResult ? (
           <QuizResult 
             score={score} 
@@ -90,14 +90,12 @@ const QuizDetail = () => {
               currentIndex={currentQuestionIndex}
               totalQuestions={quiz.questions.length}
             />
-            <div className="flex justify-center mt-6">
-              <Button 
-                className="bg-lime-400 hover:bg-lime-600 text-white px-20 py-6 rounded-xl shadow-lg"
-                onClick={handleNextQuestion} 
-                disabled={!selectedAnswerId || submitting}
-              >
-                Câu Tiếp Theo
-              </Button>
+            <div 
+              className={`mt-6 mx-auto w-64 text-center p-4 text-white rounded-xl shadow-lg cursor-pointer transition
+                          ${selectedAnswerId ? "bg-lime-400 hover:bg-lime-500" : "bg-lime-200 cursor-not-allowed"}`}
+              onClick={selectedAnswerId ? handleNextQuestion : null}
+            >
+              Câu Tiếp Theo
             </div>
           </>
         )}

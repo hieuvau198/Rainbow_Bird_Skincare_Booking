@@ -26,24 +26,21 @@ const QuizQuestion = ({ currentQuestion, selectedAnswerId, onSelectAnswer, curre
         </Typography.Text>
       </div>
 
-      <Radio.Group
-        className="w-full flex flex-col gap-3 mt-4"
-        value={selectedAnswerId}
-        onChange={(e) => onSelectAnswer(e.target.value)}
-      >
+      {/* Answer List */}
+      <div className="w-full flex flex-col gap-3 mt-4">
         {currentQuestion.answers.map((answer) => (
-          <Radio.Button
+          <div
             key={answer.answerId}
-            value={answer.answerId}
-            className={`flex items-center p-8 text-lg w-full border-2 rounded-lg shadow-md transition 
+            className={`cursor-pointer p-5 text-lg w-full border-2 rounded-lg shadow-md transition flex text-center
                         ${selectedAnswerId === answer.answerId 
-                            ? "bg-lime-200 text-white border-lime-500" 
-                            : "bg-white hover:bg-lime-200 border-lime-200"}`}
-            >
+                            ? "bg-lime-300 text-white border-lime-300"  // Khi chọn
+                            : "bg-white hover:bg-lime-200 border-lime-300"}`} // Khi hover
+            onClick={() => onSelectAnswer(answer.answerId)}
+          >
             {answer.content}
-          </Radio.Button>
+          </div>
         ))}
-      </Radio.Group>
+      </div>
     </div>
   );
 };
