@@ -1,21 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Card,
-  Rate,
-  Button,
-  Upload,
-  Input,
-  Typography,
-  Tag,
-  Row,
-  Col
-} from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
 
-const { Title, Text } = Typography;
-const { TextArea } = Input;
-
-// Example tags describing the service experience
 const possibleTags = [
   'Great quality',
   'Very professional',
@@ -30,7 +14,6 @@ export default function SkincareServiceReview() {
   const [comment, setComment] = useState('');
   const [fileList, setFileList] = useState([]);
 
-  // Handle selecting/unselecting tags
   const handleTagChange = (tag) => {
     if (selectedTags.includes(tag)) {
       setSelectedTags(selectedTags.filter((t) => t !== tag));
@@ -39,12 +22,12 @@ export default function SkincareServiceReview() {
     }
   };
 
-  // Handle file uploads
-  const handleUploadChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    // Limit to 3 files maximum
+    setFileList(files.slice(0, 3));
   };
 
-  // Submit the review
   const handleSubmit = () => {
     // Here you could call an API to store the review
     console.log({
@@ -55,7 +38,7 @@ export default function SkincareServiceReview() {
     });
     alert('Your review has been submitted!');
 
-    // Reset the form (optional)
+    // Reset the form
     setRating(0);
     setSelectedTags([]);
     setComment('');
@@ -63,25 +46,32 @@ export default function SkincareServiceReview() {
   };
 
   return (
-    <Card
-      style={{ maxWidth: 500, margin: '40px auto' }}
-      bodyStyle={{ padding: '20px' }}
-    >
-      <Title level={4} style={{ marginBottom: 10 }}>
-        Review Your Skincare Service
-      </Title>
-      <Text type="secondary" style={{ display: 'block', marginBottom: 20 }}>
-        This service was completed 2 months ago
-      </Text>
+    <div className=" pt-10 pb-24 bg-slate-50">
+    <div className="max-w-[1080px] mx-auto my-10 p-6 bg-green-100/70 shadow rounded">
+      <h2 className="text-3xl text-center font-bold font-Arial mb-10 text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600">Review Your Skincare Service</h2>
+      <p className="text-gray-500 mb-4"></p>
 
       {/* Star Rating */}
-      <div style={{ marginBottom: 20, textAlign: 'center' }}>
-        <Rate
-          value={rating}
-          onChange={(value) => setRating(value)}
-          style={{ fontSize: 24 }}
-        />
-        <div style={{ marginTop: 8 }}>
+      <div className="mb-6 text-center">
+        <div className="flex justify-center">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <button
+              key={star}
+              onClick={() => setRating(star)}
+              type="button"
+              className="focus:outline-none"
+            >
+              <svg
+                className={`w-8 h-8 ${star <= rating ? 'text-yellow-400' : 'text-gray-400'}`}
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.287 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.838-.197-1.539-1.118l1.287-3.957a1 1 0 00-.364-1.118L2.07 9.384c-.783-.57-.38-1.81.588-1.81h4.162a1 1 0 00.95-.69l1.286-3.957z" />
+              </svg>
+            </button>
+          ))}
+        </div>
+        <div className="mt-2">
           {rating
             ? `You have rated ${rating} star${rating > 1 ? 's' : ''}`
             : 'Tap on a star to rate'}
@@ -89,35 +79,35 @@ export default function SkincareServiceReview() {
       </div>
 
       {/* Tag Selection */}
-      <div style={{ marginBottom: 20 }}>
-        <Text strong style={{ display: 'block', marginBottom: 8 }}>
-          Select your remarks:
-        </Text>
-        <Row gutter={[8, 8]}>
+      <div className="mb-6">
+        <p className="font-semibold mb-2">Select your remarks:</p>
+        <div className="flex flex-wrap gap-2">
           {possibleTags.map((tag) => {
             const isSelected = selectedTags.includes(tag);
             return (
-              <Col key={tag}>
-                <Tag
-                  color={isSelected ? 'blue' : 'default'}
-                  onClick={() => handleTagChange(tag)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {tag}
-                </Tag>
-              </Col>
+              <button
+                key={tag}
+                onClick={() => handleTagChange(tag)}
+                type="button"
+                className={`px-3 py-1 rounded-full border text-sm focus:outline-none ${
+                  isSelected
+                    ? 'bg-green-400 text-white border-green-400'
+                    : 'bg-white text-gray-700 border-gray-300'
+                }`}
+              >
+                {tag}
+              </button>
             );
           })}
-        </Row>
+        </div>
       </div>
 
       {/* Comment Box */}
-      <div style={{ marginBottom: 20 }}>
-        <Text strong style={{ display: 'block', marginBottom: 8 }}>
-          Share your experience:
-        </Text>
-        <TextArea
-          rows={4}
+      <div className="mb-6">
+        <p className="font-semibold mb-2">Share your experience:</p>
+        <textarea
+          rows="4"
+          className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-green-300"
           placeholder="Tell us what you enjoyed about this service..."
           value={comment}
           onChange={(e) => setComment(e.target.value)}
@@ -125,34 +115,39 @@ export default function SkincareServiceReview() {
       </div>
 
       {/* Image Upload */}
-      <div style={{ marginBottom: 20 }}>
-        <Text strong style={{ display: 'block', marginBottom: 8 }}>
-          Upload photos (max 3):
-        </Text>
-        <Upload
-          listType="picture-card"
-          fileList={fileList}
-          onChange={handleUploadChange}
-          beforeUpload={() => false} // Do not upload immediately; store locally in state
-        >
-          {fileList.length < 3 && (
-            <div>
-              <PlusOutlined />
-              <div style={{ marginTop: 8 }}>Upload</div>
-            </div>
-          )}
-        </Upload>
+      <div className="mb-6">
+        <p className="font-semibold mb-2">Upload photos (max 3):</p>
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={handleFileChange}
+          className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+        />
+        {fileList.length > 0 && (
+          <ul className="mt-2">
+            {fileList.map((file, index) => (
+              <li key={index} className="text-gray-600 text-sm">
+                {file.name}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* Submit Button */}
-      <Button
-        type="primary"
-        block
+      <button
         onClick={handleSubmit}
         disabled={!rating || !comment}
+        className={`w-full py-2 px-4 rounded text-white text-lg ${
+          !rating || !comment
+            ? 'bg-gray-400 cursor-not-allowed'
+            : 'bg-green-600 hover:bg-green-700'
+        }`}
       >
         Submit Review
-      </Button>
-    </Card>
+      </button>
+    </div>
+    </div>
   );
 }
