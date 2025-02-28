@@ -20,6 +20,7 @@ const BookingSuccess = lazy(() => import("../pages/Customer/Service/partials/Boo
 const QuizDetail = lazy(() => import("../pages/Customer/Quiz/partials/QuizDetail"));
 const Rating = lazy(() => import("../pages/Customer/Rating/Rating"));
 const ScheduleBooking = lazy(() => import("../pages/Customer/ScheduleBooking/ScheduleBooking"));
+const Payment = lazy(() => import("../pages/Customer/Payment/Payment"));
 
 const AdminLayout = lazy(() => import("../layouts/AdminLayout"));
 const Dashboard = lazy(() => import("../pages/Admin/Dashboard/Dashboard"));
@@ -107,6 +108,13 @@ export default function MainRoutes() {
             <PrivateRoute allowedRoles={[UserRole.CUSTOMER]}>
               <Suspense fallback={<Loading />}>
                 <Rating />
+              </Suspense>
+            </PrivateRoute>
+          } />
+          <Route path="/payment" element={
+            <PrivateRoute allowedRoles={[UserRole.CUSTOMER]}>
+              <Suspense fallback={<Loading />}>
+                <Payment />
               </Suspense>
             </PrivateRoute>
           } />
