@@ -27,7 +27,7 @@ const Quiz = () => {
   }
 
   return (
-    <div className="p-6 min-h-screen bg-white">
+    <div className="px-24 p-6 min-h-screen bg-white">
       <h2 className="text-4xl font-bold text-center text-gray-800 mb-6">Explore Our Quizzes</h2>
       <p className="text-center text-gray-600 mb-10">Discover quizzes tailored for your skincare needs</p>
 
