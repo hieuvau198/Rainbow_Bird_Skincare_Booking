@@ -6,6 +6,7 @@ import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 import UserLayout from "../layouts/UserLayout/UserLayout";
 import Home from "../pages/Home";
 import Login from "../pages/Login/Login";
+import NewsAndBlog from "../pages/Admin/NewsAndBlog/NewsAndBlog";
 
 const Profile = lazy(() => import("../pages/Customer/Profile/Profile"));
 const ViewTherapist = lazy(() => import("../pages/Customer/ViewTherapist/ViewTherapist"));
@@ -178,6 +179,11 @@ export default function MainRoutes() {
           <Route path="quiz" element={
             <Suspense fallback={<Loading />}>
               <ManageQuiz />
+            </Suspense>
+          } />
+          <Route path="NewsAndBlog" element={
+            <Suspense fallback={<Loading />}>
+              <NewsAndBlog />
             </Suspense>
           } />
           <Route path="schedule" element={
