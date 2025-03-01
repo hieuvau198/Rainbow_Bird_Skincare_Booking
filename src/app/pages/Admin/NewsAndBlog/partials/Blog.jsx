@@ -1,10 +1,10 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Modal, Space, Table, Tag, message } from "antd";
+import { Button, Modal, Space, Table, message } from "antd";
 import React, { useEffect, useState } from "react";
 import deleteBlog from "../../../../modules/NewsAndBlog/deleteBlog";
 import getBlog from "../../../../modules/NewsAndBlog/getBlog";
-import BlogDetail from "./partials/BlogDetail";
 import AddBlog from "./partials/AddBlog";
+import BlogDetail from "./partials/BlogDetail";
 
 const Blog = () => {
   const [data, setData] = useState([]);
@@ -113,17 +113,11 @@ const Blog = () => {
       ),
     },
   ];
-  //  <Button color="primary" variant="solid" type="link" onClick={() => viewDetails(record)}>
-  //             View detail
-  //           </Button>
-  //           <Button color="red" variant="solid" type="link" danger onClick={() => showDeleteConfirm(record)}>
-  //             Delete
-  //           </Button>
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">Blog</h2>
+        <h2 className="text-xl">Blog</h2>
         <Button
           type="primary"
           icon={<PlusOutlined />}

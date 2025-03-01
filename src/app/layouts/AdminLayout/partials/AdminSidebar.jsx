@@ -180,7 +180,7 @@ const AdminSidebar = () => {
             </Link>
           )}
 
-          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
+          {(userRole !== UserRole.THERAPIST) && (
             <Link
               to="/management/NewsAndBlog"
               className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "News&Blog"

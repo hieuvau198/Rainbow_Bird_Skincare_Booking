@@ -6,8 +6,11 @@ import editNews from "../../../../modules/NewsAndBlog/editNews";
 import getNews from "../../../../modules/NewsAndBlog/getNews";
 import AddNews from "./partials/AddNews";
 import NewsDetail from "./partials/NewsDetail";
+import UserRole from "../../../../../enums/userRole";
+import DecodeRole from "../../../../components/DecodeRole";
 
 const News = () => {
+  const userRole = DecodeRole();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedNewsId, setSelectedNewsId] = useState(null);
@@ -137,14 +140,15 @@ const News = () => {
       title: "Change Status",
       key: "changeStatus",
       width: 150,
-      render: (_, record) => (
-        <div className="text-center">
-          <Switch
-            checked={record.isPublished}
-            onChange={(checked) => handleChangeStatus(record, checked)}
-          />
-        </div>
-      ),
+      render: (_, record) =>
+        (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) ? (
+          <div className="text-center">
+            <Switch
+              checked={record.isPublished}
+              onChange={(checked) => handleChangeStatus(record, checked)}
+            />
+          </div>
+        ) : (<Tag color="red" >You can't change</Tag>),
     },    
     {
       title: "Action",
@@ -166,7 +170,7 @@ const News = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">News</h2>
+        <h2 className="text-xl">News</h2>
         <Button
           type="primary"
           icon={<PlusOutlined />}
