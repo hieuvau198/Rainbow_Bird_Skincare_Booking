@@ -5,11 +5,28 @@ import {
     ProfileOutlined,
 } from "@ant-design/icons";
 import MDEditor from "@uiw/react-md-editor";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Loading from "../../../../../components/Loading";
+import getBlogById from "../../../../../modules/NewsAndBlog/getBlogById";
 
-const BlogDetail = ({ blog }) => {
-    if (!blog) return <Loading />;
+const BlogDetail = ({ blogId }) => {
+    const [blog, setBlog] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (!blogId) return;
+        setLoading(true);
+        getBlogById(blogId)
+            .then((data) => {
+                setBlog(data);
+            })
+            .catch((error) => {
+                console.error("Error fetching blog detail:", error);
+            })
+            .finally(() => setLoading(false));
+    }, [blogId]);
+
+    if (loading || !blog) return <Loading />;
 
     return (
         <>

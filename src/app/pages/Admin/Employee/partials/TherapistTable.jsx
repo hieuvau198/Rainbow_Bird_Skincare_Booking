@@ -1,9 +1,10 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Space, Table, Tag } from "antd";
+import { Button, message, Space, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import getTherapists from "../../../../modules/Admin/Employee/getTherapist";
 import AddTherapist from "./TherapistPartials/AddTherapist";
 import ViewTherapistProfile from "./TherapistPartials/ViewTherapistProfile";
+import addTherapist from "../../../../modules/Admin/Employee/addTherapist";
 
 const TherapistTable = () => {
     const [data, setData] = useState([]);
@@ -66,17 +67,30 @@ const TherapistTable = () => {
         fetchTherapists();
     }, []);
 
-    const handleAddTherapist = (values) => {
+    const handleAddTherapist = async (values) => {
         console.log("New therapist data:", values);
+        try {
+            const newTherapist = await addTherapist(values);
+            setData((prevData) => [
+              ...prevData,
+              { key: newTherapist.username, ...newTherapist },
+            ]);
+            setAddModalVisible(false);
+            fetchTherapists();
+            message.success("Therapist added successfully!");
+          } catch (error) {
+            console.error("Error adding Therapist:", error);
+            message.error("Error adding Therapist!");
+          }
     };
 
     return (
         <div>
             <div className="flex justify-between my-4">
                 <div className="text-xs lg:text-xl font-medium">Therapist List</div>
-                {/* <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddModalVisible(true)}>
+                <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddModalVisible(true)}>
                     Add Therapist
-                </Button> */}
+                </Button>
             </div>
             <Table
                 rowKey="id"

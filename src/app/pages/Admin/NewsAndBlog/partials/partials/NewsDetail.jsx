@@ -5,18 +5,39 @@ import {
     ProfileOutlined,
 } from "@ant-design/icons";
 import MDEditor from "@uiw/react-md-editor";
-import React from "react";
+import { Tag } from "antd";
+import React, { useEffect, useState } from "react";
 import Loading from "../../../../../components/Loading";
+import getNewsById from "../../../../../modules/NewsAndBlog/getNewsById";
 
-const NewsDetail = ({ news }) => {
-    if (!news) return <Loading />;
+const NewsDetail = ({ newsId }) => {
+    const [news, setNews] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (!newsId) return;
+        setLoading(true);
+        getNewsById(newsId)
+            .then((data) => {
+                setNews(data);
+            })
+            .catch((error) => {
+                console.error("Error fetching news detail:", error);
+            })
+            .finally(() => setLoading(false));
+    }, [newsId]);
+
+    if (loading || !news) return <Loading />;
 
     return (
         <>
             <div className="grid grid-cols-2 gap-1">
                 <div className="flex justify-center items-center">
                     <img
-                        src={news.imageUrl || "https://www.chanchao.com.tw/images/default.jpg"}
+                        src={
+                            news.imageUrl ||
+                            "https://www.chanchao.com.tw/images/default.jpg"
+                        }
                         alt="News"
                         className="w-60 h-60 object-cover rounded-lg shadow-md"
                     />
@@ -50,14 +71,24 @@ const NewsDetail = ({ news }) => {
                         <span className="font-bold w-24 flex items-center">
                             <InfoCircleOutlined className="mr-1" /> Author:
                         </span>
-                        <span className="ml-4">{news.publisherFullName}</span>
+                        <div className="ml-4">{news.publisherFullName}</div>
+                    </div>
+                    <div className="flex items-center">
+                        <span className="font-bold w-24 flex items-center">Status:</span>
+                        <span className="ml-4">
+                            <Tag color={news.isPublished ? "green" : "red"}>
+                                {news.isPublished ? "Published" : "Unpublished"}
+                            </Tag>
+                        </span>
                     </div>
                 </div>
             </div>
             <div className="mt-4">
                 <h3 className="text-lg font-semibold mb-2">Content</h3>
                 <div className="p-4">
-                    <MDEditor.Markdown source={news.content || "No content available"} />
+                    <MDEditor.Markdown
+                        source={news.content || "No content available"}
+                    />
                 </div>
             </div>
         </>

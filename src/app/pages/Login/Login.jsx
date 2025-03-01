@@ -41,8 +41,9 @@ export default function Login() {
 
     if (savedUsername && encryptedPassword) {
       try {
+        const encryptedUserName = CryptoJS.AES.decrypt(savedUsername, SECRET_KEY).toString(CryptoJS.enc.Utf8);
         const decryptedPassword = CryptoJS.AES.decrypt(encryptedPassword, SECRET_KEY).toString(CryptoJS.enc.Utf8);
-        form.setFieldsValue({ username: savedUsername, password: decryptedPassword });
+        form.setFieldsValue({ username: encryptedUserName, password: decryptedPassword });
         setRememberMe(true);
       } catch (error) {
         console.error("Lỗi giải mã mật khẩu:", error);
@@ -52,7 +53,8 @@ export default function Login() {
 
   const onFormFinish = async (values) => {
     if (rememberMe) {
-      Cookies.set("__run", values.username, { expires: 7, secure: true, sameSite: "Strict" });
+      const encryptedUserName = CryptoJS.AES.encrypt(values.username, SECRET_KEY).toString();
+      Cookies.set("__run", encryptedUserName, { expires: 7, secure: true, sameSite: "Strict" });
       const encryptedPassword = CryptoJS.AES.encrypt(values.password, SECRET_KEY).toString();
       Cookies.set("__rpw", encryptedPassword, { expires: 7, secure: true, sameSite: "Strict" });
     } else {

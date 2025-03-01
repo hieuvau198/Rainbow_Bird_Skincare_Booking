@@ -1,13 +1,13 @@
-import { Table, message, Button, Space, Modal } from "antd";
+import { Button, Modal, Space, Table, message } from "antd";
 import React, { useEffect, useState } from "react";
-import BlogDetail from "./partials/BlogDetail"; // Đường dẫn đến file BlogDetail.jsx
-import getBlog from "../../../../modules/NewsAndBlog/getBlog";
 import deleteBlog from "../../../../modules/NewsAndBlog/deleteBlog";
+import getBlog from "../../../../modules/NewsAndBlog/getBlog";
+import BlogDetail from "./partials/BlogDetail";
 
 const Blog = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedBlog, setSelectedBlog] = useState(null);
+  const [selectedBlogId, setSelectedBlogId] = useState(null);
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [blogToDelete, setBlogToDelete] = useState(null);
@@ -41,7 +41,7 @@ const Blog = () => {
   }, []);
 
   const viewDetails = (record) => {
-    setSelectedBlog(record);
+    setSelectedBlogId(record.blogId);
     setIsDetailModalVisible(true);
   };
 
@@ -128,15 +128,13 @@ const Blog = () => {
       <Modal
         open={isDetailModalVisible}
         title={
-          <div className="text-center text-2xl font-bold">
-            Blog Detail
-          </div>
+          <div className="text-center text-2xl font-bold">Blog Detail</div>
         }
         footer={null}
         onCancel={() => setIsDetailModalVisible(false)}
         width={800}
       >
-        <BlogDetail blog={selectedBlog} />
+        <BlogDetail blogId={selectedBlogId} />
       </Modal>
       <Modal
         title="Confirm Delete"

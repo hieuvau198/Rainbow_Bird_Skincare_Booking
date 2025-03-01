@@ -1,13 +1,13 @@
-import { Table, message, Button, Space, Modal, Tag } from "antd";
+import { Button, Modal, Space, Table, Tag, message } from "antd";
 import React, { useEffect, useState } from "react";
-import NewsDetail from "./partials/NewsDetail";
-import getNews from "../../../../modules/NewsAndBlog/getNews";
 import deleteNews from "../../../../modules/NewsAndBlog/deleteNews";
+import getNews from "../../../../modules/NewsAndBlog/getNews";
+import NewsDetail from "./partials/NewsDetail";
 
 const News = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedNews, setSelectedNews] = useState(null);
+  const [selectedNewsId, setSelectedNewsId] = useState(null);
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [newsToDelete, setNewsToDelete] = useState(null);
@@ -42,7 +42,7 @@ const News = () => {
   }, []);
 
   const viewDetails = (record) => {
-    setSelectedNews(record);
+    setSelectedNewsId(record.newsId);
     setIsDetailModalVisible(true);
   };
 
@@ -56,7 +56,9 @@ const News = () => {
     try {
       await deleteNews(newsToDelete.newsId);
       message.success("News deleted successfully!");
-      setData((prev) => prev.filter((news) => news.newsId !== newsToDelete.newsId));
+      setData((prev) =>
+        prev.filter((news) => news.newsId !== newsToDelete.newsId)
+      );
     } catch (error) {
       console.error("Error deleting news:", error);
       message.error("Failed to delete news!");
@@ -86,10 +88,18 @@ const News = () => {
       width: 200,
       render: (text) => {
         const dateObj = new Date(text);
-        return `${dateObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} ${dateObj.toLocaleDateString()}`;
+        return `${dateObj.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        })} ${dateObj.toLocaleDateString()}`;
       },
     },
-    { title: "Author Name", dataIndex: "author", key: "author", width: 150 },
+    {
+      title: "Author Name",
+      dataIndex: "author",
+      key: "author",
+      width: 150,
+    },
     {
       title: "Status",
       dataIndex: "isPublished",
@@ -135,15 +145,14 @@ const News = () => {
       <Modal
         open={isDetailModalVisible}
         title={
-          <div className="text-center text-2xl font-bold">
-            News Detail
-          </div>
+          <div className="text-center text-2xl font-bold">News Detail</div>
         }
         footer={null}
         onCancel={() => setIsDetailModalVisible(false)}
         width={800}
       >
-        <NewsDetail news={selectedNews} />
+        {/* Chỉ truyền newsId, NewsDetail sẽ tự fetch detail */}
+        <NewsDetail newsId={selectedNewsId} />
       </Modal>
       <Modal
         title="Confirm Delete"
