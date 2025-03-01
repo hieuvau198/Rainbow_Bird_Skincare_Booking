@@ -1,8 +1,10 @@
-import { Button, Modal, Space, Table, message } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button, Modal, Space, Table, Tag, message } from "antd";
 import React, { useEffect, useState } from "react";
 import deleteBlog from "../../../../modules/NewsAndBlog/deleteBlog";
 import getBlog from "../../../../modules/NewsAndBlog/getBlog";
 import BlogDetail from "./partials/BlogDetail";
+import AddBlog from "./partials/AddBlog";
 
 const Blog = () => {
   const [data, setData] = useState([]);
@@ -11,6 +13,7 @@ const Blog = () => {
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [blogToDelete, setBlogToDelete] = useState(null);
+  const [addBlogModalVisible, setAddBlogModalVisible] = useState(false);
 
   const loadBlogData = async () => {
     setLoading(true);
@@ -110,11 +113,25 @@ const Blog = () => {
       ),
     },
   ];
+  //  <Button color="primary" variant="solid" type="link" onClick={() => viewDetails(record)}>
+  //             View detail
+  //           </Button>
+  //           <Button color="red" variant="solid" type="link" danger onClick={() => showDeleteConfirm(record)}>
+  //             Delete
+  //           </Button>
 
   return (
     <div>
-      <div className="flex justify-between my-4">
-        <div className="text-xl font-medium">Blog List</div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl font-semibold">Blog</h2>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => setAddBlogModalVisible(true)}
+          className="bg-blue-500"
+        >
+          Add Blog
+        </Button>
       </div>
       <Table
         rowKey="id"
@@ -127,9 +144,7 @@ const Blog = () => {
       />
       <Modal
         open={isDetailModalVisible}
-        title={
-          <div className="text-center text-2xl font-bold">Blog Detail</div>
-        }
+        title={<div className="text-center text-2xl font-bold">Blog Detail</div>}
         footer={null}
         onCancel={() => setIsDetailModalVisible(false)}
         width={800}
@@ -147,6 +162,11 @@ const Blog = () => {
       >
         <p>Are you sure you want to delete this blog?</p>
       </Modal>
+      <AddBlog
+        open={addBlogModalVisible}
+        onClose={() => setAddBlogModalVisible(false)}
+        onAdded={loadBlogData}
+      />
     </div>
   );
 };

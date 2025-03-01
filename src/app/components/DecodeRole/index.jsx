@@ -1,3 +1,3 @@
 import { DecodeRole } from "./DecodeRole";
 
-export default DecodeRole
+export default DecodeRole;

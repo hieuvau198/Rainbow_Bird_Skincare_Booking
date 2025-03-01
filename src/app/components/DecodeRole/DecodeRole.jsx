@@ -12,16 +12,4 @@ export const DecodeRole = () => {
     const roleStr = atob(base64Role);
 
     return parseInt(roleStr, 10);
-};
-
-export const DecodeId = () => {
-    const encryptedIden = Cookies.get("__uiden");
-
-    if (!encryptedIden) return null;
-    const bytes = CryptoJS.AES.decrypt(encryptedIden, secretKey);
-
-    const base64Iden = bytes.toString(CryptoJS.enc.Utf8);
-    const IdenStr = atob(base64Iden);
-
-    return parseInt(IdenStr, 10);
-};
+}
