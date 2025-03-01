@@ -1,8 +1,7 @@
 import { Table, Tag, message, Button, Space, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
-import getRecomByQuizId from "../../../../../modules/Quizzs/getRecomByQuizId";
-import getRecomService from "../../../../../modules/Quizzs/getRecomService";
+import getRecomByQuizIdWithReferences from "../../../../../modules/Quizzs/getRecomByQuizIdWithReferences";
 import deleteRecom from "../../../../../modules/Quizzs/deleteRecom";
 import AddRecommend from "./AddRecommend";
 import EditRecommend from "./EditRecommend";
@@ -16,33 +15,12 @@ const Recommendations = ({ quizId }) => {
     const [editModalVisible, setEditModalVisible] = useState(false);
     const [recommendationToEdit, setRecommendationToEdit] = useState(null);
 
+    // Fetch recommendations including Service details
     const loadRecommendations = async () => {
         setLoading(true);
         try {
-            const recomData = await getRecomByQuizId(quizId);
-            // Enrich each recommendation with service details
-            const enrichedData = await Promise.all(
-                recomData.map(async (recom) => {
-                    try {
-                        const serviceDetails = await getRecomService(recom.serviceId);
-                        return {
-                            ...recom,
-                            serviceName: serviceDetails.serviceName,
-                            price: serviceDetails.price,
-                            currency: serviceDetails.currency,
-                            durationMinutes: serviceDetails.durationMinutes,
-                        };
-                    } catch (error) {
-                        console.error(
-                            "Error fetching service details for serviceId",
-                            recom.serviceId,
-                            error
-                        );
-                        return recom;
-                    }
-                })
-            );
-            setData(enrichedData);
+            const recomData = await getRecomByQuizIdWithReferences(quizId);
+            setData(recomData);
         } catch (error) {
             console.error("Error fetching recommendations:", error);
             message.error("Error fetching recommendations!");
@@ -90,14 +68,14 @@ const Recommendations = ({ quizId }) => {
         },
         {
             title: "Service Name",
-            dataIndex: "serviceName",
+            dataIndex: ["service", "serviceName"], // Updated to fetch from included service data
             key: "serviceName",
         },
         {
             title: "Price",
-            dataIndex: "price",
+            dataIndex: ["service", "price"], // Updated
             key: "price",
-            render: (price, record) => `${price} ${record.currency}`,
+            render: (price, record) => `${price} ${record.service.currency}`,
         },
         {
             title: "Min Score",
@@ -127,11 +105,10 @@ const Recommendations = ({ quizId }) => {
             key: "action",
             render: (_, record) => (
                 <Space size="middle">
-                    <Button color="primary" variant="solid" type="link" onClick={() => handleEditClick(record)}>
+                    <Button type="link" onClick={() => handleEditClick(record)}>
                         Edit
                     </Button>
                     <Button
-                        color="red" variant="solid"
                         type="link"
                         danger
                         onClick={() => {
