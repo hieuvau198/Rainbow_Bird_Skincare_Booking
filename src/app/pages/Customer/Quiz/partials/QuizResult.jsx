@@ -4,9 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { CheckCircleTwoTone, CloseCircleTwoTone, UserOutlined, StarOutlined, DollarOutlined, ClockCircleOutlined } from "@ant-design/icons";
 import mockServices from "./mock_quizDetail"; 
 
-const QuizResult = ({ score, totalPossiblePoints, answeredQuestions, onRetry }) => {
-  const correctAnswers = answeredQuestions.filter(q => q.isCorrect).length;
-  const totalQuestions = answeredQuestions.length;
+const QuizResult = ({ score, totalPossiblePoints, onRetry }) => {
   const navigate = useNavigate();
   const [suggestedServices, setSuggestedServices] = useState([]);
 
@@ -28,14 +26,14 @@ const QuizResult = ({ score, totalPossiblePoints, answeredQuestions, onRetry }) 
       </Typography.Title>
 
       <Typography.Title level={3}>
-        You answered {correctAnswers} / {totalQuestions} questions correctly!
+        You answered questions correctly!
       </Typography.Title>
 
       <Typography.Title level={4}>
-        Point: {score} / {totalPossiblePoints}
+        With {score} / {totalPossiblePoints} point.
       </Typography.Title>
 
-      {score >= totalPossiblePoints * 0.5 ? (
+      {score >= totalPossiblePoints * 0 ? (
         <CheckCircleTwoTone twoToneColor="#52c41a" style={{ fontSize: "48px" }} />
       ) : (
         <CloseCircleTwoTone twoToneColor="#ff4d4f" style={{ fontSize: "48px" }} />
