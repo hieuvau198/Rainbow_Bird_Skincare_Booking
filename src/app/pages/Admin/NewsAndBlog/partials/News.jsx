@@ -1,16 +1,23 @@
-import { Button, Modal, Space, Table, Tag, message } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import { Button, message, Modal, Space, Switch, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import deleteNews from "../../../../modules/NewsAndBlog/deleteNews";
+import editNews from "../../../../modules/NewsAndBlog/editNews";
 import getNews from "../../../../modules/NewsAndBlog/getNews";
+import AddNews from "./partials/AddNews";
 import NewsDetail from "./partials/NewsDetail";
+import UserRole from "../../../../../enums/userRole";
+import DecodeRole from "../../../../components/DecodeRole";
 
 const News = () => {
+  const userRole = DecodeRole();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedNewsId, setSelectedNewsId] = useState(null);
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [newsToDelete, setNewsToDelete] = useState(null);
+  const [addNewsModalVisible, setAddNewsModalVisible] = useState(false);
 
   const loadNewsData = async () => {
     setLoading(true);
@@ -68,6 +75,27 @@ const News = () => {
     }
   };
 
+  const handleChangeStatus = async (record, newStatus) => {
+    const payload = {
+      title: record.title,
+      content: record.content,
+      imageUrl: record.imageUrl,
+      isPublished: newStatus,
+    };
+    try {
+      await editNews(record.newsId, payload);
+      message.success("Status updated successfully!");
+      setData((prevData) =>
+        prevData.map((item) =>
+          item.newsId === record.newsId ? { ...item, isPublished: newStatus } : item
+        )
+      );
+    } catch (error) {
+      console.error("Error updating status:", error);
+      message.error("Failed to update status!");
+    }
+  };
+
   const columns = [
     { title: "ID", dataIndex: "id", key: "id", width: 50 },
     {
@@ -81,19 +109,16 @@ const News = () => {
         </div>
       ),
     },
-    {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
-      width: 200,
-      render: (text) => {
-        const dateObj = new Date(text);
-        return `${dateObj.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        })} ${dateObj.toLocaleDateString()}`;
-      },
-    },
+    // {
+    //   title: "Date",
+    //   dataIndex: "date",
+    //   key: "date",
+    //   width: 200,
+    //   render: (text) => {
+    //     const dateObj = new Date(text);
+    //     return `${dateObj.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} ${dateObj.toLocaleDateString()}`;
+    //   },
+    // },
     {
       title: "Author Name",
       dataIndex: "author",
@@ -104,13 +129,27 @@ const News = () => {
       title: "Status",
       dataIndex: "isPublished",
       key: "status",
-      width: 100,
+      width: 150,
       render: (isPublished) => (
         <Tag color={isPublished ? "green" : "red"}>
           {isPublished ? "Published" : "Unpublished"}
         </Tag>
       ),
     },
+    {
+      title: "Change Status",
+      key: "changeStatus",
+      width: 150,
+      render: (_, record) =>
+        (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) ? (
+          <div className="text-center">
+            <Switch
+              checked={record.isPublished}
+              onChange={(checked) => handleChangeStatus(record, checked)}
+            />
+          </div>
+        ) : (<Tag color="red" >You can't change</Tag>),
+    },    
     {
       title: "Action",
       key: "action",
@@ -130,8 +169,16 @@ const News = () => {
 
   return (
     <div>
-      <div className="flex justify-between my-4">
-        <div className="text-xl font-medium">News List</div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl">News</h2>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => setAddNewsModalVisible(true)}
+          className="bg-blue-500"
+        >
+          Add News
+        </Button>
       </div>
       <Table
         rowKey="id"
@@ -144,14 +191,11 @@ const News = () => {
       />
       <Modal
         open={isDetailModalVisible}
-        title={
-          <div className="text-center text-2xl font-bold">News Detail</div>
-        }
+        title={<div className="text-center text-2xl font-bold">News Detail</div>}
         footer={null}
         onCancel={() => setIsDetailModalVisible(false)}
         width={800}
       >
-        {/* Chỉ truyền newsId, NewsDetail sẽ tự fetch detail */}
         <NewsDetail newsId={selectedNewsId} />
       </Modal>
       <Modal
@@ -165,6 +209,11 @@ const News = () => {
       >
         <p>Are you sure you want to delete this news?</p>
       </Modal>
+      <AddNews
+        open={addNewsModalVisible}
+        onClose={() => setAddNewsModalVisible(false)}
+        onAdded={loadNewsData}
+      />
     </div>
   );
 };

@@ -2,7 +2,7 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const editRecom = async (id, payload) => {
     const response = await fetch(`${API_BASE_URL}/api/QuizRecommendations/${id}`, {
-        method: "PUT", // Nếu API chỉ cần cập nhật một phần, có thể dùng PATCH thay vì PUT
+        method: "PUT",
         headers: {
             "Content-Type": "application/json",
         },
