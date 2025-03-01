@@ -114,3 +114,22 @@ export const recordCustomerAnswer = async (customerQuizId, questionId, answerId,
     throw new Error(error.message);
   }
 };
+
+/**
+ * Fetches quiz recommendations based on quiz ID and score
+ * @param {number} quizId - The ID of the quiz
+ * @param {number} score - The user's score
+ * @returns {Promise<Array>} - Array of quiz recommendations
+ */
+export const fetchQuizRecommendationsByScore = async (quizId, score) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/QuizRecommendations/quiz/${quizId}/score/${score}`);
+    if (!response.ok) {
+      throw new Error("Không thể tải gợi ý bài kiểm tra.");
+    }
+    return await response.json();
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+

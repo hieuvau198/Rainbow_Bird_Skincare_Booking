@@ -7,11 +7,20 @@ export default function AddTherapist({ open, onClose, onSubmit }) {
   const [form] = Form.useForm();
 
   const handleFinish = (values) => {
-    console.log("Therapist data submitted:", values);
-    message.success("Therapist added successfully!");
+    const payload = {
+      username: values.username,
+      password: values.password,
+      email: values.email,
+      phone: values.phone,
+      fullName: values.fullName,
+      isAvailable: true,
+      schedule: "string",
+      rating: 0,  
+    };
+    console.log("Therapist data submitted:", payload);
     form.resetFields();
     if (onSubmit) {
-      onSubmit(values);
+      onSubmit(payload);
     }
     onClose();
   };
@@ -23,9 +32,7 @@ export default function AddTherapist({ open, onClose, onSubmit }) {
       width={800}
       footer={null}
       title={
-        <div className="text-center text-2xl font-bold">
-          Therapist Details
-        </div>
+        <div className="text-center text-2xl font-bold">Add Therapist</div>
       }
     >
       <Form
@@ -35,6 +42,26 @@ export default function AddTherapist({ open, onClose, onSubmit }) {
         className="space-y-4"
       >
         <div className="grid grid-cols-2 gap-4">
+          <Form.Item
+            label="Username"
+            name="username"
+            rules={[{ required: true, message: "Please enter username" }]}
+          >
+            <Input
+              placeholder="Enter username"
+              className="rounded-md border-gray-300"
+            />
+          </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: "Please enter password" }]}
+          >
+            <Input.Password
+              placeholder="Enter password"
+              className="rounded-md border-gray-300"
+            />
+          </Form.Item>
           <Form.Item
             label="Full Name"
             name="fullName"
@@ -67,19 +94,12 @@ export default function AddTherapist({ open, onClose, onSubmit }) {
               className="rounded-md border-gray-300"
             />
           </Form.Item>
-          <Form.Item
-            label="Availability"
-            name="isAvailable"
-            rules={[{ required: true, message: "Please select availability" }]}
-          >
-            <Select placeholder="Select availability" className="rounded-md">
-              <Option value={true}>Available</Option>
-              <Option value={false}>Unavailable</Option>
-            </Select>
-          </Form.Item>
+          
         </div>
         <div className="flex justify-end space-x-4">
-          <Button danger onClick={onClose}>Cancel</Button>
+          <Button danger onClick={onClose}>
+            Cancel
+          </Button>
           <Button type="primary" htmlType="submit">
             Add Therapist
           </Button>

@@ -1,6 +1,6 @@
 import { message } from "antd";
 import Cookies from "js-cookie";
-import { saveTokens } from "./apiLogin"; 
+import { saveTokens } from "./apiLogin";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -25,8 +25,8 @@ export async function refreshToken() {
             throw new Error("Failed to refresh token. Please log in again.");
         }
 
-        const data = await response.json(); 
-        saveTokens(data); 
+        const data = await response.json();
+        saveTokens(data);
         return data.accessToken;
     } catch (error) {
         message.error(error.message || "Session expired. Please log in again.");
@@ -34,13 +34,14 @@ export async function refreshToken() {
         Cookies.remove("__atok");
         Cookies.remove("__rtok");
         Cookies.remove("__urol");
+        Cookies.remove("__uiden");
         window.location.href = "/login";
         throw error;
     }
 }
 
 export function autoRefreshToken() {
-    const refreshInterval = 58 * 60 * 1000; 
+    const refreshInterval = 58 * 60 * 1000;
 
     setTimeout(async () => {
         try {

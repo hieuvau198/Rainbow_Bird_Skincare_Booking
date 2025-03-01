@@ -86,6 +86,16 @@ export const saveTokens = (data) => {
             secure: true
         });
     }
+    
+    if (data.user && data.user.userId !== undefined) {
+        const encodedRole = encodeRoleToBase64(data.user.userId);
+        const encryptedRole = CryptoJS.AES.encrypt(encodedRole, secretKey).toString();
+        Cookies.set("__uiden", encryptedRole, {
+            expires: oneHour,
+            sameSite: "Strict",
+            secure: true
+        });
+    }
 
     Cookies.set("__atok", data.accessToken, {
         expires: oneHour,
