@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Button, message } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import { Button, message } from "antd";
+import React, { useEffect, useState } from "react";
 import getAllQuiz from "../../../modules/Quizzs/getAllQuiz";
-import QuizList from "./partials/QuizList";
-import QuizRenderDetails from "./partials/QuizDetailsPartials/QuizRenderDetails";
-import getQuizById from "../../../modules/Quizzs/getQuizById";
 import getQuestionByQuizId from "../../../modules/Quizzs/getQuestionByQuizId";
-import getAnsByQuesId from "../../../modules/Quizzs/getAnsByQuesId";
+import getQuizById from "../../../modules/Quizzs/getQuizById";
+import QuizRenderDetails from "./partials/QuizDetailsPartials/QuizRenderDetails";
+import QuizList from "./partials/QuizList";
 
 const ManageQuiz = () => {
   const [quizzes, setQuizzes] = useState([]);
@@ -38,8 +37,6 @@ const ManageQuiz = () => {
   const handleViewDetails = async (quizId) => {
     setLoading(true);
     try {
-      console.log("Fetching quiz details for ID:", quizId);
-
       const quizData = await getQuizById(quizId);
       let questionData = await getQuestionByQuizId(quizId);
 
