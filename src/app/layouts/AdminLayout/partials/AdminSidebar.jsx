@@ -1,15 +1,15 @@
-import {
-  BookOutlined,
-  FileTextOutlined,
-  IdcardOutlined,
-  MessageOutlined,
-  PieChartOutlined,
-  ScheduleOutlined,
-  ShoppingCartOutlined,
-  SolutionOutlined,
-  UserOutlined
-} from "@ant-design/icons";
 import React, { useEffect } from "react";
+import {
+  AiOutlineBook,
+  AiOutlineFileText,
+  AiOutlineIdcard,
+  AiOutlineMessage,
+  AiOutlinePieChart,
+  AiOutlineSchedule,
+  AiOutlineShoppingCart,
+  AiOutlineTeam,
+  AiOutlineUser
+} from "react-icons/ai";
 import { TbLogout } from "react-icons/tb";
 import { Link, useLocation } from "react-router-dom";
 import UserRole from "../../../../enums/userRole";
@@ -17,6 +17,7 @@ import { sActiveMenu } from "../../../../store/Store";
 import logo from "../../../assets/img/logo.png";
 import DecodeRole from "../../../components/DecodeRole";
 import logOut from "../../../modules/Logout";
+import { HiOutlineNewspaper } from "react-icons/hi";
 
 const AdminSidebar = () => {
   const activeMenu = sActiveMenu.use();
@@ -36,6 +37,7 @@ const AdminSidebar = () => {
       "/management/profile": "Profile",
       "/management/quiz": "Quiz",
       "/management/schedule": "Schedule",
+      "/management/NewsAndBlog": "News&Blog",
     };
 
     const currentMenu = menuMap[currentPath];
@@ -46,25 +48,25 @@ const AdminSidebar = () => {
 
   return (
     <div className="fixed top-0 left-0 h-screen bg-white shadow-md z-40 lg:w-64 hidden lg:block">
-      <div className="py-4 flex justify-center border-b-2">
-        <img src={logo} alt="Logo" className="w-20 h-20 rounded-full" />
+      <div className="py-2 flex justify-center border-b-2">
+        <img src={logo} alt="Logo" className="w-16 h-16 rounded-full" />
       </div>
 
-      <nav className="mt-6 w-[80%] mx-auto">
+      <nav className="mt-3 w-[80%] mx-auto">
         <div className="space-y-2 text-gray-600">
           {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
             <Link
               to="/management/dashboard"
               className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Dashboard"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
                 }`}
               onClick={() => {
                 sActiveMenu.set("Dashboard");
               }}
             >
               <div className="flex items-center gap-3 w-full">
-                <PieChartOutlined />
+                <AiOutlinePieChart />
                 <span className="text-lg font-semibold">Dashboard</span>
               </div>
             </Link>
@@ -74,15 +76,15 @@ const AdminSidebar = () => {
             <Link
               to="/management/booking"
               className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Bookings"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
                 }`}
               onClick={() => {
                 sActiveMenu.set("Bookings");
               }}
             >
               <div className="flex items-center gap-3 w-full">
-                <ShoppingCartOutlined />
+                <AiOutlineShoppingCart />
                 <span className="text-lg font-semibold">Bookings</span>
               </div>
             </Link>
@@ -92,15 +94,15 @@ const AdminSidebar = () => {
             <Link
               to="/management/quiz"
               className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Quiz"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
                 }`}
               onClick={() => {
                 sActiveMenu.set("Quiz");
               }}
             >
               <div className="flex items-center gap-3 w-full">
-                <BookOutlined />
+                <AiOutlineBook />
                 <span className="text-lg font-semibold">Quiz</span>
               </div>
             </Link>
@@ -110,15 +112,15 @@ const AdminSidebar = () => {
             <Link
               to="/management/service"
               className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Services"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
                 }`}
               onClick={() => {
                 sActiveMenu.set("Services");
               }}
             >
               <div className="flex items-center gap-3 w-full">
-                <FileTextOutlined />
+                <AiOutlineFileText />
                 <span className="text-lg font-semibold">Services</span>
               </div>
             </Link>
@@ -128,15 +130,15 @@ const AdminSidebar = () => {
             <Link
               to="/management/employee"
               className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Employee"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
                 }`}
               onClick={() => {
                 sActiveMenu.set("Employee");
               }}
             >
               <div className="flex items-center gap-3 w-full">
-                <IdcardOutlined />
+                <AiOutlineIdcard />
                 <span className="text-lg font-semibold">Employee</span>
               </div>
             </Link>
@@ -146,15 +148,15 @@ const AdminSidebar = () => {
             <Link
               to="/management/customer"
               className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Customer"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
                 }`}
               onClick={() => {
                 sActiveMenu.set("Customer");
               }}
             >
               <div className="flex items-center gap-3 w-full">
-                <SolutionOutlined />
+                <AiOutlineTeam />
                 <span className="text-lg font-semibold">Customer</span>
               </div>
             </Link>
@@ -164,16 +166,34 @@ const AdminSidebar = () => {
             <Link
               to="/management/feedback"
               className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Feedback"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
                 }`}
               onClick={() => {
                 sActiveMenu.set("Feedback");
               }}
             >
               <div className="flex items-center gap-3 w-full">
-                <MessageOutlined />
+                <AiOutlineMessage />
                 <span className="text-lg font-semibold">Feedback</span>
+              </div>
+            </Link>
+          )}
+
+          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
+            <Link
+              to="/management/NewsAndBlog"
+              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "News&Blog"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+                }`}
+              onClick={() => {
+                sActiveMenu.set("News&Blog");
+              }}
+            >
+              <div className="flex items-center gap-3 w-full">
+                <HiOutlineNewspaper />
+                <span className="text-lg font-semibold">News&Blog</span>
               </div>
             </Link>
           )}
@@ -182,15 +202,15 @@ const AdminSidebar = () => {
             <Link
               to="/management/schedule"
               className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Schedule"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
                 }`}
               onClick={() => {
                 sActiveMenu.set("Schedule");
               }}
             >
               <div className="flex items-center gap-3 w-full">
-                <ScheduleOutlined />
+                <AiOutlineSchedule />
                 <span className="text-lg font-semibold">Schedule</span>
               </div>
             </Link>
@@ -199,15 +219,15 @@ const AdminSidebar = () => {
           <Link
             to="/management/profile"
             className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Profile"
-              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
               }`}
             onClick={() => {
               sActiveMenu.set("Profile");
             }}
           >
             <div className="flex items-center gap-3 w-full">
-              <UserOutlined />
+              <AiOutlineUser />
               <span className="text-lg font-semibold">Profile</span>
             </div>
           </Link>
