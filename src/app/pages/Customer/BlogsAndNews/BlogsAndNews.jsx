@@ -91,7 +91,7 @@ export default function NewsAndBlogs() {
       {/* Section News */}
       <section>
         <h3 className="text-2xl font-bold mb-4">News</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {newsList.map((news) => (
             <div
               key={news.newsId}
@@ -109,11 +109,11 @@ export default function NewsAndBlogs() {
                 <p className="text-gray-600 text-sm mb-5">{news.description}</p>
                 <p className="text-gray-500 text-sm mb-2">
                   {news.authorFullName} -{" "}
-                  {new Date(news.createdAt).toLocaleTimeString([], {
+                  {new Date(news.publishedAt).toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
                   })}{" "}
-                  {new Date(news.createdAt).toLocaleDateString()}
+                  {new Date(news.publishedAt).toLocaleDateString()}
                 </p>
                 <Link
                   to={`/news/${news.newsId}`}

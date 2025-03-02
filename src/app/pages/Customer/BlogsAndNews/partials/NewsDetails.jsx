@@ -6,14 +6,14 @@ import getNewsById from "../../../../modules/NewsAndBlog/getNewsById";
 
 export default function NewsDetails() {
   const { id } = useParams();
-  const [newsItem, setNewsItem] = useState(null);
+  const [news, setNews] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchNews() {
       try {
         const data = await getNewsById(id);
-        setNewsItem(data);
+        setNews(data);
       } catch (error) {
         message.error("Có lỗi khi tải chi tiết news");
         console.error("Error fetching news details:", error);
@@ -28,7 +28,7 @@ export default function NewsDetails() {
     return <p>Đang tải dữ liệu chi tiết...</p>;
   }
 
-  if (!newsItem) {
+  if (!news) {
     return <p>Không tìm thấy news nào!</p>;
   }
 
@@ -36,24 +36,25 @@ export default function NewsDetails() {
     <div className="container mx-auto p-6">
       <div className="bg-white shadow-md rounded-2xl overflow-hidden">
         <img
-          src={newsItem.imageUrl}
-          alt={newsItem.title}
+          src={news.imageUrl}
+          alt={news.title}
           className="w-full h-64 object-cover"
         />
         <div className="p-5">
           <h1 className="text-3xl font-bold text-gray-800 mb-4">
-            {newsItem.title}
+            {news.title}
           </h1>
-          <span className="ml-4">
+          <p className="text-gray-500 text-sm mb-2">
+          {news.authorFullName} -{" "}
             {new Date(news.publishedAt).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
             })}{" "}
-          {new Date(news.publishedAt).toLocaleDateString()}
-        </span>
+            {new Date(news.publishedAt).toLocaleDateString()}
+          </p>
           <div className="p-4">
             <MDEditor.Markdown
-              source={newsItem.content || "No content available"}
+              source={news.content || "No content available"}
             />
           </div>
         </div>
