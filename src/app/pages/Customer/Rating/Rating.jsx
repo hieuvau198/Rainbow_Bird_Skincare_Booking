@@ -115,7 +115,7 @@ export default function SkincareServiceReview() {
       </div>
 
       {/* Image Upload */}
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <p className="font-semibold mb-2">Upload photos (max 3):</p>
         <input
           type="file"
@@ -133,7 +133,7 @@ export default function SkincareServiceReview() {
             ))}
           </ul>
         )}
-      </div>
+      </div> */}
 
       {/* Submit Button */}
       <button
