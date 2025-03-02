@@ -30,7 +30,9 @@ export default function NewsAndBlogs() {
     async function fetchNews() {
       try {
         const data = await getNews();
-        setNewsList(data);
+        // Lọc ra những bài news có ispublic là true
+        const filteredNews = data.filter((news) => news.isPublished === true);
+        setNewsList(filteredNews);
       } catch (error) {
         message.error("Có lỗi khi tải dữ liệu news");
         console.error("Error fetching news:", error);
@@ -77,7 +79,7 @@ export default function NewsAndBlogs() {
                   {new Date(blog.createdAt).toLocaleDateString()}
                 </p>
                 <Link
-                  to={`/news/${blog.blogId}`}
+                  to={`/blog/${blog.blogId}`}
                   className="text-sm font-medium text-white bg-lime-700 px-4 py-2 rounded-lg"
                 >
                   Read More
