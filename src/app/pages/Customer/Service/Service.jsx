@@ -9,7 +9,10 @@ export default function Service() {
 
   const [services, setServices] = useState ([]);
   const [loading, setLoading] = useState(true);
+  const [filteredServices, setFilteredServices] = useState([]);
   const [error, setError] = useState(null);
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -26,6 +29,7 @@ export default function Service() {
           duration_minutes: service.durationMinutes ? `${service.durationMinutes} minutes` : "Duration not specified"
         }));
         setServices(formattedServices);
+        setFilteredServices(formattedServices);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -34,6 +38,19 @@ export default function Service() {
     };
     fetchServices();
   }, []);
+
+  // 📌 Hàm lọc dịch vụ theo khoảng giá
+  const applyPriceFilter = () => {
+    let min = parseFloat(minPrice) || 0;
+    let max = parseFloat(maxPrice) || Infinity;
+
+    const filtered = services.filter(service => {
+      const priceValue = parseFloat(service.price);
+      return priceValue >= min && priceValue <= max;
+    });
+
+    setFilteredServices(filtered);
+  };
 
   if (loading) {
     return <div className="text-center text-lg font-semibold">Loading services...</div>;
@@ -52,14 +69,20 @@ export default function Service() {
 
       <div className="w-full grid grid-cols-4 gap-4">
         {/* Sidebar */}
-        <SidebarService />
+        <SidebarService 
+          minPrice={minPrice} 
+          maxPrice={maxPrice} 
+          setMinPrice={setMinPrice} 
+          setMaxPrice={setMaxPrice} 
+          applyPriceFilter={applyPriceFilter} 
+        />
 
         {/* Main Content */}
-        <MainContent services={services} />
+        <MainContent services={filteredServices} />
       </div>
 
-      {/* Related Services Section */}
-      {services.length > 0 && <RelatedServices services={services} service={services[0]} />}
+        {/* Related Services Section
+        {filteredServices.length > 0 && <RelatedServices services={filteredServices} service={filteredServices[0]} />} */}
     </div>
   );
 }

@@ -110,7 +110,7 @@ const QuizResult = ({ score, totalPossiblePoints , onRetry }) => {
                     <button 
                       className="bg-lime-500 text-white px-4 py-2 rounded-lg cursor-pointer text-center hover:bg-lime-700 transition"
                       onClick={() => navigate(`/services/${service.serviceId}`)}>
-                      Learn More
+                      Book Now
                     </button>
                   </div>
                 </div>
