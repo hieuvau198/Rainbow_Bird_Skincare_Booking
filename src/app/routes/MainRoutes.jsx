@@ -15,7 +15,9 @@ const Service = lazy(() => import("../pages/Customer/Service/Service"));
 const ServiceDetail = lazy(() => import("../pages/Customer/Service/ServiceDetail"));
 
 const Quiz = lazy(() => import("../pages/Customer/Quiz/Quiz"));
-const News = lazy(() => import("../pages/Customer/BlogsAndNews/News"));
+const News = lazy(() => import("../pages/Customer/BlogsAndNews/BlogsAndNews"));
+const NewsDetail = lazy(() => import("../pages/Customer/BlogsAndNews/partials/NewsDetails"));
+const BlogsDetail = lazy(() => import("../pages/Customer/BlogsAndNews/partials/BlogsDetails"));
 const AboutUs = lazy(() => import("../pages/AboutUs/AboutUs"));
 const BookingSuccess = lazy(() => import("../pages/Customer/Service/partials/BookingSuccess"));
 const QuizDetail = lazy(() => import("../pages/Customer/Quiz/partials/QuizDetail"));
@@ -122,6 +124,16 @@ export default function MainRoutes() {
           <Route path="/news" element={
             <Suspense fallback={<Loading />}>
               <News />
+            </Suspense>
+          } />
+          <Route path="/news/:id" element={
+            <Suspense fallback={<Loading />}>
+              <NewsDetail />
+            </Suspense>
+          } />
+          <Route path="/blog/:id" element={
+            <Suspense fallback={<Loading />}>
+              <BlogsDetail/>
             </Suspense>
           } />
         </Route>

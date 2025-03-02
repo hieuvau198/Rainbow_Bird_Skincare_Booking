@@ -1,5 +1,5 @@
 import React from "react";
-import ReactMarkdown from "react-markdown";
+import MDEditor from "@uiw/react-md-editor";
 
 export default function InfoSerDetail({ additionalInfo, showFullInfo, setShowFullInfo, image }) {
   return (
@@ -8,7 +8,7 @@ export default function InfoSerDetail({ additionalInfo, showFullInfo, setShowFul
         <div className="bg-white p-4">
           <h2 className="text-2xl mb-5 font-bold text-gray-800">Service Information</h2>
           <div className={`text-gray-700 text-md space-y-3 ${showFullInfo ? "" : "line-clamp-3 overflow-hidden"}`}>
-            <ReactMarkdown>{additionalInfo || "No additional information available."}</ReactMarkdown>
+            <MDEditor.Markdown source={additionalInfo || "No additional information available."} />
           </div>
 
           {showFullInfo && (
