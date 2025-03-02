@@ -73,7 +73,7 @@ const QuizDetail = () => {
 
   return (
     <div className="p-6 flex justify-center items-center min-h-screen bg-white">
-      <Card className="max-w-6xl w-full shadow-2xl rounded-2xl p-20 bg-amber border border-lime-300">
+      <Card className="max-w-7xl w-full shadow-2xl rounded-2xl p-20 bg-amber border border-lime-300">
         {showResult ? (
           <QuizResult 
             score={score} 

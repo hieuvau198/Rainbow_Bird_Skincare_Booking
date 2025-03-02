@@ -1,6 +1,5 @@
-import { UserOutlined, StarOutlined, DollarOutlined , ClockCircleOutlined, LeftOutlined, RightOutlined  } from "@ant-design/icons";
-import React, { useEffect, useState, useRef } from "react";
-import mockData from "./mock_service.json";
+import React, { useEffect, useState } from "react";
+import getAllService from "../../../modules/Admin/Service/getAllService"
 import RelatedServices from "./partials/RelatedServices";
 import MainContent from "./partials/MainService";
 import SidebarService from "./partials/SidebarService";
@@ -9,30 +8,81 @@ const url3 ="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w
 export default function Service() {
 
   const [services, setServices] = useState ([]);
+  const [loading, setLoading] = useState(true);
+  const [filteredServices, setFilteredServices] = useState([]);
+  const [error, setError] = useState(null);
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+
   useEffect(() => {
-    setServices(mockData)
+    const fetchServices = async () => {
+      try {
+        const data = await getAllService();
+        const formattedServices = data.map(service => ({
+          service_id: service.serviceId || "N/A",
+          service_name: service.serviceName || "Unknown Service",
+          price: service.price ? `${service.price} ${service.currency || "USD"}` : "Price not available",
+          description: service.description || "No description available.",
+          buyers: service.buyers || "0",
+          reviews: service.reviews || "No reviews",
+          image: service.serviceImage || "https://via.placeholder.com/500",
+          duration_minutes: service.durationMinutes ? `${service.durationMinutes} minutes` : "Duration not specified"
+        }));
+        setServices(formattedServices);
+        setFilteredServices(formattedServices);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchServices();
   }, []);
+
+  // 📌 Hàm lọc dịch vụ theo khoảng giá
+  const applyPriceFilter = () => {
+    let min = parseFloat(minPrice) || 0;
+    let max = parseFloat(maxPrice) || Infinity;
+
+    const filtered = services.filter(service => {
+      const priceValue = parseFloat(service.price);
+      return priceValue >= min && priceValue <= max;
+    });
+
+    setFilteredServices(filtered);
+  };
+
+  if (loading) {
+    return <div className="text-center text-lg font-semibold">Loading services...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center text-lg text-red-500">Error: {error}</div>;
+  }
 
   return (
     <div className="px-24 bg-white min-h-screen grid grid-cols-1 gap-4 w-full">
       {/* Large Banner */}
       <div className="h-[400px] my-2 bg-center bg-cover bg-no-repeat bg-local rounded-lg shadow-lg"
       style={{ backgroundImage: `url(${url3})` }}>
-        {/* <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-        alt="Banner" 
-        className="rounded-lg shadow-lg w-full" /> */}
       </div>
 
       <div className="w-full grid grid-cols-4 gap-4">
         {/* Sidebar */}
-        <SidebarService />
+        <SidebarService 
+          minPrice={minPrice} 
+          maxPrice={maxPrice} 
+          setMinPrice={setMinPrice} 
+          setMaxPrice={setMaxPrice} 
+          applyPriceFilter={applyPriceFilter} 
+        />
 
         {/* Main Content */}
-        <MainContent services={services} />
+        <MainContent services={filteredServices} />
       </div>
 
-      {/* Related Services Section */}
-      {services.length > 0 && <RelatedServices services={services} service={services[0]} />}
+        {/* Related Services Section
+        {filteredServices.length > 0 && <RelatedServices services={filteredServices} service={filteredServices[0]} />} */}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import ReactMarkdown from "react-markdown";
 
 export default function InfoSerDetail({ additionalInfo, showFullInfo, setShowFullInfo, image }) {
   return (
@@ -6,37 +7,16 @@ export default function InfoSerDetail({ additionalInfo, showFullInfo, setShowFul
       <div className="pt-4">
         <div className="bg-white p-4">
           <h2 className="text-2xl mb-5 font-bold text-gray-800">Service Information</h2>
-          <div
-            className={`text-gray-700 text-md space-y-3 ${
-              showFullInfo ? "" : "line-clamp-3 overflow-hidden"
-            }`}
-          >
-            <ul className="list-disc pl-5 space-y-2">
-              {additionalInfo.map((info, index) => {
-                if (info.includes(":")) {
-                  const [title, content] = info.split(":");
-                  return (
-                    <li key={index} className="text-sd list-none">
-                      <span className="font-bold text-lg">{title}:</span> {content}
-                    </li>
-                  );
-                } else {
-                  return (
-                    <li key={index} className="text-sm ml-4">
-                      {info}
-                    </li>
-                  );
-                }
-              })}
-            </ul>
+          <div className={`text-gray-700 text-md space-y-3 ${showFullInfo ? "" : "line-clamp-3 overflow-hidden"}`}>
+            <ReactMarkdown>{additionalInfo || "No additional information available."}</ReactMarkdown>
           </div>
 
           {showFullInfo && (
             <div className="mt-4 flex justify-center">
               <img
                 src={image}
-                alt="Dịch vụ"
-                className="w-[800px] h-auto rounded-lg shadow-md"
+                alt="Service"
+                className="w-96 h-80 rounded-lg shadow-md"
               />
             </div>
           )}
@@ -49,7 +29,6 @@ export default function InfoSerDetail({ additionalInfo, showFullInfo, setShowFul
           </button>
         </div>
       </div>
-      <hr className="my-4 border-gray-200" />
     </div>
   );
 }

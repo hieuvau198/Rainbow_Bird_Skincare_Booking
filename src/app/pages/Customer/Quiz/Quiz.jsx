@@ -39,7 +39,7 @@ const Quiz = () => {
           >
             {/* Ảnh Quiz */}
             <div className="md:w-1/3 w-full relative">
-              <img src={quiz.imageUrl} alt={quiz.name} className="w-full h-72 object-cover border border-lime-200 rounded-md shadow-sm" />
+              <img src={quiz.imageUrl} alt={quiz.name} className="w-full h-72 object-cover border border-lime-200 rounded-md shadow-sm hover:scale-105" />
             </div>
 
             {/* Nội dung Quiz */}

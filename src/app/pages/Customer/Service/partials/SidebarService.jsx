@@ -1,23 +1,46 @@
 import React from "react";
 
-const SidebarService = () => {
+const SidebarService = ({ minPrice, maxPrice, setMinPrice, setMaxPrice, applyPriceFilter }) => {
   return (
     <div className="col-span-1 p-6 bg-white shadow-sm rounded-lg">
-          <h2 className="text-3xl font-bold mb-4">Service</h2>
-          <ul className="space-y-2 text-sm">
-            <li className="p-2 bg-white cursor-pointer"> {" "} Therapy Services {" "} </li>
-            <li className="p-2 bg-white cursor-pointer"> {" "} Massage Therapy Services{" "} </li>
-            <li className="p-2 bg-white cursor-pointer"> {" "} Relaxation & Care{" "} </li>
-          </ul>
+      <h2 className="text-3xl font-bold mb-4">Service</h2>
+      <ul className="space-y-2 text-sm">
+        <li className="p-2 bg-white cursor-pointer">Therapy Services</li>
+        <li className="p-2 bg-white cursor-pointer">Massage Therapy Services</li>
+        <li className="p-2 bg-white cursor-pointer">Relaxation & Care</li>
+      </ul>
 
-          <h2 className="text-lg font-bold mt-4 mb-2">Price Range</h2>
-          <div className="flex items-center space-x-2 text-sm">
-            <input type="text" className="w-1/2 p-1 border rounded" placeholder="From" />
-            <input type="text" className="w-1/2 p-1 border rounded" placeholder="To" />
-          </div>
-          <button className="mt-2 w-full bg-orange-500 text-white p-2 rounded-md text-sm"> {" "} Apply {" "} </button>
+      <h2 className="text-lg font-bold mt-4 mb-2">Price Range</h2>
+      <div className="flex items-center space-x-2 text-sm">
+        <input
+          type="number"
+          className="w-1/2 p-1 border rounded"
+          placeholder="From"
+          value={minPrice}
+          onChange={(e) => setMinPrice(e.target.value)}
+        />
+        <input
+          type="number"
+          className="w-1/2 p-1 border rounded"
+          placeholder="To"
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(e.target.value)}
+        />
+      </div>
+      <button onClick={applyPriceFilter} className="mt-2 w-full bg-orange-500 text-white p-2 rounded-md text-sm">
+        Apply
+      </button>
+    </div>
+  );
+};
 
-          {/* Cẩm Nang */}
+export default SidebarService;
+
+
+
+
+
+{/* Cẩm Nang
           <h2 className="text-3xl font-bold mt-10 mb-2">Therapy Handbook</h2>
           <div className="space-y-4">
             {[
@@ -38,9 +61,4 @@ const SidebarService = () => {
                 </span>
               </div>
             ))}
-          </div>
-        </div>
-  );
-};
-
-export default SidebarService;
+          </div> */}
