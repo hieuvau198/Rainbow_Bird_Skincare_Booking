@@ -73,7 +73,9 @@ export default function SignUp() {
               <Form.Item
                 name="username"
                 label="User Name"
-                rules={[{ required: true, message: "Please enter your username!" }]}
+                rules={[
+                  { required: true, message: "Please enter your username!" },
+                ]}
               >
                 <Input placeholder="Enter your username" size="large" />
               </Form.Item>
@@ -92,7 +94,9 @@ export default function SignUp() {
               <Form.Item
                 name="fullName"
                 label="Full Name"
-                rules={[{ required: true, message: "Please enter your full name!" }]}
+                rules={[
+                  { required: true, message: "Please enter your full name!" },
+                ]}
               >
                 <Input placeholder="Enter your full name" size="large" />
               </Form.Item>
@@ -100,7 +104,9 @@ export default function SignUp() {
               <Form.Item
                 name="phone"
                 label="Phone Number"
-                rules={[{ required: true, message: "Please enter your phone number!" }]}
+                rules={[
+                  { required: true, message: "Please enter your phone number!" },
+                ]}
               >
                 <Input type="tel" placeholder="Enter your phone number" size="large" />
               </Form.Item>
@@ -108,7 +114,16 @@ export default function SignUp() {
               <Form.Item
                 name="password"
                 label="Password"
-                rules={[{ required: true, message: "Please create a password!" }]}
+                rules={[
+                  { required: true, message: "Please create a password!" },
+                  {
+                    pattern: new RegExp(
+                      "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"
+                    ),
+                    message:
+                      "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.",
+                  },
+                ]}
               >
                 <Input.Password placeholder="Create a password" size="large" />
               </Form.Item>

@@ -105,10 +105,11 @@ const Recommendations = ({ quizId }) => {
             key: "action",
             render: (_, record) => (
                 <Space size="middle">
-                    <Button type="link" onClick={() => handleEditClick(record)}>
+                    <Button color="primary" variant="solid" type="link" onClick={() => handleEditClick(record)}>
                         Edit
                     </Button>
                     <Button
+                        color="red" variant="solid"
                         type="link"
                         danger
                         onClick={() => {
