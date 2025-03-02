@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { ClockCircleOutlined, DollarOutlined, StarOutlined, UserOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
+import getAllService from "../../../../modules/Admin/Service/getAllService";
 
-export default function ContentSerDetail({ service, setIsModalOpen, removeScrollBar, fullImage }) {
+export default function ContentSerDetail({ serviceId, setIsModalOpen, removeScrollBar, fullImage }) {
+  const [service, setService] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const thumbnailsRef = useRef(null);
 
