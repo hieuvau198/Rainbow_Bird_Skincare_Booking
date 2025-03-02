@@ -116,16 +116,14 @@ export const recordCustomerAnswer = async (customerQuizId, questionId, answerId,
 };
 
 /**
- * Fetches quiz recommendations based on quiz ID and score
- * @param {number} quizId - The ID of the quiz
- * @param {number} score - The user's score
+ * Fetches quiz recommendations
  * @returns {Promise<Array>} - Array of quiz recommendations
  */
-export const fetchQuizRecommendationsByScore = async (quizId, score) => {
+export const fetchQuizRecommendations = async () => {
   try {
-    const response = await fetch(`${API_BASE_URL}/QuizRecommendations/quiz/${quizId}/score/${score}`);
+    const response = await fetch(`${API_BASE_URL}/QuizRecommendations`);
     if (!response.ok) {
-      throw new Error("Không thể tải gợi ý bài kiểm tra.");
+      throw new Error("Không thể tải danh sách gợi ý.");
     }
     return await response.json();
   } catch (error) {
@@ -133,3 +131,18 @@ export const fetchQuizRecommendationsByScore = async (quizId, score) => {
   }
 };
 
+/**
+ * Fetches all services
+ * @returns {Promise<Array>} - Array of all services
+ */
+export const fetchAllServices = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/Service`);
+    if (!response.ok) {
+      throw new Error("Không thể tải danh sách dịch vụ.");
+    }
+    return await response.json();
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
