@@ -1,5 +1,5 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, message, Modal, Space, Table, Tag } from "antd";
+import { Button, message, Modal, Space, Table, Tag, Input } from "antd";
 import React, { useEffect, useState } from "react";
 import getAllService from "../../../../app/modules/Admin/Service/getAllService";
 import getServiceDetail from "../../../../app/modules/Admin/Service/getServiceDetail";
@@ -10,16 +10,47 @@ import deleteService from "../../../modules/Admin/Service/deleteService";
 import "../../../styles/Admin/ScrollbarTable.css";
 import AddService from "./partials/AddService";
 import ServiceDetails from "./partials/ServiceDetail";
+import SearchBar from "../../../components/SearchBar";
 
 export default function Service() {
   const [loading, setLoading] = useState(false);
   const [services, setServices] = useState([]);
+  const [filteredServices, setFilteredServices] = useState([]);
+  const [searchText, setSearchText] = useState("");
   const [isAddServiceModalVisible, setIsAddServiceModalVisible] = useState(false);
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [serviceToDelete, setServiceToDelete] = useState(null);
   const userRole = DecodeRole();
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      setLoading(true);
+      try {
+        const data = await getAllService();
+        const servicesWithKey = data.map((service) => ({
+          key: service.serviceId,
+          ...service,
+        }));
+        setServices(servicesWithKey);
+        setFilteredServices(servicesWithKey);
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      }
+      setLoading(false);
+    };
+    fetchServices();
+  }, []);
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearchText(value);
+    const filtered = services.filter((service) =>
+      service.serviceName.toLowerCase().includes(value)
+    );
+    setFilteredServices(filtered);
+  };
 
   const showDeleteConfirm = (service) => {
     setServiceToDelete(service);
@@ -31,7 +62,12 @@ export default function Service() {
     try {
       await deleteService(serviceToDelete.serviceId);
       message.success("Service deleted successfully!");
-      setServices((prev) => prev.filter((s) => s.serviceId !== serviceToDelete.serviceId));
+      setServices((prev) =>
+        prev.filter((s) => s.serviceId !== serviceToDelete.serviceId)
+      );
+      setFilteredServices((prev) =>
+        prev.filter((s) => s.serviceId !== serviceToDelete.serviceId)
+      );
     } catch (error) {
       console.error("Error deleting service:", error);
       message.error("Failed to delete service!");
@@ -57,16 +93,31 @@ export default function Service() {
       ...prevServices,
       { key: newService.serviceId, ...newService },
     ]);
+    setFilteredServices((prevServices) => [
+      ...prevServices,
+      { key: newService.serviceId, ...newService },
+    ]);
     setIsAddServiceModalVisible(false);
   };
 
   const handleServiceUpdate = (updatedService) => {
     setServices((prevServices) =>
       prevServices.map((s) =>
-        s.serviceId === updatedService.serviceId ? { key: updatedService.serviceId, ...updatedService } : s
+        s.serviceId === updatedService.serviceId
+          ? { key: updatedService.serviceId, ...updatedService }
+          : s
+      )
+    );
+    setFilteredServices((prevServices) =>
+      prevServices.map((s) =>
+        s.serviceId === updatedService.serviceId
+          ? { key: updatedService.serviceId, ...updatedService }
+          : s
       )
     );
   };
+
+  
 
   const columns = [
     {
@@ -91,9 +142,8 @@ export default function Service() {
       dataIndex: "price",
       key: "price",
       width: 150,
-      render: (_, record) => `${record.price} ${record.currency || 'USD'}`,
+      render: (_, record) => `${record.price} ${record.currency || "USD"}`,
     },
-
     {
       title: "Status",
       dataIndex: "isActive",
@@ -110,11 +160,21 @@ export default function Service() {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button color="primary" variant="solid" type="link" onClick={() => handleViewDetails(record.serviceId)}>
+          <Button color="primary"
+            variant="solid"
+            type="link"
+            onClick={() => handleViewDetails(record.serviceId)}
+          >
             View details
           </Button>
           {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
-            <Button color="red" variant="solid" type="link" danger onClick={() => showDeleteConfirm(record)}>
+            <Button
+              color="red"
+              variant="solid"
+              type="link"
+              danger
+              onClick={() => showDeleteConfirm(record)}
+            >
               Delete
             </Button>
           )}
@@ -123,50 +183,38 @@ export default function Service() {
     },
   ];
 
-  useEffect(() => {
-    const fetchServices = async () => {
-      setLoading(true);
-      try {
-        const data = await getAllService();
-        const servicesWithKey = data.map((service) => ({
-          key: service.serviceId,
-          ...service,
-        }));
-        setServices(servicesWithKey);
-      } catch (error) {
-        console.error("Error fetching services:", error);
-      }
-      setLoading(false);
-    };
-    fetchServices();
-  }, []);
-
   return (
     <div className="p-6 max-w-[1270px]">
       <div className="p-6 bg-white rounded-md shadow-md min-h-[640px]">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold">Skincare Services</h2>
-          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => setIsAddServiceModalVisible(true)}
-              className="bg-blue-500"
-            >
-              Add Service
-            </Button>
-          )}
+          <div className="flex items-center">
+            <SearchBar
+              searchText={searchText}
+              onSearchChange={handleSearchChange}
+            />
+            {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
+              <Button
+                type="primary"
+                icon={<PlusOutlined />}
+                onClick={() => setIsAddServiceModalVisible(true)}
+                className="bg-blue-500"
+              >
+                Add Service
+              </Button>
+            )}
+          </div>
         </div>
-        <div>
-          <Table
-            columns={columns}
-            dataSource={services}
-            loading={loading}
-            pagination={{ pageSize: 10 }}
-            bordered
-            scroll={{ x: "max-content", y: 400 }}
-          />
-        </div>
+
+        <Table
+          columns={columns}
+          dataSource={filteredServices}
+          loading={loading}
+          pagination={{ pageSize: 10 }}
+          bordered
+          scroll={{ x: "max-content", y: 400 }}
+        />
+
         <AddService
           open={isAddServiceModalVisible}
           onClose={() => setIsAddServiceModalVisible(false)}

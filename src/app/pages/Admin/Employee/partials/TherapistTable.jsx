@@ -1,17 +1,20 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, message, Space, Table, Tag } from "antd";
+import { Button, message, Table, Tag, Modal, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import getTherapists from "../../../../modules/Admin/Employee/getTherapist";
 import AddTherapist from "./TherapistPartials/AddTherapist";
 import ViewTherapistProfile from "./TherapistPartials/ViewTherapistProfile";
 import addTherapist from "../../../../modules/Admin/Employee/addTherapist";
+import SearchBar from "../../../../components/SearchBar";
 
 const TherapistTable = () => {
     const [data, setData] = useState([]);
+    const [filteredTherapists, setFilteredTherapists] = useState([]);
     const [loading, setLoading] = useState(false);
     const [detailModalVisible, setDetailModalVisible] = useState(false);
     const [selectedTherapistId, setSelectedTherapistId] = useState(null);
     const [addModalVisible, setAddModalVisible] = useState(false);
+    const [searchText, setSearchText] = useState("");
 
     const columns = [
         { title: "ID", dataIndex: "id", key: "id", width: 50 },
@@ -35,10 +38,9 @@ const TherapistTable = () => {
                     <Button color="primary" variant="solid" type="link" onClick={() => {
                         setSelectedTherapistId(record.id);
                         setDetailModalVisible(true);
-                    }}>View details</Button>
-                    {/* <Button color="danger" variant="solid" type="link" danger>
-                        Delete
-                    </Button> */}
+                    }}>
+                        View details
+                    </Button>
                 </Space>
             ),
         },
@@ -56,9 +58,11 @@ const TherapistTable = () => {
                 status: item.isAvailable ? "Active" : "Inactive",
             }));
             setData(formattedData);
+            setFilteredTherapists(formattedData);
         } catch (error) {
-            console.error("Error:", error);
+            console.error("Error fetching therapists:", error);
             setData([]);
+            setFilteredTherapists([]);
         }
         setLoading(false);
     };
@@ -67,45 +71,63 @@ const TherapistTable = () => {
         fetchTherapists();
     }, []);
 
+    const handleSearchChange = (e) => {
+        const value = e.target.value.toLowerCase();
+        setSearchText(value);
+        const filtered = data.filter((therapist) =>
+            therapist.name.toLowerCase().includes(value)
+        );
+        setFilteredTherapists(filtered);
+    };
+
     const handleAddTherapist = async (values) => {
-        console.log("New therapist data:", values);
         try {
             const newTherapist = await addTherapist(values);
-            setData((prevData) => [
-              ...prevData,
-              { key: newTherapist.username, ...newTherapist },
-            ]);
-            setAddModalVisible(false);
             fetchTherapists();
+            setAddModalVisible(false);
             message.success("Therapist added successfully!");
-          } catch (error) {
-            console.error("Error adding Therapist:", error);
-            message.error("Error adding Therapist!");
-          }
+        } catch (error) {
+            console.error("Error adding therapist:", error);
+            message.error("Error adding therapist!");
+        }
     };
 
     return (
         <div>
-            <div className="flex justify-between my-4">
-                <div className="text-xs lg:text-xl font-medium">Therapist List</div>
-                <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddModalVisible(true)}>
-                    Add Therapist
-                </Button>
+            <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-semibold">Therapist List</h2>
+                <div className="flex items-center">
+                    <SearchBar
+                        searchText={searchText}
+                        onSearchChange={handleSearchChange}
+                    />
+                    <Button
+                        type="primary"
+                        icon={<PlusOutlined />}
+                        onClick={() => setAddModalVisible(true)}
+                        className="ml-4"
+                    >
+                        Add Therapist
+                    </Button>
+                </div>
             </div>
+
             <Table
                 rowKey="id"
                 columns={columns}
-                dataSource={data}
+                dataSource={filteredTherapists}
                 loading={loading}
                 pagination={{ pageSize: 10 }}
                 bordered
                 scroll={{ x: "max-content", y: 400 }}
             />
+
             <ViewTherapistProfile
                 open={detailModalVisible}
                 therapistId={selectedTherapistId}
                 onClose={() => setDetailModalVisible(false)}
             />
+
             <AddTherapist
                 open={addModalVisible}
                 onClose={() => setAddModalVisible(false)}
@@ -113,6 +135,6 @@ const TherapistTable = () => {
             />
         </div>
     );
-}
+};
 
 export default TherapistTable;
