@@ -6,11 +6,14 @@ import userRole from "../../../../../enums/userRole";
 import getAllUser from "../../../../modules/Admin/Employee/getAllUser";
 import AddManager from "./ManagerPartials/AddManager";
 import addEmployee from "../../../../modules/Admin/Employee/addEmployee";
+import SearchBar from "../../../../components/SearchBar";
 
 const ManagerTable = () => {
   const [data, setData] = useState([]);
+  const [filteredManagers, setFilteredManagers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [addModalVisible, setAddModalVisible] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   const columns = [
     { title: "ID", dataIndex: "id", key: "id", width: 50 },
@@ -49,9 +52,11 @@ const ManagerTable = () => {
 
       }));
       setData(formattedData);
+      setFilteredManagers(formattedData);
     } catch (error) {
       console.error("Error fetching manager data:", error);
       setData([]);
+      setFilteredManagers([]);
     }
     setLoading(false);
   };
@@ -63,8 +68,11 @@ const ManagerTable = () => {
   const handleAddManager = async (values) => {
     try {
       const newManager = await addEmployee(values);
-      console.log("Data sent to API:", values);
       setData((prevData) => [
+        ...prevData,
+        { key: newManager.username, ...newManager },
+      ]);
+      setFilteredManagers((prevData) => [
         ...prevData,
         { key: newManager.username, ...newManager },
       ]);
@@ -77,18 +85,30 @@ const ManagerTable = () => {
     }
   };
 
+  const handleSearchChange = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearchText(value);
+    const filtered = data.filter((manager) =>
+      manager.name.toLowerCase().includes(value)
+    );
+    setFilteredManagers(filtered);
+  };
+
   return (
     <div>
       <div className="flex justify-between my-4">
         <div className="text-xl font-medium">Manager List</div>
-        <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddModalVisible(true)}>
-          Add Manager
-        </Button>
+        <div className="flex items-center">
+          <SearchBar searchText={searchText} onSearchChange={handleSearchChange} />
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddModalVisible(true)}>
+            Add Manager
+          </Button>
+        </div>
       </div>
       <Table
         rowKey="id"
         columns={columns}
-        dataSource={data}
+        dataSource={filteredManagers}
         loading={loading}
         pagination={{ pageSize: 10 }}
         bordered

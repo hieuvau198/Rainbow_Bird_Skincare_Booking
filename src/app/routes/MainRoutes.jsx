@@ -15,7 +15,9 @@ const Service = lazy(() => import("../pages/Customer/Service/Service"));
 const ServiceDetail = lazy(() => import("../pages/Customer/Service/ServiceDetail"));
 
 const Quiz = lazy(() => import("../pages/Customer/Quiz/Quiz"));
-const News = lazy(() => import("../pages/Customer/BlogsAndNews/News"));
+const BlogsAndNews = lazy(() => import("../pages/Customer/BlogsAndNews/BlogsAndNews"));
+const BlogsDetails = lazy(() => import("../pages/Customer/BlogsAndNews/partials/BlogsDetails"));
+const NewsDetails = lazy(() => import("../pages/Customer/BlogsAndNews/partials/NewsDetails"));
 const AboutUs = lazy(() => import("../pages/AboutUs/AboutUs"));
 const BookingSuccess = lazy(() => import("../pages/Customer/Service/partials/BookingSuccess"));
 const QuizDetail = lazy(() => import("../pages/Customer/Quiz/partials/QuizDetail"));
@@ -121,10 +123,22 @@ export default function MainRoutes() {
           } />
           <Route path="/news" element={
             <Suspense fallback={<Loading />}>
-              <News />
+              <BlogsAndNews />
             </Suspense>
           } />
+           <Route path="/blog/:id" element={
+          <Suspense fallback={<Loading />}>
+            <BlogsDetails />
+          </Suspense>
+        } />
+        <Route path="/news/:id" element={
+          <Suspense fallback={<Loading />}>
+            <NewsDetails />
+          </Suspense>
+        } />
         </Route>
+
+
 
         {/* Admin Routes */}
         <Route path="/management" element={

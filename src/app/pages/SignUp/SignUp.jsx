@@ -2,6 +2,7 @@ import { Button, Form, Input, message } from "antd";
 import React, { useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import bg from "../../assets/img/DeepCleansingfacial.jpg";
 import apiSignUp from "../../modules/SignUp/apiSignUp";
 
 export default function SignUp() {
@@ -46,8 +47,7 @@ export default function SignUp() {
         <div
           className="relative h-40 lg:h-auto lg:w-2/5 bg-cover bg-center"
           style={{
-            backgroundImage:
-              "url('https://biancobeauty.co.uk/wp-content/uploads/2020/11/woman-having-facial.jpg')",
+            backgroundImage: `url(${bg})`,
           }}
         >
           <div className="absolute inset-0 bg-black bg-opacity-40 flex justify-center items-center">
@@ -73,7 +73,9 @@ export default function SignUp() {
               <Form.Item
                 name="username"
                 label="User Name"
-                rules={[{ required: true, message: "Please enter your username!" }]}
+                rules={[
+                  { required: true, message: "Please enter your username!" },
+                ]}
               >
                 <Input placeholder="Enter your username" size="large" />
               </Form.Item>
@@ -92,7 +94,9 @@ export default function SignUp() {
               <Form.Item
                 name="fullName"
                 label="Full Name"
-                rules={[{ required: true, message: "Please enter your full name!" }]}
+                rules={[
+                  { required: true, message: "Please enter your full name!" },
+                ]}
               >
                 <Input placeholder="Enter your full name" size="large" />
               </Form.Item>
@@ -100,7 +104,9 @@ export default function SignUp() {
               <Form.Item
                 name="phone"
                 label="Phone Number"
-                rules={[{ required: true, message: "Please enter your phone number!" }]}
+                rules={[
+                  { required: true, message: "Please enter your phone number!" },
+                ]}
               >
                 <Input type="tel" placeholder="Enter your phone number" size="large" />
               </Form.Item>
@@ -108,7 +114,16 @@ export default function SignUp() {
               <Form.Item
                 name="password"
                 label="Password"
-                rules={[{ required: true, message: "Please create a password!" }]}
+                rules={[
+                  { required: true, message: "Please create a password!" },
+                  {
+                    pattern: new RegExp(
+                      "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$"
+                    ),
+                    message:
+                      "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.",
+                  },
+                ]}
               >
                 <Input.Password placeholder="Create a password" size="large" />
               </Form.Item>

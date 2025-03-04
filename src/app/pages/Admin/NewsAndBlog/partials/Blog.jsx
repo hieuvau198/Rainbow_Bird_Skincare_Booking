@@ -1,6 +1,7 @@
 import { PlusOutlined } from "@ant-design/icons";
 import { Button, Modal, Space, Table, message } from "antd";
 import React, { useEffect, useState } from "react";
+import SearchBar from "../../../../components/SearchBar";
 import deleteBlog from "../../../../modules/NewsAndBlog/deleteBlog";
 import getBlog from "../../../../modules/NewsAndBlog/getBlog";
 import AddBlog from "./partials/AddBlog";
@@ -8,12 +9,14 @@ import BlogDetail from "./partials/BlogDetail";
 
 const Blog = () => {
   const [data, setData] = useState([]);
+  const [filteredBlogs, setFilteredBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedBlogId, setSelectedBlogId] = useState(null);
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [blogToDelete, setBlogToDelete] = useState(null);
   const [addBlogModalVisible, setAddBlogModalVisible] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   const loadBlogData = async () => {
     setLoading(true);
@@ -31,10 +34,12 @@ const Blog = () => {
         createdAt: item.createdAt,
       }));
       setData(formattedData);
+      setFilteredBlogs(formattedData);
     } catch (error) {
       console.error("Error fetching blog data:", error);
       message.error("Error fetching blog data!");
       setData([]);
+      setFilteredBlogs([]);
     }
     setLoading(false);
   };
@@ -61,6 +66,9 @@ const Blog = () => {
       setData((prev) =>
         prev.filter((blog) => blog.blogId !== blogToDelete.blogId)
       );
+      setFilteredBlogs((prev) =>
+        prev.filter((blog) => blog.blogId !== blogToDelete.blogId)
+      );
     } catch (error) {
       console.error("Error deleting blog:", error);
       message.error("Failed to delete blog!");
@@ -68,6 +76,15 @@ const Blog = () => {
       setIsDeleteModalVisible(false);
       setBlogToDelete(null);
     }
+  };
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearchText(value);
+    const filtered = data.filter((blog) =>
+      blog.title.toLowerCase().includes(value)
+    );
+    setFilteredBlogs(filtered);
   };
 
   const columns = [
@@ -118,19 +135,25 @@ const Blog = () => {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl">Blog</h2>
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => setAddBlogModalVisible(true)}
-          className="bg-blue-500"
-        >
-          Add Blog
-        </Button>
+        <div className="flex items-center">
+          <SearchBar
+            searchText={searchText}
+            onSearchChange={handleSearchChange}
+          />
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => setAddBlogModalVisible(true)}
+            className="bg-blue-500"
+          >
+            Add Blog
+          </Button>
+        </div>
       </div>
       <Table
         rowKey="id"
         columns={columns}
-        dataSource={data}
+        dataSource={filteredBlogs}
         loading={loading}
         pagination={{ pageSize: 10 }}
         bordered

@@ -2,10 +2,11 @@ import { Button, Form, Input } from "antd";
 import React, { useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import bg from "../../assets/img/DeepCleansingfacial.jpg";
 
 export default function ForgotPassword() {
   const [form] = Form.useForm();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleFinish = (values) => {
@@ -33,8 +34,7 @@ export default function ForgotPassword() {
         <div
           className="relative h-40 md:h-60 bg-cover bg-center"
           style={{
-            backgroundImage:
-              "url('https://biancobeauty.co.uk/wp-content/uploads/2020/11/woman-having-facial.jpg')",
+            backgroundImage: `url(${bg})`,
           }}
         >
           <div className="absolute inset-0 bg-black bg-opacity-40 flex justify-center items-center">
