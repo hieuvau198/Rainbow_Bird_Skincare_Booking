@@ -1,10 +1,11 @@
 import { Button, Checkbox, Form, Input } from "antd";
+import CryptoJS from "crypto-js";
+import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
+import bg from "../../assets/img/DeepCleansingfacial.jpg";
 import { googleLogin, loginUser } from "../../modules/Login/apiLogin";
-import CryptoJS from "crypto-js"; 
-import Cookies from "js-cookie";
 
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 const SECRET_KEY = process.env.REACT_APP_SECRET_KEY; 
@@ -78,7 +79,7 @@ export default function Login() {
       <div className="bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-5xl flex flex-col lg:flex-row-reverse">
         <div
           className="relative h-40 lg:h-auto lg:w-2/5 bg-cover bg-center"
-          style={{ backgroundImage: "url('https://biancobeauty.co.uk/wp-content/uploads/2020/11/woman-having-facial.jpg')" }}
+          style={{ backgroundImage: `url(${bg})` }}
         >
           <div className="absolute inset-0 bg-black bg-opacity-40 flex justify-center items-center">
             <h1 className="text-white text-xl md:text-2xl font-bold drop-shadow-lg">Welcome Back</h1>
