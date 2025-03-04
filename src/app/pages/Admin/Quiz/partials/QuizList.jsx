@@ -1,8 +1,24 @@
-import React from "react";
-import { Table, Tag, Button, Space } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Button, Space, Table, Tag } from "antd";
+import React, { useEffect, useState } from "react";
+import SearchBar from "../../../../components/SearchBar";
 
 const QuizList = ({ quizzes, loading, onViewDetails }) => {
+    const [searchText, setSearchText] = useState("");
+    const [filteredQuizzes, setFilteredQuizzes] = useState(quizzes);
+
+    useEffect(() => {
+        setFilteredQuizzes(quizzes);
+    }, [quizzes]);
+
+    const handleSearchChange = (e) => {
+        const value = e.target.value.toLowerCase();
+        setSearchText(value);
+        const filtered = quizzes.filter((quiz) =>
+            quiz.quizName.toLowerCase().includes(value)
+        );
+        setFilteredQuizzes(filtered);
+    };
+
     const columns = [
         { title: "ID", dataIndex: "id", key: "id" },
         { title: "Quiz Name", dataIndex: "quizName", key: "quizName" },
@@ -36,10 +52,14 @@ const QuizList = ({ quizzes, loading, onViewDetails }) => {
         <>
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-semibold">Manage Quizzes</h2>
+                <SearchBar
+                    searchText={searchText}
+                    onSearchChange={handleSearchChange}
+                />
             </div>
             <Table
                 columns={columns}
-                dataSource={quizzes}
+                dataSource={filteredQuizzes}
                 loading={loading}
                 rowKey="id"
                 pagination={{ pageSize: 10 }}

@@ -8,16 +8,19 @@ import AddNews from "./partials/AddNews";
 import NewsDetail from "./partials/NewsDetail";
 import UserRole from "../../../../../enums/userRole";
 import DecodeRole from "../../../../components/DecodeRole";
+import SearchBar from "../../../../components/SearchBar";
 
 const News = () => {
   const userRole = DecodeRole();
   const [data, setData] = useState([]);
+  const [filteredNews, setFilteredNews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedNewsId, setSelectedNewsId] = useState(null);
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [newsToDelete, setNewsToDelete] = useState(null);
   const [addNewsModalVisible, setAddNewsModalVisible] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   const loadNewsData = async () => {
     setLoading(true);
@@ -36,10 +39,12 @@ const News = () => {
         isPublished: item.isPublished,
       }));
       setData(formattedData);
+      setFilteredNews(formattedData);
     } catch (error) {
       console.error("Error fetching news data:", error);
       message.error("Error fetching news data!");
       setData([]);
+      setFilteredNews([]);
     }
     setLoading(false);
   };
@@ -90,10 +95,24 @@ const News = () => {
           item.newsId === record.newsId ? { ...item, isPublished: newStatus } : item
         )
       );
+      setFilteredNews((prevData) =>
+        prevData.map((item) =>
+          item.newsId === record.newsId ? { ...item, isPublished: newStatus } : item
+        )
+      );
     } catch (error) {
       console.error("Error updating status:", error);
       message.error("Failed to update status!");
     }
+  };
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearchText(value);
+    const filtered = data.filter((newsItem) =>
+      newsItem.title.toLowerCase().includes(value)
+    );
+    setFilteredNews(filtered);
   };
 
   const columns = [
@@ -149,7 +168,7 @@ const News = () => {
             />
           </div>
         ) : (<Tag color="red" >You can't change</Tag>),
-    },    
+    },
     {
       title: "Action",
       key: "action",
@@ -171,19 +190,25 @@ const News = () => {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl">News</h2>
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => setAddNewsModalVisible(true)}
-          className="bg-blue-500"
-        >
-          Add News
-        </Button>
+        <div className="flex items-center">
+          <SearchBar
+            searchText={searchText}
+            onSearchChange={handleSearchChange}
+          />
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => setAddNewsModalVisible(true)}
+            className="bg-blue-500"
+          >
+            Add News
+          </Button>
+        </div>
       </div>
       <Table
         rowKey="id"
         columns={columns}
-        dataSource={data}
+        dataSource={filteredNews}
         loading={loading}
         pagination={{ pageSize: 10 }}
         bordered

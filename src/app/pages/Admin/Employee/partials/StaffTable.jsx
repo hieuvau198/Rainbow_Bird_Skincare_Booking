@@ -5,11 +5,14 @@ import userRole from "../../../../../enums/userRole";
 import getAllUser from "../../../../modules/Admin/Employee/getAllUser";
 import AddStaff from "./StaffPartials/AddStaff";
 import addEmployee from "../../../../modules/Admin/Employee/addEmployee";
+import SearchBar from "../../../../components/SearchBar";
 
 const StaffTable = () => {
   const [data, setData] = useState([]);
+  const [filteredStaff, setFilteredStaff] = useState([]);
   const [loading, setLoading] = useState(false);
   const [addModalVisible, setAddModalVisible] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   const columns = [
     { title: "ID", dataIndex: "id", key: "id", width: 50 },
@@ -44,9 +47,11 @@ const StaffTable = () => {
         mobile: user.phone,
       }));
       setData(formattedData);
+      setFilteredStaff(formattedData);
     } catch (error) {
       console.error("Error fetching staff data:", error);
       setData([]);
+      setFilteredStaff([]);
     }
     setLoading(false);
   };
@@ -59,12 +64,9 @@ const StaffTable = () => {
     try {
       const newStaff = await addEmployee(values);
       console.log("Data sent to API:", values);
-      setData((prevData) => [
-        ...prevData,
-        { key: newStaff.username, ...newStaff },
-      ]);
+      setData(prevData => [...prevData, { key: newStaff.fullName, ...newStaff }]);
+      setFilteredStaff(prev => [...prev, { key: newStaff.fullName, ...newStaff }]);
       setAddModalVisible(false);
-      loadStaffData();
       message.success("Staff added successfully!");
     } catch (error) {
       console.error("Error adding staff:", error);
@@ -72,18 +74,33 @@ const StaffTable = () => {
     }
   };
 
+  const handleSearchChange = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearchText(value);
+    const filtered = data.filter(staff =>
+      staff.name.toLowerCase().includes(value)
+    );
+    setFilteredStaff(filtered);
+  };
+
   return (
     <div>
       <div className="flex justify-between my-4">
         <div className="text-xl font-medium">Staff List</div>
-        <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddModalVisible(true)}>
-          Add Staff
-        </Button>
+        <div className="flex items-center">
+          <SearchBar
+            searchText={searchText}
+            onSearchChange={handleSearchChange}
+          />
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => setAddModalVisible(true)}>
+            Add Staff
+          </Button>
+        </div>
       </div>
       <Table
         rowKey="id"
         columns={columns}
-        dataSource={data}
+        dataSource={filteredStaff}
         loading={loading}
         pagination={{ pageSize: 10 }}
         bordered
