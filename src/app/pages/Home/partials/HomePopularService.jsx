@@ -1,135 +1,135 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { 
-  FaChevronLeft, 
-  FaChevronRight, 
-  FaStar, 
-  FaStarHalfAlt,
-  // Thêm 4 icon
-  FaGift, 
-  FaLeaf, 
-  FaGlobe, 
-  FaTruck 
-} from 'react-icons/fa';
+import React, { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom";
+import getAllService from "../../../modules/Admin/Service/getAllService";
+import { LeftOutlined, RightOutlined, DollarOutlined, StarOutlined, UserOutlined, ClockCircleOutlined } from "@ant-design/icons";
 
 export default function HomePopularService() {
-  const services = [
-    { id: 1, name: 'Basic Skincare Treatments', rating: 4.5, image: 'https://fuchsiaspa.com/wp-content/uploads/Facials_Spa-01.jpg' },
-    { id: 2, name: 'Pigmentation Treatments', rating: 4.0, image: 'https://www.quinnplasticsurgery.com/assets/img/blog/shutterstock_352907567-645x423.jpg' },
-    { id: 3, name: 'Skin Regeneration Treatments', rating: 4.8, image: 'https://biancobeauty.co.uk/wp-content/uploads/2020/11/woman-having-facial.jpg' },
-    { id: 4, name: 'Full-Body Spa Services', rating: 4.7, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSrY-MpyEZvj5Zc9a_gf36du3lCHclQ7OSlw&s' },
-    { id: 5, name: 'Personalized Skincare Services', rating: 4.6, image: 'https://images.pexels.com/photos/5069422/pexels-photo-5069422.jpeg' },
-  ];
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const sliderRef = useRef(null);
 
-  const scrollContainerRef = useRef(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const data = await getAllService();
+        const formattedServices = data.map(service => ({
+          service_id: service.serviceId || "N/A",
+          service_name: service.serviceName || "Unknown Service",
+          price: service.price ? `${service.price} ${service.currency || "USD"}` : "Price not available",
+          description: service.description || "No description available.",
+          buyers: service.buyers || "0",
+          reviews: service.reviews || "No reviews",
+          image: service.serviceImage || "https://via.placeholder.com/500",
+          duration_minutes: service.durationMinutes ? `${service.durationMinutes} minutes` : "Duration not specified"
+        }));
+        setServices(formattedServices.slice(0, 5)); // Hiển thị 5 dịch vụ
+      } catch (err) {
+        setError("Failed to fetch services");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchServices();
+  }, []);
 
   const scrollLeft = () => {
-    scrollContainerRef.current.scrollBy({ left: -400, behavior: 'smooth' });
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: -300, behavior: "smooth" });
+    }
   };
 
   const scrollRight = () => {
-    scrollContainerRef.current.scrollBy({ left: 400, behavior: 'smooth' });
+    if (sliderRef.current) {
+      sliderRef.current.scrollBy({ left: 300, behavior: "smooth" });
+    }
   };
 
-  useEffect(() => {
-    const handleScroll = () => {
-      // Mỗi "trang" giả sử chứa 3 sản phẩm: 3 x 400 = 1200px
-      const index = Math.round(scrollContainerRef.current.scrollLeft / 1200);
-      setActiveIndex(index);
-    };
-    const container = scrollContainerRef.current;
-    container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, []);
+  if (loading) {
+    return <div className="text-center text-lg font-semibold">Loading popular services...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center text-lg text-red-500">{error}</div>;
+  }
 
   return (
-    <div>
-      {/* Thanh trên cùng với 4 icons */}
-
-      {/* Phần HOT SERVICES */}
-      <div className="bg-slate-50 py-8 flex flex-col items-center">
+    <div className="bg-white py-20">
+      <div className="max-w-7xl mx-auto px-6">
         <h2
-          className="text-3xl font-bold font-Arial mb-10 text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600"
+          className="text-4xl font-bold font-Arial mb-10 text-transparent text-center bg-clip-text bg-gradient-to-r from-lime-500 to-green-600"
         >
-          HOT SERVICES
+          Our Most Popular Services
         </h2>
 
-        <div className="relative flex justify-center w-full max-w-7xl px-8">
+        <div className="relative">
           <button
             onClick={scrollLeft}
-            className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 bg-green-50 text-gray p-3 rounded-full shadow-md hover:bg-green-300 transition duration-300 z-10"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 shadow-md rounded-full"
           >
-            <FaChevronLeft size={20} />
+            <LeftOutlined />
           </button>
 
-          <div
-            ref={scrollContainerRef}
-            className="flex overflow-x-scroll space-x-6 px-4 snap-x snap-mandatory hide-scrollbar"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', overflow: 'hidden' }}
-          >
-            {services.map((service) => (
+          <div ref={sliderRef} className="flex overflow-hidden space-x-4 p-2">
+            {services.map(service => (
               <div
-                key={service.id}
-                className="overflow-hidden flex-none transform transition duration-300 snap-start"
-                style={{ width: '390px', height: '550px' }}
+                key={service.service_id}
+                className="min-w-[320px] w-[320px] h-[450px] bg-white p-4 rounded-lg shadow-md transition transform hover:scale-105 border border-lime-200 flex flex-col justify-between"
               >
-                {/* Khối chứa ảnh + nút Buy Now */}
-                <div className="relative h-2/3 group">
-                  <img
-                    src={service.image}
-                    alt={service.name}
-                    className="w-full h-full object-cover"
-                  />
-                  {/* Nút Buy Now nằm sát đáy hình, chỉ hiện khi hover */}
-                  <button
-                    className="absolute bottom-4 left-1/2 transform -translate-x-1/2 
-                               bg-white text-gray-800 px-4 py-2 rounded-full shadow
-                               opacity-0 group-hover:opacity-100 transition duration-300"
-                  >
-                    Buy Now
-                  </button>
-                </div>
+                <Link to={`/services/${service.service_id}`} className="flex flex-col h-full">
+                  {/* Ảnh dịch vụ */}
+                  <div className="w-full h-[220px] flex items-center justify-center overflow-hidden rounded-md bg-gray-100">
+                    <img
+                      src={service.image}
+                      alt={service.service_name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
 
-                {/* Thông tin sản phẩm */}
-                <div className="p-4 text-center relative">
-                  <h3 className="text-2xl font-roboto text-gray-800">{service.name}</h3>
-                  <div className="flex flex-col items-center mt-2">
-                    <div className="flex items-center">
-                      {Array(4).fill(null).map((_, i) => (
-                        <FaStar key={i} className="text-yellow-500" />
-                      ))}
-                      <FaStarHalfAlt className="text-yellow-500" />
-                      <span className="ml-2 text-sm text-gray-600">1434 reviews</span>
+                  {/* Nội dung */}
+                  <div className="flex flex-col flex-grow p-4">
+                    <h3 className="text-lg font-semibold text-gray-800 h-[48px] overflow-hidden line-clamp-2">
+                      {service.service_name}
+                    </h3>
+                    {/* <p className="text-sm text-gray-600 mt-2 h-[40px] overflow-hidden line-clamp-2">
+                      {service.description.slice(0, 60)}...
+                    </p> */}
+                    {/* Buyers, Reviews, Duration */}
+                    <div className="flex justify-between text-gray-600 text-xs mt-2">
+                      <p className="flex items-center">
+                        <UserOutlined className="mr-1" /> {service.buyers} Booking
+                      </p>
+                      <p className="flex items-center">
+                        <StarOutlined className="mr-1" /> {service.reviews}
+                      </p>
                     </div>
-                    <div className="flex items-center space-x-2 mt-2">
-                      <span className="text-gray-400 line-through">$19.95</span>
-                      <span className="text-lime-500 font-semibold">$18.85</span>
+                    <p className="text-gray-700 text-xs mt-1 flex items-center">
+                      <ClockCircleOutlined className="mr-1" /> {service.duration_minutes}
+                    </p>
+                    {/* Giá dịch vụ */}
+                    <div className="text-red-500 font-bold flex items-center mt-3">
+                      <DollarOutlined className="mr-1" /> {service.price}
                     </div>
                   </div>
-                </div>        
+
+                  {/* Nút xem chi tiết */}
+                  <div className="mt-auto">
+                    <button className="w-full bg-lime-600 text-white py-2 rounded-md text-sm hover:bg-lime-700 transition">
+                      Book Now
+                    </button>
+                  </div>
+                </Link>
               </div>
             ))}
           </div>
 
           <button
             onClick={scrollRight}
-            className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 bg-green-50 text-gray p-3 rounded-full shadow-md hover:bg-green-300 transition duration-300 z-10"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 shadow-md rounded-full"
           >
-            <FaChevronRight size={20} />
+            <RightOutlined />
           </button>
         </div>
-
-        {/* Pagination Dots - (Nếu muốn hiển thị lại, bỏ comment) */}
-        {/* <div className="flex space-x-2 mt-4">
-          {Array.from({ length: Math.ceil(services.length / 3) }).map((_, index) => (
-            <span
-              key={index}
-              className={`h-3 w-3 rounded-full ${
-                activeIndex === index ? 'bg-green-700' : 'bg-gray-400'
-              } transition duration-300`}
-            ></span>
-          ))}
-        </div> */}
       </div>
     </div>
   );

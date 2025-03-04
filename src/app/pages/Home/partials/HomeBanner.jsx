@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const HomeBanner = () => {
   const slides = [
@@ -44,14 +45,14 @@ const HomeBanner = () => {
               Empowering Minds: <br /> Your Wellness Journey Begins
             </h1>
             <p className="mt-8 text-lg sm:text-base">
-              Welcome to Turning Well, your comprehensive hub for mental health and wellness. We believe that mental well-being is the cornerstone of a fulfilling life. Our mission is to provide you with the resources, support, and guidance you need to thrive.
+              Welcome to Pretine Care, your comprehensive hub for mental health and wellness. We believe that mental well-being is the cornerstone of a fulfilling life. Our mission is to provide you with the resources, support, and guidance you need to thrive.
             </p>
-            <a
-              href="#"
+            <Link
+              to="./therapists"
               className="inline-block bg-white text-teal-600 font-medium py-3 px-6 rounded-md mt-6 hover:bg-gray-200 transition"
             >
-              Learn More
-            </a>
+              Find a Therapist
+            </Link>
           </div>
         </div>
       </div>
