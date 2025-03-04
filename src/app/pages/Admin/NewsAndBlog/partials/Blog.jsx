@@ -139,7 +139,6 @@ const Blog = () => {
           <SearchBar
             searchText={searchText}
             onSearchChange={handleSearchChange}
-            placeholder="Search blog title..."
           />
           <Button
             type="primary"

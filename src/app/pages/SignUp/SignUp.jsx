@@ -2,6 +2,7 @@ import { Button, Form, Input, message } from "antd";
 import React, { useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import bg from "../../assets/img/DeepCleansingfacial.jpg";
 import apiSignUp from "../../modules/SignUp/apiSignUp";
 
 export default function SignUp() {
@@ -46,8 +47,7 @@ export default function SignUp() {
         <div
           className="relative h-40 lg:h-auto lg:w-2/5 bg-cover bg-center"
           style={{
-            backgroundImage:
-              "url('https://biancobeauty.co.uk/wp-content/uploads/2020/11/woman-having-facial.jpg')",
+            backgroundImage: `url(${bg})`,
           }}
         >
           <div className="absolute inset-0 bg-black bg-opacity-40 flex justify-center items-center">
