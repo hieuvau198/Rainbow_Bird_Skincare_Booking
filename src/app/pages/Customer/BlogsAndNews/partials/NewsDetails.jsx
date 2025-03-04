@@ -4,6 +4,7 @@ import { message } from "antd";
 import MDEditor from "@uiw/react-md-editor";
 import getNewsById from "../../../../modules/NewsAndBlog/getNewsById";
 
+
 export default function NewsDetails() {
   const { id } = useParams();
   const [news, setNews] = useState(null);
@@ -38,14 +39,14 @@ export default function NewsDetails() {
         <img
           src={news.imageUrl}
           alt={news.title}
-          className="w-full h-64 object-cover"
+          className="w-full h-64 object-contain"
         />
         <div className="p-5">
           <h1 className="text-3xl font-bold text-gray-800 mb-4">
             {news.title}
           </h1>
           <p className="text-gray-500 text-sm mb-2">
-          {news.authorFullName} -{" "}
+          {news.publisherFullName} -{" "}
             {new Date(news.publishedAt).toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",

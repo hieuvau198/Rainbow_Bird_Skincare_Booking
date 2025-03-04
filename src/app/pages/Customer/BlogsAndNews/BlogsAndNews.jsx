@@ -1,4 +1,3 @@
-// NewsAndBlogs.jsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { message } from "antd";
@@ -102,7 +101,7 @@ export default function NewsAndBlogs() {
               <img
                 src={news.imageUrl}
                 alt={news.title}
-                className="w-full h-56 object-cover"
+                className="w-full h-auto object-contain"
               />
               <div className="p-5">
                 <h3 className="text-xl font-semibold text-gray-800 mb-3">
@@ -110,7 +109,7 @@ export default function NewsAndBlogs() {
                 </h3>
                 <p className="text-gray-600 text-sm mb-5">{news.description}</p>
                 <p className="text-gray-500 text-sm mb-2">
-                  {news.authorFullName} -{" "}
+                  {news.publisherFullName} -{" "}
                   {new Date(news.publishedAt).toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
