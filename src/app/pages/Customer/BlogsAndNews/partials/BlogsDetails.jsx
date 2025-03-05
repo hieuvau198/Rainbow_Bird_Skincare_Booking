@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { message } from "antd";
 import getBlogById from "../../../../modules/NewsAndBlog/getBlogById";
 import MDEditor from "@uiw/react-md-editor";
+import Loading from "../../../../components/Loading";
 
 export default function NewsDetails() {
   const { id } = useParams();
@@ -25,7 +26,7 @@ export default function NewsDetails() {
   }, [id]);
 
   if (loading) {
-    return <p>Đang tải dữ liệu chi tiết...</p>;
+    return <><Loading /></>;
   }
 
   if (!blog) {
@@ -35,11 +36,6 @@ export default function NewsDetails() {
   return (
     <div className="container mx-auto p-6">
       <div className="bg-white shadow-md rounded-2xl overflow-hidden">
-        <img
-          src={blog.imageUrl}
-          alt={blog.title}
-          className="w-full h-64 object-cover"
-        />
         <div className="p-5">
           <h1 className="text-3xl font-bold text-gray-800 mb-4">
             {blog.title}

@@ -4,6 +4,7 @@ import { message } from "antd";
 import MDEditor from "@uiw/react-md-editor";
 import getNewsById from "../../../../modules/NewsAndBlog/getNewsById";
 import getNews from "../../../../modules/NewsAndBlog/getNews";
+import Loading from "../../../../components/Loading";
 
 export default function NewsDetails() {
   const { id } = useParams();
@@ -43,7 +44,7 @@ export default function NewsDetails() {
   }, [id]);
 
   if (loading) {
-    return <p>Đang tải dữ liệu chi tiết...</p>;
+    return <><Loading /></>;
   }
   if (!news) {
     return <p>Không tìm thấy news nào!</p>;
@@ -54,11 +55,6 @@ export default function NewsDetails() {
       {/* Cột nội dung chính */}
       <div className="flex-1">
         <div className="bg-white shadow-md rounded-2xl overflow-hidden">
-          <img
-            src={news.imageUrl}
-            alt={news.title}
-            className="w-full h-auto object-contain"
-          />
           <div className="p-5">
             <h1 className="text-3xl font-bold text-gray-800 mb-4">
               {news.title}
