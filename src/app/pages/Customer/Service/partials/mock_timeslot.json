@@ -1,0 +1,152 @@
+[
+  {
+    "slotId": 3,
+    "workingDayId": 3,
+    "startTime": "08:00:00",
+    "endTime": "08:30:00",
+    "slotNumber": 1,
+    "isActive": true,
+    "createdAt": "2025-02-08T16:45:20.147",
+    "workingDay": null
+  },
+  {
+    "slotId": 4,
+    "workingDayId": 3,
+    "startTime": "08:30:00",
+    "endTime": "09:00:00",
+    "slotNumber": 2,
+    "isActive": true,
+    "createdAt": "2025-02-08T16:45:20.163",
+    "workingDay": null
+  },
+  {
+    "slotId": 5,
+    "workingDayId": 3,
+    "startTime": "09:00:00",
+    "endTime": "09:30:00",
+    "slotNumber": 3,
+    "isActive": true,
+    "createdAt": "2025-02-08T16:45:20.167",
+    "workingDay": null
+  },
+  {
+    "slotId": 6,
+    "workingDayId": 3,
+    "startTime": "09:30:00",
+    "endTime": "10:00:00",
+    "slotNumber": 4,
+    "isActive": true,
+    "createdAt": "2025-02-08T16:45:20.17",
+    "workingDay": null
+  },
+  {
+    "slotId": 7,
+    "workingDayId": 3,
+    "startTime": "10:00:00",
+    "endTime": "10:30:00",
+    "slotNumber": 5,
+    "isActive": true,
+    "createdAt": "2025-02-08T16:45:20.173",
+    "workingDay": null
+  },
+  {
+    "slotId": 8,
+    "workingDayId": 3,
+    "startTime": "10:30:00",
+    "endTime": "11:00:00",
+    "slotNumber": 6,
+    "isActive": true,
+    "createdAt": "2025-02-08T16:45:20.177",
+    "workingDay": null
+  },
+  {
+    "slotId": 9,
+    "workingDayId": 3,
+    "startTime": "11:00:00",
+    "endTime": "11:30:00",
+    "slotNumber": 7,
+    "isActive": true,
+    "createdAt": "2025-02-08T16:45:20.18",
+    "workingDay": null
+  },
+  {
+    "slotId": 10,
+    "workingDayId": 3,
+    "startTime": "13:00:00",
+    "endTime": "13:30:00",
+    "slotNumber": 8,
+    "isActive": true,
+    "createdAt": "2025-02-08T16:45:20.18",
+    "workingDay": null
+  },
+  {
+    "slotId": 11,
+    "workingDayId": 3,
+    "startTime": "13:30:00",
+    "endTime": "14:00:00",
+    "slotNumber": 9,
+    "isActive": true,
+    "createdAt": "2025-02-08T16:45:20.183",
+    "workingDay": null
+  },
+  {
+    "slotId": 12,
+    "workingDayId": 3,
+    "startTime": "14:00:00",
+    "endTime": "14:30:00",
+    "slotNumber": 10,
+    "isActive": true,
+    "createdAt": "2025-02-08T16:45:20.187",
+    "workingDay": null
+  },
+  {
+    "slotId": 13,
+    "workingDayId": 3,
+    "startTime": "14:30:00",
+    "endTime": "15:00:00",
+    "slotNumber": 11,
+    "isActive": true,
+    "createdAt": "2025-02-08T16:45:20.19",
+    "workingDay": null
+  },
+  {
+    "slotId": 14,
+    "workingDayId": 3,
+    "startTime": "15:00:00",
+    "endTime": "15:30:00",
+    "slotNumber": 12,
+    "isActive": true,
+    "createdAt": "2025-02-08T16:45:20.193",
+    "workingDay": null
+  },
+  {
+    "slotId": 15,
+    "workingDayId": 3,
+    "startTime": "15:30:00",
+    "endTime": "16:00:00",
+    "slotNumber": 13,
+    "isActive": true,
+    "createdAt": "2025-02-08T16:45:20.193",
+    "workingDay": null
+  },
+  {
+    "slotId": 16,
+    "workingDayId": 3,
+    "startTime": "16:00:00",
+    "endTime": "16:30:00",
+    "slotNumber": 14,
+    "isActive": true,
+    "createdAt": "2025-02-08T16:45:20.2",
+    "workingDay": null
+  },
+  {
+    "slotId": 17,
+    "workingDayId": 3,
+    "startTime": "16:30:00",
+    "endTime": "17:00:00",
+    "slotNumber": 15,
+    "isActive": true,
+    "createdAt": "2025-02-08T16:45:20.2",
+    "workingDay": null
+  }
+]
