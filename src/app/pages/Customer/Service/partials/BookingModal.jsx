@@ -3,24 +3,58 @@ import { DatePicker, message } from "antd";
 import "antd/es/style/reset.css";
 import { AiOutlineClose } from "react-icons/ai";
 import BookingSuccess from "./BookingSuccess";
-import CustomDateCell, { disabledDate } from "./CustomDateCell";
-import mockTimeslots from "./mock_timeslot.json"; // Import time slot data
-import mockWorkingDays from "./mock_workingdate.json"; 
+import CustomDateCell from "./CustomDateCell";
+import axios from "axios"; // Import axios để gọi API
 import dayjs from "dayjs";
 
 export default function BookingModal({ isOpen, onClose, serviceName }) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [isBookingConfirmed, setIsBookingConfirmed] = useState(false);
+  const [workingDays, setWorkingDays] = useState([]); // Danh sách ngày làm việc từ API
   const [availableSlots, setAvailableSlots] = useState([]);
 
+  // Lấy danh sách ngày làm việc từ API
   useEffect(() => {
-    if (selectedDate && selectedDate.day() !== 0) { // Exclude Sundays
-      setAvailableSlots(mockTimeslots);
+    const fetchWorkingDays = async () => {
+      try {
+        const response = await axios.get(
+          "https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/WorkingDay"
+        );
+        setWorkingDays(response.data); // Lưu danh sách ngày làm việc
+      } catch (error) {
+        console.error("Error fetching working days:", error);
+      }
+    };
+
+    fetchWorkingDays();
+  }, []);
+
+  // Khi chọn ngày, lấy danh sách slot từ API
+  useEffect(() => {
+    if (!selectedDate) return;
+
+    const selectedDayName = selectedDate.format("dddd"); // Lấy tên ngày (Monday, Tuesday,...)
+    const workingDay = workingDays.find(day => day.dayName === selectedDayName);
+
+    if (workingDay?.isActive) {
+      // Gọi API để lấy time slot theo workingDayId
+      const fetchTimeSlots = async () => {
+        try {
+          const response = await axios.get(
+            `https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/TimeSlot/workingDay/${workingDay.workingDayId}`
+          );
+          setAvailableSlots(response.data);
+        } catch (error) {
+          console.error("Error fetching time slots:", error);
+        }
+      };
+
+      fetchTimeSlots();
     } else {
-      setAvailableSlots([]); // No slots on Sunday
+      setAvailableSlots([]); // Không có lịch làm việc cho ngày này
     }
-  }, [selectedDate]);
+  }, [selectedDate, workingDays]);
 
   if (!isOpen) return null;
 
@@ -60,15 +94,18 @@ export default function BookingModal({ isOpen, onClose, serviceName }) {
                 onChange={(date) => setSelectedDate(date)}
                 className="w-full"
                 format="YYYY-MM-DD"
-                disabledDate={disabledDate}
+                disabledDate={(current) => {
+                  const dayName = current.format("dddd");
+                  return !workingDays.some(day => day.dayName === dayName && day.isActive);
+                }}
                 cellRender={(current) => (
                   <CustomDateCell current={current} selectedDate={selectedDate} />
                 )}
               />
             </div>
 
-            {selectedDate && selectedDate.day() === 0 ? (
-              <p className="text-red-500 font-bold text-center mt-4">Closed on Sundays</p>
+            {selectedDate && availableSlots.length === 0 ? (
+              <p className="text-red-500 font-bold text-center mt-4">No available slots on this day</p>
             ) : (
               <div className="mb-4">
                 <label className="block text-gray-700 mb-2">Available Time Slots:</label>
