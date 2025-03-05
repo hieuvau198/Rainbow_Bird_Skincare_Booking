@@ -1,6 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
+import getAllService from "../../../modules/Admin/Service/getAllService";
 
 export default function HomeSpecialService() {
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const data = await getAllService();
+        const formattedServices = data.map(service => ({
+          service_id: service.serviceId || "N/A",
+          service_name: service.serviceName || "Unknown Service",
+          image: service.serviceImage || "https://via.placeholder.com/500"
+        }));
+        setServices(formattedServices.slice(5, 9)); // Hiển thị 4 dịch vụ tiếp theo
+      } catch (err) {
+        setError("Failed to fetch services");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchServices();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center text-lg font-semibold">Loading special services...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center text-lg text-red-500">{error}</div>;
+  }
+
   return (
     <div className="relative min-h-screen">
       {/* Background image mờ */}
@@ -35,20 +68,21 @@ export default function HomeSpecialService() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {services.map((service, index) => (
-              <div
-                key={index}
-                className="p-6 animate-fade-in"
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <img
-                  src={service.image}
-                  alt={service.title}
-                  className="w-full h-48 object-cover mb-4 transition-transform duration-300 hover:scale-110"
-                />
-                <h3 className="text-2xl font-semibold text-gray-800 text-center">
-                  {service.title}
-                </h3>
-              </div>
+              <Link to={`/services/${service.service_id}`} key={service.service_id} className="block">
+                <div
+                  className="p-6 animate-fade-in cursor-pointer"
+                  style={{ animationDelay: `${index * 200}ms` }}
+                >
+                  <img
+                    src={service.image}
+                    alt={service.service_name}
+                    className="w-full h-48 object-cover mb-4 transition-transform duration-300 hover:scale-110 rounded-lg"
+                  />
+                  <h3 className="text-2xl font-semibold text-gray-800 text-center">
+                    {service.service_name}
+                  </h3>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -56,25 +90,3 @@ export default function HomeSpecialService() {
     </div>
   );
 }
-
-const services = [
-  {
-    title: "Facial Treatment",
-    image:
-      "https://hoamoctamanspa.vn/wp-content/uploads/2023/11/6-review-top-5-dia-chi-spa-cham-soc-da-tai-Ha-Noi.jpg",
-  },
-  {
-    title: "Anti-aging Care",
-    image: "https://medicviet.vn/uploads/images/dich-vu-massage-2.jpg",
-  },
-  {
-    title: "Acne Treatment",
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnjoUXVZo3q7EaieFSEjwm5F0PN_tP8TB_mw&s",
-  },
-  {
-    title: "Brightening Serum",
-    image:
-      "https://www.vinmec.com/static/uploads/20210612_022232_200493_tiem_filler_va_boto_max_1800x1800_jpg_c72d179600.jpg",
-  },
-];
