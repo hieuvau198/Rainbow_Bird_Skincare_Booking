@@ -23,17 +23,3 @@ export default function CustomDateCell({ current, selectedDate }) {
 // Utility functions for disabling dates and times
 export const disabledDate = (current) => current && current.isBefore(dayjs(), "day");
 
-// export const disabledTime = (selectedDate) => {
-//   if (selectedDate && selectedDate.isSame(dayjs(), "day")) {
-//     const currentHour = dayjs().hour();
-//     const currentMinute = dayjs().minute();
-//     return {
-//       disabledHours: () => Array.from({ length: 24 }, (_, i) => (i < currentHour ? i : null)).filter(Number.isInteger),
-//       disabledMinutes: (selectedHour) =>
-//         selectedHour === currentHour
-//           ? Array.from({ length: 60 }, (_, i) => (i < currentMinute ? i : null)).filter(Number.isInteger)
-//           : [],
-//     };
-//   }
-//   return {};
-// };
