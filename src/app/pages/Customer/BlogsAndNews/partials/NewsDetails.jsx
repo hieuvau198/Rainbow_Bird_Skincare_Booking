@@ -18,7 +18,7 @@ export default function NewsDetails() {
         const data = await getNewsById(id);
         setNews(data);
       } catch (error) {
-        message.error("Có lỗi khi tải chi tiết news");
+        // message.error("Có lỗi khi tải chi tiết news");
         console.error("Error fetching news details:", error);
       } finally {
         setLoading(false);
@@ -31,7 +31,6 @@ export default function NewsDetails() {
     async function fetchRecommendedNews() {
       try {
         const data = await getNews();
-        // Lọc ra các bài khác với bài hiện tại và chỉ lấy những bài đã publish
         const rec = data.filter(
           (item) => item.newsId !== id && item.isPublished === true
         );
@@ -51,10 +50,9 @@ export default function NewsDetails() {
   }
 
   return (
-    <div className="container mx-auto p-6 flex gap-6">
-      {/* Cột nội dung chính */}
+    <div className="container px-24 p-6 flex gap-6">
       <div className="flex-1">
-        <div className="bg-white shadow-md rounded-2xl overflow-hidden">
+        <div className="bg-white shadow-md rounded-xl overflow-hidden">
           <div className="p-5">
             <h1 className="text-3xl font-bold text-gray-800 mb-4">
               {news.title}
@@ -76,11 +74,10 @@ export default function NewsDetails() {
         </div>
       </div>
 
-      {/* Cột tin đề cử */}
       <div className="w-80">
         <div className="sticky top-6">
           <h2 className="text-xl font-bold mb-4">Recommended News</h2>
-          {recommended.map((item) => (
+          {recommended.slice(0, 6).map((item) => (
             <div key={item.newsId} className="mb-4">
               <a href={`/news/${item.newsId}`} className="flex gap-2">
                 <img
