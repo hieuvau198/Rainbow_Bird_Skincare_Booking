@@ -1,0 +1,62 @@
+[
+  {
+      "therapistId": 1,
+      "userId": 101,
+      "isAvailable": true,
+      "schedule": "Full Time",
+      "rating": 4.8,
+      "user": {
+          "userId": 101,
+          "username": "john_doe",
+          "email": "john@example.com",
+          "phone": "123-456-7890",
+          "fullName": "John Doe",
+          "role": "Therapist"
+      }
+  },
+  {
+      "therapistId": 2,
+      "userId": 102,
+      "isAvailable": true,
+      "schedule": "Part Time",
+      "rating": 4.5,
+      "user": {
+          "userId": 102,
+          "username": "jane_smith",
+          "email": "jane@example.com",
+          "phone": "987-654-3210",
+          "fullName": "Jane Smith",
+          "role": "Therapist"
+      }
+  },
+  {
+      "therapistId": 3,
+      "userId": 103,
+      "isAvailable": false,
+      "schedule": "Morning Shift",
+      "rating": 4.7,
+      "user": {
+          "userId": 103,
+          "username": "alice_jones",
+          "email": "alice@example.com",
+          "phone": "555-123-4567",
+          "fullName": "Alice Jones",
+          "role": "Therapist"
+      }
+  },
+  {
+      "therapistId": 4,
+      "userId": 104,
+      "isAvailable": true,
+      "schedule": "Evening Shift",
+      "rating": 4.9,
+      "user": {
+          "userId": 104,
+          "username": "michael_brown",
+          "email": "michael@example.com",
+          "phone": "444-789-1230",
+          "fullName": "Michael Brown",
+          "role": "Therapist"
+      }
+  }
+]

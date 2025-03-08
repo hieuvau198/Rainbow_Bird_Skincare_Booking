@@ -6,6 +6,7 @@ import getAllService from "../../../modules/Admin/Service/getAllService";
 import getServiceDetail from "../../../modules/Admin/Service/getServiceDetail";
 import InfoSerDetail from "./partials/InfoSerDetail";
 import ContentSerDetail from "./partials/ContentSerDetail";
+import Loading from "../../../components/Loading/Loading";
 
 export default function ServiceDetail() {
   const { id } = useParams();
@@ -38,7 +39,7 @@ export default function ServiceDetail() {
   }, [id]);
 
   if (loading) {
-    return <div className="text-center text-lg font-semibold">Loading service details...</div>;
+    return <Loading />;
   }
 
   if (error || !service) {
@@ -48,13 +49,14 @@ export default function ServiceDetail() {
   return (
     <div className="px-24 bg-white min-h-screen w-full">
       {/* Nội dung dịch vụ */}
-      <ContentSerDetail service={service} setIsModalOpen={setIsModalOpen}/>
+      <ContentSerDetail service={service} setIsModalOpen={setIsModalOpen} />
 
       {/* Booking Modal */}
       <BookingModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         serviceName={service.serviceName}
+        serviceId={service.serviceId}
       />
 
       {/* Thông tin dịch vụ */}

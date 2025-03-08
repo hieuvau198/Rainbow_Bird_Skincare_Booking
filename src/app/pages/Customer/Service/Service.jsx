@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import getAllService from "../../../modules/Admin/Service/getAllService"
+import getAllService from "../../../modules/Admin/Service/getAllService";
 import RelatedServices from "./partials/RelatedServices";
 import MainContent from "./partials/MainService";
 import SidebarService from "./partials/SidebarService";
-const url3 ="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+import Loading from "../../../components/Loading/Loading";
+
+const url3 = "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
 export default function Service() {
-
-  const [services, setServices] = useState ([]);
+  const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filteredServices, setFilteredServices] = useState([]);
   const [error, setError] = useState(null);
@@ -39,7 +40,6 @@ export default function Service() {
     fetchServices();
   }, []);
 
-  // 📌 Hàm lọc dịch vụ theo khoảng giá
   const applyPriceFilter = () => {
     let min = parseFloat(minPrice) || 0;
     let max = parseFloat(maxPrice) || Infinity;
@@ -53,7 +53,7 @@ export default function Service() {
   };
 
   if (loading) {
-    return <div className="text-center text-lg font-semibold">Loading services...</div>;
+    return <Loading />;
   }
 
   if (error) {
@@ -62,27 +62,22 @@ export default function Service() {
 
   return (
     <div className="px-24 bg-white min-h-screen grid grid-cols-1 gap-4 w-full">
-      {/* Large Banner */}
-      <div className="h-[400px] my-2 bg-center bg-cover bg-no-repeat bg-local rounded-lg shadow-lg"
-      style={{ backgroundImage: `url(${url3})` }}>
-      </div>
+      <div
+        className="h-[400px] my-2 bg-center bg-cover bg-no-repeat bg-local rounded-lg shadow-lg"
+        style={{ backgroundImage: `url(${url3})` }}
+      ></div>
 
       <div className="w-full grid grid-cols-4 gap-4">
-        {/* Sidebar */}
-        <SidebarService 
-          minPrice={minPrice} 
-          maxPrice={maxPrice} 
-          setMinPrice={setMinPrice} 
-          setMaxPrice={setMaxPrice} 
-          applyPriceFilter={applyPriceFilter} 
+        <SidebarService
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          setMinPrice={setMinPrice}
+          setMaxPrice={setMaxPrice}
+          applyPriceFilter={applyPriceFilter}
         />
 
-        {/* Main Content */}
         <MainContent services={filteredServices} />
       </div>
-
-        {/* Related Services Section
-        {filteredServices.length > 0 && <RelatedServices services={filteredServices} service={filteredServices[0]} />} */}
     </div>
   );
 }
