@@ -53,6 +53,7 @@ export const loginUser = async (values, setLoading, navigate) => {
         saveTokens(data);
         autoRefreshToken();
         const userRole = data.user.role;
+        const userId = data.user.userId;
         if (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) {
             navigate("/management/dashboard");
         } else if(userRole === UserRole.STAFF){
@@ -104,6 +105,11 @@ export const saveTokens = (data) => {
     });
 
     Cookies.set("__rtok", data.refreshToken, {
+        sameSite: "Strict",
+        secure: true
+    });
+
+    Cookies.set("__uid", data.user.userId, {
         sameSite: "Strict",
         secure: true
     });

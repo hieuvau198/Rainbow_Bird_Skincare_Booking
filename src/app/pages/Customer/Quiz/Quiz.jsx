@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchActiveQuizzes } from "./quizApi";
-import { Spin } from "antd";
+import Loading from "../../../components/Loading/Loading";
 import { HeartOutlined, SearchOutlined } from "@ant-design/icons";
 
 const Quiz = () => {
@@ -10,20 +10,21 @@ const Quiz = () => {
 
   useEffect(() => {
     const fetchQuizzes = async () => {
-      const data = await fetchActiveQuizzes();
-      setQuizzes(data);
-      setLoading(false);
+      try {
+        const data = await fetchActiveQuizzes();
+        setQuizzes(data);
+      } catch (error) {
+        console.error("Error fetching quizzes:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchQuizzes();
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <Spin size="large" />
-      </div>
-    );
+    return <Loading />; //
   }
 
   return (
@@ -44,7 +45,6 @@ const Quiz = () => {
 
             {/* Nội dung Quiz */}
             <div className="md:w-2/3 w-full p-6">
-              {/* Tiêu đề quiz đặt lên ngang ảnh */}
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-4xl font-semibold text-gray-800">{quiz.name}</h3>
                 <div className="flex space-x-3">
