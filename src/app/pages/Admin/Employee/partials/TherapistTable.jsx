@@ -94,7 +94,7 @@ const TherapistTable = () => {
 
     return (
         <div>
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">Therapist List</h2>
                 <div className="flex items-center">
                     <SearchBar
@@ -119,7 +119,7 @@ const TherapistTable = () => {
                 loading={loading}
                 pagination={{ pageSize: 10 }}
                 bordered
-                scroll={{ x: "max-content", y: 400 }}
+                scroll={{ x: "max-content", y: 370 }}
             />
 
             <ViewTherapistProfile

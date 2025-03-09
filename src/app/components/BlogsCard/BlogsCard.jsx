@@ -26,7 +26,7 @@ export default function BlogsCard(blog) {
                     {new Date(blog.createdAt).toLocaleDateString()}
                 </p>
                 <Link
-                    to={`/blog/${blog.blogId}`}
+                    to={`/blog/${blog.blogId}`} target="_top"
                     className="text-sm font-medium text-white bg-lime-700 px-4 py-2 rounded-lg"
                 >
                     Read More

@@ -27,6 +27,7 @@ const Payment = lazy(() => import("../pages/Customer/Payment/Payment"));
 
 const AdminLayout = lazy(() => import("../layouts/AdminLayout"));
 const Dashboard = lazy(() => import("../pages/Admin/Dashboard/Dashboard"));
+const WorkingDay = lazy(() => import("../pages/Admin/TimeSlot/WorkingDay"));
 const Employee = lazy(() => import("../pages/Admin/Employee/Employee"));
 const Booking = lazy(() => import("../pages/Admin/Booking/Booking"));
 const MaService = lazy(() => import("../pages/Admin/Service/Service"));
@@ -138,8 +139,6 @@ export default function MainRoutes() {
         } />
         </Route>
 
-
-
         {/* Admin Routes */}
         <Route path="/management" element={
           <PrivateRoute allowedRoles={[
@@ -157,6 +156,13 @@ export default function MainRoutes() {
             <PrivateRoute allowedRoles={[UserRole.ADMIN, UserRole.MANAGER]}>
               <Suspense fallback={<Loading />}>
                 <Dashboard />
+              </Suspense>
+            </PrivateRoute>
+          } />
+          <Route path="workingday" element={
+            <PrivateRoute allowedRoles={[UserRole.ADMIN, UserRole.MANAGER]}>
+              <Suspense fallback={<Loading />}>
+                <WorkingDay />
               </Suspense>
             </PrivateRoute>
           } />

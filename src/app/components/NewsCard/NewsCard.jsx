@@ -26,7 +26,7 @@ export default function NewsCard(news) {
                     {new Date(news.publishedAt).toLocaleDateString()}
                 </p>
                 <Link
-                    to={`/news/${news.newsId}`}
+                    to={`/news/${news.newsId}`} target="_top"
                     className="text-sm font-medium text-white bg-lime-700 px-4 py-2 rounded-lg"
                 >
                     Read More

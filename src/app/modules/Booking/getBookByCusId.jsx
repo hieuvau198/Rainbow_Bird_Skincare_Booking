@@ -9,7 +9,7 @@ export default async function getBookByCusId(CustomerId) {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        // "Authorization": `Bearer ${Cookies.get("__atok")}`,
+        "Authorization": `Bearer ${Cookies.get("__atok")}`,
       },
     });
 

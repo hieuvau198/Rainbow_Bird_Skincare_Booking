@@ -2,9 +2,9 @@ import Cookies from "js-cookie";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-const deleteService = async (serviceId) => {
+const deleteTheSlot = async (id) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/Service/${serviceId}`, {
+        const response = await fetch(`${API_BASE_URL}/api/TherapistAvailability/${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -23,4 +23,4 @@ const deleteService = async (serviceId) => {
     }
 };
 
-export default deleteService;
+export default deleteTheSlot;

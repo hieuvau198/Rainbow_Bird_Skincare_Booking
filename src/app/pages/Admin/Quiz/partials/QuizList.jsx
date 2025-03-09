@@ -64,6 +64,7 @@ const QuizList = ({ quizzes, loading, onViewDetails }) => {
                 rowKey="id"
                 pagination={{ pageSize: 10 }}
                 bordered
+                scroll={{ x: "max-content", y: 370 }}
             />
         </>
     );

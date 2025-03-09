@@ -1,26 +1,27 @@
+import { message } from "antd";
 import Cookies from "js-cookie";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-const deleteService = async (serviceId) => {
+const addTheToSlot = async (formData) => {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/Service/${serviceId}`, {
-            method: "DELETE",
+        const response = await fetch(`${API_BASE_URL}/api/TherapistAvailability`, {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${Cookies.get("__atok")}`,
             },
+            body: JSON.stringify(formData),
         });
-
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-
-        return true;
+        const data = await response.json();
+        return data;
     } catch (error) {
-        console.error("Error deleting service:", error);
+        message.error(error.message || "Error adding Therapist Availability!");
         throw error;
     }
 };
 
-export default deleteService;
+export default addTheToSlot;
