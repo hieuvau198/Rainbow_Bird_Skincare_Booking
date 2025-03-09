@@ -3,9 +3,9 @@ import Cookies from "js-cookie";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-export default async function getAllBook() {
+export default async function getTimeSlot() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/Booking`, {
+        const response = await fetch(`${API_BASE_URL}/api/TimeSlot`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

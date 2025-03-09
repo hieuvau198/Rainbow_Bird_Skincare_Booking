@@ -1,42 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Tag, Button, message, Space, Modal } from "antd";
 import AddBooking from "../Booking/partials/AddBooking";
 import ViewBooking from "../Booking/partials/ViewBooking";
+import getAllBook from "../../../modules/Booking/getAllBook";
 
 export default function Booking() {
-  const [dataSource, setDataSource] = useState([
-    {
-      key: "1",
-      id: "B001",
-      customerName: "Nguyen Van A",
-      service: "Facial Treatment",
-      date: "2025-01-16",
-      time: "10:00 AM",
-      status: "Confirmed",
-    },
-    {
-      key: "2",
-      id: "B002",
-      customerName: "Le Thi B",
-      service: "Acne Treatment",
-      date: "2025-01-14",
-      time: "11:30 AM",
-      status: "Pending",
-    },
-    {
-      key: "3",
-      id: "B003",
-      customerName: "Tran Van C",
-      service: "Skin Whitening",
-      date: "2025-01-17",
-      time: "2:00 PM",
-      status: "Completed",
-    },
-  ]);
-
+  const [dataSource, setDataSource] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showAddBooking, setShowAddBooking] = useState(false);
   const [showViewBooking, setShowViewBooking] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
+
+  useEffect(() => {
+    async function fetchBookings() {
+      try {
+        const data = await getAllBook();
+        setDataSource(data);
+      } catch (error) {
+        message.error("Failed to fetch bookings");
+        console.error("Error fetching bookings:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchBookings();
+  }, []);
 
   const handleAction = (record, action) => {
     if (action === "view") {
@@ -45,14 +33,14 @@ export default function Booking() {
     } else if (action === "cancel") {
       Modal.confirm({
         title: "Confirm Deletion",
-        content: `Are you sure you want to delete booking ID: ${record.id}?`,
+        content: `Are you sure you want to delete booking ID: ${record.bookingId}?`,
         okText: "Yes",
         cancelText: "No",
         onOk: () => {
-          setDataSource((prevData) =>
-            prevData.filter((item) => item.id !== record.id)
+          setDataSource(prevData =>
+            prevData.filter(item => item.bookingId !== record.bookingId)
           );
-          message.success(`Deleted booking ID: ${record.id}`);
+          message.success(`Deleted booking ID: ${record.bookingId}`);
         },
       });
     }
@@ -61,37 +49,39 @@ export default function Booking() {
   const columns = [
     {
       title: "STT",
-      dataIndex: "key",
-      key: "key",
+      key: "stt",
       render: (_, __, index) => index + 1,
     },
     {
       title: "ID",
-      dataIndex: "id",
-      key: "id",
+      dataIndex: "bookingId",
+      key: "bookingId",
     },
     {
       title: "Customer Name",
-      dataIndex: "customerName",
+      dataIndex: "customer",
       key: "customerName",
-      sorter: (a, b) => a.customerName.localeCompare(b.customerName),
+      render: (customer) => (customer && customer.fullName ? customer.fullName : "N/A"),
     },
     {
       title: "Service",
       dataIndex: "service",
       key: "service",
+      render: (service, record) =>
+        service && service.name ? service.name : `Service ${record.serviceId}`,
     },
     {
       title: "Date",
-      dataIndex: "date",
-      key: "date",
-      sorter: (a, b) => new Date(a.date) - new Date(b.date),
+      dataIndex: "bookingDate",
+      key: "bookingDate",
       render: (date) => <span>{new Date(date).toLocaleDateString()}</span>,
     },
     {
       title: "Time",
-      dataIndex: "time",
-      key: "time",
+      dataIndex: "timeSlot",
+      key: "timeSlot",
+      render: (timeSlot) =>
+        timeSlot && timeSlot.startTime ? timeSlot.startTime : "N/A",
     },
     {
       title: "Status",
@@ -102,22 +92,22 @@ export default function Booking() {
           status === "Confirmed"
             ? "green"
             : status === "Pending"
-              ? "gold"
-              : "gray";
+            ? "gold"
+            : "gray";
         return <Tag color={color}>{status}</Tag>;
       },
     },
-
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button color="gold" variant="solid" type="link" onClick={() =>
-            handleAction(record, "view")}>View details</Button>
-          <Button color="danger" variant="solid" type="link" danger>
-            Delete
+          <Button type="link" onClick={() => handleAction(record, "view")}>
+            View details
           </Button>
+          {/* <Button type="link" danger onClick={() => handleAction(record, "cancel")}>
+            Delete
+          </Button> */}
         </Space>
       ),
     },
@@ -126,31 +116,28 @@ export default function Booking() {
   return (
     <div className="p-6 max-w-[1270px]">
       <div className="p-6 bg-white rounded-md shadow-md min-h-[640px]">
-        {/* Dòng chứa tiêu đề và nút Add Booking */}
+        {/* Header với tiêu đề và nút Add Booking */}
         <div className="flex justify-between items-center mb-5">
-          <h1 className="text-[22px] font-bold m-0">
-            Skincare Service Bookings
-          </h1>
-          <Button type="primary" size="normal" onClick={() => setShowAddBooking(true)}>
+          <h1 className="text-[22px] font-bold m-0">Skincare Service Bookings</h1>
+          {/* <Button type="primary" size="normal" onClick={() => setShowAddBooking(true)}>
             + Add Booking
-          </Button>
+          </Button> */}
         </div>
 
         <Table
           dataSource={dataSource}
           columns={columns}
+          rowKey="bookingId"
           bordered
           pagination={{ pageSize: 5 }}
           scroll={{ x: "max-content", y: 400 }}
+          loading={loading}
         />
       </div>
 
-      {showAddBooking && <AddBooking onClose={() => setShowAddBooking(false)} />}
+      {/* {showAddBooking && <AddBooking onClose={() => setShowAddBooking(false)} />} */}
       {showViewBooking && (
-        <ViewBooking
-          booking={selectedBooking}
-          onClose={() => setShowViewBooking(false)}
-        />
+        <ViewBooking booking={selectedBooking} onClose={() => setShowViewBooking(false)} />
       )}
     </div>
   );

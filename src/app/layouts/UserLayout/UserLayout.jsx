@@ -4,6 +4,7 @@ import ScrollTop from "../../components/ScrollTop";
 import "../../styles/User/Scrollbar.css";
 import Footer from "../Footer";
 import Header from "../Header";
+import Chatbot from "../../components/ChatBot/ChatBot";
 
 const UserLayout = () => {
   const scrollContainerRef = useRef(null);
@@ -12,6 +13,7 @@ const UserLayout = () => {
     <div ref={scrollContainerRef} className="custom-scrollbar">
       <Header />
       <main>
+        <Chatbot className="z-50"/>
         <Outlet />
         <ScrollTop scrollContainerRef={scrollContainerRef} />
       </main>
