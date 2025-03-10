@@ -7,7 +7,7 @@ export default function TherapistCard(therapist) {
         <div className="bg-sky-50 shadow-lg rounded-lg p-4 flex flex-col items-center cursor-pointer hover:shadow-xl transition">
             <img
                 src={therapist.profileImage}
-                alt={therapist.name}
+                alt={therapist.fullName}
                 className="w-full h-52 object-cover object-top rounded-md mb-4"
             />
             <h2 className="text-lg font-semibold text-gray-700">{therapist.name}</h2>
