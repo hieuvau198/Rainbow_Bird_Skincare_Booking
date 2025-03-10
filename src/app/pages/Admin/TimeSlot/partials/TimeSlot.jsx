@@ -106,11 +106,11 @@ export default function TimeSlotList({ timeSlotIds = [] }) {
           <Button color="primary" variant="solid" type="link" onClick={() => handleViewTherapists(record)}>
             View Therapists
           </Button>
-          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
-            <Button color="danger" variant="solid" type="link" danger onClick={() => { /* showDeleteConfirm(record) */ }}>
+          {/* {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
+            <Button color="danger" variant="solid" type="link" danger onClick={() => { /* showDeleteConfirm(record) 
               Delete
             </Button>
-          )}
+          )} */}
         </Space>
       ),
     },
