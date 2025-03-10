@@ -5,7 +5,7 @@ export default function AddManager({ open, onClose, onSubmit }) {
   const [form] = Form.useForm();
 
   const handleFinish = (values) => {
-    const managerData = { ...values, role: 1 };
+    const managerData = { ...values, hireDate: new Date().toISOString() };
     form.resetFields();
     if (onSubmit) {
       onSubmit(managerData);

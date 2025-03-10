@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { Card, Pagination } from "antd";
 
 export default function BookingList({ bookings }) {
-  // Group bookings by serviceName and count them
   const groupedBookings = bookings.reduce((acc, booking) => {
-    if (acc[booking.serviceName]) {
-      acc[booking.serviceName].count += 1;
+    const key = booking.serviceId;
+    if (acc[key]) {
+      acc[key].count += 1;
     } else {
-      acc[booking.serviceName] = { ...booking, count: 1 };
+      acc[key] = {
+        ...booking,
+        count: 1,
+        displayName: booking.serviceName || `Service ${booking.serviceId}`,
+      };
     }
     return acc;
   }, {});
@@ -25,13 +29,13 @@ export default function BookingList({ bookings }) {
       <div className="flex-1">
         {currentBookings.map((booking) => (
           <Card
-            key={booking.bookingId || booking.serviceName}
+            key={booking.bookingId || booking.serviceId}
             bordered
             style={{ borderLeft: '4px solid #65a30d', marginBottom: '16px' }}
           >
             <Card.Meta
-              title={booking.serviceName}
-              description={`Booked: ${booking.count} service`}
+              title={booking.displayName}
+              description={`Booked: ${booking.count} time(s)`}
             />
           </Card>
         ))}

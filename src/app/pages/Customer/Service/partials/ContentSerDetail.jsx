@@ -1,12 +1,27 @@
-import React from "react";
-import { 
-  ClockCircleOutlined, 
-  DollarOutlined, 
-  StarOutlined, 
-  UserOutlined 
+import {
+  ClockCircleOutlined,
+  DollarOutlined,
+  StarOutlined,
+  UserOutlined
 } from "@ant-design/icons";
+import Cookies from "js-cookie";
+import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function ContentSerDetail({ service, setIsModalOpen }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleBookNow = () => {
+    const token = Cookies.get("__atok");
+    if (token) {
+      setIsModalOpen(true);
+    } else {
+      navigate("/login", { state: { from: location } });
+      console.log("loca", location);
+    }
+  };
+
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-lg bg-white">
@@ -21,7 +36,9 @@ export default function ContentSerDetail({ service, setIsModalOpen }) {
 
         {/* Service Details */}
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">{service.serviceName || "Unknown Service"}</h1>
+          <h1 className="text-3xl font-bold text-gray-800">
+            {service.serviceName || "Unknown Service"}
+          </h1>
           {/* <p className="text-gray-600 text-md mt-2">{service.description || "No description available."}</p> */}
 
           <div className="mt-4">
@@ -44,7 +61,7 @@ export default function ContentSerDetail({ service, setIsModalOpen }) {
 
           <button 
             className="bg-lime-500 text-white px-4 py-2 rounded-lg cursor-pointer text-center hover:bg-lime-700 transition"
-            onClick={() => setIsModalOpen(true)}
+            onClick={handleBookNow}
           >
             Book Now
           </button>

@@ -36,10 +36,16 @@ export default function HomeRecentBlogs() {
 
         {/* Hiển thị 2 bài viết*/}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+<<<<<<< HEAD
         {blogData.map((blog, index) => (
   <BlogsCard key={blog.id || `blog-${index}`} {...blog} />
 ))}
 
+=======
+          {blogData.map((blog) => (
+            <BlogsCard key={blog.blogId} {...blog} />
+          ))}
+>>>>>>> origin/feature/Booking-admin-pages
         </div>
       </div>
     </div>
