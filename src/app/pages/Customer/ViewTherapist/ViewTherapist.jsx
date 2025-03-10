@@ -1,50 +1,41 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import Loading from "../../../components/Loading/Loading";
-import getTherapist from "../../../modules/Admin/Employee/getTherapist";
-import getTherapistProfile from "../../../modules/Admin/Employee/getTherapistProfile";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import Loading from '../../../components/Loading/Loading';
 
 const ViewTherapist = () => {
   const [therapists, setTherapists] = useState([]);
-  const [therapistProfiles, setTherapistProfiles] = useState({});
-  const [sortOption, setSortOption] = useState("az");
+  const [sortOption, setSortOption] = useState('az');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchTherapists = async () => {
-      setLoading(true);
-      try {
-        const data = await getTherapist();
-        setTherapists(data);
-
-        // Fetch therapist profiles (images)
-        const profiles = {};
-        for (const therapist of data) {
-          const profile = await getTherapistProfile(therapist.therapistId);
-          profiles[therapist.therapistId] = profile.profileImage || "https://via.placeholder.com/150";
+    fetch('https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Therapists')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch therapists');
         }
-        setTherapistProfiles(profiles);
-
-      } catch (err) {
-        setError(err.message || "Failed to fetch therapists.");
-      }
-      setLoading(false);
-    };
-
-    fetchTherapists();
+        return response.json();
+      })
+      .then(data => {
+        setTherapists(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        setError(error.message);
+        setLoading(false);
+      });
   }, []);
 
   // Sorting function
   const sortTherapists = (therapists, option) => {
     switch (option) {
-      case "az":
-        return [...therapists].sort((a, b) => (a.user?.fullName || "").localeCompare(b.user?.fullName || ""));
-      case "za":
-        return [...therapists].sort((a, b) => (b.user?.fullName || "").localeCompare(a.user?.fullName || ""));
-      case "rating-high-to-low":
+      case 'az':
+        return [...therapists].sort((a, b) => a.therapistId - b.therapistId);
+      case 'za':
+        return [...therapists].sort((a, b) => b.therapistId - a.therapistId);
+      case 'rating-high-to-low':
         return [...therapists].sort((a, b) => (b.rating || 0) - (a.rating || 0));
-      case "rating-low-to-high":
+      case 'rating-low-to-high':
         return [...therapists].sort((a, b) => (a.rating || 0) - (b.rating || 0));
       default:
         return therapists;
@@ -58,15 +49,11 @@ const ViewTherapist = () => {
 
   return (
     <div className="p-6 lg:p-24 md:p-16 bg-slate-50 min-h-screen">
-      <h1 className="text-5xl font-bold text-center text-gray-700 mb-6">
-        Our Therapists
-      </h1>
+      <h1 className="text-5xl font-bold text-center text-gray-700 mb-6">Our Therapists</h1>
 
       {/* Sorting Dropdown */}
       <div className="mb-6">
-        <label htmlFor="sort" className="mr-2 font-medium">
-          Sort by:
-        </label>
+        <label htmlFor="sort" className="mr-2 font-medium">Sort by:</label>
         <select
           id="sort"
           value={sortOption}
@@ -75,31 +62,28 @@ const ViewTherapist = () => {
         >
           <option value="az">Alphabetically, A-Z</option>
           <option value="za">Alphabetically, Z-A</option>
-          {/* <option value="rating-high-to-low">Rating, high to low</option>
-          <option value="rating-low-to-high">Rating, low to high</option> */}
+          <option value="rating-high-to-low">Rating, high to low</option>
+          <option value="rating-low-to-high">Rating, low to high</option>
         </select>
       </div>
 
-      {/* Displaying Therapists */}
+      {/* Displaying Therapists using UI from TherapistCard */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {sortedTherapists.map((therapist) => (
           <Link to={`/therapists/${therapist.therapistId}`} key={therapist.therapistId}>
             <div className="bg-sky-50 shadow-lg rounded-lg p-4 flex flex-col items-center cursor-pointer hover:shadow-xl transition">
-              {/* Therapist Image */}
+              {/* Updated Placeholder Image */}
               <img
-                src={therapistProfiles[therapist.therapistId] || "https://via.placeholder.com/150"}
-                alt={therapist.user?.fullName || "Therapist"}
+                src={therapist.profileImage && therapist.profileImage.trim() !== "" ? therapist.profileImage : 'https://via.placeholder.com/150'}
+                alt={`Therapist ${therapist.therapistId}`}
                 className="w-full h-52 object-cover object-top rounded-md mb-4"
               />
-
-              {/* Therapist Name */}
-              <h2 className="text-lg font-semibold text-gray-700">
-                {therapist.user?.fullName || "Unknown"}
-              </h2>
-
-              {/* Therapist Phone */}
-              <p className="text-sm text-gray-500">
-                Phone: {therapist.user?.phone || "N/A"}
+              <h2 className="text-lg font-semibold text-gray-700">Therapist ID: {therapist.therapistId}</h2>
+              <p className="text-sm text-gray-500">User ID: {therapist.userId}</p>
+              <p className="text-sm text-gray-500">Available: {therapist.isAvailable ? 'Yes' : 'No'}</p>
+              <p className="text-sm text-gray-500">Schedule: {therapist.schedule}</p>
+              <p className="text-sm text-yellow-500 font-medium">
+                Rating: {therapist.rating !== null ? therapist.rating.toFixed(1) : 'N/A'}
               </p>
             </div>
           </Link>
