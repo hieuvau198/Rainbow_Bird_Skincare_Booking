@@ -128,11 +128,11 @@ export default function MainContent({ services }) {
                     <ReactMarkdown>{truncateText(service.description, 40)}</ReactMarkdown>
                   </div>
 
-                  <div className="mt-auto">
+                  {/* <div className="mt-auto">
                     <Link to={`/services/${service.service_id}`} target="_top" className="text-blue-500 text-xs mt-4">
                       Learn More
                     </Link>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </Link>
