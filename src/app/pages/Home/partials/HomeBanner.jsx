@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 const HomeBanner = () => {
   const slides = [
-    "https://thehowardcenterforwellness.com/wp-content/uploads/img-home-banner-slide-01.webp",
-    "https://thehowardcenterforwellness.com/wp-content/uploads/home-banner-bg-img02.webp",
-    "https://thehowardcenterforwellness.com/wp-content/uploads/home-banner-bg-img03.webp",
-    "https://thehowardcenterforwellness.com/wp-content/uploads/home-banner-bg-img04.webp"
+    "https://www.mayasbeautypalace.com/cdn/shop/articles/ultimate-guide-to-the-best-natural-skincare-products-229620.webp?v=1723660199&width=1920",
+    "https://www.voyantbeauty.com/wp-content/uploads/2024/11/Industry-News-Vegan-Cosmetics-Growing-Beauty-Trend-FB-LI-WP-1080x675.png",
+    "https://www.voyantbeauty.com/wp-content/uploads/2022/06/Voyant-WP-Beauty-Trends-2023-1080x675.jpg",
+    "https://infinitekparis.com/wp-content/uploads/2023/01/mujer-cuidado-facial-bano-woman-skincare-bathroom-infinitek.jpg"
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -42,11 +42,10 @@ const HomeBanner = () => {
         <div className="container mx-auto px-8 lg:px-16">
           <div className="max-w-4xl">
             <h1 className="text-10xl font-extrabold sm:text-5xl">
-              Empowering Minds: <br /> Your Wellness Journey Begins
+            Enhancing Radiance: <br /> Your Skincare Journey Begins
             </h1>
             <p className="mt-8 text-lg sm:text-base">
-              Welcome to Pretine Care, your comprehensive hub for mental health and wellness. We believe that mental well-being is the cornerstone of a fulfilling life. Our mission is to provide you with the resources, support, and guidance you need to thrive.
-            </p>
+            Welcome to Prestine Care, your dedicated hub for premium skincare solutions. We believe that healthy, glowing skin is the foundation of confidence and vitality. Our mission is to empower you with expert guidance, advanced treatments, and personalized care to reveal your natural beauty.            </p>
             <Link
               to="./therapists"
               className="inline-block bg-white text-teal-600 font-medium py-3 px-6 rounded-md mt-6 hover:bg-gray-200 transition"
