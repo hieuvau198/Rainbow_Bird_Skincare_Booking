@@ -12,7 +12,7 @@ const TherapistProfile = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/TherapistProfile/${id}`)
+    fetch(`https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/TherapistProfile/${id}/with-reference`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch therapist profile");
@@ -61,7 +61,7 @@ const TherapistProfile = () => {
           {/* Header: Name, Specialization, and Rating */}
           <div className="p-6">
             <h1 className="text-4xl font-bold text-lime-600">
-              Therapist ID: {therapist.therapistId}
+              {therapist.therapist.user.fullName}
             </h1>
             <div className="flex items-center mt-4">
               {Array(4).fill(null).map((_, i) => (

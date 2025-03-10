@@ -4,6 +4,8 @@ import { Card, Button, Spin, message, Alert } from "antd";
 import { loadFullQuizData, startCustomerQuiz, submitCustomerAnswer } from "./QuizDataManager";
 import QuizQuestion from "./QuizQuestion";
 import QuizResult from "./QuizResult";
+import DecodeId from "../../../../components/DecodeId";
+import DecodeRoleId from "../../../../components/DecodeRoleId";
 
 const QuizDetail = () => {
   const { id } = useParams();
@@ -18,7 +20,7 @@ const QuizDetail = () => {
   const [answeredQuestions, setAnsweredQuestions] = useState([]);
   const [submitting, setSubmitting] = useState(false);
 
-  const CUSTOMER_ID = 3;
+  const CUSTOMER_ID = DecodeRoleId('__CusIden');
 
   useEffect(() => {
     const initializeQuiz = async () => {

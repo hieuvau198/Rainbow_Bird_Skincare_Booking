@@ -9,7 +9,7 @@ const ViewTherapist = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Therapists')
+    fetch('https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/TherapistProfile/with-reference')
       .then(response => {
         if (!response.ok) {
           throw new Error('Failed to fetch therapists');
@@ -74,16 +74,15 @@ const ViewTherapist = () => {
             <div className="bg-sky-50 shadow-lg rounded-lg p-4 flex flex-col items-center cursor-pointer hover:shadow-xl transition">
               {/* Updated Placeholder Image */}
               <img
-                src={therapist.profileImage && therapist.profileImage.trim() !== "" ? therapist.profileImage : 'https://via.placeholder.com/150'}
-                alt={`Therapist ${therapist.therapistId}`}
+                src={therapist.profileImage || "https://via.placeholder.com/150"}
+                alt="Therapist"
                 className="w-full h-52 object-cover object-top rounded-md mb-4"
               />
-              <h2 className="text-lg font-semibold text-gray-700">Therapist ID: {therapist.therapistId}</h2>
-              <p className="text-sm text-gray-500">User ID: {therapist.userId}</p>
+              <h2 className="text-lg font-semibold text-gray-700">{therapist.therapist.user.fullName}</h2>
               <p className="text-sm text-gray-500">Available: {therapist.isAvailable ? 'Yes' : 'No'}</p>
               <p className="text-sm text-gray-500">Schedule: {therapist.schedule}</p>
               <p className="text-sm text-yellow-500 font-medium">
-                Rating: {therapist.rating !== null ? therapist.rating.toFixed(1) : 'N/A'}
+                Rating: {therapist.rating !== null ? therapist.rating : 'N/A'}
               </p>
             </div>
           </Link>
