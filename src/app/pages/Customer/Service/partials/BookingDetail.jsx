@@ -13,28 +13,7 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
   useEffect(() => {
     if (!isOpen || !bookingData) return;
 
-    const fetchCustomerDetails = async () => {
-      try {
-        const userIdx = Cookies.get("__uid");
-
-        if (!userIdx) {
-          message.error("User not found. Please log in again.");
-          return;
-        }
-
-        const customerResponse = await axios.get(
-          `https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/user/${userIdx}`
-        );
-
-        setCustomerName(customerResponse.data.fullName || "");
-        setCustomerPhone(customerResponse.data.phone || "");
-        setCustomerEmail(customerResponse.data.email || "");
-        setCustomerLocation(customerResponse.data.location || "");
-      } catch (error) {
-        console.error("Error fetching customer details:", error);
-        message.error("Failed to fetch customer details. Please enter them manually.");
-      }
-    };
+    
 
     const fetchServicePrice = async () => {
       try {
@@ -53,7 +32,6 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
       }
     };
 
-    fetchCustomerDetails();
     fetchServicePrice();
   }, [isOpen, bookingData]);
 
