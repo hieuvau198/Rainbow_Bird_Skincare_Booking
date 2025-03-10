@@ -4,12 +4,13 @@ import "antd/es/style/reset.css";
 import { AiOutlineClose } from "react-icons/ai";
 import BookingSuccess from "./BookingSuccess";
 import CustomDateCell from "./CustomDateCell";
+import getWorkingDay from "../../../../modules/Admin/TimeSlot/getWorkingDay";
 import axios from "axios";
 import dayjs from "dayjs";
 import Cookies from "js-cookie";
 
 
-export default function BookingModal({ isOpen, onClose, serviceName, serviceId }) {
+export default function BookingModal({ isOpen, onClose, serviceName, serviceId, onContinue  }) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedSlotId, setSelectedSlotId] = useState(null);
@@ -24,17 +25,16 @@ export default function BookingModal({ isOpen, onClose, serviceName, serviceId }
   useEffect(() => {
     const fetchWorkingDays = async () => {
       try {
-        const response = await axios.get(
-          "https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/WorkingDay"
-        );
-        setWorkingDays(response.data);
+        const data = await getWorkingDay();
+        setWorkingDays(data);
       } catch (error) {
         console.error("Error fetching working days:", error);
       }
     };
-
+  
     fetchWorkingDays();
   }, []);
+  
 
   useEffect(() => {
     if (!selectedDate) return;
@@ -81,68 +81,34 @@ export default function BookingModal({ isOpen, onClose, serviceName, serviceId }
   };
 
   const handleGoBack = () => {
-    setShowSlots(true);
-    setShowTherapists(false);
+    setShowSlots(false);
+    setShowTherapists(true);
     setSelectedSlotId(null);
     setSelectedTime(null);
   };
 
-  const handleConfirmBooking = async () => {
-    if (!selectedDate || !selectedSlotId || !selectedTherapist) {
+  const handleGoBackToTherapists = () => {
+    setShowTherapists(true); // Mở lại danh sách therapist
+    setShowSlots(false); // Không quay lại chọn ngày & giờ
+  };
+  
+  
+  const handleContinueBooking = () => {
+    if (!selectedDate || !selectedTime || !selectedTherapist) {
       message.error("Please select a date, time slot, and therapist.");
       return;
     }
-  
-    try {
-      const userId = Cookies.get("__uid");
 
-      if (!userId) {
-        message.error("User not found. Please log in again.");
-        return;
-      }
-
-      const customerResponse = await axios.get(
-        `https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Customer/user/${userId}`
-      );
-
-      if (!customerResponse.data || !customerResponse.data.customerId) {
-        message.error("Customer ID not found. Please contact support.");
-        return;
-      }
-  
-      const customerId = customerResponse.data.customerId;
-  
-
-      const bookingData = {
-        customerId: customerId, // Cần thay đổi ID khách hàng bằng ID thực tế
-        therapistId: selectedTherapist,
-        serviceId: serviceId, // Cần thay đổi ID dịch vụ phù hợp
-        slotId: selectedSlotId,
-        bookingDate: selectedDate.format("YYYY-MM-DD"),
-        status: "Pending", // Trạng thái đặt lịch
-        notes: "No additional notes",
-      };
-  
-      const response = await axios.post(
-        "https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/booking",
-        bookingData,
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-  
-      if (response.status === 201 || response.status === 200) {
-        message.success("Booking confirmed successfully!");
-        setIsBookingConfirmed(true);
-      } else {
-        message.error("Failed to confirm booking. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error confirming booking:", error);
-      message.error("An error occurred while confirming the booking.");
-    }
+    onContinue({
+      date: selectedDate.format("YYYY-MM-DD"),
+      timeSlot: selectedTime,
+      therapist: therapists.find(t => t.therapistId === selectedTherapist)?.therapistName,
+      service: serviceName,
+      slotId: selectedSlotId,
+      serviceId: serviceId,
+      therapistId: selectedTherapist
+    });
   };
-  
 
   const resetAndClose = () => {
     setSelectedDate(null);
@@ -254,10 +220,10 @@ export default function BookingModal({ isOpen, onClose, serviceName, serviceId }
 
                 <button
                   className="mt-4 bg-lime-500 text-white px-4 py-2 rounded-md w-full hover:bg-lime-600"
-                  onClick={handleConfirmBooking}
+                  onClick={handleContinueBooking}
                   disabled={!selectedTherapist} // Ngăn bấm nếu chưa chọn therapist
                 >
-                  {isBookingConfirmed ? "Booking Confirmed!" : "Confirm Booking"}
+                  Continue Booking
                 </button>
 
               </>
