@@ -3,6 +3,9 @@ import CryptoJS from "crypto-js";
 import Cookies from "js-cookie";
 import UserRole from "../../../enums/userRole";
 import { autoRefreshToken } from "./refreshToken";
+import getCustomerId from "../Iden/getCustomerId";
+import getStaffId from "../Iden/getStaffId";
+import getManagerId from "../Iden/getManagerId";
 
 const secretKey = process.env.REACT_APP_SECRET_KEY || "ToiYeuEMToiYeuEM";
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -23,11 +26,14 @@ export const googleLogin = async (response, CLIENT_ID, setLoading, navigate) => 
         const userRole = data.user.role;
         if (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) {
             navigate("/management/dashboard");
-        } else if(userRole === UserRole.STAFF){
+            getManagerId(data.user.userId);
+        } else if (userRole === UserRole.STAFF) {
+            getStaffId(data.user.userId);
             navigate("/management/booking");
-        }else if(userRole === UserRole.THERAPIST){
+        } else if (userRole === UserRole.THERAPIST) {
             navigate("/management/schedule");
-        }else {
+        } else {
+            getCustomerId(data.user.userId);
             navigate("/");
         }
     } catch (err) {
@@ -53,14 +59,18 @@ export const loginUser = async (values, setLoading, navigate) => {
         saveTokens(data);
         autoRefreshToken();
         const userRole = data.user.role;
-        const userId = data.user.userId;
         if (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) {
             navigate("/management/dashboard");
-        } else if(userRole === UserRole.STAFF){
+            if (userRole === UserRole.MANAGER) {
+                getManagerId(data.user.userId);
+            }
+        } else if (userRole === UserRole.STAFF) {
+            getStaffId(data.user.userId);
             navigate("/management/booking");
-        }else if(userRole === UserRole.THERAPIST){
+        } else if (userRole === UserRole.THERAPIST) {
             navigate("/management/schedule");
-        }else {
+        } else {
+            getCustomerId(data.user.userId);
             navigate("/");
         }
         message.success("Login successful!");
@@ -87,7 +97,7 @@ export const saveTokens = (data) => {
             secure: true
         });
     }
-    
+
     if (data.user && data.user.userId !== undefined) {
         const encodedRole = encodeRoleToBase64(data.user.userId);
         const encryptedRole = CryptoJS.AES.encrypt(encodedRole, secretKey).toString();
@@ -105,11 +115,6 @@ export const saveTokens = (data) => {
     });
 
     Cookies.set("__rtok", data.refreshToken, {
-        sameSite: "Strict",
-        secure: true
-    });
-
-    Cookies.set("__uid", data.user.userId, {
         sameSite: "Strict",
         secure: true
     });
