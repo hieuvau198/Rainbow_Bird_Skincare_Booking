@@ -35,3 +35,32 @@
     scrollbar-width: thin;
     scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
 }
+
+@keyframes shake-head {
+
+    0%,
+    70% {
+        transform: translateX(0);
+    }
+
+    75% {
+        transform: translateX(-4px);
+    }
+
+    80% {
+        transform: translateX(4px);
+    }
+
+    85% {
+        transform: translateX(-4px);
+    }
+
+    90%,
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.animate-shake {
+    animation: shake-head 3s ease-in-out infinite;
+}

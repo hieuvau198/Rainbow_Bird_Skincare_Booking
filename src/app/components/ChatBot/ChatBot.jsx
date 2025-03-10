@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { IoChatbubbleEllipses } from "react-icons/io5";
 import chatBotAI from "../../modules/ChatBot/chatBotAI";
+import chatbotImg from "../../assets/img/chatbot.png";
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +24,7 @@ export default function Chatbot() {
     setMessages((prev) => [...prev, { sender: "bot", text: "...", loading: true }]);
 
     const botResponse = await chatBotAI(currentInput);
-    
+
     setMessages((prev) => {
       const newMessages = [...prev];
       if (newMessages[newMessages.length - 1]?.loading) {
@@ -42,19 +42,21 @@ export default function Chatbot() {
   };
 
   return (
-    <div className="fixed bottom-24 right-7 z-[9999]">
+    <div className="fixed bottom-24 right-6 z-[9999]">
       {!isOpen ? (
-        <button
+        <img
+          src={chatbotImg}
+          alt="Chatbot"
+          className="w-16 h-16 bg-lime-500 hover:bg-lime-600 rounded-full shadow-lg cursor-pointer animate-shake"
           onClick={() => setIsOpen(true)}
-          className="p-4 bg-lime-500 text-white rounded-[15px] shadow-lg"
-        >
-          <IoChatbubbleEllipses size={24} />
-        </button>
+        />
       ) : (
         <div className="w-96 bg-white rounded-md shadow-xl border transition-all duration-300 absolute bottom-0 right-0 opacity-100 translate-y-0">
           <div className="flex justify-between items-center bg-lime-500 text-white p-3 rounded-t-md">
             <span className="font-semibold">Prestine Care Assistants</span>
-            <button onClick={() => setIsOpen(false)}>✕</button>
+            <button onClick={() => setIsOpen(false)} className="text-white">
+              ✕
+            </button>
           </div>
           <div className="h-96 overflow-y-auto p-3 text-sm">
             {messages.map((msg, idx) => (
@@ -64,9 +66,7 @@ export default function Chatbot() {
               >
                 <div
                   className={`inline-block rounded-xl px-3 py-2 ${
-                    msg.sender === "bot"
-                      ? "bg-gray-200"
-                      : "bg-lime-400 text-white"
+                    msg.sender === "bot" ? "bg-gray-200" : "bg-lime-400 text-white"
                   } ${msg.loading ? "animate-pulse" : ""}`}
                 >
                   {msg.text}
