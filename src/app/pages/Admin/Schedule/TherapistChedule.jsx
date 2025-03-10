@@ -3,14 +3,15 @@ import BookingList from './partials/BookingList';
 import CalendarTherapist from './partials/CalendarTherapist';
 import TodayBooking from './partials/TodayBooking';
 import getBookByTheId from '../../../modules/Booking/getBookByTheId';
-import DecodeId from '../../../components/DecodeId';
+import DecodeRoleId from '../../../components/DecodeRoleId';
 import Loading from '../../../components/Loading';
 
 export default function TherapistChedule() {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const therapistId = DecodeId();
+    // const therapistId = DecodeRoleId("__TheIden");
+    const therapistId = 2;
 
     useEffect(() => {
         async function fetchBookings() {

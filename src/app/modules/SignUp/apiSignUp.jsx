@@ -4,7 +4,7 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export default async function apiSignUp(userData) {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/Auth/register`, {
+        const response = await fetch(`${API_BASE_URL}/api/Customer/with-user`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -17,6 +17,7 @@ export default async function apiSignUp(userData) {
         }
 
         const data = await response.json();
+
         return data;
     } catch (error) {
         console.error("Error during signup:", error);

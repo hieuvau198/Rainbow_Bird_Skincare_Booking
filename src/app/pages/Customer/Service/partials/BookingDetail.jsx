@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { message } from "antd";
 import Cookies from "js-cookie";
+import DecodeId from "../../../../components/DecodeId";
 
 export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm, onBackToTherapists }) {
   const [customerName, setCustomerName] = useState("");
@@ -47,7 +48,7 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
     }
 
     try {
-      const userId = Cookies.get("__uid");
+      const userId = DecodeId();
 
       if (!userId) {
         message.error("User not found. Please log in again.");

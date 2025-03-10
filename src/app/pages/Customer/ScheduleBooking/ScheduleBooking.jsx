@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import CalendarBooking from "./partials/CalendarBooking";
-import BookingList from "./partials/BookingList";
+import React, { useEffect, useState } from "react";
+import DecodeRoleId from "../../../components/DecodeRoleId";
 import getBookByCusId from "../../../modules/Booking/getBookByCusId";
-import DecodeId from "../../../components/DecodeId";
+import BookingList from "./partials/BookingList";
+import CalendarBooking from "./partials/CalendarBooking";
 
 export default function ScheduleBooking() {
   const [bookings, setBookings] = useState([]);
-  const customerId = DecodeId();
+  const customerId = DecodeRoleId("__CusIden");
 
   useEffect(() => {
     async function fetchBookings() {

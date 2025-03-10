@@ -37,7 +37,7 @@ export default function HomeRecentBlogs() {
         {/* Hiển thị 2 bài viết*/}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {blogData.map((blog) => (
-            <BlogsCard key={blog.id} {...blog} />
+            <BlogsCard key={blog.blogId} {...blog} />
           ))}
         </div>
       </div>

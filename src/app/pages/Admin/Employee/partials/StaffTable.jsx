@@ -1,11 +1,10 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, message, Table, Tag } from "antd";
+import { Button, message, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import userRole from "../../../../../enums/userRole";
-import getAllUser from "../../../../modules/Admin/Employee/getAllUser";
-import AddStaff from "./StaffPartials/AddStaff";
-import addEmployee from "../../../../modules/Admin/Employee/addEmployee";
 import SearchBar from "../../../../components/SearchBar";
+import addStaff from "../../../../modules/Admin/Employee/addStaff";
+import getStaff from "../../../../modules/Admin/Employee/getStaff";
+import AddStaff from "./StaffPartials/AddStaff";
 
 const StaffTable = () => {
   const [data, setData] = useState([]);
@@ -15,7 +14,7 @@ const StaffTable = () => {
   const [searchText, setSearchText] = useState("");
 
   const columns = [
-    { title: "ID", dataIndex: "id", key: "id", width: 50 },
+    { title: "Staff ID", dataIndex: "Staffid", key: "Staffid", width: 100 },
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Email", dataIndex: "email", key: "email", width: 250 },
     { title: "Mobile", dataIndex: "mobile", key: "mobile" },
@@ -36,15 +35,16 @@ const StaffTable = () => {
   const loadStaffData = async () => {
     setLoading(true);
     try {
-      const allUsers = await getAllUser();
-      const staffUsers = allUsers.filter(user => user.role === userRole.STAFF);
+      const staffUsers = await getStaff();
+      // const staffUsers = allUsers.filter(user => user.role === userRole.STAFF);
 
       const formattedData = staffUsers.map(user => ({
-        key: user.userId,
+        key: user.staffId,
+        Staffid: user.staffId,
         id: user.userId,
-        name: user.fullName,
-        email: user.email,
-        mobile: user.phone,
+        name: user.user.fullName,
+        email: user.user.email,
+        mobile: user.user.phone,
       }));
       setData(formattedData);
       setFilteredStaff(formattedData);
@@ -62,7 +62,7 @@ const StaffTable = () => {
 
   const handleAddStaff = async (values) => {
     try {
-      const newStaff = await addEmployee(values);
+      const newStaff = await addStaff(values);
       console.log("Data sent to API:", values);
       setData(prevData => [...prevData, { key: newStaff.fullName, ...newStaff }]);
       setFilteredStaff(prev => [...prev, { key: newStaff.fullName, ...newStaff }]);
