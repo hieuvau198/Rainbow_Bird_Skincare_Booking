@@ -97,7 +97,7 @@ const QuizDetail = () => {
                           ${selectedAnswerId ? "bg-lime-400 hover:bg-lime-500" : "bg-lime-200 cursor-not-allowed"}`}
               onClick={selectedAnswerId ? handleNextQuestion : null}
             >
-              Câu Tiếp Theo
+              Next
             </div>
           </>
         )}

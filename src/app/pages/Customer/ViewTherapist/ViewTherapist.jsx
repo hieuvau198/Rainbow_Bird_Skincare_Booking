@@ -82,7 +82,7 @@ const ViewTherapist = () => {
               <p className="text-sm text-gray-500">Available: {therapist.isAvailable ? 'Yes' : 'No'}</p>
               <p className="text-sm text-gray-500">Schedule: {therapist.schedule}</p>
               <p className="text-sm text-yellow-500 font-medium">
-                Rating: {therapist.rating !== null ? therapist.rating : 'N/A'}
+                Rating: {therapist.therapist.rating !== null ? therapist.therapist.rating : 'N/A'}
               </p>
             </div>
           </Link>

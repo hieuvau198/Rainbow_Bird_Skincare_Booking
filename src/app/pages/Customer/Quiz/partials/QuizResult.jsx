@@ -55,16 +55,9 @@ const QuizResult = ({ score, totalPossiblePoints , onRetry }) => {
       </div>
 
       <Typography.Title level={2} className="text-lime-500">
-        Result
+      Your skin with {score} / {totalPossiblePoints} point.
       </Typography.Title>
 
-      <Typography.Title level={3}>
-        You answered questions correctly!
-      </Typography.Title>
-
-      <Typography.Title level={4}>
-        With {score} / {totalPossiblePoints} point.
-      </Typography.Title>
 
       {score >= totalPossiblePoints * 0 ? (
         <CheckCircleTwoTone twoToneColor="#52c41a" style={{ fontSize: "48px" }} />
