@@ -20,7 +20,9 @@ export default async function logOut() {
     Cookies.remove("__atok");
     Cookies.remove("__rtok");
     Cookies.remove("__urol");
-    Cookies.remove("__uiden");
+    Cookies.remove("__CusIden");
+    Cookies.remove("__StaIden");
+    Cookies.remove("__Maden");
     
     window.location.href = "/";
   } catch (error) {

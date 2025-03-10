@@ -1,25 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { MailOutlined, PhoneOutlined } from "@ant-design/icons";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
-import mockTherapists from "./mock_therapist_profile.json";
+import Loading from "../../../components/Loading/Loading";
 
 const TherapistProfile = () => {
   const { id } = useParams();
   const [therapist, setTherapist] = useState(null);
   const [activeTab, setActiveTab] = useState("about");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const foundTherapist = mockTherapists.find(
-      (t) => t.id.toString() === id
-    );
-    setTherapist(foundTherapist);
+    fetch(`https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/TherapistProfile/${id}/with-reference`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch therapist profile");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setTherapist(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setLoading(false);
+      });
   }, [id]);
+
+  if (loading) return <Loading />;
+  if (error) return <p className="p-6 text-center text-red-500">{error}</p>;
 
   if (!therapist) {
     return (
       <div className="p-6 text-center text-red-500">
-        Therapist not found
+        Therapist profile not found
       </div>
     );
   }
@@ -27,34 +43,30 @@ const TherapistProfile = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <header className="mb-6">
-        {/* Header content nếu cần */}
+        {/* Header content if needed */}
       </header>
 
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6">
-        {/* Card 1: Hình ảnh */}
+        {/* Card 1: Profile Image */}
         <div className="md:w-1/4 bg-teal-200 rounded-lg shadow overflow-hidden self-start h-96">
           <img
-            src={therapist.profileImage}
-            alt={therapist.name}
+            src={therapist.profileImage || "https://via.placeholder.com/150"}
+            alt="Therapist"
             className="w-full h-full object-cover"
           />
         </div>
-        {/* Card 2: Nội dung */}
+
+        {/* Card 2: Profile Content */}
         <div className="md:w-3/4 bg-white rounded-lg shadow flex flex-col">
-          {/* Phần tiêu đề: Tên, chuyên môn và rating */}
+          {/* Header: Name, Specialization, and Rating */}
           <div className="p-6">
             <h1 className="text-4xl font-bold text-lime-600">
-              {therapist.name.toUpperCase()} -{" "}
-              <span className="text-xl font-semibold text-gray-600">
-                {therapist.specialization}
-              </span>
+              {therapist.therapist.user.fullName}
             </h1>
             <div className="flex items-center mt-4">
-              {Array(4)
-                .fill(null)
-                .map((_, i) => (
-                  <FaStar key={i} className="text-yellow-500" />
-                ))}
+              {Array(4).fill(null).map((_, i) => (
+                <FaStar key={i} className="text-yellow-500" />
+              ))}
               <FaStarHalfAlt className="text-yellow-500" />
               <span className="ml-2 text-lg text-gray-600">20 reviews</span>
             </div>
@@ -84,7 +96,7 @@ const TherapistProfile = () => {
             </ul>
           </nav>
 
-          {/* Nội dung Tab */}
+          {/* Tab Content */}
           <div className="p-6 flex-grow">
             {activeTab === "about" && (
               <div>
@@ -93,8 +105,7 @@ const TherapistProfile = () => {
                   "{therapist.personalStatement}"
                 </p>
                 <p className="text-lg mt-4 text-gray-700">
-                  <strong>Specialties:</strong>{" "}
-                  {therapist.specialties.join(", ")}
+                  <strong>Specialties:</strong> {therapist.specialties}
                 </p>
                 <p className="text-lg mt-4 text-gray-700">
                   <strong>Experience:</strong> {therapist.yearsExperience} years
@@ -117,37 +128,35 @@ const TherapistProfile = () => {
                   <strong>Education:</strong> {therapist.education}
                 </p>
                 <p className="mt-4">
-                  <strong>Certifications:</strong>{" "}
-                  {therapist.certifications.join(", ")}
+                  <strong>Certifications:</strong> {therapist.certifications}
                 </p>
               </div>
             )}
           </div>
 
-          {/* Phần liên hệ */}
+          {/* Contact Info */}
           <div className="p-6 border-t flex flex-col items-center">
             <div className="flex justify-center items-center mb-4">
               <div className="flex items-center mr-4">
                 <MailOutlined className="mr-1" />
-                <span>{therapist.email}</span>
+                <span>Email: N/A</span> {/* Email not available in API response */}
               </div>
               <div className="flex items-center">
                 <PhoneOutlined className="mr-1" />
-                <span>{therapist.phone}</span>
+                <span>Phone: N/A</span> {/* Phone not available in API response */}
               </div>
             </div>
-            {/* <button className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 font-semibold">
-              Contact
-            </button> */}
           </div>
         </div>
       </div>
+
+      {/* Additional Sections */}
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 mt-5">
         <div className="md:w-2/4 bg-white rounded-lg shadow p-6">
-          {/* Nội dung bổ sung 1 */}
+          {/* Additional content 1 */}
         </div>
         <div className="md:w-2/4 bg-white rounded-lg shadow p-6">
-          {/* Nội dung bổ sung 2 */}
+          {/* Additional content 2 */}
         </div>
       </div>
     </div>

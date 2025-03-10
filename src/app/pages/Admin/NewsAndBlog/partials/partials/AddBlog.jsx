@@ -12,6 +12,7 @@ const AddBlog = ({ open, onClose, onAdded }) => {
         const authorId = DecodeId();
         const payload = {
             title: values.title,
+            authorFullName: values.authorFullName,
             content: content,
             imageUrl: values.imageUrl,
             authorId: authorId,
@@ -44,6 +45,15 @@ const AddBlog = ({ open, onClose, onAdded }) => {
                     rules={[{ required: true, message: "Please enter the title" }]}
                 >
                     <Input placeholder="Enter title" className="rounded-md border-gray-300" />
+                </Form.Item>
+                <Form.Item
+                    label="Author Name"
+                    name="authorFullName"
+                    rules={[{ required: true, message: "Please enter the Author Name" }]}
+                >
+                <Input
+            placeholder="Enter Author Name" className="rounded-md border-gray-300"
+             />
                 </Form.Item>
                 <Form.Item
                     label="Image URL"
