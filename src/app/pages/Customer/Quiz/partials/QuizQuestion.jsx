@@ -8,7 +8,7 @@ const QuizQuestion = ({ currentQuestion, selectedAnswerId, onSelectAnswer, curre
   return (
     <div>
       <Typography.Title level={2} className="text-center text-lime-600">
-        Câu {currentIndex + 1}/{totalQuestions}
+        {currentIndex + 1}/{totalQuestions}
       </Typography.Title>
       <Progress 
         percent={((currentIndex + 1) / totalQuestions) * 100}
@@ -22,7 +22,7 @@ const QuizQuestion = ({ currentQuestion, selectedAnswerId, onSelectAnswer, curre
 
       <div className="mt-2 mb-4">
         <Typography.Text type="secondary">
-          Điểm: {currentQuestion.points}
+          Point: {currentQuestion.points}
         </Typography.Text>
       </div>
 
