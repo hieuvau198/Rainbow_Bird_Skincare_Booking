@@ -3,70 +3,81 @@ import { useParams } from "react-router-dom";
 import { MailOutlined, PhoneOutlined } from "@ant-design/icons";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 import Loading from "../../../components/Loading/Loading";
+import getTherapistProfile from "../../../modules/Admin/Employee/getTherapistProfile";
+import getTherapist from "../../../modules/Admin/Employee/getTherapist";
 
 const TherapistProfile = () => {
   const { id } = useParams();
   const [therapist, setTherapist] = useState(null);
+  const [therapistDetails, setTherapistDetails] = useState({
+    fullName: "Unknown",
+    email: "Not available",
+    phone: "Not available",
+  });
   const [activeTab, setActiveTab] = useState("about");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/TherapistProfile/${id}`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch therapist profile");
+    const fetchTherapistData = async () => {
+      setLoading(true);
+      try {
+        // Fetch Therapist Profile
+        const profileData = await getTherapistProfile(id);
+        setTherapist(profileData);
+
+        // Fetch All Therapists to Find Matching Name, Email, and Phone
+        const allTherapists = await getTherapist();
+        const matchedTherapist = allTherapists.find((t) => t.therapistId === parseInt(id));
+        
+        if (matchedTherapist) {
+          setTherapistDetails({
+            fullName: matchedTherapist.user?.fullName || "Unknown",
+            email: matchedTherapist.user?.email || "Not available",
+            phone: matchedTherapist.user?.phone || "Not available",
+          });
         }
-        return response.json();
-      })
-      .then((data) => {
-        setTherapist(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error.message);
-        setLoading(false);
-      });
+      } catch (err) {
+        setError(err.message || "Failed to fetch therapist data.");
+      }
+      setLoading(false);
+    };
+
+    fetchTherapistData();
   }, [id]);
 
   if (loading) return <Loading />;
   if (error) return <p className="p-6 text-center text-red-500">{error}</p>;
 
   if (!therapist) {
-    return (
-      <div className="p-6 text-center text-red-500">
-        Therapist profile not found
-      </div>
-    );
+    return <div className="p-6 text-center text-red-500">Therapist profile not found</div>;
   }
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      <header className="mb-6">
-        {/* Header content if needed */}
-      </header>
-
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6">
-        {/* Card 1: Profile Image */}
+        {/* Profile Image */}
         <div className="md:w-1/4 bg-teal-200 rounded-lg shadow overflow-hidden self-start h-96">
           <img
             src={therapist.profileImage || "https://via.placeholder.com/150"}
-            alt="Therapist"
+            alt={therapistDetails.fullName}
             className="w-full h-full object-cover"
           />
         </div>
 
-        {/* Card 2: Profile Content */}
+        {/* Profile Content */}
         <div className="md:w-3/4 bg-white rounded-lg shadow flex flex-col">
-          {/* Header: Name, Specialization, and Rating */}
           <div className="p-6">
             <h1 className="text-4xl font-bold text-lime-600">
-              Therapist ID: {therapist.therapistId}
+              {therapistDetails.fullName}
             </h1>
+            <p className="text-lg text-gray-500">{therapist.specialties}</p>
             <div className="flex items-center mt-4">
-              {Array(4).fill(null).map((_, i) => (
-                <FaStar key={i} className="text-yellow-500" />
-              ))}
+              {Array(4)
+                .fill(null)
+                .map((_, i) => (
+                  <FaStar key={i} className="text-yellow-500" />
+                ))}
               <FaStarHalfAlt className="text-yellow-500" />
               <span className="ml-2 text-lg text-gray-600">20 reviews</span>
             </div>
@@ -75,11 +86,10 @@ const TherapistProfile = () => {
           {/* Tab Navigation */}
           <nav className="border-t border-b">
             <ul className="flex">
-              {[
-                { key: "about", label: "Introduce" },
+              {[{ key: "about", label: "Introduce" },
                 { key: "reviews", label: "Rating" },
                 { key: "schedule", label: "Schedules" },
-                { key: "credentials", label: "Certificates" },
+                { key: "credentials", label: "Certificates" }
               ].map((tab) => (
                 <li
                   key={tab.key}
@@ -112,16 +122,8 @@ const TherapistProfile = () => {
                 </p>
               </div>
             )}
-            {activeTab === "reviews" && (
-              <div>
-                <p>Reviews section...</p>
-              </div>
-            )}
-            {activeTab === "schedule" && (
-              <div>
-                <p>Schedule section...</p>
-              </div>
-            )}
+            {activeTab === "reviews" && <div>Reviews section...</div>}
+            {activeTab === "schedule" && <div>Schedule section...</div>}
             {activeTab === "credentials" && (
               <div>
                 <p>
@@ -139,24 +141,14 @@ const TherapistProfile = () => {
             <div className="flex justify-center items-center mb-4">
               <div className="flex items-center mr-4">
                 <MailOutlined className="mr-1" />
-                <span>Email: N/A</span> {/* Email not available in API response */}
+                <span>{therapistDetails.email}</span>
               </div>
               <div className="flex items-center">
                 <PhoneOutlined className="mr-1" />
-                <span>Phone: N/A</span> {/* Phone not available in API response */}
+                <span>{therapistDetails.phone}</span>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Additional Sections */}
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 mt-5">
-        <div className="md:w-2/4 bg-white rounded-lg shadow p-6">
-          {/* Additional content 1 */}
-        </div>
-        <div className="md:w-2/4 bg-white rounded-lg shadow p-6">
-          {/* Additional content 2 */}
         </div>
       </div>
     </div>
