@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Button } from "antd";
+import { Table, Button} from "antd";
 import SearchBar from "../../../../components/SearchBar";
 
 export default function WorkingDayList({
@@ -8,6 +8,7 @@ export default function WorkingDayList({
   filteredWorkingDays,
   loading,
   onViewSlot,
+  renderExtra,
 }) {
   const columns = [
     {
@@ -57,6 +58,10 @@ export default function WorkingDayList({
           <SearchBar searchText={searchText} onSearchChange={handleSearchChange} />
         </div>
       </div>
+
+      {/* Hiển thị phần tử bổ sung, ví dụ: nút Add Therapist */}
+      {renderExtra && <div className="flex justify-end mb-4">{renderExtra}</div>}
+
       <Table
         columns={columns}
         dataSource={filteredWorkingDays}
