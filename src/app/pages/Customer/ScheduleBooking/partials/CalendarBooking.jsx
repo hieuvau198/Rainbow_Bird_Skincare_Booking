@@ -7,7 +7,7 @@ export default function CalendarBooking({ bookings }) {
     if (info.type === "date") {
       const calendarDate = dayjs(current).format("YYYY-MM-DD");
       const dayBookings = bookings.filter((booking) => {
-        const bookingDate = dayjs(booking.date).format("YYYY-MM-DD");
+        const bookingDate = dayjs(booking.bookingDate).format("YYYY-MM-DD");
         return bookingDate === calendarDate;
       });
       return (
@@ -18,7 +18,9 @@ export default function CalendarBooking({ bookings }) {
               <li key={item.bookingId} className="mb-1">
                 <Tag
                   color={
-                    item.status === "Scheduled"
+                    item.status === "AwaitingConfirmation"
+                      ? "purple"
+                      : item.status === "Scheduled"
                       ? "blue"
                       : item.status === "In Progress"
                       ? "orange"
@@ -27,7 +29,7 @@ export default function CalendarBooking({ bookings }) {
                       : "default"
                   }
                 >
-                  {item.serviceName} ({item.time})
+                  {item.status} (Slot {item.slotId})
                 </Tag>
               </li>
             ))}

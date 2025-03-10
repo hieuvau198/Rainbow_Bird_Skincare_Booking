@@ -68,7 +68,11 @@ const TherapistProfile = () => {
                 <FaStar key={i} className="text-yellow-500" />
               ))}
               <FaStarHalfAlt className="text-yellow-500" />
-              <span className="ml-2 text-lg text-gray-600">20 reviews</span>
+              {therapist.therapist.rating && (
+                <span className="ml-2 text-lg text-gray-600">
+                  {therapist.therapist.ratingCount}
+                </span>
+              )}
             </div>
           </div>
 
@@ -77,7 +81,6 @@ const TherapistProfile = () => {
             <ul className="flex">
               {[
                 { key: "about", label: "Introduce" },
-                { key: "reviews", label: "Rating" },
                 { key: "schedule", label: "Schedules" },
                 { key: "credentials", label: "Certificates" },
               ].map((tab) => (
@@ -139,11 +142,11 @@ const TherapistProfile = () => {
             <div className="flex justify-center items-center mb-4">
               <div className="flex items-center mr-4">
                 <MailOutlined className="mr-1" />
-                <span>Email: N/A</span> {/* Email not available in API response */}
+                <span>Email: {therapist.therapist.user.email} </span> {/* Email not available in API response */}
               </div>
               <div className="flex items-center">
                 <PhoneOutlined className="mr-1" />
-                <span>Phone: N/A</span> {/* Phone not available in API response */}
+                <span>Phone: {therapist.therapist.user.phone}</span> {/* Phone not available in API response */}
               </div>
             </div>
           </div>
@@ -151,14 +154,7 @@ const TherapistProfile = () => {
       </div>
 
       {/* Additional Sections */}
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 mt-5">
-        <div className="md:w-2/4 bg-white rounded-lg shadow p-6">
-          {/* Additional content 1 */}
-        </div>
-        <div className="md:w-2/4 bg-white rounded-lg shadow p-6">
-          {/* Additional content 2 */}
-        </div>
-      </div>
+      
     </div>
   );
 };

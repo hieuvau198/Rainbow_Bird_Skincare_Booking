@@ -3,6 +3,7 @@ import { Table, Tag, Button, message, Space, Modal } from "antd";
 import AddBooking from "../Booking/partials/AddBooking";
 import ViewBooking from "../Booking/partials/ViewBooking";
 import getAllBook from "../../../modules/Booking/getAllBook";
+import deleteBooking from "../../../modules/Booking/deleteBooking";
 
 export default function Booking() {
   const [dataSource, setDataSource] = useState([]);
@@ -15,7 +16,17 @@ export default function Booking() {
     async function fetchBookings() {
       try {
         const data = await getAllBook();
-        setDataSource(data);
+        const formattedData = data.map(book => ({
+          key: book.bookingId,
+          bookingId: book.bookingId,
+          id: book.userId,
+          name: book.customerName,
+          email: book.customerEmail,
+          bookingDate: book.bookingDate,
+          timeSlot: book.slotId,
+          status: book.status,
+        }));
+        setDataSource(formattedData);
       } catch (error) {
         message.error("Failed to fetch bookings");
         console.error("Error fetching bookings:", error);
@@ -36,11 +47,16 @@ export default function Booking() {
         content: `Are you sure you want to delete booking ID: ${record.bookingId}?`,
         okText: "Yes",
         cancelText: "No",
-        onOk: () => {
-          setDataSource(prevData =>
-            prevData.filter(item => item.bookingId !== record.bookingId)
-          );
-          message.success(`Deleted booking ID: ${record.bookingId}`);
+        onOk: async () => {
+          try {
+            await deleteBooking(record.bookingId);
+            setDataSource(prevData =>
+              prevData.filter(item => item.bookingId !== record.bookingId)
+            );
+            message.success(`Deleted booking ID: ${record.bookingId}`);
+          } catch (error) {
+            message.error("Failed to delete booking");
+          }
         },
       });
     }
@@ -53,47 +69,59 @@ export default function Booking() {
       render: (_, __, index) => index + 1,
     },
     {
-      title: "ID",
-      dataIndex: "bookingId",
-      key: "bookingId",
-    },
-    {
       title: "Customer Name",
-      dataIndex: "customer",
-      key: "customerName",
-      render: (customer) => (customer && customer.fullName ? customer.fullName : "N/A"),
+      dataIndex: "name",
+      key: "customernameName",
     },
     {
-      title: "Service",
-      dataIndex: "service",
-      key: "service",
-      render: (service, record) =>
-        service && service.name ? service.name : `Service ${record.serviceId}`,
+      title: "Customer Email",
+      dataIndex: "email",
+      key: "email",
     },
     {
-      title: "Date",
+      title: "Booking Date",
       dataIndex: "bookingDate",
       key: "bookingDate",
       render: (date) => <span>{new Date(date).toLocaleDateString()}</span>,
     },
     {
-      title: "Time",
+      title: "Slot Id",
       dataIndex: "timeSlot",
       key: "timeSlot",
-      render: (timeSlot) =>
-        timeSlot && timeSlot.startTime ? timeSlot.startTime : "N/A",
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
       render: (status) => {
-        const color =
-          status === "Confirmed"
-            ? "green"
-            : status === "Pending"
-            ? "gold"
-            : "gray";
+        let color;
+        switch (status) {
+          case "Confirmed":
+            color = "green";
+            break;
+          case "Cancelled By Customer":
+          case "Cancelled By Staff":
+            color = "volcano";
+            break;
+          case "Checked In":
+            color = "blue";
+            break;
+          case "No Show":
+            color = "red";
+            break;
+          case "In Process":
+            color = "orange";
+            break;
+          case "Completed":
+            color = "green";
+            break;
+          case "Checked Out":
+            color = "cyan";
+            break;
+          default:
+            color = "default";
+            break;
+        }
         return <Tag color={color}>{status}</Tag>;
       },
     },
@@ -102,9 +130,9 @@ export default function Booking() {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button type="link" onClick={() => handleAction(record, "view")}>
+          {/* <Button type="link" onClick={() => handleAction(record, "view")}>
             View details
-          </Button>
+          </Button> */}
           {/* <Button type="link" danger onClick={() => handleAction(record, "cancel")}>
             Delete
           </Button> */}
@@ -116,12 +144,8 @@ export default function Booking() {
   return (
     <div className="p-6 max-w-[1270px]">
       <div className="p-6 bg-white rounded-md shadow-md min-h-[640px]">
-        {/* Header với tiêu đề và nút Add Booking */}
         <div className="flex justify-between items-center mb-5">
           <h1 className="text-[22px] font-bold m-0">Skincare Service Bookings</h1>
-          {/* <Button type="primary" size="normal" onClick={() => setShowAddBooking(true)}>
-            + Add Booking
-          </Button> */}
         </div>
 
         <Table
@@ -129,13 +153,12 @@ export default function Booking() {
           columns={columns}
           rowKey="bookingId"
           bordered
-          pagination={{ pageSize: 5 }}
+          pagination={{ pageSize: 10 }}
           scroll={{ x: "max-content", y: 400 }}
           loading={loading}
         />
       </div>
 
-      {/* {showAddBooking && <AddBooking onClose={() => setShowAddBooking(false)} />} */}
       {showViewBooking && (
         <ViewBooking booking={selectedBooking} onClose={() => setShowViewBooking(false)} />
       )}

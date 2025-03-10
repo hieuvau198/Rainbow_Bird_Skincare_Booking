@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import RelatedServices from "./partials/RelatedServices";
-import BookingModal from "./partials/BookingModal";
 import getAllService from "../../../modules/Admin/Service/getAllService";
 import getServiceDetail from "../../../modules/Admin/Service/getServiceDetail";
 import InfoSerDetail from "./partials/InfoSerDetail";
 import ContentSerDetail from "./partials/ContentSerDetail";
 import Loading from "../../../components/Loading/Loading";
+import BookingModal from "./partials/BookingModal";
+import BookingDetails from "./partials/BookingDetail";
+import BookingSuccess from "./partials/BookingSuccess";
 
 export default function ServiceDetail() {
   const { id } = useParams();
   const [services, setServices] = useState([]);
   const [service, setService] = useState(null);
   const [showFullInfo, setShowFullInfo] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [isBookingDetailOpen, setIsBookingDetailOpen] = useState(false);
+  const [isBookingSuccessOpen, setIsBookingSuccessOpen] = useState(false);
+  const [bookingData, setBookingData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -21,10 +26,7 @@ export default function ServiceDetail() {
     window.scrollTo({ top: 0, behavior: "smooth" });
     const fetchServiceDetail = async () => {
       try {
-        // Fetch the single service detail using getServiceDetail
         await getServiceDetail(id, setService);
-
-        // Fetch all services for the Related Services section
         const allServices = await getAllService();
         setServices(allServices);
       } catch (err) {
@@ -49,15 +51,51 @@ export default function ServiceDetail() {
   return (
     <div className="px-24 bg-white min-h-screen w-full">
       {/* Nội dung dịch vụ */}
-      <ContentSerDetail service={service} setIsModalOpen={setIsModalOpen} />
+      <ContentSerDetail service={service} setIsModalOpen={setIsBookingModalOpen} />
 
       {/* Booking Modal */}
-      <BookingModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+      {isBookingModalOpen && (
+        <BookingModal
+        isOpen={isBookingModalOpen}
+        onClose={() => setIsBookingModalOpen(false)}
         serviceName={service.serviceName}
         serviceId={service.serviceId}
+        onContinue={(data) => {
+          setBookingData(data);
+          setIsBookingModalOpen(false);
+          setIsBookingDetailOpen(true);
+        }}
       />
+      
+      )}
+
+      {/* Booking Detail Modal */}
+      {isBookingDetailOpen && (
+        <BookingDetails
+        isOpen={isBookingDetailOpen}
+        bookingData={bookingData}
+        onClose={() => setIsBookingDetailOpen(false)} // Đóng modal
+        onBackToTherapists={() => {
+          setIsBookingDetailOpen(false); // Đóng BookingDetail
+          setIsBookingModalOpen(true);   // Mở lại BookingModal với therapist list
+        }}
+        onConfirm={() => {
+          setIsBookingDetailOpen(false);
+          setIsBookingSuccessOpen(true);
+        }}
+      />
+      
+      )}
+
+      {/* Booking Success Modal */}
+      {isBookingSuccessOpen && (
+        <BookingSuccess
+          isOpen={isBookingSuccessOpen}
+          onClose={() => setIsBookingSuccessOpen(false)}
+          bookingData={bookingData}
+        />
+      )}
+
 
       {/* Thông tin dịch vụ */}
       <InfoSerDetail

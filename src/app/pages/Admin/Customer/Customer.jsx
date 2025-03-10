@@ -1,7 +1,6 @@
 import { Table } from "antd";
 import React, { useEffect, useState } from "react";
-import UserRole from "../../../../enums/userRole";
-import getAllUser from "../../../modules/Admin/Employee/getAllUser";
+import getCustomer from "../../../modules/Admin/Employee/getCustomer";
 
 const CustomerTable = () => {
   const [data, setData] = useState([]);
@@ -40,12 +39,10 @@ const CustomerTable = () => {
   const fetchCustomers = async () => {
     setLoading(true);
     try {
-      const allUsers = await getAllUser();
-      const customers = allUsers.filter(
-        (user) => Number(user.role) === UserRole.CUSTOMER
-      );
+      const customers = await getCustomer();
       const formattedData = customers.map((user) => ({
         key: user.userId,
+        username: user.user.username,
         ...user,
       }));
       setData(formattedData);

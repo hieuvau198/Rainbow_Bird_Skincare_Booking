@@ -19,6 +19,7 @@ export default function SignUp() {
         email: values.email,
         fullName: values.fullName,
         phone: values.phone,
+        lastVisitAt: new Date().toISOString(),
       };
 
       await apiSignUp(payload);

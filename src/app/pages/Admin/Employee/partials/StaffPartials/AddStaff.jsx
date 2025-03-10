@@ -5,7 +5,7 @@ export default function AddStaff({ open, onClose, onSubmit }) {
   const [form] = Form.useForm();
 
   const handleFinish = (values) => {
-    const staffData = { ...values, role: 2 };
+    const staffData = { ...values, hireDate: new Date().toISOString() };
     form.resetFields();
     if (onSubmit) {
       onSubmit(staffData);

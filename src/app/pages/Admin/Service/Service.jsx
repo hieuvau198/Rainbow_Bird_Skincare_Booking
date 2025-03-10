@@ -1,16 +1,15 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, message, Modal, Space, Table, Tag, Input } from "antd";
+import { Button, message, Modal, Space, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import getAllService from "../../../../app/modules/Admin/Service/getAllService";
 import getServiceDetail from "../../../../app/modules/Admin/Service/getServiceDetail";
 import UserRole from "../../../../enums/userRole";
 import DecodeRole from "../../../components/DecodeRole";
+import SearchBar from "../../../components/SearchBar";
 import addService from "../../../modules/Admin/Service/addService";
 import deleteService from "../../../modules/Admin/Service/deleteService";
-import "../../../styles/Admin/ScrollbarTable.css";
 import AddService from "./partials/AddService";
 import ServiceDetails from "./partials/ServiceDetail";
-import SearchBar from "../../../components/SearchBar";
 
 export default function Service() {
   const [loading, setLoading] = useState(false);

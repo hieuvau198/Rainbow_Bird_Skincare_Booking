@@ -3,18 +3,20 @@ import CryptoJS from "crypto-js";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import bg from "../../assets/img/DeepCleansingfacial.jpg";
 import { googleLogin, loginUser } from "../../modules/Login/apiLogin";
 
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-const SECRET_KEY = process.env.REACT_APP_SECRET_KEY; 
+const SECRET_KEY = process.env.REACT_APP_SECRET_KEY;
 
 export default function Login() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -25,7 +27,7 @@ export default function Login() {
     script.onload = () => {
       window.google.accounts.id.initialize({
         client_id: CLIENT_ID,
-        callback: (response) => googleLogin(response, CLIENT_ID, setLoading, navigate),
+        callback: (response) => googleLogin(response, CLIENT_ID, setLoading, navigate, from),
       });
       window.google.accounts.id.renderButton(
         document.getElementById("googleSignInButton"),
@@ -63,7 +65,8 @@ export default function Login() {
       Cookies.remove("__rpw");
     }
 
-    await loginUser(values, setLoading, navigate);
+    await loginUser(values, setLoading, navigate, from);
+    console.log("path", from);
   };
 
   return (
