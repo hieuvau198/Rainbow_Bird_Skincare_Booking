@@ -4,40 +4,67 @@ import { message } from "antd";
 import Cookies from "js-cookie";
 
 export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm, onBackToTherapists }) {
-  const [customerName, setCustomerName] = React.useState("Customer Unknown"); 
-  const [userId, setUserId] = React.useState("Unknown");
+  const [customerName, setCustomerName] = useState("");
+  const [customerPhone, setCustomerPhone] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
+  const [customerLocation, setCustomerLocation] = useState("");
+  const [servicePrice, setServicePrice] = useState(0);
 
   useEffect(() => {
     if (!isOpen || !bookingData) return;
 
-    const fetchCustomerName = async () => {
+    const fetchCustomerDetails = async () => {
       try {
-        const userIdx = Cookies.get("__uiden");
+        const userIdx = Cookies.get("__uid");
 
         if (!userIdx) {
           message.error("User not found. Please log in again.");
           return;
         }
 
-        // Fetch customer details
-        const customerUserResponse = await axios.get(
+        const customerResponse = await axios.get(
           `https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/user/${userIdx}`
         );
 
-        setCustomerName(customerUserResponse.data.fullName || "Unknown");
-        setUserId(userIdx);
+        setCustomerName(customerResponse.data.fullName || "");
+        setCustomerPhone(customerResponse.data.phone || "");
+        setCustomerEmail(customerResponse.data.email || "");
+        setCustomerLocation(customerResponse.data.location || "");
       } catch (error) {
-        console.error("Error fetching customer name:", error);
-        setCustomerName("Unknown");
+        console.error("Error fetching customer details:", error);
+        message.error("Failed to fetch customer details. Please enter them manually.");
       }
     };
 
-    fetchCustomerName();
+    const fetchServicePrice = async () => {
+      try {
+        const response = await axios.get(
+          `https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Service/${bookingData.serviceId}`
+        );
+
+        if (response.status === 200) {
+          setServicePrice(response.data.price || 0); // ✅ Set service price
+        } else {
+          message.error("Failed to fetch service price.");
+        }
+      } catch (error) {
+        console.error("Error fetching service price:", error);
+        message.error("An error occurred while fetching the service price.");
+      }
+    };
+
+    fetchCustomerDetails();
+    fetchServicePrice();
   }, [isOpen, bookingData]);
 
   const handleConfirmBooking = async () => {
     if (!bookingData.date || !bookingData.slotId || !bookingData.therapistId) {
       message.error("Please select a date, time slot, and therapist.");
+      return;
+    }
+
+    if (!customerName || !customerPhone || !customerEmail || !customerLocation) {
+      message.error("Please fill in all customer details.");
       return;
     }
 
@@ -62,13 +89,23 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
 
       const bookingRequest = {
         customerId: customerId,
+        customerName: customerName,
+        customerPhone: customerPhone,
+        customerEmail: customerEmail,
+        customerLocation: customerLocation,
         therapistId: bookingData.therapistId,
         serviceId: bookingData.serviceId,
         slotId: bookingData.slotId,
         bookingDate: bookingData.date,
+        servicePrice: bookingData.servicePrice || 0, // ✅ Default to 0 if undefined
+        bookingFee: bookingData.bookingFee || 0, // ✅ Default to 0 if undefined
+        paymentAmount: bookingData.paymentAmount || 0, // ✅ Default to 0 if undefined
+        paymentStatus: bookingData.paymentStatus || "Pending",
         status: "Pending",
         notes: "No additional notes",
       };
+
+      console.log("Sending booking request:", bookingRequest); // ✅ Debugging
 
       const response = await axios.post(
         "https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/booking",
@@ -105,15 +142,56 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
         <p><strong>Therapist:</strong> {String(bookingData.therapist)}</p>
         <p><strong>Service:</strong> {String(bookingData.service)}</p>
 
-        {/* Thêm các thông tin chi tiết */}
-        <p><strong>Customer Name:</strong> {String(userId)}</p>
-        <p><strong>Phone:</strong> {String(bookingData.customerPhone)}</p>
-        <p><strong>Email:</strong> {String(bookingData.customerEmail)}</p>
-        <p><strong>Location:</strong> {String(bookingData.location)}</p>
-        <p><strong>Service Price:</strong> ${String(bookingData.servicePrice)}</p>
-        <p><strong>Booking Fee:</strong> ${String(bookingData.bookingFee)}</p>
-        <p><strong>Total Payment:</strong> ${String(bookingData.paymentAmount)}</p>
-        <p><strong>Payment Status:</strong> {String(bookingData.paymentStatus)}</p>
+        {/* ✅ Editable Customer Details */}
+        <div className="mb-4">
+          <label className="block font-bold">Full Name:</label>
+          <input
+            type="text"
+            value={customerName}
+            onChange={(e) => setCustomerName(e.target.value)}
+            placeholder="Enter your full name"
+            className="border p-2 w-full rounded-md"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block font-bold">Phone:</label>
+          <input
+            type="text"
+            value={customerPhone}
+            onChange={(e) => setCustomerPhone(e.target.value)}
+            placeholder="Enter your phone number"
+            className="border p-2 w-full rounded-md"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block font-bold">Email:</label>
+          <input
+            type="email"
+            value={customerEmail}
+            onChange={(e) => setCustomerEmail(e.target.value)}
+            placeholder="Enter your email address"
+            className="border p-2 w-full rounded-md"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block font-bold">Location:</label>
+          <input
+            type="text"
+            value={customerLocation}
+            onChange={(e) => setCustomerLocation(e.target.value)}
+            placeholder="Enter your location"
+            className="border p-2 w-full rounded-md"
+          />
+        </div>
+
+        {/* ✅ Show Fetched Service Price */}
+        <p><strong>Service Price:</strong> ${servicePrice}</p>
+        <p><strong>Booking Fee:</strong> $0</p>
+        <p><strong>Total Payment:</strong> ${servicePrice}</p>
+        <p><strong>Payment Status:</strong> Pending</p>
 
         <div className="mt-4 flex justify-between">
           <button
