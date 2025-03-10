@@ -6,7 +6,7 @@ import DecodeId from "../../../components/DecodeId";
 
 export default function ScheduleBooking() {
   const [bookings, setBookings] = useState([]);
-  const customerId = DecodeId(); 
+  const customerId = DecodeId();
 
   useEffect(() => {
     async function fetchBookings() {
@@ -25,7 +25,9 @@ export default function ScheduleBooking() {
           <CalendarBooking bookings={bookings} />
         </div>
         <div className="col-span-3">
-          <BookingList bookings={bookings} />
+          <div className="sticky top-2 min-h-60">
+            <BookingList bookings={bookings} />
+          </div>
         </div>
       </div>
     </div>
