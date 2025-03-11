@@ -120,7 +120,7 @@ export default function BookingModal({ isOpen, onClose, serviceName, serviceId, 
     onContinue({
       date: selectedDate.format("YYYY-MM-DD"),
       timeSlot: selectedTime,
-      therapist: therapists.find(t => t.therapistId === selectedTherapist)?.therapistName,
+      therapistName: therapists.find(t => t.therapistId === selectedTherapist)?.therapistName,
       service: serviceName,
       slotId: selectedSlotId,
       serviceId: serviceId,

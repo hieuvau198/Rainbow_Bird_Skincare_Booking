@@ -143,7 +143,7 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
         
         <p><strong>Date:</strong> {String(bookingData.date)}</p>
         <p><strong>Time Slot:</strong> {String(bookingData.timeSlot)}</p>
-        <p><strong>Therapist:</strong> {String(bookingData.therapist)}</p>
+        <p><strong>Therapist:</strong> {String(bookingData.therapistName)}</p>
         <p><strong>Service:</strong> {String(bookingData.service)}</p>
 
         {/* ✅ Editable Customer Details */}
