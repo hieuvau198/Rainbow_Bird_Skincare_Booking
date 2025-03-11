@@ -38,7 +38,6 @@ export default function BookingList({ bookings }) {
               title={booking.displayName}
               description={
                 <>
-                  <div>{`Booked: ${booking.count} time(s)`}</div>
                   <div>
                     Status:{" "}
                     <Tag color={StatusColor(booking.status)}>
