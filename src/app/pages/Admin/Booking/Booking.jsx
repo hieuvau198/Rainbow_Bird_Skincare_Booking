@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Table, Tag, Button, message, Space, Modal } from "antd";
 import AddBooking from "../Booking/partials/AddBooking";
 import ViewBooking from "../Booking/partials/ViewBooking";
 import getAllBook from "../../../modules/Booking/getAllBook";
 import deleteBooking from "../../../modules/Booking/deleteBooking";
+import BookingStatusSelect from "./partials/BookingStatusSelect";
+import { TfiReload } from "react-icons/tfi";
 
 export default function Booking() {
   const [dataSource, setDataSource] = useState([]);
@@ -12,30 +14,35 @@ export default function Booking() {
   const [showViewBooking, setShowViewBooking] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
 
-  useEffect(() => {
-    async function fetchBookings() {
-      try {
-        const data = await getAllBook();
-        const formattedData = data.map(book => ({
-          key: book.bookingId,
-          bookingId: book.bookingId,
-          id: book.userId,
-          name: book.customerName,
-          email: book.customerEmail,
-          bookingDate: book.bookingDate,
-          timeSlot: book.slotId,
-          status: book.status,
-        }));
-        setDataSource(formattedData);
-      } catch (error) {
-        message.error("Failed to fetch bookings");
-        console.error("Error fetching bookings:", error);
-      } finally {
-        setLoading(false);
-      }
+  // Hàm fetch dữ liệu được định nghĩa bên ngoài để có thể sử dụng lại
+  const fetchBookings = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await getAllBook();
+      const formattedData = data.map((book) => ({
+        key: book.bookingId,
+        bookingId: book.bookingId,
+        id: book.userId,
+        name: book.customerName,
+        email: book.customerEmail,
+        bookingDate: book.bookingDate,
+        timeSlot: book.slotId,
+        status: book.status,
+      }));
+      setDataSource(formattedData);
+    } catch (error) {
+      message.error("Failed to fetch bookings");
+      console.error("Error fetching bookings:", error);
+    } finally {
+      setLoading(false);
     }
-    fetchBookings();
   }, []);
+
+  useEffect(() => {
+    fetchBookings();
+    const intervalId = setInterval(fetchBookings, 60000); // Mỗi 1 phút
+    return () => clearInterval(intervalId);
+  }, [fetchBookings]);
 
   const handleAction = (record, action) => {
     if (action === "view") {
@@ -50,8 +57,8 @@ export default function Booking() {
         onOk: async () => {
           try {
             await deleteBooking(record.bookingId);
-            setDataSource(prevData =>
-              prevData.filter(item => item.bookingId !== record.bookingId)
+            setDataSource((prevData) =>
+              prevData.filter((item) => item.bookingId !== record.bookingId)
             );
             message.success(`Deleted booking ID: ${record.bookingId}`);
           } catch (error) {
@@ -71,7 +78,7 @@ export default function Booking() {
     {
       title: "Customer Name",
       dataIndex: "name",
-      key: "customernameName",
+      key: "customerName",
     },
     {
       title: "Customer Email",
@@ -90,52 +97,29 @@ export default function Booking() {
       key: "timeSlot",
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status) => {
-        let color;
-        switch (status) {
-          case "Confirmed":
-            color = "green";
-            break;
-          case "Cancelled By Customer":
-          case "Cancelled By Staff":
-            color = "volcano";
-            break;
-          case "Checked In":
-            color = "blue";
-            break;
-          case "No Show":
-            color = "red";
-            break;
-          case "In Process":
-            color = "orange";
-            break;
-          case "Completed":
-            color = "green";
-            break;
-          case "Checked Out":
-            color = "cyan";
-            break;
-          default:
-            color = "default";
-            break;
-        }
-        return <Tag color={color}>{status}</Tag>;
-      },
+      title: "Update Status",
+      key: "updateStatus",
+      width: 300,
+      render: (_, record) => (
+        <BookingStatusSelect
+          bookingId={record.bookingId}
+          currentStatus={record.status}
+          onStatusUpdated={(id, newStatus) => {
+            setDataSource((prevData) =>
+              prevData.map((item) =>
+                item.bookingId === id ? { ...item, status: newStatus } : item
+              )
+            );
+          }}
+        />
+      ),
     },
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          {/* <Button type="link" onClick={() => handleAction(record, "view")}>
-            View details
-          </Button> */}
-          {/* <Button type="link" danger onClick={() => handleAction(record, "cancel")}>
-            Delete
-          </Button> */}
+          {/* Các hành động khác nếu cần */}
         </Space>
       ),
     },
@@ -146,6 +130,10 @@ export default function Booking() {
       <div className="p-6 bg-white rounded-md shadow-md min-h-[640px]">
         <div className="flex justify-between items-center mb-5">
           <h1 className="text-[22px] font-bold m-0">Skincare Service Bookings</h1>
+          <Button color="primary" variant="solid" type="primary" onClick={fetchBookings}>
+            <TfiReload />
+            Reload Data
+          </Button>
         </div>
 
         <Table
@@ -160,7 +148,10 @@ export default function Booking() {
       </div>
 
       {showViewBooking && (
-        <ViewBooking booking={selectedBooking} onClose={() => setShowViewBooking(false)} />
+        <ViewBooking
+          booking={selectedBooking}
+          onClose={() => setShowViewBooking(false)}
+        />
       )}
     </div>
   );

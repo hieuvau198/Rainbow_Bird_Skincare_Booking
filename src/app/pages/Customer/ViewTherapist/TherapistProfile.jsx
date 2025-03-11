@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { MailOutlined, PhoneOutlined } from "@ant-design/icons";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 import Loading from "../../../components/Loading/Loading";
@@ -10,7 +10,15 @@ const TherapistProfile = () => {
   const [activeTab, setActiveTab] = useState("about");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const bookingData = location.state?.bookingData;
 
+  const handleContinueBooking = () => {
+    navigate(`/services/${bookingData.serviceId}`, {
+      state: { bookingData },
+    });
+  };
   useEffect(() => {
     fetch(`https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/TherapistProfile/${id}/with-reference`)
       .then((response) => {
@@ -63,6 +71,19 @@ const TherapistProfile = () => {
             <h1 className="text-4xl font-bold text-lime-600">
               {therapist.therapist.user.fullName}
             </h1>
+
+            {/* Continue Booking Button */}
+            {bookingData && (
+              <div className="p-6">
+                <button
+                  className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+                  onClick={handleContinueBooking}
+                >
+                  Continue Booking
+                </button>
+              </div>
+            )}
+
             <div className="flex items-center mt-4">
               {Array(4).fill(null).map((_, i) => (
                 <FaStar key={i} className="text-yellow-500" />

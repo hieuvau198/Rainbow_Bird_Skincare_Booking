@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import RelatedServices from "./partials/RelatedServices";
 import getAllService from "../../../modules/Admin/Service/getAllService";
 import getServiceDetail from "../../../modules/Admin/Service/getServiceDetail";
@@ -21,6 +21,15 @@ export default function ServiceDetail() {
   const [bookingData, setBookingData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const location = useLocation();
+  const bookingDataFromState = location.state?.bookingData;
+
+  useEffect(() => {
+    if (bookingDataFromState) {
+      setBookingData(bookingDataFromState);
+      setIsBookingDetailOpen(true); // ✅ Open modal automatically
+    }
+  }, [bookingDataFromState]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -66,7 +75,6 @@ export default function ServiceDetail() {
           setIsBookingDetailOpen(true);
         }}
       />
-      
       )}
 
       {/* Booking Detail Modal */}
