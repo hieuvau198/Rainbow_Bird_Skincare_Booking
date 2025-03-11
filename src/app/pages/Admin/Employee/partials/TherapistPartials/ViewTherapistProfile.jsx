@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button } from "antd";
 import Loading from "../../../../../components/Loading";
 import getTherapistProfile from "../../../../../modules/Admin/Employee/getTherapistProfile";
-import AddTherapistProfile from "../../../../../pages/Admin/Employee/partials/TherapistPartials/AddTherapistProfile"; // adjust path as needed
+import AddTherapistProfile from "../../../../../pages/Admin/Employee/partials/TherapistPartials/AddTherapistProfile";
 
 export default function ViewTherapistProfile({ open, therapistId, onClose }) {
   const [profile, setProfile] = useState(null);
@@ -33,9 +33,15 @@ export default function ViewTherapistProfile({ open, therapistId, onClose }) {
         width={800}
         onCancel={onClose}
         footer={[
-          <Button key="add" onClick={() => setShowAddProfileModal(true)}>
-            Add Therapist Profile
-          </Button>,
+          profile ? (
+            <Button key="update" onClick={() => setShowAddProfileModal(true)}>
+              Update Therapist Profile
+            </Button>
+          ) : (
+            <Button key="add" onClick={() => setShowAddProfileModal(true)}>
+              Add Therapist Profile
+            </Button>
+          ),
           <Button key="close" onClick={onClose}>
             Close
           </Button>
@@ -100,6 +106,7 @@ export default function ViewTherapistProfile({ open, therapistId, onClose }) {
         <AddTherapistProfile
           open={showAddProfileModal}
           onClose={() => setShowAddProfileModal(false)}
+          initialData={profile}
         />
       )}
     </>
