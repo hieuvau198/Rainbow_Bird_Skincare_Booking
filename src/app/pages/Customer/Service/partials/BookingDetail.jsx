@@ -8,13 +8,38 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
-  const [customerLocation, setCustomerLocation] = useState("");
   const [servicePrice, setServicePrice] = useState(0);
 
   useEffect(() => {
     if (!isOpen || !bookingData) return;
 
-    
+    const fetchCustomerDetails = async () => {
+      try {
+        const userId = DecodeId();
+
+        if (!userId) {
+          message.error("User not found. Please log in again.");
+          return;
+        }
+
+        // Fetch customer details
+        const response = await axios.get(
+          `https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Customer/user/${userId}`
+        );
+
+        if (response.status === 200) {
+          const customer = response.data;
+          setCustomerName(customer.fullName || "");
+          setCustomerPhone(customer.phone || "");
+          setCustomerEmail(customer.email || "");
+        } else {
+          message.error("Failed to fetch customer details.");
+        }
+      } catch (error) {
+        console.error("Error fetching customer details:", error);
+        message.error("An error occurred while fetching customer details.");
+      }
+    };
 
     const fetchServicePrice = async () => {
       try {
@@ -33,6 +58,7 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
       }
     };
 
+    fetchCustomerDetails();
     fetchServicePrice();
   }, [isOpen, bookingData]);
 
@@ -42,7 +68,7 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
       return;
     }
 
-    if (!customerName || !customerPhone || !customerEmail || !customerLocation) {
+    if (!customerName || !customerPhone || !customerEmail) {
       message.error("Please fill in all customer details.");
       return;
     }
@@ -71,15 +97,14 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
         customerName: customerName,
         customerPhone: customerPhone,
         customerEmail: customerEmail,
-        customerLocation: customerLocation,
         therapistId: bookingData.therapistId,
         serviceId: bookingData.serviceId,
         slotId: bookingData.slotId,
         bookingDate: bookingData.date,
-        servicePrice: bookingData.servicePrice || 0, // ✅ Default to 0 if undefined
-        bookingFee: bookingData.bookingFee || 0, // ✅ Default to 0 if undefined
-        paymentAmount: bookingData.paymentAmount || 0, // ✅ Default to 0 if undefined
-        paymentStatus: bookingData.paymentStatus || "Pending",
+        servicePrice: servicePrice || 0, // ✅ Default to 0 if undefined
+        bookingFee: 0, // ✅ Default to 0 if undefined
+        paymentAmount: servicePrice || 0, // ✅ Default to 0 if undefined
+        paymentStatus: "Pending",
         status: "Pending",
         notes: "No additional notes",
       };
@@ -155,17 +180,6 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block font-bold">Location:</label>
-          <input
-            type="text"
-            value={customerLocation}
-            onChange={(e) => setCustomerLocation(e.target.value)}
-            placeholder="Enter your location"
-            className="border p-2 w-full rounded-md"
-          />
-        </div>
-
         {/* ✅ Show Fetched Service Price */}
         <p><strong>Service Price:</strong> ${servicePrice}</p>
         <p><strong>Booking Fee:</strong> $0</p>
@@ -173,17 +187,10 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
         <p><strong>Payment Status:</strong> Pending</p>
 
         <div className="mt-4 flex justify-between">
-          <button
-            className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition-all"
-            onClick={onBackToTherapists}
-          >
+          <button className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition-all" onClick={onBackToTherapists}>
             ← Back to Therapist
           </button>
-
-          <button
-            className="bg-lime-500 text-white px-4 py-2 rounded-md hover:bg-lime-600 transition-all"
-            onClick={handleConfirmBooking}
-          >
+          <button className="bg-lime-500 text-white px-4 py-2 rounded-md hover:bg-lime-600 transition-all" onClick={handleConfirmBooking}>
             Confirm Booking
           </button>
         </div>

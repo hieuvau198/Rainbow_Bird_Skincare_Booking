@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DatePicker, message } from "antd";
+import { useNavigate } from "react-router-dom";
 import "antd/es/style/reset.css";
 import { AiOutlineClose } from "react-icons/ai";
 import BookingSuccess from "./BookingSuccess";
@@ -21,6 +22,23 @@ export default function BookingModal({ isOpen, onClose, serviceName, serviceId, 
   const [workingDays, setWorkingDays] = useState([]);
   const [availableSlots, setAvailableSlots] = useState([]);
   const [therapists, setTherapists] = useState([]); // Lưu therapists
+  const navigate = useNavigate();
+
+  const handleViewProfile = (therapist) => {
+    navigate(`/therapists/${therapist.therapistId}`, {
+      state: {
+        bookingData: {
+          date: selectedDate?.format("YYYY-MM-DD"),
+          timeSlot: selectedTime,
+          therapistId: therapist.therapistId,
+          therapistName: therapist.therapistName,
+          service: serviceName,
+          serviceId: serviceId,
+          slotId: selectedSlotId,
+        },
+      },
+    });
+  };
 
   useEffect(() => {
     const fetchWorkingDays = async () => {
@@ -214,6 +232,12 @@ export default function BookingModal({ isOpen, onClose, serviceName, serviceId, 
                     >
                       <p className="font-bold">{therapist.therapistName}</p>
                       <p className="text-sm text-gray-600">Rating: {therapist.rating} ⭐</p>
+                      <button
+                        className="text-blue-500 underline"
+                        onClick={() => handleViewProfile(therapist)}
+                      >
+                        View Profile
+                      </button>
                     </button>
                   ))}
                 </div>
