@@ -52,10 +52,10 @@ export default function ContentSerDetail({ service, setIsModalOpen }) {
 
           <div className="mt-4 flex items-center space-x-4 text-md text-gray-700">
             <p className="flex items-center">
-              <UserOutlined className="mr-2" /> {service.buyers || "0"} Booking
+              <UserOutlined className="mr-2" /> {service.bookingNumber || "0"} Booking
             </p>
             <p className="flex items-center">
-              <StarOutlined className="mr-2" /> {service.reviews || "No reviews"} Rating
+              <StarOutlined className="mr-2" /> {service.averageReview || "No reviews"} Rating
             </p>
           </div>
 
