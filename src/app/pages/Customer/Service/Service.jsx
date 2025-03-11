@@ -24,8 +24,8 @@ export default function Service() {
           service_name: service.serviceName || "Unknown Service",
           price: service.price ? `${service.price} ${service.currency || "USD"}` : "Price not available",
           description: service.description || "No description available.",
-          buyers: service.buyers || "0",
-          reviews: service.reviews || "No reviews",
+          buyers: service.bookingNumber || "0",
+          reviews: service.averageReview || "No reviews",
           image: service.serviceImage || "https://via.placeholder.com/500",
           duration_minutes: service.durationMinutes ? `${service.durationMinutes} minutes` : "Duration not specified"
         }));
