@@ -199,7 +199,7 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
 
         <div className="mt-4 flex justify-between">
           <button className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition-all" onClick={onBackToTherapists}>
-            ← Back to Therapist
+            ← Select Again
           </button>
           <button className="bg-lime-500 text-white px-4 py-2 rounded-md hover:bg-lime-600 transition-all" onClick={handleConfirmBooking}>
             Confirm Booking
