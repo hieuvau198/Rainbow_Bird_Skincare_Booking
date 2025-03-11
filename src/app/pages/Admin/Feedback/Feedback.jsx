@@ -1,33 +1,41 @@
 import React, { useState, useEffect } from "react";
 import { Table, Select, Spin } from "antd";
-import getAllFeedback from "../../../modules/FeedBack/getAllFeedback";
+import getAllCusFeedback from "../../../modules/FeedBack/getAllCusFeedback";
+import getAllCusRating from "../../../modules/FeedBack/getAllCusRating";
 
 const { Option } = Select;
 
 const Feedback = () => {
+  const [ratings, setRatings] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filterStar, setFilterStar] = useState(0);
+  const [selectedBookingId, setSelectedBookingId] = useState(0);
 
-  // ✅ Lấy danh sách feedback khi trang được load
+  // ✅ Gọi API để lấy danh sách feedback & rating khi trang Admin được load
   useEffect(() => {
-    const fetchFeedbacks = async () => {
+    const fetchData = async () => {
       setLoading(true);
-      const data = await getAllFeedback();
-      setFeedbacks(data);
+      const ratingData = await getAllCusRating();
+      const feedbackData = await getAllCusFeedback();
+      setRatings(ratingData);
+      setFeedbacks(feedbackData);
       setLoading(false);
     };
 
-    fetchFeedbacks();
+    fetchData();
   }, []);
 
-  // ✅ Bộ lọc số sao
-  const filteredFeedbacks = filterStar
-    ? feedbacks.filter((fb) => fb.ratingValue === filterStar)
+  // ✅ Lọc dữ liệu theo Booking ID (nếu người dùng chọn)
+  const filteredRatings = selectedBookingId
+    ? ratings.filter((r) => r.bookingId === selectedBookingId)
+    : ratings;
+
+  const filteredFeedbacks = selectedBookingId
+    ? feedbacks.filter((fb) => fb.bookingId === selectedBookingId)
     : feedbacks;
 
-  // ✅ Cột hiển thị cho bảng Ant Design
-  const columns = [
+  // ✅ Cột hiển thị cho bảng Rating
+  const ratingColumns = [
     {
       title: "No.",
       key: "no",
@@ -47,8 +55,8 @@ const Feedback = () => {
     },
     {
       title: "Feedback",
-      dataIndex: "comment",
-      key: "comment",
+      dataIndex: "Feedback",
+      key: "Feedback",
     },
     {
       title: "Date",
@@ -61,34 +69,35 @@ const Feedback = () => {
   return (
     <div className="p-6 max-w-[1270px]">
       <div className="p-6 bg-white rounded-md shadow-md min-h-[640px]">
-        <h2 className="text-xl font-semibold mb-6">Customer Feedback Management</h2>
+        <h2 className="text-xl font-semibold mb-6">Customer Feedback & Ratings Management</h2>
 
-        {/* Bộ lọc số sao */}
+        {/* Bộ lọc Booking ID */}
         <div className="mb-4">
-          <label className="mr-2 font-semibold">Filter by Star Rating:</label>
+          <label className="mr-2 font-semibold">Filter by Booking ID:</label>
           <Select
-            value={filterStar}
-            onChange={(value) => setFilterStar(value)}
+            value={selectedBookingId}
+            onChange={(value) => setSelectedBookingId(value)}
             className="w-40"
           >
             <Option value={0}>All</Option>
-            <Option value={5}>5 Stars</Option>
-            <Option value={4}>4 Stars</Option>
-            <Option value={3}>3 Stars</Option>
-            <Option value={2}>2 Stars</Option>
-            <Option value={1}>1 Star</Option>
+            {[...new Set([...ratings, ...feedbacks].map((item) => item.bookingId))].map((id) => (
+              <Option key={id} value={id}>
+                Booking #{id}
+              </Option>
+            ))}
           </Select>
         </div>
 
-        {/* Hiển thị bảng */}
+        {/* Hiển thị bảng Rating */}
+        <h3 className="text-lg font-semibold mb-2">Customer Ratings</h3>
         {loading ? (
           <div className="flex justify-center items-center h-40">
             <Spin size="large" />
           </div>
         ) : (
           <Table
-            columns={columns}
-            dataSource={filteredFeedbacks.map((fb, index) => ({ ...fb, key: index }))}
+            columns={ratingColumns}
+            dataSource={filteredRatings.map((r, index) => ({ ...r, key: index }))}
             pagination={{ pageSize: 10 }}
             bordered
             scroll={{ x: "max-content", y: 400 }}
