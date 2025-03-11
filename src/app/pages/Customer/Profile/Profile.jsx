@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Input, Button, Form, message } from 'antd';
+import DecodeId from '../../../components/DecodeId';
 
 export default function Profile() {
   // Replace with actual user id from your authentication or context
-  const userId = 1; 
+
+  
+  const userId = DecodeId(); 
   const [customer, setCustomer] = useState({
     customerId: 0,
     userId: 0,
@@ -31,7 +34,7 @@ export default function Profile() {
     const fetchCustomer = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Customer/${userId}`);
+        const response = await fetch(`https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Customer/user/${userId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch customer data');
         }
