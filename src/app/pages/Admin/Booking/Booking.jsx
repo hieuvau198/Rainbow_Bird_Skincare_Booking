@@ -1,24 +1,37 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Table, Tag, Button, message, Space, Modal } from "antd";
-import AddBooking from "../Booking/partials/AddBooking";
-import ViewBooking from "../Booking/partials/ViewBooking";
-import getAllBook from "../../../modules/Booking/getAllBook";
-import deleteBooking from "../../../modules/Booking/deleteBooking";
-import BookingStatusSelect from "./partials/BookingStatusSelect";
+import { Table, Button, message, Space, Modal } from "antd";
 import { TfiReload } from "react-icons/tfi";
+import UserRole from "../../../../enums/userRole";
+import DecodeRole from "../../../components/DecodeRole";
+import deleteBooking from "../../../modules/Booking/deleteBooking";
+import getAllBook from "../../../modules/Booking/getAllBook";
+import getBookingById from "../../../modules/Booking/getBookingById";
+import ViewBooking from "../Booking/partials/ViewBooking";
+import BookingStatusSelect from "./partials/BookingStatusSelect";
+import DecodeRoleId from "../../../components/DecodeRoleId";
+import getBookByTheId from "../../../modules/Booking/getBookByTheId";
 
 export default function Booking() {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showAddBooking, setShowAddBooking] = useState(false);
   const [showViewBooking, setShowViewBooking] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
+  const userRole = DecodeRole();
 
-  // Hàm fetch dữ liệu được định nghĩa bên ngoài để có thể sử dụng lại
+
   const fetchBookings = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await getAllBook();
+      let data = [];
+      if (userRole === UserRole.THERAPIST) {
+        // Lấy therapistId từ cookie thông qua DecodeRoleId
+        const therapistId = DecodeRoleId("__TheIden");
+        data = await getBookByTheId(therapistId);
+        // Chỉ lấy ra các booking có status "In Progress"
+        data = data.filter((book) => book.status === "In Progress");
+      } else {
+        data = await getAllBook();
+      }
       const formattedData = data.map((book) => ({
         key: book.bookingId,
         bookingId: book.bookingId,
@@ -36,19 +49,25 @@ export default function Booking() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [userRole]);
 
   useEffect(() => {
     fetchBookings();
-    const intervalId = setInterval(fetchBookings, 60000); // Mỗi 1 phút
+    const intervalId = setInterval(fetchBookings, 60000);
     return () => clearInterval(intervalId);
   }, [fetchBookings]);
 
-  const handleAction = (record, action) => {
-    if (action === "view") {
-      setSelectedBooking(record);
-      setShowViewBooking(true);
-    } else if (action === "cancel") {
+  const handleAction = async (record, action) => {
+    if (action === "View details") {
+      try {
+        const detail = await getBookingById(record.bookingId);
+        setSelectedBooking(detail);
+        setShowViewBooking(true);
+      } catch (error) {
+        message.error("Failed to fetch booking details");
+        console.error("Error fetching booking detail:", error);
+      }
+    } else if (action === "Delete") {
       Modal.confirm({
         title: "Confirm Deletion",
         content: `Are you sure you want to delete booking ID: ${record.bookingId}?`,
@@ -71,8 +90,9 @@ export default function Booking() {
 
   const columns = [
     {
-      title: "STT",
+      title: "No.",
       key: "stt",
+      width: 60,
       render: (_, __, index) => index + 1,
     },
     {
@@ -99,17 +119,13 @@ export default function Booking() {
     {
       title: "Update Status",
       key: "updateStatus",
-      width: 300,
+      width: 280,
       render: (_, record) => (
         <BookingStatusSelect
           bookingId={record.bookingId}
           currentStatus={record.status}
-          onStatusUpdated={(id, newStatus) => {
-            setDataSource((prevData) =>
-              prevData.map((item) =>
-                item.bookingId === id ? { ...item, status: newStatus } : item
-              )
-            );
+          onStatusUpdated={() => {
+            fetchBookings();
           }}
         />
       ),
@@ -117,9 +133,28 @@ export default function Booking() {
     {
       title: "Action",
       key: "action",
+      width: 200,
       render: (_, record) => (
         <Space size="middle">
-          {/* Các hành động khác nếu cần */}
+          <Button
+            color="primary"
+            variant="solid"
+            type="link"
+            onClick={() => handleAction(record, "View details")}
+          >
+            View details
+          </Button>
+          {userRole === UserRole.ADMIN && (
+            <Button
+              color="red"
+              variant="solid"
+              type="link"
+              danger
+              onClick={() => handleAction(record, "Delete")}
+            >
+              Delete
+            </Button>
+          )}
         </Space>
       ),
     },
@@ -129,9 +164,11 @@ export default function Booking() {
     <div className="p-6 max-w-[1270px]">
       <div className="p-6 bg-white rounded-md shadow-md min-h-[640px]">
         <div className="flex justify-between items-center mb-5">
-          <h1 className="text-[22px] font-bold m-0">Skincare Service Bookings</h1>
-          <Button color="primary" variant="solid" type="primary" onClick={fetchBookings}>
-            <TfiReload />
+          <h1 className="text-[22px] font-bold m-0">
+            Skincare Service Bookings
+          </h1>
+          <Button type="primary" onClick={fetchBookings}>
+            <TfiReload style={{ marginRight: 8 }} />
             Reload Data
           </Button>
         </div>

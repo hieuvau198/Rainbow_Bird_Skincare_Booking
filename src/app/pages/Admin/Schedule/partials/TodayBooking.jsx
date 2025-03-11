@@ -1,11 +1,14 @@
-import React from 'react';
 import { List, Typography } from 'antd';
 import dayjs from 'dayjs';
+import React from 'react';
 
 export default function TodayBooking({ bookings }) {
   const today = dayjs().format('YYYY-MM-DD');
+  // Lọc booking theo bookingDate và chỉ lấy những booking có status là "In Progress"
   const todayBookings = bookings.filter(
-    booking => dayjs(booking.date).format('YYYY-MM-DD') === today
+    booking =>
+      dayjs(booking.bookingDate).format('YYYY-MM-DD') === today &&
+      booking.status === "In Progress"
   );
 
   return (
@@ -18,8 +21,8 @@ export default function TodayBooking({ bookings }) {
           renderItem={booking => (
             <List.Item>
               <List.Item.Meta
-                title={booking.serviceName}
-                description={`Time: ${booking.time} | Location: ${booking.location} | Status: ${booking.status}`}
+                title={`Booking ID: ${booking.bookingId}`}
+                description={`Service ID: ${booking.serviceId} | Slot ID: ${booking.slotId} | Status: ${booking.status}`}
               />
             </List.Item>
           )}
