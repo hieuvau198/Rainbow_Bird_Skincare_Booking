@@ -75,7 +75,7 @@ export default function AddTherapistProfile({ open, onClose, initialData }) {
       onOk={handleOk}
       confirmLoading={confirmLoading}
       onCancel={onClose}
-      okText={initialData ? "Cập nhật" : "Thêm"}
+      okText={initialData ? "Update" : "Add"}
     >
       <Form form={form} layout="vertical">
         <Form.Item
