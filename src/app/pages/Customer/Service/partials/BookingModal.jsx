@@ -99,18 +99,12 @@ export default function BookingModal({ isOpen, onClose, serviceName, serviceId, 
   };
 
   const handleGoBack = () => {
-    setShowSlots(false);
+    setShowSlots(true);
     setShowTherapists(true);
     setSelectedSlotId(null);
     setSelectedTime(null);
   };
 
-  const handleGoBackToTherapists = () => {
-    setShowTherapists(true); // Mở lại danh sách therapist
-    setShowSlots(false); // Không quay lại chọn ngày & giờ
-  };
-  
-  
   const handleContinueBooking = () => {
     if (!selectedDate || !selectedTime || !selectedTherapist) {
       message.error("Please select a date, time slot, and therapist.");
