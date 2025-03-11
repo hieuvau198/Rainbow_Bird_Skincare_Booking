@@ -7,6 +7,7 @@ import getCustomerId from "../Iden/getCustomerId";
 import getStaffId from "../Iden/getStaffId";
 import getManagerId from "../Iden/getManagerId";
 import getTherapistId from "../Iden/getTherapistId";
+import DecodeId from "../../components/DecodeId";
 
 const secretKey = process.env.REACT_APP_SECRET_KEY;
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -23,36 +24,41 @@ export const googleLogin = async (response, CLIENT_ID, setLoading, navigate, red
         const data = await serverResponse.json();
         saveTokens(data);
         autoRefreshToken();
-        message.success("Google login successful!");
         const userRole = data.user.role;
-        const userId = data.user.userId;
+        const userId = DecodeId();
 
-        if (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) {
-            if (userRole === UserRole.MANAGER) {
-                getManagerId();
-            }
-            navigate("/management/dashboard");
-        } else if (userRole === UserRole.STAFF) {
-            getStaffId(userId);
-            navigate("/management/booking");
-        } else if (userRole === UserRole.THERAPIST) {
-            getTherapistId(userId);
-            navigate("/management/schedule");
-        } else {
-            await getCustomerId(userId);
-            if (redirectPath) {
-                navigate(redirectPath, { replace: true });
-            } else {
-                navigate("/");
-            }
+        switch (userRole) {
+            case UserRole.ADMIN:
+                navigate("/management/dashboard");
+                break;
+            case UserRole.MANAGER:
+                await getManagerId(userId);
+                navigate("/management/dashboard");
+                break;
+            case UserRole.STAFF:
+                await getStaffId(userId);
+                navigate("/management/booking");
+                break;
+            case UserRole.THERAPIST:
+                await getTherapistId(userId);
+                navigate("/management/schedule");
+                break;
+            default:
+                await getCustomerId(userId);
+                if (redirectPath) {
+                    navigate(redirectPath, { replace: true });
+                } else {
+                    navigate("/");
+                }
+                break;
         }
+        message.success("Google login successful!");
     } catch (err) {
         message.error(err.message || "Google login failed!");
     } finally {
         setLoading(false);
     }
 };
-
 
 export const loginUser = async (values, setLoading, navigate, redirectPath = null) => {
     setLoading(true);
@@ -71,35 +77,39 @@ export const loginUser = async (values, setLoading, navigate, redirectPath = nul
         autoRefreshToken();
         const userRole = data.user.role;
         const userId = data.user.userId;
-        message.success("Login successful!");
 
-        if (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) {
-            if (userRole === UserRole.MANAGER) {
-                getManagerId();
-            }
-            navigate("/management/dashboard");
-        } else if (userRole === UserRole.STAFF) {
-            getStaffId(userId);
-            navigate("/management/booking");
-        } else if (userRole === UserRole.THERAPIST) {
-            getTherapistId(userId);
-            navigate("/management/schedule");
-        } else {
-            await getCustomerId(userId);
-            if (redirectPath) {
-                navigate(redirectPath, { replace: true });
-            } else {
-                navigate("/");
-            }
+        switch (userRole) {
+            case UserRole.ADMIN:
+                navigate("/management/dashboard");
+                break;
+            case UserRole.MANAGER:
+                navigate("/management/dashboard");
+                await getManagerId(userId);
+                break;
+            case UserRole.STAFF:
+                navigate("/management/booking");
+                await getStaffId(userId);
+                break;
+            case UserRole.THERAPIST:
+                navigate("/management/schedule");
+                await getTherapistId(userId);
+                break;
+            default:
+                await getCustomerId(userId);
+                if (redirectPath) {
+                    navigate(redirectPath, { replace: true });
+                } else {
+                    navigate("/");
+                }
+                break;
         }
+        message.success("Login successful!");
     } catch (err) {
         message.error(err.message || "Login failed!");
     } finally {
         setLoading(false);
     }
 };
-
-
 
 const encodeRoleToBase64 = (role) => {
     return btoa(String(role));
@@ -119,9 +129,9 @@ export const saveTokens = (data) => {
     }
 
     if (data.user && data.user.userId !== undefined) {
-        const encodedRole = encodeRoleToBase64(data.user.userId);
-        const encryptedRole = CryptoJS.AES.encrypt(encodedRole, secretKey).toString();
-        Cookies.set("__uiden", encryptedRole, {
+        const encodedId = encodeRoleToBase64(data.user.userId);
+        const encryptedId = CryptoJS.AES.encrypt(encodedId, secretKey).toString();
+        Cookies.set("__uiden", encryptedId, {
             expires: oneHour,
             sameSite: "Strict",
             secure: true

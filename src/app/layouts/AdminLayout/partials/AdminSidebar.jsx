@@ -74,23 +74,21 @@ const AdminSidebar = () => {
             </Link>
           )}
 
-          {(userRole !== UserRole.THERAPIST) && (
-            <Link
-              to="/management/booking"
-              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Bookings"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-                }`}
-              onClick={() => {
-                sActiveMenu.set("Bookings");
-              }}
-            >
-              <div className="flex items-center gap-3 w-full">
-                <AiOutlineShoppingCart />
-                <span className="text-[15px] font-semibold">Bookings</span>
-              </div>
-            </Link>
-          )}
+          <Link
+            to="/management/booking"
+            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Bookings"
+              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
+            onClick={() => {
+              sActiveMenu.set("Bookings");
+            }}
+          >
+            <div className="flex items-center gap-3 w-full">
+              <AiOutlineShoppingCart />
+              <span className="text-[15px] font-semibold">Bookings</span>
+            </div>
+          </Link>
 
           {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
             <Link
@@ -234,7 +232,7 @@ const AdminSidebar = () => {
               <span className="text-[15px] font-semibold">News&Blog</span>
             </div>
           </Link>
-          
+
           <Link
             to="/management/profile"
             className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Profile"

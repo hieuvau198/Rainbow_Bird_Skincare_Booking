@@ -36,8 +36,6 @@ const StaffTable = () => {
     setLoading(true);
     try {
       const staffUsers = await getStaff();
-      // const staffUsers = allUsers.filter(user => user.role === userRole.STAFF);
-
       const formattedData = staffUsers.map(user => ({
         key: user.staffId,
         Staffid: user.staffId,
@@ -66,6 +64,7 @@ const StaffTable = () => {
       console.log("Data sent to API:", values);
       setData(prevData => [...prevData, { key: newStaff.fullName, ...newStaff }]);
       setFilteredStaff(prev => [...prev, { key: newStaff.fullName, ...newStaff }]);
+      loadStaffData();
       setAddModalVisible(false);
       message.success("Staff added successfully!");
     } catch (error) {

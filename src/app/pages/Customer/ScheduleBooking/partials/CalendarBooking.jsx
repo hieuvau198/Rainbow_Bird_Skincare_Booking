@@ -1,6 +1,7 @@
 import React from "react";
 import { Calendar, Tag } from "antd";
 import dayjs from "dayjs";
+import StatusColor from "../../../../components/StatusColor";
 
 export default function CalendarBooking({ bookings }) {
   const cellRender = (current, info) => {
@@ -17,17 +18,7 @@ export default function CalendarBooking({ bookings }) {
             {dayBookings.map((item) => (
               <li key={item.bookingId} className="mb-1">
                 <Tag
-                  color={
-                    item.status === "AwaitingConfirmation"
-                      ? "purple"
-                      : item.status === "Scheduled"
-                      ? "blue"
-                      : item.status === "In Progress"
-                      ? "orange"
-                      : item.status === "Completed"
-                      ? "green"
-                      : "default"
-                  }
+                  color={StatusColor(item.status)}
                 >
                   {item.status} (Slot {item.slotId})
                 </Tag>

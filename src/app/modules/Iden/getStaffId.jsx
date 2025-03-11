@@ -1,5 +1,7 @@
 import CryptoJS from "crypto-js";
 import Cookies from "js-cookie";
+import { SaveId } from "./getTherapistId";
+import { message } from "antd";
 
 const secretKey = process.env.REACT_APP_SECRET_KEY;
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -12,7 +14,7 @@ export default async function getStaffId(id) {
         const response = await fetch(`${API_BASE_URL}/api/Staff/by-user/${id}`, {
             method: "GET",
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "text/plain",
                 "Authorization": `Bearer ${Cookies.get("__atok")}`,
             },
         });
@@ -22,19 +24,10 @@ export default async function getStaffId(id) {
         }
 
         const data = await response.json();
-        const oneHour = 1 / 24;
-        if (data.staffId !== undefined) {
-            const encodedId = encodeIdToBase64(data.staffId);
-            const encryptedId = CryptoJS.AES.encrypt(encodedId, secretKey).toString();
-            Cookies.set("__StaIden", encryptedId, {
-                expires: oneHour,
-                sameSite: "Strict",
-                secure: true
-            });
-        }
+        SaveId(data.staffId, "__StaIden");
         return data;
     } catch (error) {
-        // message.error("Failed to fetch. Please try again.");
+        message.error("Failed to fetch. Please try again.");
         return [];
     }
 }
