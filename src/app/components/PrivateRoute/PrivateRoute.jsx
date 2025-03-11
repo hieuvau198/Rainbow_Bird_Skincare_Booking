@@ -8,7 +8,7 @@ export default function PrivateRoute({ allowedRoles, children }) {
   const accessToken = Cookies.get("__atok");
 
   if (!accessToken) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/login" replace />;
   }
 
   const userRole = DecodeRole();
