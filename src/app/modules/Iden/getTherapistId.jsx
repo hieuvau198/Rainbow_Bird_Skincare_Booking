@@ -1,5 +1,6 @@
-import CryptoJS from "crypto-js";
+import { message } from "antd";
 import Cookies from "js-cookie";
+import CryptoJS from "crypto-js";
 
 const secretKey = process.env.REACT_APP_SECRET_KEY;
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
@@ -7,9 +8,9 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 const encodeIdToBase64 = (id) => {
     return btoa(String(id));
 };
-export default async function getManagerId(id) {
+export default async function getTherapistId(id) {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/Managers/by-user/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/api/Therapist/by-user/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -23,16 +24,15 @@ export default async function getManagerId(id) {
 
         const data = await response.json();
         const oneHour = 1 / 24;
-        if (data.managerId !== undefined) {
-            const encodedId = encodeIdToBase64(data.managerId);
+        if (data.therapistId !== undefined) {
+            const encodedId = encodeIdToBase64(data.therapistId);
             const encryptedId = CryptoJS.AES.encrypt(encodedId, secretKey).toString();
-            Cookies.set("__MaIden", encryptedId, {
+            Cookies.set("__TheIden", encryptedId, {
                 expires: oneHour,
                 sameSite: "Strict",
                 secure: true
             });
         }
-        
         return data;
     } catch (error) {
         // message.error("Failed to fetch. Please try again.");

@@ -2,7 +2,6 @@ import React from "react";
 import { Modal, Descriptions, Button } from "antd";
 
 export default function ViewBooking({ booking, onClose }) {
-  // Nếu chưa có booking, không render gì (tránh lỗi).
   if (!booking) return null;
 
   return (

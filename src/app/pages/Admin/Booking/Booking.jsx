@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Table, Tag, Button, message, Space, Modal } from "antd";
 import AddBooking from "../Booking/partials/AddBooking";
 import ViewBooking from "../Booking/partials/ViewBooking";
 import getAllBook from "../../../modules/Booking/getAllBook";
+import deleteBooking from "../../../modules/Booking/deleteBooking";
+import BookingStatusSelect from "./partials/BookingStatusSelect";
+import { TfiReload } from "react-icons/tfi";
 
 export default function Booking() {
   const [dataSource, setDataSource] = useState([]);
@@ -11,20 +14,35 @@ export default function Booking() {
   const [showViewBooking, setShowViewBooking] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
 
-  useEffect(() => {
-    async function fetchBookings() {
-      try {
-        const data = await getAllBook();
-        setDataSource(data);
-      } catch (error) {
-        message.error("Failed to fetch bookings");
-        console.error("Error fetching bookings:", error);
-      } finally {
-        setLoading(false);
-      }
+  // Hàm fetch dữ liệu được định nghĩa bên ngoài để có thể sử dụng lại
+  const fetchBookings = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await getAllBook();
+      const formattedData = data.map((book) => ({
+        key: book.bookingId,
+        bookingId: book.bookingId,
+        id: book.userId,
+        name: book.customerName,
+        email: book.customerEmail,
+        bookingDate: book.bookingDate,
+        timeSlot: book.slotId,
+        status: book.status,
+      }));
+      setDataSource(formattedData);
+    } catch (error) {
+      message.error("Failed to fetch bookings");
+      console.error("Error fetching bookings:", error);
+    } finally {
+      setLoading(false);
     }
-    fetchBookings();
   }, []);
+
+  useEffect(() => {
+    fetchBookings();
+    const intervalId = setInterval(fetchBookings, 60000); // Mỗi 1 phút
+    return () => clearInterval(intervalId);
+  }, [fetchBookings]);
 
   const handleAction = (record, action) => {
     if (action === "view") {
@@ -36,11 +54,16 @@ export default function Booking() {
         content: `Are you sure you want to delete booking ID: ${record.bookingId}?`,
         okText: "Yes",
         cancelText: "No",
-        onOk: () => {
-          setDataSource(prevData =>
-            prevData.filter(item => item.bookingId !== record.bookingId)
-          );
-          message.success(`Deleted booking ID: ${record.bookingId}`);
+        onOk: async () => {
+          try {
+            await deleteBooking(record.bookingId);
+            setDataSource((prevData) =>
+              prevData.filter((item) => item.bookingId !== record.bookingId)
+            );
+            message.success(`Deleted booking ID: ${record.bookingId}`);
+          } catch (error) {
+            message.error("Failed to delete booking");
+          }
         },
       });
     }
@@ -53,61 +76,50 @@ export default function Booking() {
       render: (_, __, index) => index + 1,
     },
     {
-      title: "ID",
-      dataIndex: "bookingId",
-      key: "bookingId",
-    },
-    {
       title: "Customer Name",
-      dataIndex: "customer",
+      dataIndex: "name",
       key: "customerName",
-      render: (customer) => (customer && customer.fullName ? customer.fullName : "N/A"),
     },
     {
-      title: "Service",
-      dataIndex: "service",
-      key: "service",
-      render: (service, record) =>
-        service && service.name ? service.name : `Service ${record.serviceId}`,
+      title: "Customer Email",
+      dataIndex: "email",
+      key: "email",
     },
     {
-      title: "Date",
+      title: "Booking Date",
       dataIndex: "bookingDate",
       key: "bookingDate",
       render: (date) => <span>{new Date(date).toLocaleDateString()}</span>,
     },
     {
-      title: "Time",
+      title: "Slot Id",
       dataIndex: "timeSlot",
       key: "timeSlot",
-      render: (timeSlot) =>
-        timeSlot && timeSlot.startTime ? timeSlot.startTime : "N/A",
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status) => {
-        const color =
-          status === "Confirmed"
-            ? "green"
-            : status === "Pending"
-            ? "gold"
-            : "gray";
-        return <Tag color={color}>{status}</Tag>;
-      },
+      title: "Update Status",
+      key: "updateStatus",
+      width: 300,
+      render: (_, record) => (
+        <BookingStatusSelect
+          bookingId={record.bookingId}
+          currentStatus={record.status}
+          onStatusUpdated={(id, newStatus) => {
+            setDataSource((prevData) =>
+              prevData.map((item) =>
+                item.bookingId === id ? { ...item, status: newStatus } : item
+              )
+            );
+          }}
+        />
+      ),
     },
     {
       title: "Action",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button type="link" onClick={() => handleAction(record, "view")}>
-            View details
-          </Button>
-          {/* <Button type="link" danger onClick={() => handleAction(record, "cancel")}>
-            Delete
-          </Button> */}
+          {/* Các hành động khác nếu cần */}
         </Space>
       ),
     },
@@ -116,12 +128,12 @@ export default function Booking() {
   return (
     <div className="p-6 max-w-[1270px]">
       <div className="p-6 bg-white rounded-md shadow-md min-h-[640px]">
-        {/* Header với tiêu đề và nút Add Booking */}
         <div className="flex justify-between items-center mb-5">
           <h1 className="text-[22px] font-bold m-0">Skincare Service Bookings</h1>
-          {/* <Button type="primary" size="normal" onClick={() => setShowAddBooking(true)}>
-            + Add Booking
-          </Button> */}
+          <Button color="primary" variant="solid" type="primary" onClick={fetchBookings}>
+            <TfiReload />
+            Reload Data
+          </Button>
         </div>
 
         <Table
@@ -129,15 +141,17 @@ export default function Booking() {
           columns={columns}
           rowKey="bookingId"
           bordered
-          pagination={{ pageSize: 5 }}
+          pagination={{ pageSize: 10 }}
           scroll={{ x: "max-content", y: 400 }}
           loading={loading}
         />
       </div>
 
-      {/* {showAddBooking && <AddBooking onClose={() => setShowAddBooking(false)} />} */}
       {showViewBooking && (
-        <ViewBooking booking={selectedBooking} onClose={() => setShowViewBooking(false)} />
+        <ViewBooking
+          booking={selectedBooking}
+          onClose={() => setShowViewBooking(false)}
+        />
       )}
     </div>
   );

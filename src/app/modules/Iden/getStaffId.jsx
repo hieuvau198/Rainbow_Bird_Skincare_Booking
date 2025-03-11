@@ -1,9 +1,7 @@
-import { message } from "antd";
-import Cookies from "js-cookie";
 import CryptoJS from "crypto-js";
+import Cookies from "js-cookie";
 
 const secretKey = process.env.REACT_APP_SECRET_KEY;
-
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const encodeIdToBase64 = (id) => {
@@ -36,7 +34,7 @@ export default async function getStaffId(id) {
         }
         return data;
     } catch (error) {
-        message.error("Failed to fetch. Please try again.");
+        // message.error("Failed to fetch. Please try again.");
         return [];
     }
 }

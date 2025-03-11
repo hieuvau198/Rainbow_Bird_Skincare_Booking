@@ -1,12 +1,11 @@
 
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, message, Table, Tag } from "antd";
+import { Button, message, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import userRole from "../../../../../enums/userRole";
-import getAllUser from "../../../../modules/Admin/Employee/getAllUser";
-import AddManager from "./ManagerPartials/AddManager";
-import addEmployee from "../../../../modules/Admin/Employee/addEmployee";
 import SearchBar from "../../../../components/SearchBar";
+import addManager from "../../../../modules/Admin/Employee/addManager";
+import getManager from "../../../../modules/Admin/Employee/getManager";
+import AddManager from "./ManagerPartials/AddManager";
 
 const ManagerTable = () => {
   const [data, setData] = useState([]);
@@ -16,7 +15,7 @@ const ManagerTable = () => {
   const [searchText, setSearchText] = useState("");
 
   const columns = [
-    { title: "ID", dataIndex: "id", key: "id", width: 50 },
+    { title: "Manager ID", dataIndex: "managerId", key: "managerId", width: 150 },
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Email", dataIndex: "email", key: "email", width: 250 },
     { title: "Mobile", dataIndex: "mobile", key: "mobile" },
@@ -38,18 +37,15 @@ const ManagerTable = () => {
     setLoading(true);
     try {
 
-      const allUsers = await getAllUser();
-      const managerUsers = allUsers.filter(
-        (user) => user.role === userRole.MANAGER
-      );
+      const managerUsers = await getManager();
 
       const formattedData = managerUsers.map((user) => ({
-        key: user.userId,
+        key: user.managerId,
+        managerId: user.managerId,
         id: user.userId,
-        name: user.fullName,
-        email: user.email,
-        mobile: user.phone,
-
+        name: user.user.fullName,
+        email: user.user.email,
+        mobile: user.user.phone,
       }));
       setData(formattedData);
       setFilteredManagers(formattedData);
@@ -67,7 +63,7 @@ const ManagerTable = () => {
 
   const handleAddManager = async (values) => {
     try {
-      const newManager = await addEmployee(values);
+      const newManager = await addManager(values);
       setData((prevData) => [
         ...prevData,
         { key: newManager.username, ...newManager },

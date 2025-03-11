@@ -6,11 +6,12 @@ import { autoRefreshToken } from "./refreshToken";
 import getCustomerId from "../Iden/getCustomerId";
 import getStaffId from "../Iden/getStaffId";
 import getManagerId from "../Iden/getManagerId";
+import getTherapistId from "../Iden/getTherapistId";
 
-const secretKey = process.env.REACT_APP_SECRET_KEY || "ToiYeuEMToiYeuEM";
+const secretKey = process.env.REACT_APP_SECRET_KEY;
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-export const googleLogin = async (response, CLIENT_ID, setLoading, navigate) => {
+export const googleLogin = async (response, CLIENT_ID, setLoading, navigate, redirectPath = null) => {
     setLoading(true);
     try {
         const serverResponse = await fetch(`${API_BASE_URL}/api/Auth/google-login`, {
@@ -24,17 +25,26 @@ export const googleLogin = async (response, CLIENT_ID, setLoading, navigate) => 
         autoRefreshToken();
         message.success("Google login successful!");
         const userRole = data.user.role;
+        const userId = data.user.userId;
+
         if (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) {
+            if (userRole === UserRole.MANAGER) {
+                getManagerId();
+            }
             navigate("/management/dashboard");
-            getManagerId(data.user.userId);
         } else if (userRole === UserRole.STAFF) {
-            getStaffId(data.user.userId);
+            getStaffId(userId);
             navigate("/management/booking");
         } else if (userRole === UserRole.THERAPIST) {
+            getTherapistId(userId);
             navigate("/management/schedule");
         } else {
-            getCustomerId(data.user.userId);
-            navigate("/");
+            await getCustomerId(userId);
+            if (redirectPath) {
+                navigate(redirectPath, { replace: true });
+            } else {
+                navigate("/");
+            }
         }
     } catch (err) {
         message.error(err.message || "Google login failed!");
@@ -43,7 +53,8 @@ export const googleLogin = async (response, CLIENT_ID, setLoading, navigate) => 
     }
 };
 
-export const loginUser = async (values, setLoading, navigate) => {
+
+export const loginUser = async (values, setLoading, navigate, redirectPath = null) => {
     setLoading(true);
     try {
         const response = await fetch(`${API_BASE_URL}/api/Auth/login`, {
@@ -59,27 +70,36 @@ export const loginUser = async (values, setLoading, navigate) => {
         saveTokens(data);
         autoRefreshToken();
         const userRole = data.user.role;
+        const userId = data.user.userId;
+        message.success("Login successful!");
+
         if (userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) {
-            navigate("/management/dashboard");
             if (userRole === UserRole.MANAGER) {
-                getManagerId(data.user.userId);
+                getManagerId();
             }
+            navigate("/management/dashboard");
         } else if (userRole === UserRole.STAFF) {
-            getStaffId(data.user.userId);
+            getStaffId(userId);
             navigate("/management/booking");
         } else if (userRole === UserRole.THERAPIST) {
+            getTherapistId(userId);
             navigate("/management/schedule");
         } else {
-            getCustomerId(data.user.userId);
-            navigate("/");
+            await getCustomerId(userId);
+            if (redirectPath) {
+                navigate(redirectPath, { replace: true });
+            } else {
+                navigate("/");
+            }
         }
-        message.success("Login successful!");
     } catch (err) {
         message.error(err.message || "Login failed!");
     } finally {
         setLoading(false);
     }
 };
+
+
 
 const encodeRoleToBase64 = (role) => {
     return btoa(String(role));
