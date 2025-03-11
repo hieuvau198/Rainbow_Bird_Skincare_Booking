@@ -54,9 +54,9 @@ const Feedback = () => {
       render: (rating) => `${rating} ⭐`,
     },
     {
-      title: "Feedback",
-      dataIndex: "Feedback",
-      key: "Feedback",
+      title: "Comment",
+      dataIndex: "comment",
+      key: "comment",
     },
     {
       title: "Date",
