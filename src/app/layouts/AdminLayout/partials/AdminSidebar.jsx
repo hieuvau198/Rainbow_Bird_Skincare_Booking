@@ -9,7 +9,8 @@ import {
   AiOutlineShoppingCart,
   AiOutlineTeam,
   AiOutlineUser,
-  AiOutlineClockCircle
+  AiOutlineClockCircle,
+  AiOutlineStar
 } from "react-icons/ai";
 import { TbLogout } from "react-icons/tb";
 import { Link, useLocation } from "react-router-dom";
@@ -35,6 +36,7 @@ const AdminSidebar = () => {
       "/management/employee": "Employee",
       "/management/customer": "Customer",
       "/management/feedback": "Feedback",
+      "/management/feedback": "Rating",
       "/management/profile": "Profile",
       "/management/quiz": "Quiz",
       "/management/schedule": "Schedule",
@@ -195,6 +197,24 @@ const AdminSidebar = () => {
               <div className="flex items-center gap-3 w-full">
                 <AiOutlineMessage />
                 <span className="text-[15px] font-semibold">Feedback</span>
+              </div>
+            </Link>
+          )}
+
+          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
+            <Link
+              to="/management/rating"
+              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Rating"
+                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+                }`}
+              onClick={() => {
+                sActiveMenu.set("Rating");
+              }}
+            >
+              <div className="flex items-center gap-3 w-full">
+                <AiOutlineStar />
+                <span className="text-[15px] font-semibold">Rating</span>
               </div>
             </Link>
           )}
