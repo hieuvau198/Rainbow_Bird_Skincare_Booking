@@ -27,12 +27,8 @@ export default function QuizCard(quiz) {
 
             {/* Nội dung Quiz */}
             <div className="md:w-2/3 w-full p-6">
-                <div className="flex justify-between items-center mb-4">
+                <div className="flex justify-start items-center mb-4">
                     <h3 className="text-4xl font-semibold text-gray-800">{quiz.name}</h3>
-                    <div className="flex space-x-3">
-                        <HeartOutlined className="text-gray-500 hover:text-red-500 cursor-pointer text-2xl" />
-                        <SearchOutlined className="text-gray-500 hover:text-blue-500 cursor-pointer text-2xl" />
-                    </div>
                 </div>
 
                 <p className="text-gray-600 text-sm mt-2">{quiz.description}</p>
