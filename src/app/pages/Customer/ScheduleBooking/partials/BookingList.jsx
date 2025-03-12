@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Card, Pagination } from "antd";
+import { Card, Pagination, Tag } from "antd";
+import StatusColor from "../../../../components/StatusColor";
 
 export default function BookingList({ bookings }) {
   const groupedBookings = bookings.reduce((acc, booking) => {
@@ -35,7 +36,16 @@ export default function BookingList({ bookings }) {
           >
             <Card.Meta
               title={booking.displayName}
-              description={`Booked: ${booking.count} time(s)`}
+              description={
+                <>
+                  <div>
+                    Status:{" "}
+                    <Tag color={StatusColor(booking.status)}>
+                      {booking.status}
+                    </Tag>
+                  </div>
+                </>
+              }
             />
           </Card>
         ))}

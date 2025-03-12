@@ -3,9 +3,9 @@ import Cookies from "js-cookie";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-export default async function getTherapist() {
+export default async function getBookingById(id) {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/Therapists`, {
+    const response = await fetch(`${API_BASE_URL}/api/Booking/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -14,14 +14,13 @@ export default async function getTherapist() {
     });
 
     if (!response.ok) {
-      throw new Error("Failed to fetch therapists. Please try again.");
+      throw new Error("Failed to fetch. Please try again.");
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Error fetching therapists:", error);
-    message.error("Failed to fetch therapists. Please try again.");
+    message.error("Failed to fetch. Please try again.");
     return [];
   }
 }

@@ -8,6 +8,7 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
+  const [customerNote, setCustomerNote] = useState(""); // New state for customer note
   const [servicePrice, setServicePrice] = useState(0);
 
   useEffect(() => {
@@ -22,7 +23,6 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
           return;
         }
 
-        // Fetch customer details
         const response = await axios.get(
           `https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Customer/user/${userId}`
         );
@@ -48,7 +48,7 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
         );
 
         if (response.status === 200) {
-          setServicePrice(response.data.price || 0); // ✅ Set service price
+          setServicePrice(response.data.price || 0); 
         } else {
           message.error("Failed to fetch service price.");
         }
@@ -101,15 +101,13 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
         serviceId: bookingData.serviceId,
         slotId: bookingData.slotId,
         bookingDate: bookingData.date,
-        servicePrice: servicePrice || 0, // ✅ Default to 0 if undefined
-        bookingFee: 0, // ✅ Default to 0 if undefined
-        paymentAmount: servicePrice || 0, // ✅ Default to 0 if undefined
+        servicePrice: servicePrice || 0, 
+        bookingFee: 0, 
+        paymentAmount: servicePrice || 0,
         paymentStatus: "Pending",
         status: "Pending",
-        notes: "No additional notes",
+        customerNote: customerNote || "No additional notes", // Send customer note to API
       };
-
-      console.log("Sending booking request:", bookingRequest); // ✅ Debugging
 
       const response = await axios.post(
         "https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/booking",
@@ -122,12 +120,17 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
       if (response.status === 201 || response.status === 200) {
         message.success("Booking confirmed successfully!");
         onConfirm();
-      } else {
-        message.error("Failed to confirm booking. Please try again.");
-      }
+      } 
     } catch (error) {
       console.error("Error confirming booking:", error);
-      message.error("An error occurred while confirming the booking.");
+
+      if (error.response && error.response.status === 400) {
+        // Extract error message from response
+        const errorMessage = error.response.data?.message || "Booking failed due to a conflict.";
+        message.error(errorMessage);
+      } else {
+        message.error("An error occurred while confirming the booking.");
+      }
     }
   };
 
@@ -146,7 +149,6 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
         <p><strong>Therapist:</strong> {String(bookingData.therapistName)}</p>
         <p><strong>Service:</strong> {String(bookingData.service)}</p>
 
-        {/* ✅ Editable Customer Details */}
         <div className="mb-4">
           <label className="block font-bold">Full Name:</label>
           <input
@@ -180,7 +182,16 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
           />
         </div>
 
-        {/* ✅ Show Fetched Service Price */}
+        <div className="mb-4">
+          <label className="block font-bold">Additional Notes:</label>
+          <textarea
+            value={customerNote}
+            onChange={(e) => setCustomerNote(e.target.value)}
+            placeholder="Enter any special requests or notes"
+            className="border p-2 w-full rounded-md h-20 resize-none"
+          />
+        </div>
+
         <p><strong>Service Price:</strong> ${servicePrice}</p>
         <p><strong>Booking Fee:</strong> $0</p>
         <p><strong>Total Payment:</strong> ${servicePrice}</p>
@@ -188,7 +199,7 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
 
         <div className="mt-4 flex justify-between">
           <button className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-500 transition-all" onClick={onBackToTherapists}>
-            ← Back to Therapist
+            ← Select Again
           </button>
           <button className="bg-lime-500 text-white px-4 py-2 rounded-md hover:bg-lime-600 transition-all" onClick={handleConfirmBooking}>
             Confirm Booking

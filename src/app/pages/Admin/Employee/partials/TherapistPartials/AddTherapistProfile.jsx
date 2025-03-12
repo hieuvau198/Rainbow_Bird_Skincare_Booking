@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { Modal, Form, Input, message } from "antd";
+import React, { useState, useEffect } from "react";
+import { Modal, Form, Input, message, Switch } from "antd";
 
-// Dummy API function to simulate adding a therapist profile.
-// Replace this with your actual API call.
+// Dummy API functions, thay thế bằng API thực tế khi cần.
 const addTherapistProfileAPI = async (values) => {
   return new Promise((resolve) => {
     setTimeout(
@@ -18,22 +17,52 @@ const addTherapistProfileAPI = async (values) => {
   });
 };
 
-export default function AddTherapistProfile({ open, onClose }) {
+const updateTherapistProfileAPI = async (profileId, values) => {
+  return new Promise((resolve) => {
+    setTimeout(
+      () =>
+        resolve({
+          ...values,
+          profileId,
+          updatedAt: new Date().toISOString(),
+        }),
+      1000
+    );
+  });
+};
+
+export default function AddTherapistProfile({ open, onClose, initialData }) {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [form] = Form.useForm();
+
+  // Khi mở modal, nếu có dữ liệu ban đầu thì set vào form, ngược lại reset form.
+  useEffect(() => {
+    if (open && initialData) {
+      form.setFieldsValue(initialData);
+    } else if (open) {
+      form.resetFields();
+    }
+  }, [open, initialData, form]);
 
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
       setConfirmLoading(true);
-      const response = await addTherapistProfileAPI(values);
-      console.log("Therapist profile added:", response);
-      message.success("Therapist profile added successfully!");
+      let response;
+      // Nếu có initialData và có profileId -> cập nhật hồ sơ
+      if (initialData && initialData.profileId) {
+        response = await updateTherapistProfileAPI(initialData.profileId, values);
+        message.success("Cập nhật hồ sơ thành công!");
+      } else {
+        response = await addTherapistProfileAPI(values);
+        message.success("Thêm hồ sơ thành công!");
+      }
+      console.log("Response:", response);
       form.resetFields();
-      onClose();
+      onClose(response);
     } catch (error) {
-      console.error("Error adding therapist profile:", error);
-      message.error("Failed to add therapist profile.");
+      console.error("Error:", error);
+      message.error("Có lỗi xảy ra, vui lòng thử lại.");
     } finally {
       setConfirmLoading(false);
     }
@@ -41,46 +70,47 @@ export default function AddTherapistProfile({ open, onClose }) {
 
   return (
     <Modal
-      title="Add Therapist Profile"
+      title={initialData ? "Cập nhật Hồ sơ Therapist" : "Thêm Hồ sơ Therapist"}
       open={open}
       onOk={handleOk}
       confirmLoading={confirmLoading}
       onCancel={onClose}
-      okText="Add"
+      okText={initialData ? "Update" : "Add"}
     >
       <Form form={form} layout="vertical">
         <Form.Item
           label="Therapist ID"
           name="therapistId"
-          rules={[{ required: true, message: "Please input the Therapist ID!" }]}
+          rules={[{ required: true, message: "Vui lòng nhập Therapist ID!" }]}
         >
-          <Input type="number" />
+          {/* Khi cập nhật, bạn có thể disable trường này để không cho sửa */}
+          <Input type="number" disabled={!!initialData} />
         </Form.Item>
         <Form.Item
           label="Bio"
           name="bio"
-          rules={[{ required: true, message: "Please input the bio!" }]}
+          rules={[{ required: true, message: "Vui lòng nhập Bio!" }]}
         >
           <Input.TextArea rows={3} />
         </Form.Item>
         <Form.Item
           label="Personal Statement"
           name="personalStatement"
-          rules={[{ required: true, message: "Please input the personal statement!" }]}
+          rules={[{ required: true, message: "Vui lòng nhập Personal Statement!" }]}
         >
           <Input.TextArea rows={3} />
         </Form.Item>
         <Form.Item
           label="Profile Image URL"
           name="profileImage"
-          rules={[{ required: true, message: "Please input the profile image URL!" }]}
+          rules={[{ required: true, message: "Vui lòng nhập URL hình ảnh!" }]}
         >
           <Input />
         </Form.Item>
         <Form.Item
           label="Education"
           name="education"
-          rules={[{ required: true, message: "Please input the education details!" }]}
+          rules={[{ required: true, message: "Vui lòng nhập thông tin Education!" }]}
         >
           <Input />
         </Form.Item>
@@ -96,9 +126,16 @@ export default function AddTherapistProfile({ open, onClose }) {
         <Form.Item
           label="Years Experience"
           name="yearsExperience"
-          rules={[{ required: true, message: "Please input the years of experience!" }]}
+          rules={[{ required: true, message: "Vui lòng nhập số năm kinh nghiệm!" }]}
         >
           <Input type="number" />
+        </Form.Item>
+        <Form.Item
+          label="Accepts New Clients"
+          name="acceptsNewClients"
+          valuePropName="checked"
+        >
+          <Switch />
         </Form.Item>
       </Form>
     </Modal>

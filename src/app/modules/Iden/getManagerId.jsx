@@ -12,7 +12,7 @@ export default async function getManagerId(id) {
         const response = await fetch(`${API_BASE_URL}/api/Managers/by-user/${id}`, {
             method: "GET",
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "text/plain",
                 "Authorization": `Bearer ${Cookies.get("__atok")}`,
             },
         });
