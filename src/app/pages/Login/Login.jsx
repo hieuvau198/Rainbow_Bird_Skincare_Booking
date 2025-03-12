@@ -49,7 +49,7 @@ export default function Login() {
         form.setFieldsValue({ username: encryptedUserName, password: decryptedPassword });
         setRememberMe(true);
       } catch (error) {
-        console.error("Lỗi giải mã mật khẩu:", error);
+        console.error("Lỗi mật khẩu:", error);
       }
     }
   }, [form]);
