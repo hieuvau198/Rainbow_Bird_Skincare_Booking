@@ -6,14 +6,10 @@ import StatusColor from "../../../../components/StatusColor";
 const BookingList = ({ bookings, onViewDetail }) => {
   const columns = [
     {
-      title: "ID",
-      dataIndex: "bookingId",
-      key: "bookingId",
-    },
-    {
       title: "Booking Date",
       dataIndex: "bookingDate",
       key: "bookingDate",
+      width: 150,
       render: (date) => dayjs(date).format("DD-MM-YYYY"),
     },
     {
