@@ -115,8 +115,8 @@ export default function NewsAndBlogs() {
   return (
     <div className="min-h-screen bg-white flex">
       {/* Sidebar using ViewTherapist styling */}
-      <div className="hidden lg:block ml-10">
-        <div className="sticky top-4 bg-slate-200 shadow rounded-lg p-4 w-[240px] ml-20 mt-20 mb-10">
+      <div className="hidden lg:block ml-4">
+        <div className="sticky top-4 bg-slate-200 shadow rounded-lg p-4 w-[180px] ml-20 mt-6 mb-10">
           {/* Search by title */}
           <div className="mb-6">
             <p className="font-medium mb-2">Search:</p>
@@ -132,20 +132,21 @@ export default function NewsAndBlogs() {
           </div>
           {/* Filter by type */}
           <div className="mb-6">
-            <p className="font-medium mb-2">Type:</p>
-            <Radio.Group
-              onChange={(e) => {
-                setFilterType(e.target.value);
+              <p className="font-medium mb-2">Type:</p>
+               <Radio.Group
+             onChange={(e) => {
+               setFilterType(e.target.value);
                 setBlogPage(1);
-                setNewsPage(1);
-              }}
-              value={filterType}
-            >
-              <Radio value="all">All</Radio>
-              <Radio value="blogs">Blogs</Radio>
-              <Radio value="news">News</Radio>
-            </Radio.Group>
-          </div>
+               setNewsPage(1);
+                }}
+            value={filterType}
+           >
+           <Radio value="all" style={{ display: "block" }}>All</Radio>
+        <Radio value="blogs" style={{ display: "block" }}>Blogs</Radio>
+        <Radio value="news" style={{ display: "block" }}>News</Radio>
+          </Radio.Group>
+        </div>
+
 
           {/* Sort by date */}
           <div className="mb-6">
@@ -167,8 +168,7 @@ export default function NewsAndBlogs() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-6">
-        <h1 className="text-3xl font-bold text-center mb-6">News & Blogs</h1>
+      <div className="flex-1 p-6 mr-16 -ml-2">
 
         {/* Blogs Section (only show if filterType !== "news") */}
         {filterType !== "news" && (
