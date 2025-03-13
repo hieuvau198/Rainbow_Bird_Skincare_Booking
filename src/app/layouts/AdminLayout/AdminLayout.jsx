@@ -1,6 +1,4 @@
 import { Outlet } from "react-router-dom";
-import "../../styles/Admin/ScrollbarAdmin.css";
-import AdminHeader from "./partials/AdminHeader";
 import AdminSidebar from "./partials/AdminSidebar";
 
 const AdminLayout = () => {

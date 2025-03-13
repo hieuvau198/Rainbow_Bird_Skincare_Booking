@@ -1,63 +1,55 @@
-import React, { useState } from "react";
-import { Card, Pagination, Tag } from "antd";
+import React from "react";
+import { Table, Tag, Button } from "antd";
+import dayjs from "dayjs";
 import StatusColor from "../../../../components/StatusColor";
 
-export default function BookingList({ bookings }) {
-  const groupedBookings = bookings.reduce((acc, booking) => {
-    const key = booking.serviceId;
-    if (acc[key]) {
-      acc[key].count += 1;
-    } else {
-      acc[key] = {
-        ...booking,
-        count: 1,
-        displayName: booking.serviceName || `Service ${booking.serviceId}`,
-      };
-    }
-    return acc;
-  }, {});
-
-  const groupedBookingsArray = Object.values(groupedBookings);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 3;
-  const startIndex = (currentPage - 1) * pageSize;
-  const currentBookings = groupedBookingsArray.slice(startIndex, startIndex + pageSize);
+const BookingList = ({ bookings, onViewDetail }) => {
+  const columns = [
+    {
+      title: "Booking Date",
+      dataIndex: "bookingDate",
+      key: "bookingDate",
+      width: 150,
+      render: (date) => dayjs(date).format("DD-MM-YYYY"),
+    },
+    {
+      title: "Service Name",
+      dataIndex: "serviceName",
+      key: "serviceName",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status) => <Tag color={StatusColor(status)}>{status}</Tag>,
+    },
+    {
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      width: 120,
+      render: (text, record) => (
+        <Button color="lime" variant="solid" onClick={() => onViewDetail(record)}>View Detail</Button>
+      ),
+    },
+  ];
 
   return (
-    <div className="bg-white p-6 rounded-md shadow-md flex flex-col min-h-[600px]">
-      <h2 className="text-2xl font-bold mb-4">Booking List</h2>
-      <div className="flex-1">
-        {currentBookings.map((booking) => (
-          <Card
-            key={booking.bookingId || booking.serviceId}
-            bordered
-            style={{ borderLeft: '4px solid #65a30d', marginBottom: '16px' }}
-          >
-            <Card.Meta
-              title={booking.displayName}
-              description={
-                <>
-                  <div>
-                    Status:{" "}
-                    <Tag color={StatusColor(booking.status)}>
-                      {booking.status}
-                    </Tag>
-                  </div>
-                </>
-              }
-            />
-          </Card>
-        ))}
-      </div>
-      <div className="mt-auto flex justify-center">
-        <Pagination
-          current={currentPage}
-          pageSize={pageSize}
-          total={groupedBookingsArray.length}
-          onChange={(page) => setCurrentPage(page)}
-        />
-      </div>
+    <div className="p-6 bg-white dark:bg-slate-600 rounded-md shadow-md min-h-[600px]">
+      <h2 className="grid text-2xl font-bold mb-4 justify-center">Booking List</h2>
+      <Table
+        dataSource={bookings}
+        columns={columns}
+        rowKey="bookingId"
+        bordered
+        scroll={{ x: "max-content", y: 350 }}
+      />
     </div>
   );
-}
+};
+
+export default BookingList;

@@ -12,6 +12,7 @@ export const StatusColor = (status) => {
         case "Checked In":
             return "blue";
         case "In Progress":
+        case "Pending":
             return "orange";
         case "Completed":
             return "green";

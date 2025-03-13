@@ -37,7 +37,7 @@ const renderDetails = (localService) => {
           <img
             src={
               localService.serviceImage ||
-              "https://www.chanchao.com.tw/images/default.jpg"
+              `https://ui-avatars.com/api/?name=${localService.serviceName}`
             }
             alt="Service"
             className="w-60 h-60 object-cover rounded-lg shadow-md"
