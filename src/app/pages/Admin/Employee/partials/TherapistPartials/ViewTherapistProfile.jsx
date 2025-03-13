@@ -30,18 +30,18 @@ export default function ViewTherapistProfile({ open, therapistId, onClose }) {
     <>
       <Modal
         open={open}
-        width={800}
+        width={1000}
         onCancel={onClose}
         footer={[
-          profile ? (
-            <Button key="update" onClick={() => setShowAddProfileModal(true)}>
-              Update Therapist Profile
-            </Button>
-          ) : (
-            <Button key="add" onClick={() => setShowAddProfileModal(true)}>
-              Add Therapist Profile
-            </Button>
-          ),
+          // profile ? (
+          //   <Button key="update" onClick={() => setShowAddProfileModal(true)}>
+          //     Update Therapist Profile
+          //   </Button>
+          // ) : (
+          //   <Button key="add" onClick={() => setShowAddProfileModal(true)}>
+          //     Add Therapist Profile
+          //   </Button>
+          // ),
           <Button key="close" onClick={onClose}>
             Close
           </Button>
@@ -58,7 +58,7 @@ export default function ViewTherapistProfile({ open, therapistId, onClose }) {
           <div className="grid grid-cols-2 gap-4 gap-x-4">
             <div className="flex justify-center items-center">
               <img
-                src={profile.profileImage}
+                src={profile.profileImage || "https://i.pravatar.cc/450?"+profile.therapistId}
                 alt="Therapist Profile"
                 className="w-60 h-60 object-cover rounded-lg shadow-md"
               />

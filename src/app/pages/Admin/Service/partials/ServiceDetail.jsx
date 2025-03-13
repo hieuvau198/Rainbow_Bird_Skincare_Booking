@@ -87,8 +87,7 @@ export default function ServiceDetails({ open, onClose, service, onServiceUpdate
         message.error("No image available for Service Image!");
         return;
       }
-
-      console.log("Payload sent:");
+      
       for (let pair of formData.entries()) {
         console.log(pair[0] + ": ", pair[1]);
       }

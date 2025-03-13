@@ -3,7 +3,6 @@ import MDEditor from "@uiw/react-md-editor";
 import { Button, Form, Input, InputNumber, Modal, Select, Upload, message } from "antd";
 import React, { useState } from "react";
 
-
 const normFile = (e) => {
   console.log("Upload event:", e);
   if (Array.isArray(e)) {
@@ -37,6 +36,9 @@ const AddService = ({ open, onClose, onSubmit }) => {
       formData.append("DurationMinutes", values.durationMinutes);
       formData.append("Location", values.location);
       formData.append("IsActive", values.isActive.toString());
+      // Append new fields
+      formData.append("ShortDescription", values.shortDescription);
+      formData.append("CategoryId", values.categoryId);
 
       onSubmit(formData);
       form.resetFields();
@@ -45,6 +47,14 @@ const AddService = ({ open, onClose, onSubmit }) => {
       console.error("Validation Failed:", info);
       message.error("Please complete the form correctly.");
     }
+  };
+
+  const beforeUpload = (file) => {
+    const isImage = file.type.startsWith("image/");
+    if (!isImage) {
+      message.error("You can only upload image files!");
+    }
+    return isImage ? false : Upload.LIST_IGNORE;
   };
 
   return (
@@ -115,6 +125,20 @@ const AddService = ({ open, onClose, onSubmit }) => {
             </Select>
           </Form.Item>
           <Form.Item
+            name="shortDescription"
+            label="Short Description"
+            rules={[{ required: true, message: "Please input the short description!" }]}
+          >
+            <Input placeholder="Enter short description" />
+          </Form.Item>
+          <Form.Item
+            name="categoryId"
+            label="Category ID"
+            rules={[{ required: true, message: "Please input the category ID!" }]}
+          >
+            <Input placeholder="Enter category ID" />
+          </Form.Item>
+          <Form.Item
             name="serviceImage"
             label="Service Image"
             valuePropName="fileList"
@@ -124,8 +148,9 @@ const AddService = ({ open, onClose, onSubmit }) => {
             <Upload
               name="serviceImage"
               listType="picture-card"
-              beforeUpload={() => false}
+              beforeUpload={beforeUpload}
               maxCount={1}
+              accept="image/*"
             >
               <div>
                 <PlusOutlined />

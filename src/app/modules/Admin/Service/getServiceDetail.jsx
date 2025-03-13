@@ -14,6 +14,7 @@ const getServiceDetail = async (id, setService) => {
         }
         const data = await response.json();
         setService(data);
+        return data;
     } catch (error) {
         console.error("Error fetching service details:", error);
         message.error("Error fetching service details");
