@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import getAllService from "../../../modules/Admin/Service/getAllService";
+import Loading from '../../../components/Loading';
 
 export default function HomeSpecialService() {
   const [services, setServices] = useState([]);
@@ -27,7 +28,7 @@ export default function HomeSpecialService() {
   }, []);
 
   if (loading) {
-    return <div className="text-center text-lg font-semibold">Loading special services...</div>;
+    return <><Loading /></>;
   }
 
   if (error) {
