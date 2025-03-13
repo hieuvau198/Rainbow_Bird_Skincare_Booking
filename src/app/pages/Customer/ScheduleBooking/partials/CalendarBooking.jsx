@@ -16,7 +16,7 @@ export default function CalendarBooking({ bookings }) {
           {info.originNode}
           <ul className="p-0 m-0">
             {dayBookings.map((item) => (
-              <li key={item.bookingId} className="mb-1">
+              <li key={item.bookingId} className="mb-1 li">
                 <Tag
                   color={StatusColor(item.status)}
                 >

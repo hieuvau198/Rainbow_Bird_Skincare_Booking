@@ -146,7 +146,7 @@ export default function WorkingDay() {
   return (
     <div className="p-6 max-w-[1270px]">
       {selectedWorkingDay ? (
-        <div className="p-6 bg-white rounded-md shadow-md min-h-[620px]">
+        <div className="p-6 bg-white rounded-md shadow-md min-h-[640px]">
           <div className="flex justify-between items-center mb-2">
             <h3 className="text-xl font-semibold">
               Time Slots for {selectedWorkingDay.dayName}
@@ -159,12 +159,7 @@ export default function WorkingDay() {
         </div>
       ) : (
         
-        <div className="p-6 bg-white rounded-md shadow-md min-h-[620px]">
-        {/* <div className="flex justify-end items-center mb-4">
-        <Button type="primary" onClick={openModal}>
-          Add Therapist for Full Week
-        </Button>
-        </div> */}
+        <div className="p-6 bg-white rounded-md shadow-md min-h-[640px]">
         <Modal
           title="Select Therapist"
           open={isModalOpen}

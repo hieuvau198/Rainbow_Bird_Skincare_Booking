@@ -74,7 +74,7 @@ const ViewTherapist = () => {
             <div className="bg-sky-50 shadow-lg rounded-lg p-4 flex flex-col items-center cursor-pointer hover:shadow-xl transition">
               {/* Updated Placeholder Image */}
               <img
-                src={therapist.profileImage || "https://via.placeholder.com/150"}
+                src={therapist.profileImage || `https://ui-avatars.com/api/?name=${therapist.therapist.user.fullName}`}
                 alt="Therapist"
                 className="w-full h-52 object-cover object-top rounded-md mb-4"
               />
