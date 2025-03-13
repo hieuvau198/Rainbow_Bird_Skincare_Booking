@@ -12,13 +12,14 @@ export default function SkincareCategories() {
     const fetchServices = async () => {
       try {
         const data = await getAllService();
-        setServices(data);
+        setServices(data.slice(0, 12));
       } catch (err) {
         setError("Failed to fetch services");
       } finally {
         setLoading(false);
       }
     };
+    
 
     fetchServices();
   }, []);
