@@ -88,6 +88,7 @@ const NewsDetail = ({ newsId }) => {
                 <div className="p-4">
                     <MDEditor.Markdown
                         source={news.content || "No content available"}
+                        data-color-mode="light" 
                     />
                 </div>
             </div>

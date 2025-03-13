@@ -140,7 +140,7 @@ const RenderEditForm = ({
         label="Description"
         rules={[{ required: true, message: "Please input the description!" }]}
       >
-        <MDEditor height={200} />
+        <MDEditor height={200} data-color-mode="light" />
       </Form.Item>
     </Form>
   );

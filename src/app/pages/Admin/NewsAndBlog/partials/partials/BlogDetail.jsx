@@ -74,7 +74,7 @@ const BlogDetail = ({ blogId }) => {
             <div className="mt-4">
                 <h3 className="text-lg font-semibold mb-2">Content</h3>
                 <div className="p-4">
-                    <MDEditor.Markdown source={blog.content || "No content available"} />
+                    <MDEditor.Markdown source={blog.content || "No content available"} data-color-mode="light"  />
                 </div>
             </div>
         </>

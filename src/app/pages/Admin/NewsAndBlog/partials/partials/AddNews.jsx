@@ -68,7 +68,7 @@ const AddNews = ({ open, onClose, onAdded }) => {
                     name="content"
                     rules={[{ required: true, message: "Please enter the content" }]}
                 >
-                    <MDEditor value={content} onChange={setContent} />
+                    <MDEditor value={content} onChange={setContent} data-color-mode="light"  />
                 </Form.Item>
                 <div className="flex justify-end space-x-4">
                     <Button onClick={onClose} danger>

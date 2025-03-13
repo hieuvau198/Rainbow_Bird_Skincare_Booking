@@ -95,6 +95,7 @@ const renderDetails = (localService) => {
             source={
               localService.description || "No description available"
             }
+            data-color-mode="light"
           />
         </div>
       </div>
