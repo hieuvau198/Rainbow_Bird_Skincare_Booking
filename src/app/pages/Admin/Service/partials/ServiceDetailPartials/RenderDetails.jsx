@@ -44,17 +44,14 @@ const renderDetails = (localService) => {
           />
         </div>
         <div className="flex flex-col justify-center space-y-3">
+        <div className="flex items-center">
+            <span className="font-bold text-xl">{localService.serviceName}</span>
+          </div>
           <div className="flex items-center">
             <span className="font-bold w-24 flex items-center">
               <IdcardOutlined className="mr-1" /> ID:
             </span>
             <span className="ml-4">{localService.serviceId}</span>
-          </div>
-          <div className="flex items-center">
-            <span className="font-bold w-24 flex items-center">
-              <ProfileOutlined className="mr-1" /> Name:
-            </span>
-            <span className="ml-4">{localService.serviceName}</span>
           </div>
           <div className="flex items-center">
             <span className="font-bold w-24 flex items-center">
