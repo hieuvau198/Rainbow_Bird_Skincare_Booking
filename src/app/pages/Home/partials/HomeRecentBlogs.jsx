@@ -12,7 +12,7 @@ export default function HomeRecentBlogs() {
     async function fetchBlogs() {
       try {
         const data = await getBlog();
-        setBlogs(data);
+        setBlogs(data.slice(0, 4));
       } catch (error) {
         message.error("Có lỗi khi tải dữ liệu blog");
         console.error("Error fetching blogs:", error);
@@ -35,7 +35,7 @@ export default function HomeRecentBlogs() {
         </h2>
 
         {/* Hiển thị 2 bài viết*/}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {blogData.map((blog, index) => (
   <BlogsCard key={blog.id || `blog-${index}`} {...blog} />
 ))}
