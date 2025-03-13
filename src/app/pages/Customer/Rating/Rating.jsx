@@ -150,8 +150,8 @@ export default function SkincareServiceReview() {
           >
             <option value="" disabled>-- Select booking schedule --</option>
             {bookings.map((booking) => (
-              <option key={booking.bookingId} value={booking.bookingId}>
-                {`Booking #${booking.bookingId} - ${booking.bookingDate}`}
+              <option key={booking.bookingId} value={booking.serviceName}>
+                {`${booking.serviceName} - ${booking.bookingDate}`}
               </option>
             ))}
           </select>

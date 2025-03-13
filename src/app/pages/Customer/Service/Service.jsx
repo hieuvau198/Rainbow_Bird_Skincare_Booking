@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import RelatedServices from "./partials/RelatedServices";
 import MainContent from "./partials/MainService";
 import SidebarService from "./partials/SidebarService";
-import CategorySelect from "./partials/CategorySelect";
 import Loading from "../../../components/Loading/Loading";
 
 const url3 = "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
@@ -14,7 +12,7 @@ export default function Service() {
   const [error, setError] = useState(null);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState([]);
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -68,17 +66,19 @@ export default function Service() {
   const applyFilters = () => {
     let min = parseFloat(minPrice) || 0;
     let max = parseFloat(maxPrice) || Infinity;
-
+  
     const filtered = services.filter((service) => {
       const priceValue = parseFloat(service.price);
       const priceMatch = priceValue >= min && priceValue <= max;
-      const categoryMatch = selectedCategory === null || service.categoryId === selectedCategory;
-
+      const categoryMatch = selectedCategory.length === 0 || selectedCategory.includes(service.categoryId);
+  
       return priceMatch && categoryMatch;
     });
-
+  
     setFilteredServices(filtered);
   };
+  
+  
 
   if (loading) {
     return <Loading />;
@@ -95,12 +95,12 @@ export default function Service() {
         style={{ backgroundImage: `url(${url3})` }}
       ></div>
 
-      {/* ✅ Updated Category Selector */}
+      {/* ✅ Updated Category Selector
       <CategorySelect
         categories={categories}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
-      />
+      /> */}
 
       <div className="w-full grid grid-cols-4 gap-4">
         <SidebarService
@@ -109,6 +109,9 @@ export default function Service() {
           setMinPrice={setMinPrice}
           setMaxPrice={setMaxPrice}
           applyFilters={applyFilters}
+          categories={categories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
         />
 
         <MainContent services={filteredServices} />

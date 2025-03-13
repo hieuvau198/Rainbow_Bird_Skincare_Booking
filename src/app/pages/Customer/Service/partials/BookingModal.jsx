@@ -225,9 +225,9 @@ export default function BookingModal({ isOpen, onClose, serviceName, serviceId, 
                       onClick={() => setSelectedTherapist(therapist.therapistId)}
                     >
                       <p className="font-bold">{therapist.therapistName}</p>
-                      <p className="text-sm text-gray-600">Rating: {therapist.rating} ⭐</p>
+                      <p className="text-sm text-gray-600">⭐ {therapist.therapistRating}</p>
                       <button
-                        className="text-blue-500 underline"
+                        className="text-green-800 underline"
                         onClick={() => handleViewProfile(therapist)}
                       >
                         View Profile
@@ -239,7 +239,7 @@ export default function BookingModal({ isOpen, onClose, serviceName, serviceId, 
                 <button
                   className="mt-4 bg-lime-500 text-white px-4 py-2 rounded-md w-full hover:bg-lime-600"
                   onClick={handleContinueBooking}
-                  disabled={!selectedTherapist} // Ngăn bấm nếu chưa chọn therapist
+                  disabled={!selectedTherapist}
                 >
                   Continue Booking
                 </button>

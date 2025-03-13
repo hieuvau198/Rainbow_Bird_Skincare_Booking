@@ -9,7 +9,8 @@ import {
   AiOutlineShoppingCart,
   AiOutlineTeam,
   AiOutlineUser,
-  AiOutlineClockCircle
+  AiOutlineClockCircle,
+  AiOutlineStar
 } from "react-icons/ai";
 import { TbLogout } from "react-icons/tb";
 import { Link, useLocation } from "react-router-dom";
@@ -35,6 +36,7 @@ const AdminSidebar = () => {
       "/management/employee": "Employee",
       "/management/customer": "Customer",
       "/management/feedback": "Feedback",
+      "/management/rating": "Rating",
       "/management/profile": "Profile",
       "/management/quiz": "Quiz",
       "/management/schedule": "Schedule",
@@ -49,7 +51,7 @@ const AdminSidebar = () => {
   }, [location.pathname]);
 
   return (
-    <div className="fixed top-0 left-0 h-screen bg-white shadow-md z-40 lg:w-64 hidden lg:block">
+    <div className="fixed top-0 left-0 h-screen bg-white shadow-md z-40 lg:w-64 hidden lg:block overflow-y-auto no-scrollbar">
       <div className="py-2 flex justify-center border-b-2">
         <img src={logo} alt="Logo" className="w-16 h-16 rounded-full" />
       </div>
@@ -59,10 +61,11 @@ const AdminSidebar = () => {
           {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
             <Link
               to="/management/dashboard"
-              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Dashboard"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-                }`}
+              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${
+                activeMenu === "Dashboard"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
               onClick={() => {
                 sActiveMenu.set("Dashboard");
               }}
@@ -74,12 +77,32 @@ const AdminSidebar = () => {
             </Link>
           )}
 
+          {(userRole === UserRole.THERAPIST) && (
+            <Link
+              to="/management/schedule"
+              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${
+                activeMenu === "Schedule"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
+              onClick={() => {
+                sActiveMenu.set("Schedule");
+              }}
+            >
+              <div className="flex items-center gap-3 w-full">
+                <AiOutlineSchedule />
+                <span className="text-[15px] font-semibold">Schedule</span>
+              </div>
+            </Link>
+          )}
+
           <Link
             to="/management/booking"
-            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Bookings"
-              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-              }`}
+            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${
+              activeMenu === "Bookings"
+                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+            }`}
             onClick={() => {
               sActiveMenu.set("Bookings");
             }}
@@ -93,10 +116,11 @@ const AdminSidebar = () => {
           {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
             <Link
               to="/management/quiz"
-              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Quiz"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-                }`}
+              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${
+                activeMenu === "Quiz"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
               onClick={() => {
                 sActiveMenu.set("Quiz");
               }}
@@ -111,10 +135,11 @@ const AdminSidebar = () => {
           {(userRole !== UserRole.THERAPIST) && (
             <Link
               to="/management/service"
-              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Services"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-                }`}
+              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${
+                activeMenu === "Services"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
               onClick={() => {
                 sActiveMenu.set("Services");
               }}
@@ -129,10 +154,11 @@ const AdminSidebar = () => {
           {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
             <Link
               to="/management/employee"
-              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Employee"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-                }`}
+              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${
+                activeMenu === "Employee"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
               onClick={() => {
                 sActiveMenu.set("Employee");
               }}
@@ -147,10 +173,11 @@ const AdminSidebar = () => {
           {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
             <Link
               to="/management/workingday"
-              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Working Day"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-                }`}
+              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${
+                activeMenu === "Working Day"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
               onClick={() => {
                 sActiveMenu.set("Working Day");
               }}
@@ -162,14 +189,14 @@ const AdminSidebar = () => {
             </Link>
           )}
 
-
           {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
             <Link
               to="/management/customer"
-              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Customer"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-                }`}
+              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${
+                activeMenu === "Customer"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
               onClick={() => {
                 sActiveMenu.set("Customer");
               }}
@@ -184,10 +211,11 @@ const AdminSidebar = () => {
           {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
             <Link
               to="/management/feedback"
-              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Feedback"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-                }`}
+              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${
+                activeMenu === "Feedback"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
               onClick={() => {
                 sActiveMenu.set("Feedback");
               }}
@@ -199,30 +227,32 @@ const AdminSidebar = () => {
             </Link>
           )}
 
-          {(userRole === UserRole.THERAPIST) && (
+          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
             <Link
-              to="/management/schedule"
-              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Schedule"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-                }`}
+              to="/management/rating"
+              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${
+                activeMenu === "Rating"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
               onClick={() => {
-                sActiveMenu.set("Schedule");
+                sActiveMenu.set("Rating");
               }}
             >
               <div className="flex items-center gap-3 w-full">
-                <AiOutlineSchedule />
-                <span className="text-[15px] font-semibold">Schedule</span>
+                <AiOutlineStar />
+                <span className="text-[15px] font-semibold">Rating</span>
               </div>
             </Link>
           )}
 
           <Link
             to="/management/NewsAndBlog"
-            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "News&Blog"
-              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-              }`}
+            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${
+              activeMenu === "News&Blog"
+                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+            }`}
             onClick={() => {
               sActiveMenu.set("News&Blog");
             }}
@@ -235,10 +265,11 @@ const AdminSidebar = () => {
 
           <Link
             to="/management/profile"
-            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${activeMenu === "Profile"
-              ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-              : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-              }`}
+            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${
+              activeMenu === "Profile"
+                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+            }`}
             onClick={() => {
               sActiveMenu.set("Profile");
             }}
@@ -260,6 +291,16 @@ const AdminSidebar = () => {
           </div>
         </div>
       </nav>
+      {/* CSS để ẩn thanh scroll */}
+      <style jsx>{`
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </div>
   );
 };
