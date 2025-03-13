@@ -5,7 +5,7 @@ import DecodeRole from "../../../../components/DecodeRole";
 import Loading from "../../../../components/Loading";
 import editService from "../../../../modules/Admin/Service/editService";
 import renderDetails from "./ServiceDetailPartials/RenderDetails";
-import renderEditForm from "./ServiceDetailPartials/RenderEditForm";
+import RenderEditForm from "./ServiceDetailPartials/RenderEditForm";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -33,6 +33,8 @@ export default function ServiceDetails({ open, onClose, service, onServiceUpdate
         location: localService.location,
         isActive: localService.isActive,
         description: localService.description,
+        shortDescription: localService.shortDescription,
+        categoryId: localService.categoryId,
       });
       setUploadedImageFile(null);
       setUploadedImagePreview(null);
@@ -68,6 +70,8 @@ export default function ServiceDetails({ open, onClose, service, onServiceUpdate
       formData.append("Location", updatedValues.location || localService.location);
       formData.append("IsActive", updatedValues.isActive !== undefined ? updatedValues.isActive : localService.isActive);
       formData.append("Description", updatedValues.description || localService.description);
+      formData.append("ShortDescription", updatedValues.shortDescription || localService.shortDescription);
+      formData.append("CategoryId", updatedValues.categoryId || localService.categoryId);
 
       if (uploadedImageFile) {
         formData.append("ServiceImage", uploadedImageFile);
@@ -88,6 +92,7 @@ export default function ServiceDetails({ open, onClose, service, onServiceUpdate
         return;
       }
       
+      // For debugging: log each form data entry
       for (let pair of formData.entries()) {
         console.log(pair[0] + ": ", pair[1]);
       }
@@ -139,7 +144,17 @@ export default function ServiceDetails({ open, onClose, service, onServiceUpdate
         </div>
       }
     >
-      {isReloading ? <Loading /> : (isEdit ? renderEditForm(localService, form, uploadedImagePreview, setUploadedImageFile, setUploadedImagePreview) : renderDetails(localService))}
+      {isReloading ? <Loading /> : (isEdit ? (
+        <RenderEditForm
+          localService={localService}
+          form={form}
+          uploadedImagePreview={uploadedImagePreview}
+          setUploadedImageFile={setUploadedImageFile}
+          setUploadedImagePreview={setUploadedImagePreview}
+        />
+      ) : (
+        renderDetails(localService)
+      ))}
     </Modal>
   );
 }

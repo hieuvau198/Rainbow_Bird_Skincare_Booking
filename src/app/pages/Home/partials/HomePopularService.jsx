@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import getAllService from "../../../modules/Admin/Service/getAllService";
 import { LeftOutlined, RightOutlined, DollarOutlined, StarOutlined, UserOutlined, ClockCircleOutlined } from "@ant-design/icons";
+import Loading from "../../../components/Loading";
 
 export default function HomePopularService() {
   const [services, setServices] = useState([]);
@@ -23,7 +24,7 @@ export default function HomePopularService() {
           image: service.serviceImage || "https://via.placeholder.com/500",
           duration_minutes: service.durationMinutes ? `${service.durationMinutes} minutes` : "Duration not specified"
         }));
-        setServices(formattedServices.slice(0, 5)); // Hiển thị 5 dịch vụ
+        setServices(formattedServices.slice(0, 5));
       } catch (err) {
         setError("Failed to fetch services");
       } finally {
@@ -46,7 +47,7 @@ export default function HomePopularService() {
   };
 
   if (loading) {
-    return <div className="text-center text-lg font-semibold">Loading popular services...</div>;
+    return <><Loading /></>;
   }
 
   if (error) {

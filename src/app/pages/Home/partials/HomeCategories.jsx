@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import getAllService from "../../../modules/Admin/Service/getAllService";
 import { FaGift, FaLeaf, FaGlobe } from "react-icons/fa";
+import Loading from "../../../components/Loading";
 
 export default function SkincareCategories() {
   const [services, setServices] = useState([]);
@@ -24,7 +25,7 @@ export default function SkincareCategories() {
   }, []);
 
   if (loading) {
-    return <div className="text-center text-lg font-semibold">Loading skincare services...</div>;
+    return <><Loading /></>;
   }
 
   if (error) {

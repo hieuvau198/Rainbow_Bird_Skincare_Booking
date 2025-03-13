@@ -1,7 +1,8 @@
 import { PlusOutlined } from "@ant-design/icons";
 import MDEditor from "@uiw/react-md-editor";
 import { Button, Form, Input, InputNumber, Modal, Select, Upload, message } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import getAllCategory from "../../../../modules/Admin/Service/getAllCategory";
 
 const normFile = (e) => {
   console.log("Upload event:", e);
@@ -14,7 +15,20 @@ const normFile = (e) => {
 const AddService = ({ open, onClose, onSubmit }) => {
   const [form] = Form.useForm();
   const [description, setDescription] = useState("**Add you description**");
+  const [categories, setCategories] = useState([]);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await getAllCategory();
+        setCategories(res);
+      } catch (error) {
+        message.error("Failed to load categories.");
+      }
+    };
+
+    fetchCategories();
+  }, []);
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
@@ -36,7 +50,6 @@ const AddService = ({ open, onClose, onSubmit }) => {
       formData.append("DurationMinutes", values.durationMinutes);
       formData.append("Location", values.location);
       formData.append("IsActive", values.isActive.toString());
-      // Append new fields
       formData.append("ShortDescription", values.shortDescription);
       formData.append("CategoryId", values.categoryId);
 
@@ -133,10 +146,16 @@ const AddService = ({ open, onClose, onSubmit }) => {
           </Form.Item>
           <Form.Item
             name="categoryId"
-            label="Category ID"
-            rules={[{ required: true, message: "Please input the category ID!" }]}
+            label="Category"
+            rules={[{ required: true, message: "Please select a category!" }]}
           >
-            <Input placeholder="Enter category ID" />
+            <Select placeholder="Select Category">
+              {categories.map((category) => (
+                <Select.Option key={category.categoryId} value={category.categoryId}>
+                  {category.categoryName}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item
             name="serviceImage"

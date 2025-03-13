@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import getNews from "../../../modules/NewsAndBlog/getNews";
+import Loading from "../../../components/Loading";
 
 export default function HomeCenterNews() {
   const [newsData, setNewsData] = useState([]);
@@ -29,7 +30,7 @@ export default function HomeCenterNews() {
   }, []);
 
   if (loading) {
-    return <div className="text-center text-lg font-semibold">Loading news...</div>;
+    return <><Loading /></>;
   }
 
   if (error) {
