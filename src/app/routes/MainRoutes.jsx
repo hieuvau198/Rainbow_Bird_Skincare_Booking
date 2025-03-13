@@ -32,7 +32,8 @@ const WorkingDay = lazy(() => import("../pages/Admin/TimeSlot/WorkingDay"));
 const Employee = lazy(() => import("../pages/Admin/Employee/Employee"));
 const Booking = lazy(() => import("../pages/Admin/Booking/Booking"));
 const MaService = lazy(() => import("../pages/Admin/Service/Service"));
-const Feedback = lazy(() => import("../pages/Admin/Feedback/Feedback"));
+const AdminFeedback = lazy(() => import("../pages/Admin/Feedback/Feedback"));
+const AdminRating = lazy(() => import("../pages/Admin/Rating/Rating"));
 const Customer = lazy(() => import("../pages/Admin/Customer/Customer"));
 const AdminProfile = lazy(() => import("../pages/Admin/Profile/Profile"));
 const ManageQuiz = lazy(() => import("../pages/Admin/Quiz/ManageQuiz"));
@@ -191,7 +192,12 @@ export default function MainRoutes() {
           } />
           <Route path="feedback" element={
             <Suspense fallback={<Loading />}>
-              <Feedback />
+              <AdminFeedback />
+            </Suspense>
+          } />
+          <Route path="rating" element={
+            <Suspense fallback={<Loading />}>
+              <AdminRating />
             </Suspense>
           } />
           <Route path="customer" element={

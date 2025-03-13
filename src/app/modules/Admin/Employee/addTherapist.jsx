@@ -1,5 +1,6 @@
 import { message } from "antd";
 import Cookies from "js-cookie";
+import addTherapistProfile from "./addTherapistProfile";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -18,6 +19,7 @@ const addTherapist = async (formData) => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
+        addTherapistProfile(data.therapistId, data);
         return data;
     } catch (error) {
         message.error(error.message || "Error adding The Therapist!");

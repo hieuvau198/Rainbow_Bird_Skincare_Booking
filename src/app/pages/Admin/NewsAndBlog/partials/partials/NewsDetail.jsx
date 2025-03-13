@@ -43,17 +43,14 @@ const NewsDetail = ({ newsId }) => {
                     />
                 </div>
                 <div className="flex flex-col justify-center space-y-3">
+                <div className="flex items-center">
+                        <span className="font-bold text-xl">{news.title}</span>
+                    </div>
                     <div className="flex items-center">
                         <span className="font-bold w-24 flex items-center">
                             <IdcardOutlined className="mr-1" /> ID:
                         </span>
                         <span className="ml-4">{news.newsId}</span>
-                    </div>
-                    <div className="flex items-center">
-                        <span className="font-bold w-24 flex items-center">
-                            <ProfileOutlined className="mr-1" /> Title:
-                        </span>
-                        <span className="ml-4">{news.title}</span>
                     </div>
                     <div className="flex items-center">
                         <span className="font-bold w-24 flex items-center">
@@ -88,6 +85,7 @@ const NewsDetail = ({ newsId }) => {
                 <div className="p-4">
                     <MDEditor.Markdown
                         source={news.content || "No content available"}
+                        data-color-mode="light" 
                     />
                 </div>
             </div>

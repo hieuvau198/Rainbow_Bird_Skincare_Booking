@@ -58,7 +58,7 @@ const TherapistProfile = () => {
         {/* Card 1: Profile Image */}
         <div className="md:w-1/4 bg-teal-200 rounded-lg shadow overflow-hidden self-start h-96">
           <img
-            src={therapist.profileImage || "https://via.placeholder.com/150"}
+            src={therapist.profileImage || `https://ui-avatars.com/api/?name=${therapist.therapist.user.fullName}`}
             alt="Therapist"
             className="w-full h-full object-cover"
           />

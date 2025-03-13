@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { DatePicker, message } from "antd";
+import { Button, DatePicker, message } from "antd";
+import { StarOutlined, StarFilled, StarTwoTone } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import "antd/es/style/reset.css";
 import { AiOutlineClose } from "react-icons/ai";
@@ -225,13 +226,14 @@ export default function BookingModal({ isOpen, onClose, serviceName, serviceId, 
                       onClick={() => setSelectedTherapist(therapist.therapistId)}
                     >
                       <p className="font-bold">{therapist.therapistName}</p>
-                      <p className="text-sm text-gray-600">Rating: {therapist.rating} ⭐</p>
-                      <button
-                        className="text-blue-500 underline"
+                      <p className="text-sm text-gray-600"><StarTwoTone twoToneColor="green" /> {therapist.therapistRating}</p>
+                      <Button
+                        variant="solid"
+                        color="lime"
                         onClick={() => handleViewProfile(therapist)}
                       >
-                        View Profile
-                      </button>
+                        Profile
+                      </Button>
                     </button>
                   ))}
                 </div>
@@ -239,7 +241,7 @@ export default function BookingModal({ isOpen, onClose, serviceName, serviceId, 
                 <button
                   className="mt-4 bg-lime-500 text-white px-4 py-2 rounded-md w-full hover:bg-lime-600"
                   onClick={handleContinueBooking}
-                  disabled={!selectedTherapist} // Ngăn bấm nếu chưa chọn therapist
+                  disabled={!selectedTherapist}
                 >
                   Continue Booking
                 </button>

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Descriptions, Button, Tag, Select, Space, message } from "antd";
-import { getStatusColor } from "./BookingStatusSelect";
-import getTherapist from "../../../../modules/Admin/Employee/getTherapist";
-import changeTherapist from "../../../../modules/Booking/changeTherapist";
+import { Button, Descriptions, Modal, Select, Space, Tag, message } from "antd";
+import React, { useEffect, useState } from "react";
 import StatusColor from "../../../../components/StatusColor";
+import getTherapist from "../../../../modules/Admin/Employee/getTherapist";
+import getTherapistById from "../../../../modules/Admin/Employee/getTherapistById";
+import changeTherapist from "../../../../modules/Booking/changeTherapist";
+import getServiceDetail from "../../../../modules/Admin/Service/getServiceDetail";
 
 export default function ViewBooking({ booking, onClose }) {
   if (!booking) return null;
@@ -11,6 +12,8 @@ export default function ViewBooking({ booking, onClose }) {
   const [editingTherapist, setEditingTherapist] = useState(false);
   const [therapistOptions, setTherapistOptions] = useState([]);
   const [selectedTherapist, setSelectedTherapist] = useState(null);
+  const [theName, setTherapistName] = useState(null);
+  // const [serviceName, setServiceName] = useState(null);
 
   const loadTherapists = async () => {
     try {
@@ -26,6 +29,31 @@ export default function ViewBooking({ booking, onClose }) {
       console.error("Error fetching therapist list:", error);
     }
   };
+
+  // useEffect(() => {
+  //   const serviceName = async () => {
+  //     try {
+  //       const response = await getServiceDetail(booking.serviceId);
+  //       setServiceName(response.serviceName);
+  //     } catch (error) {
+  //       console.error("Error fetching therapist name:", error);
+  //     }
+  //   };
+  //   serviceName();
+  // }, [booking.serviceId]);
+
+  useEffect(() => {
+    const therapistName = async () => {
+      try {
+        const response = await getTherapistById(booking.therapistId);
+        setTherapistName(response.user.username);
+      } catch (error) {
+        console.error("Error fetching therapist name:", error);
+      }
+    };
+    therapistName();
+  }, [booking.therapistId]);
+
 
   const handleEditTherapist = () => {
     setEditingTherapist(true);
@@ -91,7 +119,7 @@ export default function ViewBooking({ booking, onClose }) {
             </Space>
           ) : (
             <Space>
-              <Tag  color="blue">{booking.therapistId || "N/A"}</Tag>
+              <Tag color="blue">{theName || "N/A"}</Tag>
               <Button color="primary" variant="solid" type="link" onClick={handleEditTherapist}>
                 Change Therapist
               </Button>

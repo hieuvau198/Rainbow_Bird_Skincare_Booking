@@ -1,8 +1,8 @@
 import { PlusOutlined } from "@ant-design/icons";
 import MDEditor from "@uiw/react-md-editor";
 import { Button, Form, Input, InputNumber, Modal, Select, Upload, message } from "antd";
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+import getAllCategory from "../../../../modules/Admin/Service/getAllCategory";
 
 const normFile = (e) => {
   console.log("Upload event:", e);
@@ -15,7 +15,20 @@ const normFile = (e) => {
 const AddService = ({ open, onClose, onSubmit }) => {
   const [form] = Form.useForm();
   const [description, setDescription] = useState("**Add you description**");
+  const [categories, setCategories] = useState([]);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await getAllCategory();
+        setCategories(res);
+      } catch (error) {
+        message.error("Failed to load categories.");
+      }
+    };
+
+    fetchCategories();
+  }, []);
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
@@ -37,6 +50,8 @@ const AddService = ({ open, onClose, onSubmit }) => {
       formData.append("DurationMinutes", values.durationMinutes);
       formData.append("Location", values.location);
       formData.append("IsActive", values.isActive.toString());
+      formData.append("ShortDescription", values.shortDescription);
+      formData.append("CategoryId", values.categoryId);
 
       onSubmit(formData);
       form.resetFields();
@@ -45,6 +60,14 @@ const AddService = ({ open, onClose, onSubmit }) => {
       console.error("Validation Failed:", info);
       message.error("Please complete the form correctly.");
     }
+  };
+
+  const beforeUpload = (file) => {
+    const isImage = file.type.startsWith("image/");
+    if (!isImage) {
+      message.error("You can only upload image files!");
+    }
+    return isImage ? false : Upload.LIST_IGNORE;
   };
 
   return (
@@ -115,6 +138,26 @@ const AddService = ({ open, onClose, onSubmit }) => {
             </Select>
           </Form.Item>
           <Form.Item
+            name="shortDescription"
+            label="Short Description"
+            rules={[{ required: true, message: "Please input the short description!" }]}
+          >
+            <Input placeholder="Enter short description" />
+          </Form.Item>
+          <Form.Item
+            name="categoryId"
+            label="Category"
+            rules={[{ required: true, message: "Please select a category!" }]}
+          >
+            <Select placeholder="Select Category">
+              {categories.map((category) => (
+                <Select.Option key={category.categoryId} value={category.categoryId}>
+                  {category.categoryName}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
             name="serviceImage"
             label="Service Image"
             valuePropName="fileList"
@@ -124,8 +167,9 @@ const AddService = ({ open, onClose, onSubmit }) => {
             <Upload
               name="serviceImage"
               listType="picture-card"
-              beforeUpload={() => false}
+              beforeUpload={beforeUpload}
               maxCount={1}
+              accept="image/*"
             >
               <div>
                 <PlusOutlined />
@@ -135,7 +179,7 @@ const AddService = ({ open, onClose, onSubmit }) => {
           </Form.Item>
         </div>
         <Form.Item label="Description">
-          <MDEditor value={description} onChange={setDescription} height={200} />
+          <MDEditor value={description} onChange={setDescription} height={200} data-color-mode="light" />
         </Form.Item>
       </Form>
     </Modal>

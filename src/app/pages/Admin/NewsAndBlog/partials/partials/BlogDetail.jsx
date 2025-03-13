@@ -38,19 +38,18 @@ const BlogDetail = ({ blogId }) => {
                         className="w-60 h-60 object-cover rounded-lg shadow-md"
                     />
                 </div>
+                
                 <div className="flex flex-col justify-center space-y-3">
+                <div className="flex items-center">
+                        <span className="font-bold text-xl">{blog.title}</span>
+                    </div>
                     <div className="flex items-center">
                         <span className="font-bold w-24 flex items-center">
                             <IdcardOutlined className="mr-1" /> ID:
                         </span>
                         <span className="ml-4">{blog.blogId}</span>
                     </div>
-                    <div className="flex items-center">
-                        <span className="font-bold w-24 flex items-center">
-                            <ProfileOutlined className="mr-1" /> Title:
-                        </span>
-                        <span className="ml-4">{blog.title}</span>
-                    </div>
+
                     <div className="flex items-center">
                         <span className="font-bold w-24 flex items-center">
                             <ClockCircleOutlined className="mr-1" /> Date:
@@ -74,7 +73,7 @@ const BlogDetail = ({ blogId }) => {
             <div className="mt-4">
                 <h3 className="text-lg font-semibold mb-2">Content</h3>
                 <div className="p-4">
-                    <MDEditor.Markdown source={blog.content || "No content available"} />
+                    <MDEditor.Markdown source={blog.content || "No content available"} data-color-mode="light"  />
                 </div>
             </div>
         </>
