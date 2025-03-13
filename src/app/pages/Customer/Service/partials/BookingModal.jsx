@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { DatePicker, message } from "antd";
+import { Button, DatePicker, message } from "antd";
+import { StarOutlined, StarFilled, StarTwoTone } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import "antd/es/style/reset.css";
 import { AiOutlineClose } from "react-icons/ai";
@@ -225,13 +226,14 @@ export default function BookingModal({ isOpen, onClose, serviceName, serviceId, 
                       onClick={() => setSelectedTherapist(therapist.therapistId)}
                     >
                       <p className="font-bold">{therapist.therapistName}</p>
-                      <p className="text-sm text-gray-600">⭐ {therapist.therapistRating}</p>
-                      <button
-                        className="text-green-800 underline"
+                      <p className="text-sm text-gray-600"><StarTwoTone twoToneColor="green" /> {therapist.therapistRating}</p>
+                      <Button
+                        variant="solid"
+                        color="lime"
                         onClick={() => handleViewProfile(therapist)}
                       >
-                        View Profile
-                      </button>
+                        Profile
+                      </Button>
                     </button>
                   ))}
                 </div>
