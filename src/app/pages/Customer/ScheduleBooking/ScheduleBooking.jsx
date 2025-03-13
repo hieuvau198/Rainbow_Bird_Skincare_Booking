@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import DecodeRoleId from "../../../components/DecodeRoleId";
 import getBookByCusId from "../../../modules/Booking/getBookByCusId";
 import BookingList from "./partials/BookingList";
-import CalendarBooking from "./partials/CalendarBooking";
+import BookingDetail from "./partials/BookingDetail";
 
 export default function ScheduleBooking() {
   const [bookings, setBookings] = useState([]);
+  const [selectedBooking, setSelectedBooking] = useState(null);
   const customerId = DecodeRoleId("__CusIden");
 
   useEffect(() => {
@@ -18,17 +19,21 @@ export default function ScheduleBooking() {
     fetchBookings();
   }, [customerId]);
 
+  const handleViewDetail = (booking) => {
+    setSelectedBooking(booking);
+  };
+
   return (
-    <div className="p-6 px-24">
-      <div className="grid grid-cols-12 gap-4 items-stretch">
-        <div className="col-span-9">
-          <CalendarBooking bookings={bookings} />
-        </div>
-        <div className="col-span-3">
-          <div className="sticky top-2 min-h-60">
-            <BookingList bookings={bookings} />
-          </div>
-        </div>
+    <div className="grid grid-cols-7 gap-4 p-6 px-24">
+      <div className={`${selectedBooking ? "col-span-5" : "col-span-7"} transition-all duration-500 ease-in-out`}>
+        <BookingList bookings={bookings} onViewDetail={handleViewDetail} />
+      </div>
+      <div className="col-span-2">
+        {selectedBooking ? (
+          <BookingDetail booking={selectedBooking} />
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
