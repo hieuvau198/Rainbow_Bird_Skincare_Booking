@@ -10,7 +10,7 @@ export default function InfoSerDetail({ additionalInfo, showFullInfo, setShowFul
           <h2 className="text-2xl mb-5 font-bold text-gray-800">Service Information</h2>
           <div className={`text-gray-700 text-md space-y-3 ${showFullInfo ? "" : "line-clamp-3 overflow-hidden"}`}>
             {/* <ReactMarkdown>{additionalInfo || "No additional information available."}</ReactMarkdown> */}
-            <MDEditor.Markdown source={additionalInfo || "No description available"} />
+            <MDEditor.Markdown source={additionalInfo || "No description available"} data-color-mode="light" />
           </div>
 
           {showFullInfo && (

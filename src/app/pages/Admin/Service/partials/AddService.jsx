@@ -179,7 +179,7 @@ const AddService = ({ open, onClose, onSubmit }) => {
           </Form.Item>
         </div>
         <Form.Item label="Description">
-          <MDEditor value={description} onChange={setDescription} height={200} />
+          <MDEditor value={description} onChange={setDescription} height={200} data-color-mode="light" />
         </Form.Item>
       </Form>
     </Modal>
