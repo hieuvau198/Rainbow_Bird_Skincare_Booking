@@ -19,7 +19,7 @@ const SidebarService = ({ minPrice, maxPrice, setMinPrice, setMaxPrice, applyFil
     <div className="col-span-1 p-6 bg-white shadow-sm rounded-lg">
 
       <h2 className="text-xl font-semibold mb-2">Select Category</h2>
-      <div className="flex flex-col gap-2 w-full">
+      <div className="flex flex-col gap-y-5 w-full">
         <Checkbox
           checked={selectedCategory.length === 0}
           onChange={() => setSelectedCategory([])}

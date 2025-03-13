@@ -102,7 +102,7 @@ export default function Service() {
         setSelectedCategory={setSelectedCategory}
       /> */}
 
-      <div className="w-full grid grid-cols-4 gap-4">
+      <div className="w-full grid grid-cols-5 gap-4">
         <SidebarService
           minPrice={minPrice}
           maxPrice={maxPrice}

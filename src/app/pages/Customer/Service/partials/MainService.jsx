@@ -5,7 +5,7 @@ import {UserOutlined,StarOutlined,DollarOutlined,ClockCircleOutlined,AppstoreOut
 import ReactMarkdown from "react-markdown";
 
 export default function MainContent({ services }) {
-  const [gridCols, setGridCols] = useState("grid-cols-1");
+  const [gridCols, setGridCols] = useState("grid-cols-3");
   const isListView = gridCols === "grid-cols-1";
   const [sortOption, setSortOption] = useState("Alphabetically, A-Z");
   const [currentPage, setCurrentPage] = useState(1);
@@ -52,7 +52,7 @@ export default function MainContent({ services }) {
   const paginatedServices = sortedServices.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   return (
-    <div className="col-span-3 p-4">
+    <div className="col-span-4 p-4">
       {/* Sorting and Display Options */}
       <div className="flex justify-between items-center bg-white mb-4">
         <div className="flex space-x-2 text-sm">
