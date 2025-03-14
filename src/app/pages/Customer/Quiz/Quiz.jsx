@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { AiOutlineHome } from "react-icons/ai";
 import Loading from "../../../components/Loading/Loading";
 import QuizCard from "./partials/QuizCard";
 import QuizHistory from "./partials/QuizHistory";
@@ -31,6 +33,15 @@ const Quiz = () => {
 
   return (
     <div className="px-24 p-6 min-h-screen bg-white">
+      {/* Navigation Bar */}
+      <div className="flex items-center text-gray-600 text-sm mb-2">
+        <Link to="/" className="flex items-center gap-1 text-lime-300 hover:text-lime-500">
+          <AiOutlineHome className="text-lg" /> Home
+        </Link>
+        <span className="mx-2 text-gray-400"> / </span>
+        <span className="font-semibold text-gray-900">Quiz</span>
+      </div>
+
       <div>
         <h2 className="text-4xl font-bold text-center text-gray-800 mb-6">
           Explore Our Quizzes
