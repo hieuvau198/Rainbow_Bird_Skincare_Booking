@@ -5,10 +5,21 @@ import About3 from "../../assets/img/About3.png";
 import therapist1 from "../../assets/img/therapist1.png";
 import therapist2 from "../../assets/img/therapist2.png";
 import therapist3 from "../../assets/img/therapist3.png";
+import { Link } from "react-router-dom";
+import { AiOutlineHome } from "react-icons/ai";
 
 export default function AboutUs() {
   return (
     <div className="min-h-screen bg-gradient-to-br bg-[#f9f5eb] text-gray-800">
+      {/* Navigation Bar */}
+      <div className="flex items-center text-gray-600 text-sm px-8 pt-6">
+        <Link to="/" className="flex items-center gap-1 text-lime-300 hover:text-lime-500">
+          <AiOutlineHome className="text-lg" /> Home
+        </Link>
+        <span className="mx-2 text-gray-400"> / </span>
+        <span className="font-semibold text-gray-900">About Us</span>
+      </div>
+
       {/* Hero Section */}
       <div className="flex flex-col items-center bg-[#f9f5eb] py-16 px-8 shadow-sm">
         <div className="max-w-6xl mx-auto"> {/* Added a container for better responsiveness */}
@@ -68,9 +79,9 @@ export default function AboutUs() {
                 business, seeing other clients or even{" "}
                 <span className="italic">out enjoying your life!</span>
               </p>
-              <button className="bg-transparent text-black px-8 py-2 mt-10 rounded-full border border-green-700 hover:bg-[#e9f6ed] transition">
+              {/* <button className="bg-transparent text-black px-8 py-2 mt-10 rounded-full border border-green-700 hover:bg-[#e9f6ed] transition">
                 Schedule your FREE 30 min call →
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -96,7 +107,10 @@ export default function AboutUs() {
             <p className="text-lg text-gray-700 mb-6 leading-relaxed">
               I’d love to chat with you! Schedule a <a href="#" className="text-blue-600 underline">discovery call</a> with me so that we can start a conversation.
             </p>
-            <button className="bg-transparent text-black px-8 py-2 mt-10 rounded-full border border-green-700 hover:bg-[#e9f6ed] transition">
+            <button 
+              onClick={() => window.location.href = "/services"}
+              className="bg-transparent text-black px-8 py-2 mt-10 rounded-full border border-green-700 hover:bg-[#e9f6ed] transition"
+            >
               Learn About My Services
               <span className="ml-2">➔</span>
             </button>
@@ -153,9 +167,12 @@ export default function AboutUs() {
         </div>
 
         <div className="flex justify-center mt-12">
-        <button className="bg-transparent text-black px-8 py-2 mt-10 rounded-full border border-green-700 hover:bg-[#e9f6ed] transition">
-            Meet Our Team
-          </button>
+        <button 
+          onClick={() => window.location.href = "/therapists"}
+          className="bg-transparent text-black px-8 py-2 mt-10 rounded-full border border-green-700 hover:bg-[#e9f6ed] transition"
+        >
+          Meet Our Team
+        </button>
         </div>
       </div>
     </div>
