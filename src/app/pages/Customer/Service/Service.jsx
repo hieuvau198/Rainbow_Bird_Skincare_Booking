@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AiOutlineHome } from "react-icons/ai";
 import MainContent from "./partials/MainService";
 import SidebarService from "./partials/SidebarService";
 import Loading from "../../../components/Loading/Loading";
@@ -16,6 +18,7 @@ export default function Service() {
   const [maxPrice, setMaxPrice] = useState("");
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,6 +83,19 @@ export default function Service() {
 
   return (
     <div className="px-24 bg-white min-h-screen grid grid-cols-1 gap-4 w-full">
+
+      {/* Navigation Bar */}
+      <div className="flex items-center text-gray-600 text-sm mb-0">
+        {/* Home Icon */}
+        <Link to="/" className="flex items-center gap-1 text-lime-300 hover:text-lime-500">
+          <AiOutlineHome className="text-lg" /> Home
+        </Link>
+        <span className="mx-2 text-gray-400"> / </span>
+
+        {/* Current Page */}
+        <span className="font-semibold text-gray-900">Services</span>
+      </div>
+
       <div
         className="h-[400px] my-2 bg-center bg-cover bg-no-repeat bg-local rounded-lg shadow-lg"
         style={{ backgroundImage: `url(${url3})` }}
