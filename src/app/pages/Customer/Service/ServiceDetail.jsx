@@ -63,17 +63,14 @@ export default function ServiceDetail() {
     <div className="px-24 bg-white min-h-screen w-full">
       {/* Navigation Bar */}
       <div className="flex items-center text-gray-600 text-sm mb-4">
-        {/* Home Icon */}
         <Link to="/" className="flex items-center gap-1 text-lime-300 hover:text-lime-500">
           <AiOutlineHome className="text-lg" /> Home
         </Link>
         <span className="mx-2 text-gray-400"> / </span>
-        {/* Services */}
         <Link to="/services" className="text-lime-300 hover:text-lime-500">
           Services
         </Link>
         <span className="mx-2 text-gray-400"> / </span>
-        {/* Current Page - Không có Link */}
         <span className="font-semibold text-gray-900">Service Details</span>
       </div>
 
