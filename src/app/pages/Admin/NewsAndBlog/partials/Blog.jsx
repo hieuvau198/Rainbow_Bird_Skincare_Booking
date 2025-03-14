@@ -6,8 +6,11 @@ import deleteBlog from "../../../../modules/NewsAndBlog/deleteBlog";
 import getBlog from "../../../../modules/NewsAndBlog/getBlog";
 import AddBlog from "./partials/AddBlog";
 import BlogDetail from "./partials/BlogDetail";
+import DecodeRole from "../../../../components/DecodeRole";
+import UserRole from "../../../../../enums/userRole";
 
 const Blog = () => {
+  const userRole = DecodeRole();
   const [data, setData] = useState([]);
   const [filteredBlogs, setFilteredBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -123,9 +126,11 @@ const Blog = () => {
           <Button color="primary" variant="solid" type="link" onClick={() => viewDetails(record)}>
             View detail
           </Button>
-          <Button color="red" variant="solid" type="link" danger onClick={() => showDeleteConfirm(record)}>
-            Delete
-          </Button>
+          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
+            <Button color="red" variant="solid" type="link" danger onClick={() => showDeleteConfirm(record)}>
+              Delete
+            </Button>
+          )}
         </Space>
       ),
     },
