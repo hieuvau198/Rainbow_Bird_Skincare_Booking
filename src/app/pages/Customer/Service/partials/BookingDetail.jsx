@@ -63,8 +63,8 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
   }, [isOpen, bookingData]);
 
   const handleConfirmBooking = async () => {
-    if (!bookingData.date || !bookingData.slotId || !bookingData.therapistId) {
-      message.error("Please select a date, time slot, and therapist.");
+    if (!bookingData.date || !bookingData.slotId ) {
+      message.error("Please select a date, time slot.");
       return;
     }
 
@@ -97,7 +97,7 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
         customerName: customerName,
         customerPhone: customerPhone,
         customerEmail: customerEmail,
-        therapistId: bookingData.therapistId,
+        therapistId: bookingData.therapistId || 0,
         serviceId: bookingData.serviceId,
         slotId: bookingData.slotId,
         bookingDate: bookingData.date,
@@ -124,6 +124,11 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
     } catch (error) {
       console.error("Error confirming booking:", error);
 
+      if (error.response) {
+        console.log("Response Data:", error.response.data); // 🔥 In chi tiết response API
+        console.log("Status Code:", error.response.status);
+      }
+
       if (error.response && error.response.status === 400) {
         // Extract error message from response
         const errorMessage = error.response.data?.message || "Booking failed due to a conflict.";
@@ -146,7 +151,7 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
         
         <p><strong>Date:</strong> {String(bookingData.date)}</p>
         <p><strong>Time Slot:</strong> {String(bookingData.timeSlot)}</p>
-        <p><strong>Therapist:</strong> {String(bookingData.therapistName)}</p>
+        <p><strong>Therapist:</strong> {String(bookingData.therapistId ? bookingData.therapistName : "Pending Assignment")}</p>
         <p><strong>Service:</strong> {String(bookingData.service)}</p>
 
         <div className="mb-4">
