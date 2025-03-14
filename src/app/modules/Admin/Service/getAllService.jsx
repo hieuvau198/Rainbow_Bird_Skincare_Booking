@@ -1,4 +1,5 @@
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+import Cookies from "js-cookie";
 
 const getAllService = async () => {
     try {
@@ -6,6 +7,7 @@ const getAllService = async () => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${Cookies.get("__atok")}`,
             },
         });
         if (!response.ok) {

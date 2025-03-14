@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import MainContent from "./partials/MainService";
 import SidebarService from "./partials/SidebarService";
 import Loading from "../../../components/Loading/Loading";
+import getAllCategory from "../../../modules/Admin/Service/getAllCategory";
+import getAllService from "../../../modules/Admin/Service/getAllService";
 
 const url3 = "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
@@ -18,15 +20,9 @@ export default function Service() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch all services
-        const serviceResponse = await fetch(
-          "https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Service"
-        );
-        if (!serviceResponse.ok) throw new Error("Failed to fetch services");
-        const servicesData = await serviceResponse.json();
+        const serviceResponse = await getAllService();
 
-        // Format services
-        const formattedServices = servicesData.map((service) => ({
+        const formattedServices = serviceResponse.map((service) => ({
           service_id: service.serviceId || "N/A",
           service_name: service.serviceName || "Unknown Service",
           price: service.price ? `${service.price} ${service.currency || "VND"}` : "Price not available",
@@ -41,14 +37,9 @@ export default function Service() {
         setServices(formattedServices);
         setFilteredServices(formattedServices);
 
-        // Fetch categories
-        const categoryResponse = await fetch(
-          "https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/ServiceCategory"
-        );
-        if (!categoryResponse.ok) throw new Error("Failed to fetch categories");
-        const categoryData = await categoryResponse.json();
+        const categoryResponse = await getAllCategory();
 
-        setCategories(categoryData);
+        setCategories(categoryResponse);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -58,7 +49,6 @@ export default function Service() {
     fetchData();
   }, []);
 
-  // ✅ Apply filters when selectedCategory or price changes
   useEffect(() => {
     applyFilters();
   }, [selectedCategory, minPrice, maxPrice]);
@@ -94,13 +84,6 @@ export default function Service() {
         className="h-[400px] my-2 bg-center bg-cover bg-no-repeat bg-local rounded-lg shadow-lg"
         style={{ backgroundImage: `url(${url3})` }}
       ></div>
-
-      {/* ✅ Updated Category Selector
-      <CategorySelect
-        categories={categories}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-      /> */}
 
       <div className="w-full grid grid-cols-5 gap-4">
         <SidebarService

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Loading from "../../../components/Loading/Loading";
+import getTherapist from "../../../modules/Home/getTherapist";
 
 const ViewTherapist = () => {
   const [therapists, setTherapists] = useState([]);
@@ -11,26 +12,21 @@ const ViewTherapist = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(
-      "https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/TherapistProfile/with-reference"
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch therapists");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setTherapists(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error.message);
-        setLoading(false);
-      });
+    const fetchTherapist = async () => {
+      setLoading(true);
+      try {
+        const response = await getTherapist();
+        setTherapists(response);
+      } catch (error) {
+        setError(error);
+        console.error("Error fetching therapist profile:", error);
+      }
+      setLoading(false);
+    }
+
+    fetchTherapist();
   }, []);
 
-  // Sorting function
   const sortTherapists = (therapistsList, option) => {
     switch (option) {
       case "az":
@@ -164,6 +160,7 @@ const ViewTherapist = () => {
             <Link
               to={`/therapists/${therapist.therapistId}`}
               key={therapist.therapistId}
+              target="_top"
             >
               <div className="bg-sky-50 shadow-lg rounded-lg p-4 flex flex-col items-center cursor-pointer hover:shadow-xl transition -mt-1">
                 <img

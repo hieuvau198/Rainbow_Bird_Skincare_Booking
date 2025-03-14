@@ -3,6 +3,7 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { MailOutlined, PhoneOutlined } from "@ant-design/icons";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 import Loading from "../../../components/Loading/Loading";
+import getTheProById from "../../../modules/Home/getTheProById";
 
 const TherapistProfile = () => {
   const { id } = useParams();
@@ -20,21 +21,20 @@ const TherapistProfile = () => {
     });
   };
   useEffect(() => {
-    fetch(`https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/TherapistProfile/${id}/with-reference`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch therapist profile");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setTherapist(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error.message);
-        setLoading(false);
-      });
+    const fetchTherapistProfile = async () => {
+      setLoading(true);
+      try {
+        const response = await getTheProById(id);
+        setTherapist(response);
+      } catch (error) {
+        setError(error);
+        console.error("Error fetching therapist profile:", error);
+        setError(error);
+      }
+      setLoading(false);
+    }
+
+    fetchTherapistProfile();
   }, [id]);
 
   if (loading) return <Loading />;
@@ -107,11 +107,10 @@ const TherapistProfile = () => {
               ].map((tab) => (
                 <li
                   key={tab.key}
-                  className={`cursor-pointer px-6 py-3 ${
-                    activeTab === tab.key
+                  className={`cursor-pointer px-6 py-3 ${activeTab === tab.key
                       ? "border-b-2 border-green-500 text-green-500"
                       : "text-gray-600"
-                  }`}
+                    }`}
                   onClick={() => setActiveTab(tab.key)}
                 >
                   {tab.label}
@@ -175,7 +174,7 @@ const TherapistProfile = () => {
       </div>
 
       {/* Additional Sections */}
-      
+
     </div>
   );
 };
