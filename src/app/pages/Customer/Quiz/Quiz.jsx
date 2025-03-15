@@ -65,7 +65,7 @@ const Quiz = () => {
             <QuizHistory />
           </div>
         ) : (
-          <></>
+          null
         )}
       </div>
     </div>
