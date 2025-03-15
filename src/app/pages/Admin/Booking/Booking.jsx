@@ -109,6 +109,7 @@ export default function Booking() {
       title: "Booking Date",
       dataIndex: "bookingDate",
       key: "bookingDate",
+      width: 120,
       render: (date) => <span>{new Date(date).toLocaleDateString()}</span>,
     },
     {
