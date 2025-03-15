@@ -37,7 +37,7 @@ export default function Booking() {
         bookingId: book.bookingId,
         id: book.userId,
         name: book.customerName,
-        email: book.customerEmail,
+        serviceName: book.serviceName,
         bookingDate: book.bookingDate,
         timeSlot: book.slotId,
         status: book.status,
@@ -101,20 +101,15 @@ export default function Booking() {
       key: "customerName",
     },
     {
-      title: "Customer Email",
-      dataIndex: "email",
-      key: "email",
+      title: "Sevice Name",
+      dataIndex: "serviceName",
+      key: "serviceName",
     },
     {
       title: "Booking Date",
       dataIndex: "bookingDate",
       key: "bookingDate",
       render: (date) => <span>{new Date(date).toLocaleDateString()}</span>,
-    },
-    {
-      title: "Slot Id",
-      dataIndex: "timeSlot",
-      key: "timeSlot",
     },
     {
       title: "Update Status",

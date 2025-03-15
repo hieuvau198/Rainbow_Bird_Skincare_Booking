@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
+import { AiOutlineHome } from "react-icons/ai";
 import getBookByCusId from '../../../modules/Booking/getBookByCusId';
 import DecodeId from '../../../components/DecodeId';
 import axios from 'axios';
@@ -135,6 +137,17 @@ export default function SkincareServiceReview() {
 
   return (
     <div className="pt-10 pb-24 bg-slate-50">
+      {/* Navigation Bar */}
+      <div className="bg-slate-50 px-8 sticky top-0 z-0">
+        <div className="mx-auto flex items-center text-gray-600 text-sm">
+          <Link to="/" className="flex items-center gap-1 text-lime-300 hover:text-lime-500">
+            <AiOutlineHome className="text-lg" /> Home
+          </Link>
+          <span className="mx-2 text-gray-400"> / </span>
+          <span className="font-semibold text-gray-900">Ratings & Reviews</span>
+        </div>
+      </div>
+
       <div className="max-w-[1080px] mx-auto my-10 p-6 bg-white shadow-md rounded">
         <h2 className="text-3xl text-center font-bold mb-10 text-green-600">
           Review Your Skincare Service

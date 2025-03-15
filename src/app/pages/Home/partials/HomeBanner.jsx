@@ -48,6 +48,7 @@ const HomeBanner = () => {
             Welcome to Prestine Care, your dedicated hub for premium skincare solutions. We believe that healthy, glowing skin is the foundation of confidence and vitality. Our mission is to empower you with expert guidance, advanced treatments, and personalized care to reveal your natural beauty.            </p>
             <Link
               to="./therapists"
+              targer="_top"
               className="inline-block bg-white text-teal-600 font-medium py-3 px-6 rounded-md mt-6 hover:bg-gray-200 transition"
             >
               Find a Therapist

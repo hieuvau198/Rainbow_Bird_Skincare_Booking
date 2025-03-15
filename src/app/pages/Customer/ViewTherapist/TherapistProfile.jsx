@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
 import { MailOutlined, PhoneOutlined } from "@ant-design/icons";
+import { AiOutlineHome } from "react-icons/ai";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 import Loading from "../../../components/Loading/Loading";
+import getTheProById from "../../../modules/Home/getTheProById";
 
 const TherapistProfile = () => {
   const { id } = useParams();
@@ -20,21 +22,20 @@ const TherapistProfile = () => {
     });
   };
   useEffect(() => {
-    fetch(`https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/TherapistProfile/${id}/with-reference`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to fetch therapist profile");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setTherapist(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error.message);
-        setLoading(false);
-      });
+    const fetchTherapistProfile = async () => {
+      setLoading(true);
+      try {
+        const response = await getTheProById(id);
+        setTherapist(response);
+      } catch (error) {
+        setError(error);
+        console.error("Error fetching therapist profile:", error);
+        setError(error);
+      }
+      setLoading(false);
+    }
+
+    fetchTherapistProfile();
   }, [id]);
 
   if (loading) return <Loading />;
@@ -50,6 +51,19 @@ const TherapistProfile = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
+      {/* Navigation Bar */}
+      <div className="flex items-center text-gray-600 text-sm mb-4">
+        <Link to="/" className="flex items-center gap-1 text-lime-300 hover:text-lime-500">
+          <AiOutlineHome className="text-lg" /> Home
+        </Link>
+        <span className="mx-2 text-gray-400"> / </span>
+        <Link to="/therapists" className="text-lime-300 hover:text-lime-500">
+          Therapists
+        </Link>
+        <span className="mx-2 text-gray-400"> / </span>
+        <span className="font-semibold text-gray-900">Therapist Profile</span>
+      </div>
+
       <header className="mb-6">
         {/* Header content if needed */}
       </header>
@@ -107,11 +121,10 @@ const TherapistProfile = () => {
               ].map((tab) => (
                 <li
                   key={tab.key}
-                  className={`cursor-pointer px-6 py-3 ${
-                    activeTab === tab.key
+                  className={`cursor-pointer px-6 py-3 ${activeTab === tab.key
                       ? "border-b-2 border-green-500 text-green-500"
                       : "text-gray-600"
-                  }`}
+                    }`}
                   onClick={() => setActiveTab(tab.key)}
                 >
                   {tab.label}
@@ -175,7 +188,7 @@ const TherapistProfile = () => {
       </div>
 
       {/* Additional Sections */}
-      
+
     </div>
   );
 };

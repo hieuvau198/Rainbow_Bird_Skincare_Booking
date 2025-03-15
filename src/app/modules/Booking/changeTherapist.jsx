@@ -23,7 +23,7 @@ export default async function changeTherapist(bookingId, therapistId) {
     const data = await response.json();
     return data;
   } catch (error) {
-    message.error("Error updating therapist:", error);
+    message.error(error);
     throw error;
   }
 }

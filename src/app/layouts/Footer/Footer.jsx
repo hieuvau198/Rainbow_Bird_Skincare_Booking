@@ -1,127 +1,125 @@
 import React from "react";
+import {
+  AiTwotoneEnvironment,
+  AiTwotoneMail,
+  AiTwotonePhone,
+} from "react-icons/ai";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
+
   return (
-    <footer className="bg-gradient-to-l from-lime-200 via-sky-100 to-green-200 dark:bg-slate-600 text-gray-800 py-12 px-6 sm:px-12 lg:px-24">
-      <div className="container mx-auto px-6 flex flex-col lg:flex-row justify-center lg:justify-between items-center lg:items-start text-center lg:text-left">
-        <div className="mb-8 lg:mb-0 lg:w-1/3">
-          <h3 className="text-lg font-semibold text-black">Prestine Care</h3>
-          <p className="mt-2 text-md">
-            Enhancing beauty through trusted and professional skincare solutions.
+    <div className="relative bg-gradient-to-l from-lime-200 via-sky-100 to-green-200 dark:bg-slate-600 text-gray-800  px-6 sm:px-12 lg:px-24">
+      <div className="relative w-full h-80 mb-4">
+        <img
+          src="https://media.istockphoto.com/id/698126364/vi/anh/b%C3%A9-g%C3%A1i-%C4%91ang-%C4%91i%E1%BB%81u-tr%E1%BB%8B-x%C6%B0%C6%A1ng-h%C3%A0m.jpg?s=612x612&w=0&k=20&c=70eydRO11LoYsroufOlQqi2Ix2-vDLgg6jYgf9r5Sdk="
+          alt="Therapist Session"
+          className="w-full h-full object-cover rounded-lg shadow-lg"
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-70 flex flex-col justify-center items-center text-center text-white px-6">
+          <h2 className="text-3xl font-bold drop-shadow-md">
+            Glow With Confidence
+          </h2>
+          <p className="mt-2 max-w-2xl text-lg text-gray-300">
+            Imagine waking up to smooth, glowing skin every day.
+            Our customized treatments target dullness, acne, and aging, bringing out your skin’s best.
+            Start your journey today. For a healthy and radiant skin is just one session away!
+          </p>
+
+          <button
+            onClick={() => window.location.href = "/quiz"}
+            className="mt-4 px-6 py-3 bg-transparent border border-lime-300 text-white rounded-md hover:bg-lime-300 hover:text-black transition font-semibold"
+          >
+            Find Your Best Therapy
+          </button>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-6 py-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+        <div className="space-y-4">
+          <h3 className="text-2xl font-bold text-black flex items-center justify-center md:justify-start">
+            🌿 <span className="ml-2">Prestine Care</span>
+          </h3>
+          <p className="text-gray-700 leading-relaxed">
+            Your skin deserves the same level of care as the rest of your body.
+            At Prestine Care, we offer luxurious, nourishing treatments designed to refresh, rejuvenate, and restore your natural glow.
           </p>
         </div>
 
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 lg:w-2/3 text-center lg:text-left">
-          <div className="flex justify-around">
-            <div>
-              <h3 className="text-lg font-semibold text-black">SERVICES</h3>
-              <ul className="mt-2 space-y-2">
-                <li>
-                  <Link to="#" className="hover:text-gray-500">
-                    Facial Treatments
-                  </Link>
-                </li>
-                <li>
-                  <Link to="#" className="hover:text-gray-500">
-                    Acne Solutions
-                  </Link>
-                </li>
-                <li>
-                  <Link to="#" className="hover:text-gray-500">
-                    Anti-Aging Care
-                  </Link>
-                </li>
-                <li>
-                  <Link to="#" className="hover:text-gray-500">
-                    Skin Whitening
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-black">COMPANY</h3>
-              <ul className="mt-2 space-y-2">
-                <li>
-                  <Link to="/about" target="_top" className="hover:text-gray-500">
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link to="#" className="hover:text-gray-500">
-                    Contact
-                  </Link>
-                </li>
-                <li>
-                  <Link to="#" className="hover:text-gray-500">
-                    Careers
-                  </Link>
-                </li>
-                <li>
-                  <Link to="#" className="hover:text-gray-500">
-                    Partners
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="flex justify-around">
-            <div>
-              <h3 className="text-lg font-semibold text-black">LEGAL</h3>
-              <ul className="mt-2 space-y-2">
-                <li>
-                  <Link to="#" className="hover:text-gray-500">
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link to="#" className="hover:text-gray-500">
-                    Terms of Service
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-black">RESOURCES</h3>
-              <ul className="mt-2 space-y-2">
-                <li>
-                  <Link to="#" className="hover:text-gray-500">
-                    Blog Articles
-                  </Link>
-                </li>
-                <li>
-                  <Link to="#" className="hover:text-gray-500">
-                    Tutorials
-                  </Link>
-                </li>
-              </ul>
-            </div>
+        <div className="space-y-4">
+          <h3 className="text-lg font-bold text-black">SERVICES & RESOURCES</h3>
+          <ul className="mt-2 space-y-2">
+            <li>
+              <Link to="/" target="_top" className="hover:text-gray-500">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" target="_top" className="hover:text-gray-500">
+                About Us
+              </Link>
+            </li>
+            <li>
+              <Link to="/news" target="_top" className="hover:text-gray-500">
+                News
+              </Link>
+            </li>
+            <li>
+              <Link to="/therapists" target="_top" className="hover:text-gray-500">
+                Our Therapists
+              </Link>
+            </li>
+            <li>
+              <Link to="#" target="_top" className="hover:text-gray-500">
+                Community Support
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="text-lg font-bold text-black">CONTACT</h3>
+          <div className="space-y-3 text-gray-800">
+            <p className="flex items-center justify-center md:justify-start">
+              <AiTwotoneEnvironment className="mr-2 text-lg text-green-600" />
+              <span>
+                {" "}
+                <strong>Address:</strong> Tân Lập, Đông Hoà, Dĩ An, Bình Dương
+              </span>
+            </p>
+            <p className="flex items-center justify-center md:justify-start">
+              <AiTwotoneMail className="mr-2 text-lg text-blue-600" />
+              <span>
+                {" "}
+                <strong>Email:</strong>{" "}
+                <a
+                  href="mailto:hoanthes@gmail.com"
+                  className="text-blue-500 hover:underline"
+                >
+                  hoanthes@gmail.com
+                </a>
+              </span>
+            </p>
+            <p className="flex items-center justify-center md:justify-start">
+              <AiTwotonePhone className="mr-2 text-lg text-red-600" />
+              <span>
+                {" "}
+                <strong>Phone:</strong>{" "}
+                <a
+                  href="tel:0987682972"
+                  className="text-red-500 hover:underline"
+                >
+                  0987682972
+                </a>
+              </span>
+            </p>
           </div>
         </div>
       </div>
 
-      <div className="border-t border-gray-700 mt-8 pt-6 flex flex-col justify-center items-center">
-        <ul className="flex flex-wrap justify-center space-x-6 text-sm mt-4 md:mt-0">
-          <li>
-            <Link to="#" className="hover:text-gray-500">
-              Terms
-            </Link>
-          </li>
-          <li>
-            <Link to="#" className="hover:text-gray-500">
-              Privacy
-            </Link>
-          </li>
-          <li>
-            <Link to="#" className="hover:text-gray-500">
-              Cookies
-            </Link>
-          </li>
-        </ul>
-        <p className="text-xs text-gray-500 mt-4 md:mt-0 text-center">
-          © {new Date().getFullYear()} Skincare Hub. All rights reserved.
-        </p>
+      <div className="border-t border-gray-700 mt-4 py-3 text-center text-sm text-gray-500">
+        © {new Date().getFullYear()} PrestineCare. All rights reserved.
       </div>
-    </footer>
+    </div>
   );
 }

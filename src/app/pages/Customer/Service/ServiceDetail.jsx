@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { AiOutlineHome } from "react-icons/ai";
+import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
 import RelatedServices from "./partials/RelatedServices";
 import getAllService from "../../../modules/Admin/Service/getAllService";
 import getServiceDetail from "../../../modules/Admin/Service/getServiceDetail";
@@ -23,6 +24,7 @@ export default function ServiceDetail() {
   const [error, setError] = useState(null);
   const location = useLocation();
   const bookingDataFromState = location.state?.bookingData;
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (bookingDataFromState) {
@@ -59,6 +61,20 @@ export default function ServiceDetail() {
 
   return (
     <div className="px-24 bg-white min-h-screen w-full">
+      {/* Navigation Bar */}
+      <div className="flex items-center text-gray-600 text-sm mb-4">
+        <Link to="/" className="flex items-center gap-1 text-lime-300 hover:text-lime-500">
+          <AiOutlineHome className="text-lg" /> Home
+        </Link>
+        <span className="mx-2 text-gray-400"> / </span>
+        <Link to="/services" className="text-lime-300 hover:text-lime-500">
+          Services
+        </Link>
+        <span className="mx-2 text-gray-400"> / </span>
+        <span className="font-semibold text-gray-900">Service Details</span>
+      </div>
+
+
       {/* Nội dung dịch vụ */}
       <ContentSerDetail service={service} setIsModalOpen={setIsBookingModalOpen} />
 

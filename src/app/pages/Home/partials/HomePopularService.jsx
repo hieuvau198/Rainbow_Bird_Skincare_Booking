@@ -19,12 +19,13 @@ export default function HomePopularService() {
           service_name: service.serviceName || "Unknown Service",
           price: service.price ? `${service.price} ${service.currency || "USD"}` : "Price not available",
           description: service.description || "No description available.",
-          buyers: service.buyers || "0",
+          buyers: service.bookingNumber || "0",
           reviews: service.reviews || "No reviews",
           image: service.serviceImage || "https://via.placeholder.com/500",
           duration_minutes: service.durationMinutes ? `${service.durationMinutes} minutes` : "Duration not specified"
         }));
-        setServices(formattedServices.slice(0, 5));
+        const sortedServices = formattedServices.sort((a, b) => b.buyers - a.buyers);
+        setServices(sortedServices.slice(0, 5));
       } catch (err) {
         setError("Failed to fetch services");
       } finally {

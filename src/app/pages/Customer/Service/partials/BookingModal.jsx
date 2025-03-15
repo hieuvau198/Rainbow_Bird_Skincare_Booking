@@ -41,6 +41,19 @@ export default function BookingModal({ isOpen, onClose, serviceName, serviceId, 
     });
   };
 
+  const handleSkipTherapist = () => {
+    onContinue({
+      date: selectedDate.format("YYYY-MM-DD"),
+      timeSlot: selectedTime,
+      therapistName: "No Therapist Assigned",
+      service: serviceName,
+      slotId: selectedSlotId,
+      serviceId: serviceId,
+      therapistId: null,
+    });
+  };
+  
+
   useEffect(() => {
     const fetchWorkingDays = async () => {
       try {
@@ -237,6 +250,12 @@ export default function BookingModal({ isOpen, onClose, serviceName, serviceId, 
                     </button>
                   ))}
                 </div>
+                <button
+                  className="mt-4 bg-lime-500 text-white px-4 py-2 rounded-md w-full hover:bg-lime-600"
+                  onClick={handleSkipTherapist}
+                >
+                  Skip Therapist
+                </button>
 
                 <button
                   className="mt-4 bg-lime-500 text-white px-4 py-2 rounded-md w-full hover:bg-lime-600"

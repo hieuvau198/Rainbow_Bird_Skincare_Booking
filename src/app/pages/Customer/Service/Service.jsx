@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AiOutlineHome } from "react-icons/ai";
 import MainContent from "./partials/MainService";
 import SidebarService from "./partials/SidebarService";
 import Loading from "../../../components/Loading/Loading";
+import getAllCategory from "../../../modules/Admin/Service/getAllCategory";
+import getAllService from "../../../modules/Admin/Service/getAllService";
 
 const url3 = "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 
@@ -14,19 +18,14 @@ export default function Service() {
   const [maxPrice, setMaxPrice] = useState("");
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch all services
-        const serviceResponse = await fetch(
-          "https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Service"
-        );
-        if (!serviceResponse.ok) throw new Error("Failed to fetch services");
-        const servicesData = await serviceResponse.json();
+        const serviceResponse = await getAllService();
 
-        // Format services
-        const formattedServices = servicesData.map((service) => ({
+        const formattedServices = serviceResponse.map((service) => ({
           service_id: service.serviceId || "N/A",
           service_name: service.serviceName || "Unknown Service",
           price: service.price ? `${service.price} ${service.currency || "VND"}` : "Price not available",
@@ -41,14 +40,9 @@ export default function Service() {
         setServices(formattedServices);
         setFilteredServices(formattedServices);
 
-        // Fetch categories
-        const categoryResponse = await fetch(
-          "https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/ServiceCategory"
-        );
-        if (!categoryResponse.ok) throw new Error("Failed to fetch categories");
-        const categoryData = await categoryResponse.json();
+        const categoryResponse = await getAllCategory();
 
-        setCategories(categoryData);
+        setCategories(categoryResponse);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -58,7 +52,6 @@ export default function Service() {
     fetchData();
   }, []);
 
-  // ✅ Apply filters when selectedCategory or price changes
   useEffect(() => {
     applyFilters();
   }, [selectedCategory, minPrice, maxPrice]);
@@ -90,17 +83,23 @@ export default function Service() {
 
   return (
     <div className="px-24 bg-white min-h-screen grid grid-cols-1 gap-4 w-full">
+
+      {/* Navigation Bar */}
+      <div className="flex items-center text-gray-600 text-sm mb-0">
+        {/* Home Icon */}
+        <Link to="/" className="flex items-center gap-1 text-lime-300 hover:text-lime-500">
+          <AiOutlineHome className="text-lg" /> Home
+        </Link>
+        <span className="mx-2 text-gray-400"> / </span>
+
+        {/* Current Page */}
+        <span className="font-semibold text-gray-900">Services</span>
+      </div>
+
       <div
         className="h-[400px] my-2 bg-center bg-cover bg-no-repeat bg-local rounded-lg shadow-lg"
         style={{ backgroundImage: `url(${url3})` }}
       ></div>
-
-      {/* ✅ Updated Category Selector
-      <CategorySelect
-        categories={categories}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-      /> */}
 
       <div className="w-full grid grid-cols-5 gap-4">
         <SidebarService

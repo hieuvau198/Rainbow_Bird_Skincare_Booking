@@ -32,7 +32,7 @@ export default function ScheduleBooking() {
         {selectedBooking ? (
           <BookingDetail booking={selectedBooking} />
         ) : (
-          <></>
+          null
         )}
       </div>
     </div>

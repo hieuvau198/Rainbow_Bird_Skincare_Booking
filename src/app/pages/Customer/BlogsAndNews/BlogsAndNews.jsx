@@ -1,8 +1,7 @@
+import { Input, message, Pagination, Radio } from "antd";
 import React, { useEffect, useState } from "react";
-import { message, Radio, Input, Pagination } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
-import Loading from "../../../components/Loading";
 import BlogsCard from "../../../components/BlogsCard";
+import Loading from "../../../components/Loading";
 import NewsCard from "../../../components/NewsCard";
 import getBlog from "../../../modules/NewsAndBlog/getBlog";
 import getNews from "../../../modules/NewsAndBlog/getNews";
@@ -63,9 +62,9 @@ export default function NewsAndBlogs() {
   // If still loading, show spinner
   if (loadingBlogs || loadingNews) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <LoadingOutlined style={{ fontSize: 40 }} spin />
-      </div>
+      <>
+        <Loading />
+      </>
     );
   }
 
@@ -85,9 +84,7 @@ export default function NewsAndBlogs() {
 
   // Filter & sort for News
   const filteredNews = newsList
-    // Search by title
     .filter((n) => n.title.toLowerCase().includes(searchQuery.toLowerCase()))
-    // Sort by date (publishedAt)
     .sort((a, b) => {
       const dateA = new Date(a.publishedAt);
       const dateB = new Date(b.publishedAt);
@@ -109,15 +106,11 @@ export default function NewsAndBlogs() {
   const newsIndexOfFirst = newsIndexOfLast - pageSize;
   const currentNews = filteredNews.slice(newsIndexOfFirst, newsIndexOfLast);
 
-  // ---------------------
-  // Render
-  // ---------------------
   return (
     <div className="min-h-screen bg-white flex">
       {/* Sidebar using ViewTherapist styling */}
-      <div className="hidden lg:block ml-4">
+      {/* <div className="hidden lg:block ml-4">
         <div className="sticky top-4 bg-slate-200 shadow rounded-lg p-4 w-[180px] ml-20 mt-6 mb-10">
-          {/* Search by title */}
           <div className="mb-6">
             <p className="font-medium mb-2">Search:</p>
             <Input
@@ -130,7 +123,7 @@ export default function NewsAndBlogs() {
               }}
             />
           </div>
-          {/* Filter by type */}
+
           <div className="mb-6">
               <p className="font-medium mb-2">Type:</p>
                <Radio.Group
@@ -147,8 +140,6 @@ export default function NewsAndBlogs() {
           </Radio.Group>
         </div>
 
-
-          {/* Sort by date */}
           <div className="mb-6">
             <p className="font-medium mb-2">Sort by:</p>
             <Radio.Group
@@ -165,15 +156,13 @@ export default function NewsAndBlogs() {
           </div>
 
         </div>
-      </div>
+      </div> */}
 
-      {/* Main Content */}
-      <div className="flex-1 p-6 mr-16 -ml-2">
+      <div className="flex-1 p-6 mx-16 ">
 
-        {/* Blogs Section (only show if filterType !== "news") */}
         {filterType !== "news" && (
           <section className="mb-10">
-            {/* Card Container for Blogs */}
+
             <div className="bg-slate-200 shadow-lg rounded-lg p-6">
               <h3 className="text-3xl font-bold mb-4 text-center">Blogs</h3>
               {filteredBlogs.length === 0 ? (
@@ -201,10 +190,8 @@ export default function NewsAndBlogs() {
           </section>
         )}
 
-        {/* News Section (only show if filterType !== "blogs") */}
         {filterType !== "blogs" && (
           <section>
-            {/* Card Container for News */}
             <div className="bg-slate-200 shadow-lg rounded-lg p-6">
               <h3 className="text-3xl font-bold mb-4 text-center">News</h3>
               {filteredNews.length === 0 ? (

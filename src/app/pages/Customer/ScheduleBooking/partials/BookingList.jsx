@@ -11,6 +11,8 @@ const BookingList = ({ bookings, onViewDetail }) => {
       key: "bookingDate",
       width: 150,
       render: (date) => dayjs(date).format("DD-MM-YYYY"),
+      sorter: (a, b) => dayjs(a.bookingDate).unix() - dayjs(b.bookingDate).unix(),
+      defaultSortOrder: "ascend",
     },
     {
       title: "Service Name",

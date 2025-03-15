@@ -1,10 +1,10 @@
 import { Button, Descriptions, Modal, Select, Space, Tag, message } from "antd";
 import React, { useEffect, useState } from "react";
 import StatusColor from "../../../../components/StatusColor";
-import getTherapist from "../../../../modules/Admin/Employee/getTherapist";
 import getTherapistById from "../../../../modules/Admin/Employee/getTherapistById";
+import getTheBySlotId from "../../../../modules/Admin/TimeSlot/getTheBySlotId";
+import getTimeSlotById from "../../../../modules/Admin/TimeSlot/getTimeSlotById";
 import changeTherapist from "../../../../modules/Booking/changeTherapist";
-import getServiceDetail from "../../../../modules/Admin/Service/getServiceDetail";
 
 export default function ViewBooking({ booking, onClose }) {
   if (!booking) return null;
@@ -13,11 +13,12 @@ export default function ViewBooking({ booking, onClose }) {
   const [therapistOptions, setTherapistOptions] = useState([]);
   const [selectedTherapist, setSelectedTherapist] = useState(null);
   const [theName, setTherapistName] = useState(null);
-  // const [serviceName, setServiceName] = useState(null);
+  const [timeSlot, setTimeSlot] = useState({ startTime: "", endTime: "" });
+  const [error, setError] = useState("");
 
   const loadTherapists = async () => {
     try {
-      const response = await getTherapist();
+      const response = await getTheBySlotId(booking.slotId);
       if (Array.isArray(response) && response.length > 0) {
         const options = response.filter(
           (therapist) => therapist.therapistId !== booking.therapistId
@@ -25,25 +26,12 @@ export default function ViewBooking({ booking, onClose }) {
         setTherapistOptions(options);
       }
     } catch (error) {
-      message.error("Failed to fetch therapist list");
       console.error("Error fetching therapist list:", error);
     }
   };
 
-  // useEffect(() => {
-  //   const serviceName = async () => {
-  //     try {
-  //       const response = await getServiceDetail(booking.serviceId);
-  //       setServiceName(response.serviceName);
-  //     } catch (error) {
-  //       console.error("Error fetching therapist name:", error);
-  //     }
-  //   };
-  //   serviceName();
-  // }, [booking.serviceId]);
-
   useEffect(() => {
-    const therapistName = async () => {
+    const fetchTherapistName = async () => {
       try {
         const response = await getTherapistById(booking.therapistId);
         setTherapistName(response.user.username);
@@ -51,9 +39,20 @@ export default function ViewBooking({ booking, onClose }) {
         console.error("Error fetching therapist name:", error);
       }
     };
-    therapistName();
+    fetchTherapistName();
   }, [booking.therapistId]);
 
+  useEffect(() => {
+    const fetchTimeSlot = async () => {
+      try {
+        const response = await getTimeSlotById(booking.slotId);
+        setTimeSlot({ startTime: response.startTime, endTime: response.endTime });
+      } catch (error) {
+        console.error("Error fetching time slot:", error);
+      }
+    };
+    fetchTimeSlot();
+  }, [booking.slotId]);
 
   const handleEditTherapist = () => {
     setEditingTherapist(true);
@@ -66,21 +65,20 @@ export default function ViewBooking({ booking, onClose }) {
       return;
     }
     try {
-      await changeTherapist(booking.bookingId, selectedTherapist);
-      message.success("Therapist updated successfully");
+      const data = await changeTherapist(booking.bookingId, selectedTherapist);
       booking.therapistId = selectedTherapist;
       setEditingTherapist(false);
-    } catch (error) {
-      message.error("Failed to update therapist");
-      console.error("Error updating therapist:", error);
+      setError(data.message);
+      message.success(data.message);
+    } catch (e) {
+      message.error(e.message);
+      console.log("error: ", e);
     }
   };
 
   return (
     <Modal
-      title={
-        <div className="text-center text-2xl font-bold">Booking Details</div>
-      }
+      title={<div className="text-center text-2xl font-bold">Booking Details</div>}
       open
       onCancel={onClose}
       width={700}
@@ -92,13 +90,12 @@ export default function ViewBooking({ booking, onClose }) {
     >
       <Descriptions bordered size="small" column={1}>
         <Descriptions.Item label="ID">{booking.bookingId}</Descriptions.Item>
-        <Descriptions.Item label="Customer Name">
-          {booking.customerName}
-        </Descriptions.Item>
-        <Descriptions.Item label="Service Id">{booking.serviceId}</Descriptions.Item>
+        <Descriptions.Item label="Customer Name">{booking.customerName}</Descriptions.Item>
+        <Descriptions.Item label="Service Name">{booking.serviceName}</Descriptions.Item>
         <Descriptions.Item label="Booking Date">{booking.bookingDate}</Descriptions.Item>
-        <Descriptions.Item label="Slot Id">{booking.slotId}</Descriptions.Item>
-        <Descriptions.Item label="Therapist Id">
+        <Descriptions.Item label="Start Time">{timeSlot.startTime || "N/A"}</Descriptions.Item>
+        <Descriptions.Item label="End Time">{timeSlot.endTime || "N/A"}</Descriptions.Item>
+        <Descriptions.Item label="Therapist">
           {editingTherapist ? (
             <Space>
               <Select
@@ -108,7 +105,7 @@ export default function ViewBooking({ booking, onClose }) {
               >
                 {therapistOptions.map((therapist) => (
                   <Select.Option key={therapist.therapistId} value={therapist.therapistId}>
-                    ID: {therapist.therapistId} - {therapist.user.fullName}
+                    ID: {therapist.therapistId} - {therapist.therapistName}
                   </Select.Option>
                 ))}
               </Select>
@@ -129,12 +126,8 @@ export default function ViewBooking({ booking, onClose }) {
         <Descriptions.Item label="Status">
           <Tag color={StatusColor(booking.status)}>{booking.status}</Tag>
         </Descriptions.Item>
-        <Descriptions.Item label="Customer Phone">
-          {booking.customerPhone}
-        </Descriptions.Item>
-        <Descriptions.Item label="Customer Email">
-          {booking.customerEmail}
-        </Descriptions.Item>
+        <Descriptions.Item label="Customer Phone">{booking.customerPhone}</Descriptions.Item>
+        <Descriptions.Item label="Customer Email">{booking.customerEmail}</Descriptions.Item>
       </Descriptions>
     </Modal>
   );

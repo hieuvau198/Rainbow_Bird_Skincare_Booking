@@ -38,7 +38,7 @@ export default function ScrollTop({ scrollContainerRef }) {
                     className="fixed w-[55px] h-[55px] bottom-6 right-7 bg-lime-500 text-white 
                         p-3 rounded-full shadow-xl transition duration-300 
                         hover:bg-lime-600 dark:bg-gray-600 dark:border dark:border-white 
-                        dark:hover:bg-slate-600 dark:hover:text-white"
+                        dark:hover:bg-slate-600 dark:hover:text-white z-[999]"
                 >
                     <IoMdArrowRoundUp className="w-full h-full" />
                 </button>
