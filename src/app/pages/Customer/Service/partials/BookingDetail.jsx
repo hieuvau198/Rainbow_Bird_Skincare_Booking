@@ -151,7 +151,7 @@ export default function BookingDetails({ isOpen, onClose, bookingData, onConfirm
         
         <p><strong>Date:</strong> {String(bookingData.date)}</p>
         <p><strong>Time Slot:</strong> {String(bookingData.timeSlot)}</p>
-        <p><strong>Therapist:</strong> {String(bookingData.therapistId ? bookingData.therapistName : "Pending Assignment")}</p>
+        <p><strong>Therapist:</strong> {String(bookingData.therapistId ? bookingData.therapistName : "A Therapist Will Be Assigned Soon")}</p>
         <p><strong>Service:</strong> {String(bookingData.service)}</p>
 
         <div className="mb-4">
