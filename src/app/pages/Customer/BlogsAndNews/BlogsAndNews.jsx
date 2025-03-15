@@ -1,8 +1,7 @@
+import { Input, message, Pagination, Radio } from "antd";
 import React, { useEffect, useState } from "react";
-import { message, Radio, Input, Pagination } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
-import Loading from "../../../components/Loading";
 import BlogsCard from "../../../components/BlogsCard";
+import Loading from "../../../components/Loading";
 import NewsCard from "../../../components/NewsCard";
 import getBlog from "../../../modules/NewsAndBlog/getBlog";
 import getNews from "../../../modules/NewsAndBlog/getNews";
@@ -63,9 +62,9 @@ export default function NewsAndBlogs() {
   // If still loading, show spinner
   if (loadingBlogs || loadingNews) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <LoadingOutlined style={{ fontSize: 40 }} spin />
-      </div>
+      <>
+        <Loading />
+      </>
     );
   }
 
