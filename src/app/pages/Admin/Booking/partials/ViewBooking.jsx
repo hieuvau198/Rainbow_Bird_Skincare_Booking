@@ -1,11 +1,10 @@
 import { Button, Descriptions, Modal, Select, Space, Tag, message } from "antd";
 import React, { useEffect, useState } from "react";
 import StatusColor from "../../../../components/StatusColor";
-import getTherapist from "../../../../modules/Admin/Employee/getTherapist";
 import getTherapistById from "../../../../modules/Admin/Employee/getTherapistById";
-import changeTherapist from "../../../../modules/Booking/changeTherapist";
-import getServiceDetail from "../../../../modules/Admin/Service/getServiceDetail";
+import getTheBySlotId from "../../../../modules/Admin/TimeSlot/getTheBySlotId";
 import getTimeSlotById from "../../../../modules/Admin/TimeSlot/getTimeSlotById";
+import changeTherapist from "../../../../modules/Booking/changeTherapist";
 
 export default function ViewBooking({ booking, onClose }) {
   if (!booking) return null;
@@ -15,6 +14,21 @@ export default function ViewBooking({ booking, onClose }) {
   const [selectedTherapist, setSelectedTherapist] = useState(null);
   const [theName, setTherapistName] = useState(null);
   const [timeSlot, setTimeSlot] = useState({ startTime: "", endTime: "" });
+  const [error, setError] = useState("");
+
+  const loadTherapists = async () => {
+    try {
+      const response = await getTheBySlotId(booking.slotId);
+      if (Array.isArray(response) && response.length > 0) {
+        const options = response.filter(
+          (therapist) => therapist.therapistId !== booking.therapistId
+        );
+        setTherapistOptions(options);
+      }
+    } catch (error) {
+      console.error("Error fetching therapist list:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchTherapistName = async () => {
@@ -51,13 +65,14 @@ export default function ViewBooking({ booking, onClose }) {
       return;
     }
     try {
-      await changeTherapist(booking.bookingId, selectedTherapist);
-      message.success("Therapist updated successfully");
+      const data = await changeTherapist(booking.bookingId, selectedTherapist);
       booking.therapistId = selectedTherapist;
       setEditingTherapist(false);
-    } catch (error) {
-      message.error("Failed to update therapist");
-      console.error("Error updating therapist:", error);
+      setError(data.message);
+      message.success(data.message);
+    } catch (e) {
+      message.error(e.message);
+      console.log("error: ", e);
     }
   };
 
@@ -80,7 +95,7 @@ export default function ViewBooking({ booking, onClose }) {
         <Descriptions.Item label="Booking Date">{booking.bookingDate}</Descriptions.Item>
         <Descriptions.Item label="Start Time">{timeSlot.startTime || "N/A"}</Descriptions.Item>
         <Descriptions.Item label="End Time">{timeSlot.endTime || "N/A"}</Descriptions.Item>
-        <Descriptions.Item label="Therapist Id">
+        <Descriptions.Item label="Therapist">
           {editingTherapist ? (
             <Space>
               <Select
@@ -90,7 +105,7 @@ export default function ViewBooking({ booking, onClose }) {
               >
                 {therapistOptions.map((therapist) => (
                   <Select.Option key={therapist.therapistId} value={therapist.therapistId}>
-                    ID: {therapist.therapistId} - {therapist.user.fullName}
+                    ID: {therapist.therapistId} - {therapist.therapistName}
                   </Select.Option>
                 ))}
               </Select>
