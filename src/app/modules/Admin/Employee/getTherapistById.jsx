@@ -20,7 +20,7 @@ export default async function getTherapistById(id) {
     const data = await response.json();
     return data;
   } catch (error) {
-    message.error("Failed to fetch. Please try again.");
+    // message.error("Failed to fetch. Please try again.");
     return [];
   }
 }
