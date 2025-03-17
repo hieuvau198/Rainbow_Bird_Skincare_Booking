@@ -4,24 +4,30 @@ import UserRole from "../../../../../enums/userRole";
 import DecodeRole from "../../../../components/DecodeRole";
 import Loading from "../../../../components/Loading";
 import editService from "../../../../modules/Admin/Service/editService";
-import renderDetails from "./ServiceDetailPartials/RenderDetails";
+import RenderDetails from "./ServiceDetailPartials/RenderDetails";
 import RenderEditForm from "./ServiceDetailPartials/RenderEditForm";
+import getServiceDetail from "../../../../modules/Admin/Service/getServiceDetail";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export default function ServiceDetails({ open, onClose, service, onServiceUpdate }) {
+  // Sử dụng localService cho chế độ edit
   const [localService, setLocalService] = useState(service);
   const [isEdit, setIsEdit] = useState(false);
   const [isReloading, setIsReloading] = useState(false);
   const [uploadedImageFile, setUploadedImageFile] = useState(null);
   const [uploadedImagePreview, setUploadedImagePreview] = useState(null);
+  // reloadKey được dùng để buộc RenderDetails re-fetch dữ liệu khi có thay đổi
+  const [reloadKey, setReloadKey] = useState(0);
   const userRole = DecodeRole();
   const [form] = Form.useForm();
 
+  // Cập nhật localService khi prop service thay đổi
   useEffect(() => {
     setLocalService(service);
   }, [service]);
 
+  // Khi chuyển sang chế độ edit, reset form với dữ liệu hiện tại của localService
   useEffect(() => {
     if (localService && open && isEdit) {
       form.resetFields();
@@ -41,15 +47,11 @@ export default function ServiceDetails({ open, onClose, service, onServiceUpdate
     }
   }, [localService, open, isEdit, form]);
 
+  // Hàm này dùng để fetch lại chi tiết dịch vụ sau khi chỉnh sửa
   const fetchServiceDetail = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/Service/${service.serviceId}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch service detail");
-      }
-      const data = await response.json();
+      const data = await getServiceDetail(service.serviceId);
       setLocalService(data);
-      return data;
     } catch (error) {
       message.error("Failed to fetch updated service detail!");
       return null;
@@ -91,8 +93,8 @@ export default function ServiceDetails({ open, onClose, service, onServiceUpdate
         message.error("No image available for Service Image!");
         return;
       }
-      
-      // For debugging: log each form data entry
+
+      // Debug: log các entry của formData
       for (let pair of formData.entries()) {
         console.log(pair[0] + ": ", pair[1]);
       }
@@ -105,6 +107,8 @@ export default function ServiceDetails({ open, onClose, service, onServiceUpdate
       if (updatedService && typeof onServiceUpdate === "function") {
         onServiceUpdate(updatedService);
       }
+      // Tăng reloadKey để RenderDetails tự re-fetch dữ liệu
+      setReloadKey(prev => prev + 1);
     } catch (error) {
       console.error("Error saving edit:", error);
       message.error("Failed to update service!");
@@ -144,7 +148,9 @@ export default function ServiceDetails({ open, onClose, service, onServiceUpdate
         </div>
       }
     >
-      {isReloading ? <Loading /> : (isEdit ? (
+      {isReloading ? (
+        <Loading />
+      ) : isEdit ? (
         <RenderEditForm
           localService={localService}
           form={form}
@@ -153,8 +159,9 @@ export default function ServiceDetails({ open, onClose, service, onServiceUpdate
           setUploadedImagePreview={setUploadedImagePreview}
         />
       ) : (
-        renderDetails(localService)
-      ))}
+        // Chỉ truyền vào serviceId và reloadKey để RenderDetails tự gọi API lấy dữ liệu chi tiết
+        <RenderDetails serviceId={service?.serviceId} reloadKey={reloadKey} />
+      )}
     </Modal>
   );
 }

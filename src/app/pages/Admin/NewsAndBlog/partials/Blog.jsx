@@ -126,11 +126,11 @@ const Blog = () => {
           <Button color="primary" variant="solid" type="link" onClick={() => viewDetails(record)}>
             View detail
           </Button>
-          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
+          {/* {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
             <Button color="red" variant="solid" type="link" danger onClick={() => showDeleteConfirm(record)}>
               Delete
             </Button>
-          )}
+          )} */}
         </Space>
       ),
     },

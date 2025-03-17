@@ -13,13 +13,18 @@ export default function HomeBestTherapists() {
       setLoading(true);
       try {
         const response = await getTherapist();
-        setTherapists(response);
+        const sortedTherapists = response.sort((a, b) => {
+          const ratingA = a.therapist?.rating || 0;
+          const ratingB = b.therapist?.rating || 0;
+          return ratingB - ratingA;
+        });
+        setTherapists(sortedTherapists);
       } catch (error) {
         setError(error);
         console.error("Error fetching therapist profile:", error);
       }
       setLoading(false);
-    }
+    };
 
     fetchTherapist();
   }, []);
@@ -43,8 +48,8 @@ export default function HomeBestTherapists() {
                   className="w-full h-52 object-cover object-top rounded-md mb-4"
                 />
                 <h2 className="text-lg font-semibold text-gray-700">{therapist.therapist.user.fullName}</h2>
-                <p className="text-sm text-gray-500">Available: {therapist.isAvailable ? 'Yes' : 'No'}</p>
-                <p className="text-sm text-gray-500">Schedule: {therapist.schedule}</p>
+                <p className="text-sm text-gray-500">Available: {therapist.therapist.isAvailable ? 'Yes' : 'No'}</p>
+                <p className="text-sm text-gray-500">Schedule: {therapist.therapist.schedule}</p>
                 <p className="text-sm text-yellow-500 font-medium">
                   Rating: {therapist.therapist.rating !== null ? therapist.therapist.rating : 'N/A'}
                 </p>

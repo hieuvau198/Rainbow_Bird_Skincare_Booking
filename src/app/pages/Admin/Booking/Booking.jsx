@@ -140,7 +140,7 @@ export default function Booking() {
           >
             View details
           </Button>
-          {userRole === UserRole.ADMIN && (
+          {/* {userRole === UserRole.ADMIN && (
             <Button
               color="red"
               variant="solid"
@@ -150,7 +150,7 @@ export default function Booking() {
             >
               Delete
             </Button>
-          )}
+          )} */}
         </Space>
       ),
     },

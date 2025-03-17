@@ -7,7 +7,7 @@ const AdminLayout = () => {
       <AdminSidebar />
       <div className="admin-layout flex-1 lg:pl-64 min-h-screen bg-slate-200">
           {/* <AdminHeader /> */}
-          <div className="custom-scrollbar-admin">
+          <div>
             <Outlet />
           </div>
       </div>
