@@ -116,8 +116,8 @@ export default function HomePopularService() {
 
                   {/* Nút xem chi tiết */}
                   <div className="mt-auto">
-                    <button className="w-full bg-lime-600 text-white py-2 rounded-md text-sm hover:bg-lime-700 transition">
-                      Book Now
+                    <button target="_top" className="w-full bg-lime-600 text-white py-2 rounded-md text-sm hover:bg-lime-700 transition">
+                      View Details
                     </button>
                   </div>
                 </Link>
