@@ -1,34 +1,45 @@
 import React, { useEffect, useState } from "react";
-import {
-  ClockCircleOutlined,
-  DollarOutlined,
-  IdcardOutlined,
-  InfoCircleOutlined,
-  ProfileOutlined,
-} from "@ant-design/icons";
+import Loading from "../../../../../components/Loading";
+import getServiceDetail from "../../../../../modules/Admin/Service/getServiceDetail";
+import getCategoryById from "../../../../../modules/Admin/Service/getCategoryById";
 import MDEditor from "@uiw/react-md-editor";
 import { Tag } from "antd";
-import Loading from "../../../../../components/Loading";
-import getCategoryById from "../../../../../modules/Admin/Service/getCategoryById";
+import { ClockCircleOutlined, DollarOutlined, IdcardOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { TbCategory } from "react-icons/tb";
 
-const renderDetails = (localService) => {
+const RenderDetails = ({ serviceId }) => {
+  const [service, setService] = useState(null);
   const [categoryName, setCategoryName] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (localService && localService.categoryId) {
-      getCategoryById(localService.categoryId)
+    if (serviceId) {
+      setLoading(true);
+      getServiceDetail(serviceId)
         .then((data) => {
-          setCategoryName(data.categoryName);
+          setService(data);
+          if (data.categoryId) {
+            getCategoryById(data.categoryId)
+              .then((catData) => {
+                setCategoryName(catData.categoryName);
+              })
+              .catch(() => setCategoryName("N/A"));
+          }
         })
         .catch((err) => {
-          console.error("Error fetching category", err);
-          setCategoryName("N/A");
+          console.error("Error fetching service details:", err);
+          setError(err);
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
-  }, [localService]);
+  }, [serviceId]);
 
-  if (!localService) return <Loading />;
+  if (loading) return <Loading />;
+  if (error) return <div>Error fetching service details.</div>;
+  if (!service) return <div>No service details available.</div>;
 
   return (
     <>
@@ -36,40 +47,40 @@ const renderDetails = (localService) => {
         <div className="flex justify-center items-center">
           <img
             src={
-              localService.serviceImage ||
-              `https://ui-avatars.com/api/?name=${localService.serviceName}`
+              service.serviceImage ||
+              `https://ui-avatars.com/api/?name=${service.serviceName}`
             }
             alt="Service"
             className="w-60 h-60 object-cover rounded-lg shadow-md"
           />
         </div>
         <div className="flex flex-col justify-center space-y-3">
-        <div className="flex items-center">
-            <span className="font-bold text-xl">{localService.serviceName}</span>
+          <div className="flex items-center">
+            <span className="font-bold text-xl">{service.serviceName}</span>
           </div>
           <div className="flex items-center">
             <span className="font-bold w-24 flex items-center">
               <IdcardOutlined className="mr-1" /> ID:
             </span>
-            <span className="ml-4">{localService.serviceId}</span>
+            <span className="ml-4">{service.serviceId}</span>
           </div>
           <div className="flex items-center">
             <span className="font-bold w-24 flex items-center">
               <DollarOutlined className="mr-1" /> Price:
             </span>
             <span className="ml-4">
-              {localService.price} {localService.currency}
+              {service.price} {service.currency}
             </span>
           </div>
           <div className="flex items-center">
             <span className="font-bold w-24 flex items-center">
               <ClockCircleOutlined className="mr-1" /> Duration:
             </span>
-            <span className="ml-4">{localService.durationMinutes} minutes</span>
+            <span className="ml-4">{service.durationMinutes} minutes</span>
           </div>
           <div className="flex items-center">
             <span className="font-bold w-24 flex items-center">
-              <TbCategory className="mr-1" />Category:
+              <TbCategory className="mr-1" /> Category:
             </span>
             <span className="ml-4">{categoryName || "N/A"}</span>
           </div>
@@ -78,8 +89,8 @@ const renderDetails = (localService) => {
               <InfoCircleOutlined className="mr-1" /> Status:
             </span>
             <span className="ml-4">
-              <Tag color={localService.isActive ? "green" : "volcano"}>
-                {localService.isActive ? "Available" : "Unavailable"}
+              <Tag color={service.isActive ? "green" : "volcano"}>
+                {service.isActive ? "Available" : "Unavailable"}
               </Tag>
             </span>
           </div>
@@ -89,9 +100,7 @@ const renderDetails = (localService) => {
         <h3 className="text-lg font-semibold mb-2">Description</h3>
         <div className="p-4">
           <MDEditor.Markdown
-            source={
-              localService.description || "No description available"
-            }
+            source={service.description || "No description available"}
             data-color-mode="light"
           />
         </div>
@@ -100,4 +109,4 @@ const renderDetails = (localService) => {
   );
 };
 
-export default renderDetails;
+export default RenderDetails;

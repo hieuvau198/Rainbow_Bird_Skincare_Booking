@@ -78,7 +78,8 @@ export default function Service() {
 
   const handleViewDetails = async (id) => {
     try {
-      await getServiceDetail(id, setSelectedService);
+      const data = await getServiceDetail(id);
+      setSelectedService(data);
       setIsDetailModalVisible(true);
     } catch (error) {
       console.error("Error fetching service details:", error);
@@ -166,7 +167,7 @@ export default function Service() {
           >
             View details
           </Button>
-          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
+          {/* {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
             <Button
               color="red"
               variant="solid"
@@ -176,7 +177,7 @@ export default function Service() {
             >
               Delete
             </Button>
-          )}
+          )} */}
         </Space>
       ),
     },

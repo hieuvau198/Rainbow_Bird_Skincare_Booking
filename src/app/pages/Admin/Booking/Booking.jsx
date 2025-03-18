@@ -109,6 +109,7 @@ export default function Booking() {
       title: "Booking Date",
       dataIndex: "bookingDate",
       key: "bookingDate",
+      width: 120,
       render: (date) => <span>{new Date(date).toLocaleDateString()}</span>,
     },
     {
@@ -139,7 +140,7 @@ export default function Booking() {
           >
             View details
           </Button>
-          {userRole === UserRole.ADMIN && (
+          {/* {userRole === UserRole.ADMIN && (
             <Button
               color="red"
               variant="solid"
@@ -149,7 +150,7 @@ export default function Booking() {
             >
               Delete
             </Button>
-          )}
+          )} */}
         </Space>
       ),
     },

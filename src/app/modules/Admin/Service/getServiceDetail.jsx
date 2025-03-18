@@ -1,6 +1,6 @@
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-const getServiceDetail = async (id, setService) => {
+const getServiceDetail = async (id) => {
     
     try {
         const response = await fetch(`${API_BASE_URL}/api/Service/${id}`, {
@@ -13,7 +13,7 @@ const getServiceDetail = async (id, setService) => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        setService(data);
+        // setService(data);
         return data;
     } catch (error) {
         console.error("Error fetching service details:", error);

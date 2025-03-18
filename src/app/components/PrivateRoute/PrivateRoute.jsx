@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import React from "react";
 import { Navigate } from "react-router-dom";
 import DecodeRole from "../DecodeRole";
+import UserRole from "../../../enums/userRole";
 
 export default function PrivateRoute({ allowedRoles, children }) {
   const accessToken = Cookies.get("__atok");

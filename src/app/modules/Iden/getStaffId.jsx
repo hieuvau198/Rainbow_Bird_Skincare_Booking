@@ -27,7 +27,7 @@ export default async function getStaffId(id) {
         SaveId(data.staffId, "__StaIden");
         return data;
     } catch (error) {
-        message.error("Failed to fetch. Please try again.");
+        // message.error("Failed to fetch. Please try again.");
         return [];
     }
 }

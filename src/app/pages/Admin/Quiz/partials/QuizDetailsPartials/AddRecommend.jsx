@@ -5,14 +5,18 @@ import getAllService from "../../../../../modules/Admin/Service/getAllService";
 
 const { Option } = Select;
 
-const AddRecommend = ({ open, onClose, quizId, onAdded }) => {
+const AddRecommend = ({ open, onClose, quizId, onAdded, existingRecommendations = [] }) => {
   const [form] = Form.useForm();
   const [services, setServices] = useState([]);
 
   const loadServices = async () => {
     try {
       const serviceData = await getAllService();
-      setServices(serviceData);
+      // Lấy danh sách các serviceId đã được thêm vào recommendation
+      const existingServiceIds = existingRecommendations.map(rec => rec.serviceId);
+      // Lọc bỏ những service đã có
+      const filteredServices = serviceData.filter(service => !existingServiceIds.includes(service.serviceId));
+      setServices(filteredServices);
     } catch (error) {
       console.error("Error fetching services:", error);
       message.error("Error fetching services!");
@@ -20,8 +24,10 @@ const AddRecommend = ({ open, onClose, quizId, onAdded }) => {
   };
 
   useEffect(() => {
-    loadServices();
-  }, []);
+    if (open) {
+      loadServices();
+    }
+  }, [open, existingRecommendations]);
 
   const handleFinish = async (values) => {
     const payload = {
@@ -61,7 +67,7 @@ const AddRecommend = ({ open, onClose, quizId, onAdded }) => {
           <Select placeholder="Select a service">
             {services.map((service) => (
               <Option key={service.serviceId} value={service.serviceId}>
-                <strong>Service ID: </strong>{service.serviceId} - <strong>Name: </strong>{service.serviceName}
+                <strong>ID: </strong>{service.serviceId} - <strong>Name: </strong>{service.serviceName}
               </Option>
             ))}
           </Select>

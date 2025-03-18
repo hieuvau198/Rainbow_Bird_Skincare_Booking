@@ -150,6 +150,7 @@ const Recommendations = ({ quizId }) => {
                 onClose={() => setAddModalVisible(false)}
                 quizId={quizId}
                 onAdded={loadRecommendations}
+                existingRecommendations={data}
             />
             <Modal
                 title="Confirm Delete"
