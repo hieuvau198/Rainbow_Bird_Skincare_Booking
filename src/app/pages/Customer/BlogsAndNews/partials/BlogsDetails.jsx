@@ -5,6 +5,7 @@ import getBlogById from "../../../../modules/NewsAndBlog/getBlogById";
 import MDEditor from "@uiw/react-md-editor";
 import Loading from "../../../../components/Loading";
 import getBlog from "../../../../modules/NewsAndBlog/getBlog";
+import BlogComment from "./BlogComment";
 
 export default function NewsDetails() {
   const { id } = useParams();
@@ -68,6 +69,10 @@ export default function NewsDetails() {
             </div>
           </div>
         </div>
+        {/* Blog Comments Section */}
+      <div className="mt-8">
+        <BlogComment />
+      </div>
       </div>
 
       <div className="w-80">
