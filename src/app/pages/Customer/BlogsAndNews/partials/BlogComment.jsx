@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Spin } from "antd";
+import { Spin } from "antd";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import AddComment from "./AddComment";
-import CommentItem from "./CommentItem"; // Import new component
+import CommentItem from "./CommentItem";
 
 const API_BASE =
   "https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/BlogComment";
@@ -53,7 +53,12 @@ const BlogComment = () => {
       {!loading && comments.length > 0 && (
         <div className="space-y-6">
           {comments.map((comment) => (
-            <CommentItem key={comment.commentId} comment={comment} />
+            <CommentItem 
+              key={comment.commentId} 
+              comment={comment} 
+              blogId={id} 
+              onCommentAdded={fetchComments} 
+            />
           ))}
         </div>
       )}

@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar } from "antd";
-import VoteComment from "./VoteComment"; // Import the new component
+import VoteComment from "./VoteComment";
+import AddComment from "./AddComment"; // Import AddComment for replies
 
-const CommentItem = ({ comment }) => {
+const CommentItem = ({ comment, blogId, onCommentAdded }) => {
+  const [showReplyInput, setShowReplyInput] = useState(false);
+
   return (
     <div className="border-b pb-4">
       <div className="flex gap-3">
@@ -15,13 +18,31 @@ const CommentItem = ({ comment }) => {
             </span>
           </div>
           <p className="text-gray-700 mt-1">{comment.content}</p>
-          
+
           {/* Upvote & Downvote Section */}
           <VoteComment 
             commentId={comment.commentId} 
             initialUpvotes={comment.upvotes} 
             initialDownvotes={comment.downvotes} 
           />
+
+          {/* Reply Button */}
+          <button
+            className="text-sm text-blue-500 mt-2 hover:underline"
+            onClick={() => setShowReplyInput(!showReplyInput)}
+          >
+            {showReplyInput ? "Hủy" : "Trả lời"}
+          </button>
+
+          {/* Reply Input Field */}
+          {showReplyInput && (
+            <AddComment
+              blogId={blogId}
+              parentCommentId={comment.commentId}
+              onCommentAdded={onCommentAdded}
+              onCancel={() => setShowReplyInput(false)}
+            />
+          )}
         </div>
       </div>
 
@@ -29,7 +50,7 @@ const CommentItem = ({ comment }) => {
       {comment.replies && comment.replies.length > 0 && (
         <div className="ml-10 mt-4 space-y-3 border-l-2 border-gray-200 pl-4">
           {comment.replies.map((reply) => (
-            <CommentItem key={reply.commentId} comment={reply} />
+            <CommentItem key={reply.commentId} comment={reply} blogId={blogId} onCommentAdded={onCommentAdded} />
           ))}
         </div>
       )}

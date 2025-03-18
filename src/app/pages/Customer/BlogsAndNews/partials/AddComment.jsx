@@ -6,7 +6,7 @@ import DecodeId from "../../../../components/DecodeId";
 const API_BASE =
   "https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/BlogComment";
 
-const AddComment = ({ blogId, onCommentAdded }) => {
+const AddComment = ({ blogId, parentCommentId = 0, onCommentAdded, onCancel }) => {
   const [newComment, setNewComment] = useState("");
   const userId = DecodeId(); // Get current user ID
 
@@ -23,7 +23,7 @@ const AddComment = ({ blogId, onCommentAdded }) => {
     const commentData = {
       blogId: parseInt(blogId, 10),
       userId: userId,
-      parentCommentId: 0, // Top-level comment
+      parentCommentId: parentCommentId, // Top-level or reply
       content: newComment.trim(),
     };
 
@@ -33,6 +33,7 @@ const AddComment = ({ blogId, onCommentAdded }) => {
         message.success("Bình luận đã được đăng!");
         setNewComment("");
         onCommentAdded(); // Refresh comments
+        if (onCancel) onCancel(); // Close reply input
       })
       .catch(() => {
         message.error("Lỗi khi đăng bình luận!");
@@ -40,17 +41,24 @@ const AddComment = ({ blogId, onCommentAdded }) => {
   };
 
   return (
-    <div className="mb-6">
+    <div className="mb-4">
       <Input.TextArea
         value={newComment}
         onChange={(e) => setNewComment(e.target.value)}
-        placeholder="Viết bình luận của bạn..."
-        autoSize={{ minRows: 3 }}
+        placeholder={parentCommentId ? "Viết câu trả lời của bạn..." : "Viết bình luận của bạn..."}
+        autoSize={{ minRows: 2 }}
         className="w-full p-2 border border-gray-300 rounded-md"
       />
-      <Button type="primary" className="mt-2" onClick={handleSubmit}>
-        Gửi bình luận
-      </Button>
+      <div className="flex gap-2 mt-2">
+        <Button type="primary" onClick={handleSubmit}>
+          {parentCommentId ? "Trả lời" : "Gửi bình luận"}
+        </Button>
+        {onCancel && (
+          <Button onClick={onCancel} danger>
+            Hủy
+          </Button>
+        )}
+      </div>
     </div>
   );
 };
