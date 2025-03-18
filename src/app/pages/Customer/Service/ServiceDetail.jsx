@@ -37,8 +37,9 @@ export default function ServiceDetail() {
     window.scrollTo({ top: 0, behavior: "smooth" });
     const fetchServiceDetail = async () => {
       try {
-        await getServiceDetail(id, setService);
+        const serviceData = await getServiceDetail(id);
         const allServices = await getAllService();
+        setService(serviceData);
         setServices(allServices);
       } catch (err) {
         console.error("Error fetching service data:", err);
