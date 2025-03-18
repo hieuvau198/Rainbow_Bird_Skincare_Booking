@@ -129,7 +129,9 @@ export default function TimeSlotList({ timeSlotIds = [] }) {
             ))}
           </div>
         ) : (
-          <span className="text-gray-500">No Assigned Therapists</span>
+          <div className="flex items-center justify-center bg-gray-200 p-1 rounded-lg shadow-md border border-grey-800 w-56 h-10">
+            No Assigned Therapists
+          </div>
         );
       },
     },
