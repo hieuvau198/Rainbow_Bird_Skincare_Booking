@@ -10,6 +10,7 @@ import Loading from "../../../components/Loading/Loading";
 import BookingModal from "./partials/BookingModal";
 import BookingDetails from "./partials/BookingDetail";
 import BookingSuccess from "./partials/BookingSuccess";
+import dayjs from "dayjs";
 
 export default function ServiceDetail() {
   const { id } = useParams();
@@ -86,6 +87,7 @@ export default function ServiceDetail() {
         onClose={() => setIsBookingModalOpen(false)}
         serviceName={service.serviceName}
         serviceId={service.serviceId}
+        defaultDate={dayjs()}
         onContinue={(data) => {
           setBookingData(data);
           setIsBookingModalOpen(false);
