@@ -23,10 +23,11 @@ export default function BookingDetail({ booking }) {
     fetchTimeSlot();
   }, [booking.slotId]);
 
-  // Navigate to Payment Page with Booking ID
+  // Navigate to Payment Page with Booking ID and Payment ID
   const handlePayment = () => {
-    navigate(`/payment?bookingId=${booking.bookingId}&amount=${booking.servicePrice}&currency=${booking.currency}`);
+    navigate(`/payment?paymentId=${booking.bookingId}&amount=${booking.servicePrice}&currency=${booking.currency}`);
   };
+
 
   return (
     <div className="p-4 bg-white rounded-md shadow-md min-h-[600px]">
