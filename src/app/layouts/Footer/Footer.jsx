@@ -60,8 +60,8 @@ export default function Footer() {
               </Link>
             </li>
             <li>
-              <Link to="/news" target="_top" className="hover:text-gray-500">
-                News
+              <Link to="/newsandblog" target="_top" className="hover:text-gray-500">
+                Blogs
               </Link>
             </li>
             <li>

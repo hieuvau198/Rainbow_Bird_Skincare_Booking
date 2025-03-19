@@ -5,6 +5,7 @@ import MDEditor from "@uiw/react-md-editor";
 import getNewsById from "../../../../modules/NewsAndBlog/getNewsById";
 import getNews from "../../../../modules/NewsAndBlog/getNews";
 import Loading from "../../../../components/Loading";
+import NewsHashtags from "./NewsHashtags"; // Import the new component
 
 export default function NewsDetails() {
   const { id } = useParams();
@@ -18,7 +19,6 @@ export default function NewsDetails() {
         const data = await getNewsById(id);
         setNews(data);
       } catch (error) {
-        // message.error("Có lỗi khi tải chi tiết news");
         console.error("Error fetching news details:", error);
       } finally {
         setLoading(false);
@@ -70,6 +70,9 @@ export default function NewsDetails() {
                 source={news.content || "No content available"}
               />
             </div>
+
+            {/* News Hashtags */}
+            <NewsHashtags />
           </div>
         </div>
       </div>
