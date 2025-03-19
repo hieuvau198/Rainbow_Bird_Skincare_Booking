@@ -59,7 +59,7 @@ const SidebarService = ({ minPrice, maxPrice, setMinPrice, setMaxPrice, applyFil
 
       <button
         onClick={applyFilters}
-        className="mt-2 w-full bg-orange-500 text-white p-2 rounded-md text-sm"
+        className="mt-2 w-full bg-lime-500 text-white p-2 rounded-md text-sm"
       >
         Apply
       </button>
