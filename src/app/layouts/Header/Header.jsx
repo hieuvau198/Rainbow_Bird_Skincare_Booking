@@ -26,7 +26,7 @@ export default function Header() {
       },
       {
         key: "schedule",
-        label: <Link className="text-md" to="/schedule-booking">Schedule</Link>,
+        label: <Link className="text-md" to="/schedule-booking">History</Link>,
       },
       {
         key: "logout",
