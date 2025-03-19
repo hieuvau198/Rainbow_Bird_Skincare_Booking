@@ -1,12 +1,26 @@
 import React from "react";
 import { CheckCircleOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 export default function BookingSuccess({ isOpen, onClose, bookingData }) {
+  const navigate = useNavigate();
+  
   if (!isOpen || !bookingData) return null;
+  
+  const handlePayNow = () => {
+    navigate(`/payment?paymentId=${bookingData.bookingId}&amount=${bookingData.servicePrice}&currency=${bookingData.currency}`);
+    onClose();
+  };
 
+  
+  const handleGoHome = () => {
+    navigate("/");
+    onClose();
+  };
+  
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-[800px] h-[600px] overflow-y-auto text-center">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-[800px] max-h-[600px] overflow-y-auto text-center">
         <CheckCircleOutlined className="text-green-500 text-6xl mb-4" />
         <h1 className="text-2xl font-bold mb-4">Booking Confirmed!</h1>
         <p className="text-gray-700 mb-2">
@@ -16,6 +30,25 @@ export default function BookingSuccess({ isOpen, onClose, bookingData }) {
           Your appointment is scheduled for <span className="font-bold">{bookingData?.date}</span> at{" "}
           <span className="font-bold">{bookingData?.timeSlot}</span>.
         </p>
+        
+        <div className="mt-8 border-t border-gray-200 pt-6">
+          <h2 className="text-xl font-semibold mb-4">Would you like to make a payment now?</h2>
+          <div className="flex justify-center space-x-4 mt-6">
+            <button
+              className="bg-green-500 text-white px-6 py-2 rounded-md font-bold hover:bg-green-600 transition-all"
+              onClick={handlePayNow}
+            >
+              Pay Now
+            </button>
+            <button
+              className="bg-gray-200 text-gray-800 px-6 py-2 rounded-md font-bold hover:bg-gray-300 transition-all"
+              onClick={handleGoHome}
+            >
+              Go Home
+            </button>
+          </div>
+        </div>
+        
         <button
           className="mt-6 bg-lime-300 text-gray-800 px-6 py-2 rounded-md font-bold hover:bg-lime-400 transition-all"
           onClick={onClose}
