@@ -14,11 +14,11 @@ import { message } from "antd";
 export default function BlogsAndNews() {
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   // Get hashtag from URL query parameters
   const getHashtagFromQuery = () => {
     const searchParams = new URLSearchParams(location.search);
-    const hashtagId = searchParams.get('hashtag');
+    const hashtagId = searchParams.get("hashtag");
     return hashtagId ? parseInt(hashtagId, 10) : null;
   };
 
@@ -40,24 +40,29 @@ export default function BlogsAndNews() {
   // Update URL when selectedHashtag changes
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    
+
     if (selectedHashtag) {
-      searchParams.set('hashtag', selectedHashtag);
+      searchParams.set("hashtag", selectedHashtag);
     } else {
-      searchParams.delete('hashtag');
+      searchParams.delete("hashtag");
     }
-    
-    navigate({
-      pathname: location.pathname,
-      search: searchParams.toString()
-    }, { replace: true });
+
+    navigate(
+      {
+        pathname: location.pathname,
+        search: searchParams.toString(),
+      },
+      { replace: true }
+    );
   }, [selectedHashtag, navigate, location.pathname]);
 
   // Fetch hashtags data first
   useEffect(() => {
     async function fetchHashtags() {
       try {
-        const response = await fetch("https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Hashtag");
+        const response = await fetch(
+          "https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Hashtag"
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch hashtags");
         }
@@ -133,22 +138,25 @@ export default function BlogsAndNews() {
 
   // Calculate current page data
   const totalBlogs = filteredBlogs.length;
-  const currentBlogs = filteredBlogs.slice((blogPage - 1) * pageSize, blogPage * pageSize);
+  const currentBlogs = filteredBlogs.slice(
+    (blogPage - 1) * pageSize,
+    blogPage * pageSize
+  );
 
   const totalNews = filteredNews.length;
-  const currentNews = filteredNews.slice((newsPage - 1) * pageSize, newsPage * pageSize);
+  const currentNews = filteredNews.slice(
+    (newsPage - 1) * pageSize,
+    newsPage * pageSize
+  );
 
   return (
     <div className="min-h-screen bg-green-100 flex flex-col items-center">
       <div className="w-full max-w-6xl p-6">
         {/* Search Bar Component */}
-        <SearchBar 
-          searchQuery={searchQuery} 
-          setSearchQuery={setSearchQuery} 
-        />
+        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
         {/* Hashtag Filter Component */}
-        <HashtagFilter 
+        <HashtagFilter
           hashtags={hashtags}
           selectedHashtag={selectedHashtag}
           onHashtagClick={handleHashtagClick}
@@ -165,10 +173,14 @@ export default function BlogsAndNews() {
           >
             {/* News Tab */}
             <Tabs.TabPane
-              tab={<span className="text-lg font-semibold text-gray-700 hover:text-green-600">🌿 News</span>}
+              tab={
+                <span className="text-lg font-semibold text-gray-700 hover:text-green-600">
+                  🌿 News
+                </span>
+              }
               key="news"
             >
-              <NewsTab 
+              <NewsTab
                 newsList={currentNews}
                 totalNews={totalNews}
                 newsPage={newsPage}
@@ -180,10 +192,14 @@ export default function BlogsAndNews() {
 
             {/* Blogs Tab */}
             <Tabs.TabPane
-              tab={<span className="text-lg font-semibold text-gray-700 hover:text-green-600">💆 Blogs</span>}
+              tab={
+                <span className="text-lg font-semibold text-gray-700 hover:text-green-600">
+                  💆 Blogs
+                </span>
+              }
               key="blogs"
             >
-              <BlogsTab 
+              <BlogsTab
                 blogs={currentBlogs}
                 totalBlogs={totalBlogs}
                 blogPage={blogPage}
