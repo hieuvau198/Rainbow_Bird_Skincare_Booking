@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Table, Button, message, Space, Modal, Tag } from "antd";
+import { Table, Button, message, Space, Modal, Tag, Row, Col } from "antd";
 import { TfiReload } from "react-icons/tfi";
 import UserRole from "../../../../enums/userRole";
 import DecodeRole from "../../../components/DecodeRole";
@@ -13,9 +13,12 @@ import StatusColor from "../../../components/StatusColor";
 
 export default function Booking() {
   const [dataSource, setDataSource] = useState([]);
+  const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showViewBooking, setShowViewBooking] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState("All");
+  const [statusCounts, setStatusCounts] = useState({});
   const userRole = DecodeRole();
 
   // Hàm formatDate chuyển đổi chuỗi ngày sang định dạng DD-MM-YYYY
@@ -49,19 +52,42 @@ export default function Booking() {
         status: book.status,
       }));
       setDataSource(formattedData);
+      
+      // Calculate status counts
+      const counts = formattedData.reduce((acc, booking) => {
+        acc[booking.status] = (acc[booking.status] || 0) + 1;
+        return acc;
+      }, {});
+      setStatusCounts({ ...counts, All: formattedData.length });
+      
+      // Apply current filter
+      applyStatusFilter(selectedStatus, formattedData);
     } catch (error) {
       message.error("Failed to fetch bookings");
       console.error("Error fetching bookings:", error);
     } finally {
       setLoading(false);
     }
-  }, [userRole]);
+  }, [userRole, selectedStatus]);
 
   useEffect(() => {
     fetchBookings();
     const intervalId = setInterval(fetchBookings, 60000);
     return () => clearInterval(intervalId);
   }, [fetchBookings]);
+
+  const applyStatusFilter = (status, data = dataSource) => {
+    if (status === "All") {
+      setFilteredDataSource(data);
+    } else {
+      setFilteredDataSource(data.filter(booking => booking.status === status));
+    }
+  };
+
+  const handleStatusFilter = (status) => {
+    setSelectedStatus(status);
+    applyStatusFilter(status);
+  };
 
   const handleAction = async (record, action) => {
     if (action === "View details") {
@@ -85,6 +111,10 @@ export default function Booking() {
             setDataSource((prevData) =>
               prevData.filter((item) => item.bookingId !== record.bookingId)
             );
+            // Also update filtered data
+            setFilteredDataSource((prevData) =>
+              prevData.filter((item) => item.bookingId !== record.bookingId)
+            );
             message.success(`Deleted booking ID: ${record.bookingId}`);
           } catch (error) {
             message.error("Failed to delete booking");
@@ -106,6 +136,8 @@ export default function Booking() {
   const statusFilters = Array.from(
     new Set(dataSource.map((book) => book.status))
   ).map((value) => ({ text: value, value }));
+
+  const uniqueStatuses = ["All", ...Array.from(new Set(dataSource.map(item => item.status)))];
 
   const columns = [
     {
@@ -183,8 +215,25 @@ export default function Booking() {
           </Button>
         </div>
 
+        {/* Status Filter Buttons */}
+        <div className="mb-5 overflow-x-auto">
+          <Row gutter={[8, 8]} className="flex-nowrap" style={{ minWidth: 'max-content' }}>
+            {uniqueStatuses.map(status => (
+              <Col key={status}>
+                <Button 
+                  type={selectedStatus === status ? "primary" : "default"}
+                  onClick={() => handleStatusFilter(status)}
+                  style={status !== "All" ? { backgroundColor: selectedStatus === status ? StatusColor(status) : undefined } : {}}
+                >
+                  {status} ({statusCounts[status] || 0})
+                </Button>
+              </Col>
+            ))}
+          </Row>
+        </div>
+
         <Table
-          dataSource={dataSource}
+          dataSource={filteredDataSource}
           columns={columns}
           rowKey="bookingId"
           bordered
@@ -197,11 +246,13 @@ export default function Booking() {
       {showViewBooking && (
         <ViewBooking
           booking={selectedBooking}
-          onClose={() => setShowViewBooking(false)}
+          onClose={() => {
+            setShowViewBooking(false);
+            fetchBookings(); // Refresh after closing modal
+          }}
           onStatusUpdated={fetchBookings}
         />
       )}
-
     </div>
   );
 }
