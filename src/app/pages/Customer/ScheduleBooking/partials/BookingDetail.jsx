@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Descriptions, Tag } from "antd";
+import { Descriptions, Tag, Button } from "antd";
+import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import StatusColor from "../../../../components/StatusColor";
 import getTimeSlotById from "../../../../modules/Admin/TimeSlot/getTimeSlotById";
@@ -8,6 +9,7 @@ export default function BookingDetail({ booking }) {
   if (!booking) return null;
 
   const [timeSlot, setTimeSlot] = useState({ startTime: "", endTime: "" });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTimeSlot = async () => {
@@ -20,6 +22,11 @@ export default function BookingDetail({ booking }) {
     };
     fetchTimeSlot();
   }, [booking.slotId]);
+
+  // Navigate to Payment Page with Booking ID
+  const handlePayment = () => {
+    navigate(`/payment?bookingId=${booking.bookingId}&amount=${booking.servicePrice}&currency=${booking.currency}`);
+  };
 
   return (
     <div className="p-4 bg-white rounded-md shadow-md min-h-[600px]">
@@ -49,6 +56,17 @@ export default function BookingDetail({ booking }) {
           <Tag color={StatusColor(booking.paymentStatus)}>{booking.paymentStatus}</Tag>
         </Descriptions.Item>
       </Descriptions>
+
+      {booking.paymentStatus !== "Paid" && (
+        <Button
+          type="primary"
+          className="mt-4 w-full bg-green-500 hover:bg-green-600 text-white"
+          onClick={handlePayment}
+        >
+          Proceed to Payment
+        </Button>
+      )}
+
     </div>
   );
 }

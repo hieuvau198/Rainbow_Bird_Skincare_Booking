@@ -42,7 +42,7 @@ const BookingList = ({ bookings, onViewDetail }) => {
 
   return (
     <div className="p-6 bg-white dark:bg-slate-600 rounded-md shadow-md min-h-[600px]">
-      <h2 className="grid text-2xl font-bold mb-4 justify-center">Booking List</h2>
+      <h2 className="grid text-2xl font-bold mb-4 justify-center">Booking History</h2>
       <Table
         dataSource={bookings}
         columns={columns}
