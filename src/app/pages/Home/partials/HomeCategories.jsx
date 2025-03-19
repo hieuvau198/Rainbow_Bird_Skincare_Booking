@@ -67,7 +67,7 @@ export default function SkincareCategories() {
                       <h3 className="text-lg font-semibold text-gray-700">
                         {service.serviceName || "Unknown Service"}
                       </h3>
-                      <p className="text-gray-500">
+                      <p className="text-lime-500">
                         {service.price ? `${service.price} ${service.currency || "USD"}` : "$0.00"}
                       </p>
                     </div>

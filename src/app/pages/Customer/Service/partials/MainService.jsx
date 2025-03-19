@@ -119,7 +119,7 @@ export default function MainContent({ services }) {
 
                   {/* Pricing and Duration */}
                   <div className="mb-2">
-                    <p className="text-red-500 font-bold text-sm"><DollarOutlined /> {service.price}</p>
+                    <p className="text-lime-500 font-bold text-sm"><DollarOutlined /> {service.price}</p>
                     <p className="text-gray-700 text-xs"><ClockCircleOutlined /> {service.duration_minutes}</p>
                   </div>
 
