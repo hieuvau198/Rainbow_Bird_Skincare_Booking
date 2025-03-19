@@ -154,6 +154,8 @@ export default function Booking() {
       render: (_, record) => (
         <Space size="middle">
           <Button
+            color="primary"
+            variant="solid"
             type="link"
             onClick={() => handleAction(record, "View details")}
           >

@@ -109,17 +109,17 @@ export default function HomePopularService() {
                       <ClockCircleOutlined className="mr-1" /> {service.duration_minutes}
                     </p>
                     {/* Giá dịch vụ */}
-                    <div className="text-red-500 font-bold flex items-center mt-3">
-                      <DollarOutlined className="mr-1" /> {service.price}
+                    <div className="text-lime-500 font-bold flex items-center mt-3">
+                     {service.price}
                     </div>
                   </div>
 
                   {/* Nút xem chi tiết */}
-                  <div className="mt-auto">
+                  {/* <div className="mt-auto">
                     <button target="_top" className="w-full bg-lime-600 text-white py-2 rounded-md text-sm hover:bg-lime-700 transition">
                       View Details
                     </button>
-                  </div>
+                  </div> */}
                 </Link>
               </div>
             ))}
