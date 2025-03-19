@@ -1,17 +1,38 @@
 import React, { useEffect, useState } from "react";
-import Loading from "../../../../components/Loading/index"
-import { getTopServices } from "../../../../modules/Admin/Dashboard/getTopService";
+import Loading from "../../../../components/Loading/index";
+import getAllBook from "../../../../modules/Booking/getAllBook";
 
 export default function TopServices() {
     const [services, setServices] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const calculatePopularity = (bookings) => {
+        const totalBookings = bookings.length;
+        const serviceBookingCount = {};
+
+        bookings.forEach((booking) => {
+            const serviceId = booking.serviceName;
+            serviceBookingCount[serviceId] = (serviceBookingCount[serviceId] || 0) + 1;
+        });
+
+        const servicesWithPopularity = Object.keys(serviceBookingCount).map((serviceId) => {
+            const serviceBooking = serviceBookingCount[serviceId];
+            const popularity = totalBookings === 0 ? 0 : (serviceBooking / totalBookings) * 100;
+
+            return { id: serviceId, name: serviceId, popularity: popularity.toFixed(2) };
+        });
+
+        servicesWithPopularity.sort((a, b) => b.popularity - a.popularity);
+        return servicesWithPopularity.slice(0, 5);
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await getTopServices(); 
-                setServices(data);
+                const bookings = await getAllBook();
+                const topServices = calculatePopularity(bookings);
+                setServices(topServices);
             } catch (error) {
                 setError("Failed to load Top Services. Please try again later.");
             } finally {
@@ -32,7 +53,7 @@ export default function TopServices() {
 
     return (
         <div className="p-4 bg-white rounded-2xl shadow-md">
-            <h3 className="font-bold mb-4">Top Services</h3>
+            <h3 className="font-bold mb-4">Best Selling Services</h3>
             <table className="w-full border-collapse">
                 <thead>
                     <tr>
@@ -42,9 +63,9 @@ export default function TopServices() {
                     </tr>
                 </thead>
                 <tbody>
-                    {services.map((service) => (
+                    {services.map((service, index) => (
                         <tr key={service.id}>
-                            <td className="p-2 border-b">{service.id}</td>
+                            <td className="p-2 border-b">{index + 1}</td>
                             <td className="p-2 border-b truncate">{service.name}</td>
                             <td className="p-2 border-b">
                                 <div className="flex items-center">

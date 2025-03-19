@@ -133,6 +133,22 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
     }
   };
 
+  const handleCheckOut = () => {
+    message.success("Check Out successfully");
+    if (onStatusUpdated) {
+      onStatusUpdated();
+    }
+    onClose();
+  };
+
+  const formatDate = (dateString) => {
+    const d = new Date(dateString);
+    const day = d.getDate().toString().padStart(2, "0");
+    const month = (d.getMonth() + 1).toString().padStart(2, "0");
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
   return (
     <Modal
       title={<div className="text-center text-2xl font-bold">Booking Details</div>}
@@ -140,6 +156,11 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
       onCancel={onClose}
       width={700}
       footer={[
+        booking.status === "Checked Out" && (
+          <Button key="checkout" type="primary" onClick={handleCheckOut}>
+            Check Out
+          </Button>
+        ),
         <Button key="close" onClick={onClose}>
           Close
         </Button>,
@@ -149,7 +170,7 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
         <Descriptions.Item label="ID">{booking.bookingId}</Descriptions.Item>
         <Descriptions.Item label="Customer Name">{booking.customerName}</Descriptions.Item>
         <Descriptions.Item label="Service Name">{booking.serviceName}</Descriptions.Item>
-        <Descriptions.Item label="Booking Date">{booking.bookingDate}</Descriptions.Item>
+        <Descriptions.Item label="Booking Date">{formatDate(booking.bookingDate)}</Descriptions.Item>
         <Descriptions.Item label="Start Time">{timeSlot.startTime || "N/A"}</Descriptions.Item>
         <Descriptions.Item label="End Time">{timeSlot.endTime || "N/A"}</Descriptions.Item>
         <Descriptions.Item label="Therapist">
@@ -175,7 +196,7 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
             <Space>
               <Tag color="blue">{theName || "N/A"}</Tag>
               {booking.status === "Await Confirmation" && (
-                <Button type="link" onClick={handleEditTherapist}>
+                <Button color="primary" variant="solid" type="link" onClick={handleEditTherapist}>
                   Change Therapist
                 </Button>
               )}
@@ -206,16 +227,24 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
           ) : (
             <Space>
               <Tag color={StatusColor(booking.status)}>{booking.status}</Tag>
-              {availableStatusOptions && availableStatusOptions.length > 0 && (
-                <Button type="link" onClick={() => setEditingStatus(true)}>
-                  Edit Status
-                </Button>
-              )}
+              {availableStatusOptions &&
+                availableStatusOptions.length > 0 &&
+                booking.therapistId !== 0 && (
+                  <Button color="primary" variant="solid" type="link" onClick={() => setEditingStatus(true)}>
+                    Edit Status
+                  </Button>
+                )}
             </Space>
           )}
         </Descriptions.Item>
         <Descriptions.Item label="Customer Phone">{booking.customerPhone}</Descriptions.Item>
         <Descriptions.Item label="Customer Email">{booking.customerEmail}</Descriptions.Item>
+        <Descriptions.Item label="Service Price">
+          {booking.servicePrice} {booking.currency}
+        </Descriptions.Item>
+        <Descriptions.Item label="Payment Status">
+          <Tag color={StatusColor(booking.paymentStatus)}>{booking.paymentStatus}</Tag>
+        </Descriptions.Item>
       </Descriptions>
     </Modal>
   );

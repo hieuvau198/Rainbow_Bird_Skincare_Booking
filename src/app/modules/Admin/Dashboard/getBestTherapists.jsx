@@ -1,15 +1,26 @@
-import { mockTherapists } from "../../../../mocks/Admin/DashboardData";
+import { message } from "antd";
+import Cookies from "js-cookie";
 
-export async function getBestTherapists() {
-    try {
-        // const response = await fetch("/topService");
-        // if (!response.ok) {
-        //     throw new Error(`HTTP error! status: ${response.status}`);
-        // }
-        // const data = await response.json();
-        return mockTherapists;
-    } catch (error) {
-        console.error("Error fetching top services:", error);
-        throw error;
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+export default async function getBestTherapists() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/Therapists`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${Cookies.get("__atok")}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch. Please try again.");
     }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    message.error("Failed to fetch. Please try again.");
+    return [];
+  }
 }

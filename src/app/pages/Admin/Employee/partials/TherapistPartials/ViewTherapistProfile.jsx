@@ -58,7 +58,7 @@ export default function ViewTherapistProfile({ open, therapistId, onClose }) {
           <div className="grid grid-cols-2 gap-4 gap-x-4">
             <div className="flex justify-center items-center">
               <img
-                src={profile.profileImage || "https://i.pravatar.cc/450?"+profile.therapistId}
+                src={profile.profileImage || `https://ui-avatars.com/api/?name=${profile.therapist.user.fullName}`}
                 alt="Therapist Profile"
                 className="w-60 h-60 object-cover rounded-lg shadow-md"
               />

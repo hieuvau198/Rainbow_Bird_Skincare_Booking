@@ -6,6 +6,7 @@ import CustomerRatingChart from "./partials/CustomerRatingChart";
 import BestTherapists from "./partials/BestTherapists";
 import RevenueByDayChart from "./partials/RevenueByDayChart";
 import CustomerServiceStatusChart from "./partials/CustomerServiceStatusChart";
+import ServiceCategory from "./partials/ServiceCategory";
 
 export default function Dashboard() {
   return (
@@ -25,8 +26,11 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-        <div className="col-span-2">
+        <div className="col-span-1">
           <CustomerServiceStatusChart />
+        </div>
+        <div className="col-span-1">
+          <ServiceCategory />
         </div>
         <div className="col-span-1">
           <CustomerRatingChart />
