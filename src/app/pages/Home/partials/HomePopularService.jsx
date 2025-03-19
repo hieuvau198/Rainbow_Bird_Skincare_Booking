@@ -110,7 +110,7 @@ export default function HomePopularService() {
                     </p>
                     {/* Giá dịch vụ */}
                     <div className="text-lime-500 font-bold flex items-center mt-3">
-                      <DollarOutlined className="mr-1" /> {service.price}
+                     {service.price}
                     </div>
                   </div>
 
