@@ -98,12 +98,10 @@ const BookingStatusSelect = ({ bookingId, currentStatus, onStatusUpdated }) => {
     return <Tag color={StatusColor(selectedStatus)}>{selectedStatus}</Tag>;
   }
 
-  // Nếu status hiện tại là "In Progress" nhưng user không phải Therapist, chỉ hiển thị Tag
   if (currentStatus === "In Progress" && userRole !== UserRole.THERAPIST) {
     return <Tag color={StatusColor(selectedStatus)}>{selectedStatus}</Tag>;
   }
 
-  // Nếu user là Therapist nhưng status hiện tại KHÔNG phải "In Progress", chỉ hiển thị Tag
   if (userRole === UserRole.THERAPIST && currentStatus !== "In Progress") {
     return <Tag color={StatusColor(selectedStatus)}>{selectedStatus}</Tag>;
   }

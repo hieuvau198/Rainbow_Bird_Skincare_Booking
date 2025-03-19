@@ -5,8 +5,10 @@ import getTherapistById from "../../../../modules/Admin/Employee/getTherapistByI
 import getTheBySlotId from "../../../../modules/Admin/TimeSlot/getTheBySlotId";
 import getTimeSlotById from "../../../../modules/Admin/TimeSlot/getTimeSlotById";
 import changeTherapist from "../../../../modules/Booking/changeTherapist";
+import { editBookingStatus } from "../../../../modules/Booking/editBookingStatus";
+import { getBookingStatus } from "../../../../modules/Booking/getBookingStatus";
 
-export default function ViewBooking({ booking, onClose }) {
+export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
   if (!booking) return null;
 
   const [editingTherapist, setEditingTherapist] = useState(false);
@@ -15,6 +17,37 @@ export default function ViewBooking({ booking, onClose }) {
   const [theName, setTherapistName] = useState(null);
   const [timeSlot, setTimeSlot] = useState({ startTime: "", endTime: "" });
   const [error, setError] = useState("");
+
+  // State cho chỉnh sửa trạng thái
+  const [editingStatus, setEditingStatus] = useState(false);
+  const [availableStatusOptions, setAvailableStatusOptions] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState(booking.status);
+  const [loadingStatus, setLoadingStatus] = useState(false);
+
+  // Tải luôn danh sách next status khi modal mở
+  useEffect(() => {
+    async function fetchAvailableStatuses() {
+      setLoadingStatus(true);
+      try {
+        const response = await getBookingStatus(booking.bookingId);
+        if (
+          response.success &&
+          response.data &&
+          Array.isArray(response.data.nextStatuses)
+        ) {
+          setAvailableStatusOptions(response.data.nextStatuses);
+        } else {
+          setAvailableStatusOptions([]);
+        }
+      } catch (error) {
+        console.error("Error fetching statuses", error);
+        setAvailableStatusOptions([]);
+      } finally {
+        setLoadingStatus(false);
+      }
+    }
+    fetchAvailableStatuses();
+  }, [booking.bookingId]);
 
   const loadTherapists = async () => {
     try {
@@ -54,7 +87,12 @@ export default function ViewBooking({ booking, onClose }) {
     fetchTimeSlot();
   }, [booking.slotId]);
 
+  // Chỉ cho phép thay đổi therapist khi status là "Await Confirmation"
   const handleEditTherapist = () => {
+    if (booking.status !== "Await Confirmation") {
+      message.info("Therapist can only be changed when status is 'Await Confirmation'");
+      return;
+    }
     setEditingTherapist(true);
     loadTherapists();
   };
@@ -70,6 +108,25 @@ export default function ViewBooking({ booking, onClose }) {
       setEditingTherapist(false);
       setError(data.message);
       message.success(data.message);
+    } catch (e) {
+      message.error(e.message);
+      console.log("error: ", e);
+    }
+  };
+
+  const handleSaveStatus = async () => {
+    if (!selectedStatus || selectedStatus === booking.status) {
+      message.info("Please select a different status");
+      return;
+    }
+    try {
+      const data = await editBookingStatus(booking.bookingId, selectedStatus);
+      booking.status = selectedStatus;
+      setEditingStatus(false);
+      message.success(data.message);
+      if (onStatusUpdated) {
+        onStatusUpdated();
+      }
     } catch (e) {
       message.error(e.message);
       console.log("error: ", e);
@@ -117,14 +174,45 @@ export default function ViewBooking({ booking, onClose }) {
           ) : (
             <Space>
               <Tag color="blue">{theName || "N/A"}</Tag>
-              <Button color="primary" variant="solid" type="link" onClick={handleEditTherapist}>
-                Change Therapist
-              </Button>
+              {booking.status === "Await Confirmation" && (
+                <Button type="link" onClick={handleEditTherapist}>
+                  Change Therapist
+                </Button>
+              )}
             </Space>
           )}
         </Descriptions.Item>
         <Descriptions.Item label="Status">
-          <Tag color={StatusColor(booking.status)}>{booking.status}</Tag>
+          {editingStatus ? (
+            <Space>
+              <Select
+                placeholder="Select status"
+                style={{ width: 200 }}
+                onChange={(value) => setSelectedStatus(value)}
+                value={selectedStatus}
+                loading={loadingStatus}
+              >
+                {availableStatusOptions.map((status) => (
+                  <Select.Option key={status} value={status}>
+                    {status}
+                  </Select.Option>
+                ))}
+              </Select>
+              <Button type="primary" onClick={handleSaveStatus}>
+                Save
+              </Button>
+              <Button onClick={() => setEditingStatus(false)}>Cancel</Button>
+            </Space>
+          ) : (
+            <Space>
+              <Tag color={StatusColor(booking.status)}>{booking.status}</Tag>
+              {availableStatusOptions && availableStatusOptions.length > 0 && (
+                <Button type="link" onClick={() => setEditingStatus(true)}>
+                  Edit Status
+                </Button>
+              )}
+            </Space>
+          )}
         </Descriptions.Item>
         <Descriptions.Item label="Customer Phone">{booking.customerPhone}</Descriptions.Item>
         <Descriptions.Item label="Customer Email">{booking.customerEmail}</Descriptions.Item>

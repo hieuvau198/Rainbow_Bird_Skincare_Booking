@@ -59,7 +59,6 @@ export default function WorkingDayList({
         </div>
       </div>
 
-      {/* Hiển thị phần tử bổ sung, ví dụ: nút Add Therapist */}
       {renderExtra && <div className="flex justify-end mb-4">{renderExtra}</div>}
 
       <Table
