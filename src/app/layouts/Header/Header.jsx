@@ -88,7 +88,7 @@ export default function Header() {
             Therapists
           </Link>
           <Link
-            to="/news"
+            to="/newsandblog"
             className="text-gray-500 hover:text-lime-700 font-semibold transition duration-200"
           >
             Blog & News

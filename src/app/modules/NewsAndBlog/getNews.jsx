@@ -3,9 +3,17 @@ import { message } from "antd";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-export default async function getNews() {
+export default async function getNews(hashtagId = null) {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/News`, {
+    // Construct query parameters
+    const queryParams = new URLSearchParams();
+    if (hashtagId !== null) {
+      queryParams.append("hashtagId", hashtagId);
+    }
+
+    const url = `${API_BASE_URL}/api/News${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
+
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

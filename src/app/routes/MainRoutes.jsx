@@ -131,7 +131,7 @@ export default function MainRoutes() {
               </Suspense>
             </PrivateRoute>
           } />
-          <Route path="/news" element={
+          <Route path="/newsandblog" element={
             <Suspense fallback={<Loading />}>
               <BlogsAndNews />
             </Suspense>
@@ -141,7 +141,7 @@ export default function MainRoutes() {
             <BlogsDetails />
           </Suspense>
             } />
-           <Route path="/news/:id" element={
+           <Route path="/newsandblog/:id" element={
           <Suspense fallback={<Loading />}>
             <NewsDetails />
           </Suspense>

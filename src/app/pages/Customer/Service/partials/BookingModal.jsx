@@ -12,8 +12,8 @@ import dayjs from "dayjs";
 import Cookies from "js-cookie";
 
 
-export default function BookingModal({ isOpen, onClose, serviceName, serviceId, onContinue  }) {
-  const [selectedDate, setSelectedDate] = useState(null);
+export default function BookingModal({ isOpen, onClose, serviceName, serviceId, onContinue, defaultDate  }) {
+  const [selectedDate, setSelectedDate] = useState( defaultDate || null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedSlotId, setSelectedSlotId] = useState(null);
   const [showSlots, setShowSlots] = useState(true);

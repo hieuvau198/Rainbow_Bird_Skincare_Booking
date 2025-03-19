@@ -5,6 +5,8 @@ import getBlogById from "../../../../modules/NewsAndBlog/getBlogById";
 import MDEditor from "@uiw/react-md-editor";
 import Loading from "../../../../components/Loading";
 import getBlog from "../../../../modules/NewsAndBlog/getBlog";
+import BlogComment from "./BlogComment";
+import BlogHashtags from "./BlogHashtags"; // Import the new component
 
 export default function NewsDetails() {
   const { id } = useParams();
@@ -18,7 +20,6 @@ export default function NewsDetails() {
         const data = await getBlogById(id);
         setBlog(data);
       } catch (error) {
-        // message.error("Có lỗi khi tải chi tiết blog");
         console.error("Error fetching blog details:", error);
       } finally {
         setLoading(false);
@@ -66,7 +67,15 @@ export default function NewsDetails() {
             <div className="p-4">
               <MDEditor.Markdown source={blog.content || "No content available"} />
             </div>
+
+            {/* Blog Hashtags */}
+            <BlogHashtags />
           </div>
+        </div>
+
+        {/* Blog Comments Section */}
+        <div className="mt-8">
+          <BlogComment />
         </div>
       </div>
 

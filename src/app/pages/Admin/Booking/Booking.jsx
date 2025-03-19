@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Table, Button, message, Space, Modal } from "antd";
+import { Table, Button, message, Space, Modal, Tag } from "antd";
 import { TfiReload } from "react-icons/tfi";
 import UserRole from "../../../../enums/userRole";
 import DecodeRole from "../../../components/DecodeRole";
@@ -7,9 +7,9 @@ import deleteBooking from "../../../modules/Booking/deleteBooking";
 import getAllBook from "../../../modules/Booking/getAllBook";
 import getBookingById from "../../../modules/Booking/getBookingById";
 import ViewBooking from "../Booking/partials/ViewBooking";
-import BookingStatusSelect from "./partials/BookingStatusSelect";
 import DecodeRoleId from "../../../components/DecodeRoleId";
 import getBookByTheId from "../../../modules/Booking/getBookByTheId";
+import StatusColor from "../../../components/StatusColor";
 
 export default function Booking() {
   const [dataSource, setDataSource] = useState([]);
@@ -18,16 +18,22 @@ export default function Booking() {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const userRole = DecodeRole();
 
+  // Hàm formatDate chuyển đổi chuỗi ngày sang định dạng DD-MM-YYYY
+  const formatDate = (dateString) => {
+    const d = new Date(dateString);
+    const day = d.getDate().toString().padStart(2, "0");
+    const month = (d.getMonth() + 1).toString().padStart(2, "0");
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
 
   const fetchBookings = useCallback(async () => {
     setLoading(true);
     try {
       let data = [];
       if (userRole === UserRole.THERAPIST) {
-        // Lấy therapistId từ cookie thông qua DecodeRoleId
         const therapistId = DecodeRoleId("__TheIden");
         data = await getBookByTheId(therapistId);
-        // Chỉ lấy ra các booking có status "In Progress"
         data = data.filter((book) => book.status === "In Progress");
       } else {
         data = await getAllBook();
@@ -36,7 +42,7 @@ export default function Booking() {
         key: book.bookingId,
         bookingId: book.bookingId,
         id: book.userId,
-        name: book.customerName,
+        customerName: book.customerName,
         serviceName: book.serviceName,
         bookingDate: book.bookingDate,
         timeSlot: book.slotId,
@@ -88,6 +94,19 @@ export default function Booking() {
     }
   };
 
+  // Tạo các filter options dựa trên dataSource
+  const serviceNameFilters = Array.from(
+    new Set(dataSource.map((book) => book.serviceName))
+  ).map((value) => ({ text: value, value }));
+
+  const bookingDateFilters = Array.from(
+    new Set(dataSource.map((book) => formatDate(book.bookingDate)))
+  ).map((value) => ({ text: value, value }));
+
+  const statusFilters = Array.from(
+    new Set(dataSource.map((book) => book.status))
+  ).map((value) => ({ text: value, value }));
+
   const columns = [
     {
       title: "No.",
@@ -97,33 +116,35 @@ export default function Booking() {
     },
     {
       title: "Customer Name",
-      dataIndex: "name",
+      dataIndex: "customerName",
       key: "customerName",
     },
     {
-      title: "Sevice Name",
+      title: "Service Name",
       dataIndex: "serviceName",
       key: "serviceName",
+      filters: serviceNameFilters,
+      onFilter: (value, record) =>
+        record.serviceName.toLowerCase().includes(value.toLowerCase()),
     },
     {
       title: "Booking Date",
       dataIndex: "bookingDate",
       key: "bookingDate",
-      width: 120,
-      render: (date) => <span>{new Date(date).toLocaleDateString()}</span>,
+      width: 150,
+      render: (date) => <span>{formatDate(date)}</span>,
+      filters: bookingDateFilters,
+      onFilter: (value, record) =>
+        formatDate(record.bookingDate) === value,
     },
     {
-      title: "Update Status",
-      key: "updateStatus",
-      width: 280,
+      title: "Status",
+      key: "status",
+      width: 150,
+      filters: statusFilters,
+      onFilter: (value, record) => record.status === value,
       render: (_, record) => (
-        <BookingStatusSelect
-          bookingId={record.bookingId}
-          currentStatus={record.status}
-          onStatusUpdated={() => {
-            fetchBookings();
-          }}
-        />
+        <Tag color={StatusColor(record.status)}>{record.status}</Tag>
       ),
     },
     {
@@ -133,21 +154,14 @@ export default function Booking() {
       render: (_, record) => (
         <Space size="middle">
           <Button
-            color="primary"
-            variant="solid"
             type="link"
             onClick={() => handleAction(record, "View details")}
           >
             View details
           </Button>
+          {/* Uncomment nếu cần cho phép xóa */}
           {/* {userRole === UserRole.ADMIN && (
-            <Button
-              color="red"
-              variant="solid"
-              type="link"
-              danger
-              onClick={() => handleAction(record, "Delete")}
-            >
+            <Button type="link" danger onClick={() => handleAction(record, "Delete")}>
               Delete
             </Button>
           )} */}
@@ -160,9 +174,7 @@ export default function Booking() {
     <div className="p-6 max-w-[1270px]">
       <div className="p-6 bg-white rounded-md shadow-md min-h-[640px]">
         <div className="flex justify-between items-center mb-5">
-          <h1 className="text-[22px] font-bold m-0">
-            Skincare Service Bookings
-          </h1>
+          <h1 className="text-[22px] font-bold m-0">Skincare Service Bookings</h1>
           <Button type="primary" onClick={fetchBookings}>
             <TfiReload style={{ marginRight: 8 }} />
             Reload Data
@@ -184,8 +196,10 @@ export default function Booking() {
         <ViewBooking
           booking={selectedBooking}
           onClose={() => setShowViewBooking(false)}
+          onStatusUpdated={fetchBookings}
         />
       )}
+
     </div>
   );
 }

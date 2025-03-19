@@ -10,6 +10,7 @@ import Loading from "../../../components/Loading/Loading";
 import BookingModal from "./partials/BookingModal";
 import BookingDetails from "./partials/BookingDetail";
 import BookingSuccess from "./partials/BookingSuccess";
+import dayjs from "dayjs";
 
 export default function ServiceDetail() {
   const { id } = useParams();
@@ -37,8 +38,9 @@ export default function ServiceDetail() {
     window.scrollTo({ top: 0, behavior: "smooth" });
     const fetchServiceDetail = async () => {
       try {
-        await getServiceDetail(id, setService);
+        const serviceData = await getServiceDetail(id);
         const allServices = await getAllService();
+        setService(serviceData);
         setServices(allServices);
       } catch (err) {
         console.error("Error fetching service data:", err);
@@ -85,6 +87,7 @@ export default function ServiceDetail() {
         onClose={() => setIsBookingModalOpen(false)}
         serviceName={service.serviceName}
         serviceId={service.serviceId}
+        defaultDate={dayjs()}
         onContinue={(data) => {
           setBookingData(data);
           setIsBookingModalOpen(false);

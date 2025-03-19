@@ -1,35 +1,89 @@
-import { Input, message, Pagination, Radio } from "antd";
+// BlogsAndNews/BlogsAndNews.jsx
+import { Tabs } from "antd";
 import React, { useEffect, useState } from "react";
-import BlogsCard from "../../../components/BlogsCard";
+import { useLocation, useNavigate } from "react-router-dom";
 import Loading from "../../../components/Loading";
-import NewsCard from "../../../components/NewsCard";
+import SearchBar from "./partials/SearchBar";
+import HashtagFilter from "./partials/HashtagFilter";
+import NewsTab from "./partials/NewsTab";
+import BlogsTab from "./partials/BlogsTab";
 import getBlog from "../../../modules/NewsAndBlog/getBlog";
 import getNews from "../../../modules/NewsAndBlog/getNews";
+import { message } from "antd";
 
-export default function NewsAndBlogs() {
-  // Raw data
+export default function BlogsAndNews() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Get hashtag from URL query parameters
+  const getHashtagFromQuery = () => {
+    const searchParams = new URLSearchParams(location.search);
+    const hashtagId = searchParams.get("hashtag");
+    return hashtagId ? parseInt(hashtagId, 10) : null;
+  };
+
   const [blogs, setBlogs] = useState([]);
   const [newsList, setNewsList] = useState([]);
+  const [hashtags, setHashtags] = useState([]);
+  const [selectedHashtag, setSelectedHashtag] = useState(getHashtagFromQuery());
 
-  // Loading states
   const [loadingBlogs, setLoadingBlogs] = useState(true);
   const [loadingNews, setLoadingNews] = useState(true);
+  const [loadingHashtags, setLoadingHashtags] = useState(true);
 
-  // Sidebar filters
-  const [filterType, setFilterType] = useState("all"); // "all", "blogs", or "news"
-  const [sortOption, setSortOption] = useState("newest"); // "newest" or "oldest"
+  const [activeTab, setActiveTab] = useState("news");
   const [searchQuery, setSearchQuery] = useState("");
-
-  // Pagination states (separate for blogs & news)
   const [blogPage, setBlogPage] = useState(1);
   const [newsPage, setNewsPage] = useState(1);
-  const pageSize = 8; // Show up to 8 items per section
+  const pageSize = 8;
 
-  // Fetch blogs
+  // Update URL when selectedHashtag changes
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+
+    if (selectedHashtag) {
+      searchParams.set("hashtag", selectedHashtag);
+    } else {
+      searchParams.delete("hashtag");
+    }
+
+    navigate(
+      {
+        pathname: location.pathname,
+        search: searchParams.toString(),
+      },
+      { replace: true }
+    );
+  }, [selectedHashtag, navigate, location.pathname]);
+
+  // Fetch hashtags data first
+  useEffect(() => {
+    async function fetchHashtags() {
+      try {
+        const response = await fetch(
+          "https://prestinecare-dxhvfecvh5bxaaem.southeastasia-01.azurewebsites.net/api/Hashtag"
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch hashtags");
+        }
+        const data = await response.json();
+        setHashtags(data);
+      } catch (error) {
+        message.error("Error loading hashtags");
+        console.error("Error fetching hashtags:", error);
+      } finally {
+        setLoadingHashtags(false);
+      }
+    }
+    fetchHashtags();
+  }, []);
+
+  // Fetch blogs with selected hashtag
   useEffect(() => {
     async function fetchBlogs() {
+      setLoadingBlogs(true);
       try {
-        const data = await getBlog();
+        const data = await getBlog(selectedHashtag);
         setBlogs(data);
       } catch (error) {
         message.error("Error loading blogs data");
@@ -39,15 +93,14 @@ export default function NewsAndBlogs() {
       }
     }
     fetchBlogs();
-  }, []);
+  }, [selectedHashtag]);
 
-  // Fetch news
+  // Fetch news with selected hashtag
   useEffect(() => {
     async function fetchNews() {
+      setLoadingNews(true);
       try {
-        const data = await getNews();
-        // If you want to filter published news, do it here:
-        // const published = data.filter((item) => item.isPublished);
+        const data = await getNews(selectedHashtag);
         setNewsList(data);
       } catch (error) {
         message.error("Error loading news data");
@@ -57,167 +110,106 @@ export default function NewsAndBlogs() {
       }
     }
     fetchNews();
-  }, []);
+  }, [selectedHashtag]);
 
-  // If still loading, show spinner
-  if (loadingBlogs || loadingNews) {
-    return (
-      <>
-        <Loading />
-      </>
-    );
+  const handleHashtagClick = (hashtagId) => {
+    if (selectedHashtag === hashtagId) {
+      setSelectedHashtag(null); // Clear filter
+    } else {
+      setSelectedHashtag(hashtagId); // Apply filter
+    }
+    // Reset pagination when changing filters
+    setBlogPage(1);
+    setNewsPage(1);
+  };
+
+  if (loadingHashtags || (loadingBlogs && loadingNews)) {
+    return <Loading />;
   }
 
-  // ---------------------
-  // Filtering & Sorting
-  // ---------------------
-  // Filter & sort for Blogs
-  const filteredBlogs = blogs
-    // Search by title
-    .filter((b) => b.title.toLowerCase().includes(searchQuery.toLowerCase()))
-    // Sort by date (createdAt)
-    .sort((a, b) => {
-      const dateA = new Date(a.createdAt);
-      const dateB = new Date(b.createdAt);
-      return sortOption === "newest" ? dateB - dateA : dateA - dateB;
-    });
+  // Now we only need to filter by search query since hashtag filtering happens at API level
+  const filteredBlogs = blogs.filter((blog) =>
+    blog.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-  // Filter & sort for News
-  const filteredNews = newsList
-    .filter((n) => n.title.toLowerCase().includes(searchQuery.toLowerCase()))
-    .sort((a, b) => {
-      const dateA = new Date(a.publishedAt);
-      const dateB = new Date(b.publishedAt);
-      return sortOption === "newest" ? dateB - dateA : dateA - dateB;
-    });
+  const filteredNews = newsList.filter((news) =>
+    news.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-  // ---------------------
-  // Pagination
-  // ---------------------
-  // Blogs
+  // Calculate current page data
   const totalBlogs = filteredBlogs.length;
-  const blogIndexOfLast = blogPage * pageSize;
-  const blogIndexOfFirst = blogIndexOfLast - pageSize;
-  const currentBlogs = filteredBlogs.slice(blogIndexOfFirst, blogIndexOfLast);
+  const currentBlogs = filteredBlogs.slice(
+    (blogPage - 1) * pageSize,
+    blogPage * pageSize
+  );
 
-  // News
   const totalNews = filteredNews.length;
-  const newsIndexOfLast = newsPage * pageSize;
-  const newsIndexOfFirst = newsIndexOfLast - pageSize;
-  const currentNews = filteredNews.slice(newsIndexOfFirst, newsIndexOfLast);
+  const currentNews = filteredNews.slice(
+    (newsPage - 1) * pageSize,
+    newsPage * pageSize
+  );
 
   return (
-    <div className="min-h-screen bg-white flex">
-      {/* Sidebar using ViewTherapist styling */}
-      {/* <div className="hidden lg:block ml-4">
-        <div className="sticky top-4 bg-slate-200 shadow rounded-lg p-4 w-[180px] ml-20 mt-6 mb-10">
-          <div className="mb-6">
-            <p className="font-medium mb-2">Search:</p>
-            <Input
-              placeholder="Search title..."
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setBlogPage(1);
-                setNewsPage(1);
-              }}
-            />
-          </div>
+    <div className="min-h-screen bg-green-100 flex flex-col items-center">
+      <div className="w-full max-w-6xl p-6">
+        {/* Search Bar Component */}
+        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-          <div className="mb-6">
-              <p className="font-medium mb-2">Type:</p>
-               <Radio.Group
-             onChange={(e) => {
-               setFilterType(e.target.value);
-                setBlogPage(1);
-               setNewsPage(1);
-                }}
-            value={filterType}
-           >
-           <Radio value="all" style={{ display: "block" }}>All</Radio>
-        <Radio value="blogs" style={{ display: "block" }}>Blogs</Radio>
-        <Radio value="news" style={{ display: "block" }}>News</Radio>
-          </Radio.Group>
-        </div>
+        {/* Hashtag Filter Component */}
+        <HashtagFilter
+          hashtags={hashtags}
+          selectedHashtag={selectedHashtag}
+          onHashtagClick={handleHashtagClick}
+          loading={loadingBlogs || loadingNews}
+        />
 
-          <div className="mb-6">
-            <p className="font-medium mb-2">Sort by:</p>
-            <Radio.Group
-              onChange={(e) => {
-                setSortOption(e.target.value);
-                setBlogPage(1);
-                setNewsPage(1);
-              }}
-              value={sortOption}
+        {/* Tabs for News and Blogs */}
+        <div className="bg-lime-50 p-3 rounded-xl shadow-md">
+          <Tabs
+            activeKey={activeTab}
+            onChange={setActiveTab}
+            centered
+            className="flex justify-center gap-6"
+          >
+            {/* News Tab */}
+            <Tabs.TabPane
+              tab={
+                <span className="text-lg font-semibold text-gray-700 hover:text-green-600">
+                  🌿 News
+                </span>
+              }
+              key="news"
             >
-              <Radio value="newest">Newest</Radio>
-              <Radio value="oldest">Oldest</Radio>
-            </Radio.Group>
-          </div>
+              <NewsTab
+                newsList={currentNews}
+                totalNews={totalNews}
+                newsPage={newsPage}
+                setNewsPage={setNewsPage}
+                pageSize={pageSize}
+                loading={loadingNews}
+              />
+            </Tabs.TabPane>
 
+            {/* Blogs Tab */}
+            <Tabs.TabPane
+              tab={
+                <span className="text-lg font-semibold text-gray-700 hover:text-green-600">
+                  💆 Blogs
+                </span>
+              }
+              key="blogs"
+            >
+              <BlogsTab
+                blogs={currentBlogs}
+                totalBlogs={totalBlogs}
+                blogPage={blogPage}
+                setBlogPage={setBlogPage}
+                pageSize={pageSize}
+                loading={loadingBlogs}
+              />
+            </Tabs.TabPane>
+          </Tabs>
         </div>
-      </div> */}
-
-      <div className="flex-1 p-6 mx-16 ">
-
-        {filterType !== "news" && (
-          <section className="mb-10">
-
-            <div className="bg-slate-200 shadow-lg rounded-lg p-6">
-              <h3 className="text-3xl font-bold mb-4 text-center">Blogs</h3>
-              {filteredBlogs.length === 0 ? (
-                <p className="text-center text-gray-500">No blogs found.</p>
-              ) : (
-                <>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-                    {currentBlogs.map((blog) => (
-                      <BlogsCard key={blog.blogId} {...blog} />
-                    ))}
-                  </div>
-                  {totalBlogs > pageSize && (
-                    <div className="mt-6 flex justify-center">
-                      <Pagination
-                        current={blogPage}
-                        pageSize={pageSize}
-                        total={totalBlogs}
-                        onChange={(page) => setBlogPage(page)}
-                      />
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          </section>
-        )}
-
-        {filterType !== "blogs" && (
-          <section>
-            <div className="bg-slate-200 shadow-lg rounded-lg p-6">
-              <h3 className="text-3xl font-bold mb-4 text-center">News</h3>
-              {filteredNews.length === 0 ? (
-                <p className="text-center text-gray-500">No news found.</p>
-              ) : (
-                <>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-                    {currentNews.map((news) => (
-                      <NewsCard key={news.newsId} {...news} />
-                    ))}
-                  </div>
-                  {totalNews > pageSize && (
-                    <div className="mt-6 flex justify-center">
-                      <Pagination
-                        current={newsPage}
-                        pageSize={pageSize}
-                        total={totalNews}
-                        onChange={(page) => setNewsPage(page)}
-                      />
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          </section>
-        )}
       </div>
     </div>
   );
