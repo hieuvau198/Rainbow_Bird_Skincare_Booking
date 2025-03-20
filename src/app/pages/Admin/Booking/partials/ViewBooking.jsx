@@ -14,7 +14,6 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
   const [editingTherapist, setEditingTherapist] = useState(false);
   const [therapistOptions, setTherapistOptions] = useState([]);
   const [selectedTherapist, setSelectedTherapist] = useState(null);
-  const [theName, setTherapistName] = useState(null);
   const [timeSlot, setTimeSlot] = useState({ startTime: "", endTime: "" });
   const [error, setError] = useState("");
 
@@ -67,7 +66,7 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
     const fetchTherapistName = async () => {
       try {
         const response = await getTherapistById(booking.therapistId);
-        setTherapistName(response.user.username);
+        // setTherapistName(response.user.username);
       } catch (error) {
         console.error("Error fetching therapist name:", error);
       }
@@ -194,7 +193,7 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
             </Space>
           ) : (
             <Space>
-              <Tag color="blue">{theName || "N/A"}</Tag>
+              <Tag color="blue">{booking.therapistName || "N/A"}</Tag>
               {booking.status === "Await Confirmation" && (
                 <Button color="primary" variant="solid" type="link" onClick={handleEditTherapist}>
                   Change Therapist

@@ -210,14 +210,14 @@ export default function Booking() {
         <div className="flex justify-between items-center mb-5">
           <h1 className="text-[22px] font-bold m-0">Skincare Service Bookings</h1>
           <Button type="primary" onClick={fetchBookings}>
-            <TfiReload style={{ marginRight: 8 }} />
+            <TfiReload style={{ marginRight: 4 }} />
             Reload Data
           </Button>
         </div>
 
         {/* Status Filter Buttons */}
         <div className="mb-5 overflow-x-auto">
-          <Row gutter={[8, 8]} className="flex-nowrap" style={{ minWidth: 'max-content' }}>
+          <Row gutter={[8, 8]} className="flex-nowrap">
             {uniqueStatuses.map(status => (
               <Col key={status}>
                 <Button 
@@ -238,7 +238,7 @@ export default function Booking() {
           rowKey="bookingId"
           bordered
           pagination={{ pageSize: 10 }}
-          scroll={{ x: "max-content", y: 400 }}
+          scroll={{ x: "max-content", y: 350 }}
           loading={loading}
         />
       </div>

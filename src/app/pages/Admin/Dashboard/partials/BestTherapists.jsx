@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import getBestTherapists from "../../../../modules/Admin/Dashboard/getBestTherapists";
 import Loading from "../../../../components/Loading/index";
+import getTherapist from "../../../../modules/Home/getTherapist";
+import { Tag } from "antd";
 
 export default function BestTherapists() {
     const [Therapists, setTherapists] = useState([]);
@@ -12,7 +14,7 @@ export default function BestTherapists() {
             try {
                 const data = await getBestTherapists();
                 const topTherapists = data
-                    .sort((a, b) => b.rating - a.rating)
+                    .sort((a, b) => b.therapist.rating - a.therapist.rating)
                     .slice(0, 5); 
                 setTherapists(topTherapists);
             } catch (error) {
@@ -48,11 +50,11 @@ export default function BestTherapists() {
                     {Therapists.map((therapist, index) => (
                         <tr key={therapist.therapistId}>
                             <td className="p-2 border-b">{index + 1}</td>
-                            <td className="p-2 border-b">{therapist.user.fullName}</td>
+                            <td className="p-2 border-b">{therapist.therapist.user.fullName}</td>
                             <td className="p-2 border-b">
-                                <span className="bg-green-100 text-green-700 px-2 py-1 rounded-lg text-sm">
-                                    {therapist.rating} ★
-                                </span>
+                                <Tag className="font-semibold" color="green" key={therapist.therapistId} >
+                                    {therapist.therapist.rating} ★
+                                </Tag>
                             </td>
                         </tr>
                     ))}
