@@ -14,6 +14,7 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
   const [editingTherapist, setEditingTherapist] = useState(false);
   const [therapistOptions, setTherapistOptions] = useState([]);
   const [selectedTherapist, setSelectedTherapist] = useState(null);
+  const [therapistName, setTherapistName] = useState(booking.therapistName || "N/A");
   const [timeSlot, setTimeSlot] = useState({ startTime: "", endTime: "" });
   const [error, setError] = useState("");
 
@@ -62,16 +63,18 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
     }
   };
 
+
+  const fetchTherapistName = async (therapistId) => {
+    try {
+      const response = await getTherapistById(therapistId);
+      setTherapistName(response.user.fullName);
+    } catch (error) {
+      console.error("Error fetching therapist name:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchTherapistName = async () => {
-      try {
-        const response = await getTherapistById(booking.therapistId);
-        // setTherapistName(response.user.username);
-      } catch (error) {
-        console.error("Error fetching therapist name:", error);
-      }
-    };
-    fetchTherapistName();
+    fetchTherapistName(booking.therapistId);
   }, [booking.therapistId]);
 
   useEffect(() => {
@@ -104,9 +107,13 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
     try {
       const data = await changeTherapist(booking.bookingId, selectedTherapist);
       booking.therapistId = selectedTherapist;
+      await fetchTherapistName(selectedTherapist); // Fetch new therapist name after successful update
       setEditingTherapist(false);
       setError(data.message);
       message.success(data.message);
+      if (onStatusUpdated) {
+        onStatusUpdated(); // Update parent component if needed
+      }
     } catch (e) {
       message.error(e.message);
       console.log("error: ", e);
@@ -193,7 +200,7 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
             </Space>
           ) : (
             <Space>
-              <Tag color="blue">{booking.therapistName || "N/A"}</Tag>
+              <Tag color="blue">{therapistName || "N/A"}</Tag>
               {booking.status === "Await Confirmation" && (
                 <Button color="primary" variant="solid" type="link" onClick={handleEditTherapist}>
                   Change Therapist
