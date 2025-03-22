@@ -7,6 +7,8 @@ import getTimeSlotById from "../../../../modules/Admin/TimeSlot/getTimeSlotById"
 import changeTherapist from "../../../../modules/Booking/changeTherapist";
 import { editBookingStatus } from "../../../../modules/Booking/editBookingStatus";
 import { getBookingStatus } from "../../../../modules/Booking/getBookingStatus";
+import FormatDate from "../../../../components/FormatDate";
+import VndFormat from "../../../../components/VndFormat/VndFormat";
 
 export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
   if (!booking) return null;
@@ -14,7 +16,7 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
   const [editingTherapist, setEditingTherapist] = useState(false);
   const [therapistOptions, setTherapistOptions] = useState([]);
   const [selectedTherapist, setSelectedTherapist] = useState(null);
-  const [theName, setTherapistName] = useState(null);
+  const [therapistName, setTherapistName] = useState(booking.therapistName || "N/A");
   const [timeSlot, setTimeSlot] = useState({ startTime: "", endTime: "" });
   const [error, setError] = useState("");
 
@@ -63,16 +65,18 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
     }
   };
 
+
+  const fetchTherapistName = async (therapistId) => {
+    try {
+      const response = await getTherapistById(therapistId);
+      setTherapistName(response.user.fullName);
+    } catch (error) {
+      console.error("Error fetching therapist name:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchTherapistName = async () => {
-      try {
-        const response = await getTherapistById(booking.therapistId);
-        setTherapistName(response.user.username);
-      } catch (error) {
-        console.error("Error fetching therapist name:", error);
-      }
-    };
-    fetchTherapistName();
+    fetchTherapistName(booking.therapistId);
   }, [booking.therapistId]);
 
   useEffect(() => {
@@ -105,9 +109,13 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
     try {
       const data = await changeTherapist(booking.bookingId, selectedTherapist);
       booking.therapistId = selectedTherapist;
+      await fetchTherapistName(selectedTherapist); // Fetch new therapist name after successful update
       setEditingTherapist(false);
       setError(data.message);
       message.success(data.message);
+      if (onStatusUpdated) {
+        onStatusUpdated(); // Update parent component if needed
+      }
     } catch (e) {
       message.error(e.message);
       console.log("error: ", e);
@@ -170,7 +178,7 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
         <Descriptions.Item label="ID">{booking.bookingId}</Descriptions.Item>
         <Descriptions.Item label="Customer Name">{booking.customerName}</Descriptions.Item>
         <Descriptions.Item label="Service Name">{booking.serviceName}</Descriptions.Item>
-        <Descriptions.Item label="Booking Date">{formatDate(booking.bookingDate)}</Descriptions.Item>
+        <Descriptions.Item label="Booking Date"><FormatDate date={booking.bookingDate} /></Descriptions.Item>
         <Descriptions.Item label="Start Time">{timeSlot.startTime || "N/A"}</Descriptions.Item>
         <Descriptions.Item label="End Time">{timeSlot.endTime || "N/A"}</Descriptions.Item>
         <Descriptions.Item label="Therapist">
@@ -194,7 +202,7 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
             </Space>
           ) : (
             <Space>
-              <Tag color="blue">{theName || "N/A"}</Tag>
+              <Tag color="blue">{therapistName || "N/A"}</Tag>
               {booking.status === "Await Confirmation" && (
                 <Button color="primary" variant="solid" type="link" onClick={handleEditTherapist}>
                   Change Therapist
@@ -240,7 +248,7 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
         <Descriptions.Item label="Customer Phone">{booking.customerPhone}</Descriptions.Item>
         <Descriptions.Item label="Customer Email">{booking.customerEmail}</Descriptions.Item>
         <Descriptions.Item label="Service Price">
-          {booking.servicePrice} {booking.currency}
+          <VndFormat amount={booking.servicePrice} />
         </Descriptions.Item>
         <Descriptions.Item label="Payment Status">
           <Tag color={StatusColor(booking.paymentStatus)}>{booking.paymentStatus}</Tag>

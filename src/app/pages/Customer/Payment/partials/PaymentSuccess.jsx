@@ -31,11 +31,11 @@ const PaymentSuccess = ({ paymentDetails }) => {
                   {formatCurrency(paymentDetails.totalAmount, paymentDetails.currency)}
                 </p>
               )}
-              {paymentDetails && (
+              {/* {paymentDetails && (
                 <p className="text-gray-600">
                   Payment ID: #{paymentDetails.paymentId}
                 </p>
-              )}
+              )} */}
             </div>
           }
           extra={[

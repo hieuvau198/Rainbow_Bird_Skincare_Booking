@@ -5,7 +5,7 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export default async function getBestTherapists() {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/Therapists`, {
+    const response = await fetch(`${API_BASE_URL}/api/TherapistProfile/with-reference`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

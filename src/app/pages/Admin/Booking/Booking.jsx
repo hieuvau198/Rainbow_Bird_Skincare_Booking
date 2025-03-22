@@ -10,6 +10,8 @@ import ViewBooking from "../Booking/partials/ViewBooking";
 import DecodeRoleId from "../../../components/DecodeRoleId";
 import getBookByTheId from "../../../modules/Booking/getBookByTheId";
 import StatusColor from "../../../components/StatusColor";
+import FormatDate from "../../../components/FormatDate";
+import TherapistBooking from "./therapist/TherapistBooking";
 
 export default function Booking() {
   const [dataSource, setDataSource] = useState([]);
@@ -20,6 +22,10 @@ export default function Booking() {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [statusCounts, setStatusCounts] = useState({});
   const userRole = DecodeRole();
+
+  if (userRole === UserRole.THERAPIST) {
+    return <TherapistBooking />;
+  }
 
   // Hàm formatDate chuyển đổi chuỗi ngày sang định dạng DD-MM-YYYY
   const formatDate = (dateString) => {
@@ -37,7 +43,7 @@ export default function Booking() {
       if (userRole === UserRole.THERAPIST) {
         const therapistId = DecodeRoleId("__TheIden");
         data = await getBookByTheId(therapistId);
-        data = data.filter((book) => book.status === "In Progress");
+        // data = data.filter((book) => book.status === "In Progress");
       } else {
         data = await getAllBook();
       }
@@ -52,14 +58,14 @@ export default function Booking() {
         status: book.status,
       }));
       setDataSource(formattedData);
-      
+
       // Calculate status counts
       const counts = formattedData.reduce((acc, booking) => {
         acc[booking.status] = (acc[booking.status] || 0) + 1;
         return acc;
       }, {});
       setStatusCounts({ ...counts, All: formattedData.length });
-      
+
       // Apply current filter
       applyStatusFilter(selectedStatus, formattedData);
     } catch (error) {
@@ -80,7 +86,9 @@ export default function Booking() {
     if (status === "All") {
       setFilteredDataSource(data);
     } else {
-      setFilteredDataSource(data.filter(booking => booking.status === status));
+      setFilteredDataSource(
+        data.filter((booking) => booking.status === status)
+      );
     }
   };
 
@@ -137,7 +145,10 @@ export default function Booking() {
     new Set(dataSource.map((book) => book.status))
   ).map((value) => ({ text: value, value }));
 
-  const uniqueStatuses = ["All", ...Array.from(new Set(dataSource.map(item => item.status)))];
+  const uniqueStatuses = [
+    "All",
+    ...Array.from(new Set(dataSource.map((item) => item.status))),
+  ];
 
   const columns = [
     {
@@ -164,10 +175,9 @@ export default function Booking() {
       dataIndex: "bookingDate",
       key: "bookingDate",
       width: 150,
-      render: (date) => <span>{formatDate(date)}</span>,
+      render: (date) => <FormatDate date={date} />,
       filters: bookingDateFilters,
-      onFilter: (value, record) =>
-        formatDate(record.bookingDate) === value,
+      onFilter: (value, record) => formatDate(record.bookingDate) === value,
     },
     {
       title: "Status",
@@ -208,22 +218,31 @@ export default function Booking() {
     <div className="p-6 max-w-[1270px]">
       <div className="p-6 bg-white rounded-md shadow-md min-h-[640px]">
         <div className="flex justify-between items-center mb-5">
-          <h1 className="text-[22px] font-bold m-0">Skincare Service Bookings</h1>
+          <h1 className="text-[22px] font-bold m-0">Service Bookings</h1>
           <Button type="primary" onClick={fetchBookings}>
-            <TfiReload style={{ marginRight: 8 }} />
+            <TfiReload style={{ marginRight: 4 }} />
             Reload Data
           </Button>
         </div>
 
         {/* Status Filter Buttons */}
-        <div className="mb-5 overflow-x-auto">
-          <Row gutter={[8, 8]} className="flex-nowrap" style={{ minWidth: 'max-content' }}>
-            {uniqueStatuses.map(status => (
+        <div className="mb-5">
+          <Row gutter={[8, 8]} wrap>
+            {uniqueStatuses.map((status) => (
               <Col key={status}>
-                <Button 
+                <Button
                   type={selectedStatus === status ? "primary" : "default"}
                   onClick={() => handleStatusFilter(status)}
-                  style={status !== "All" ? { backgroundColor: selectedStatus === status ? StatusColor(status) : undefined } : {}}
+                  style={
+                    status !== "All"
+                      ? {
+                          backgroundColor:
+                            selectedStatus === status
+                              ? StatusColor(status)
+                              : undefined,
+                        }
+                      : {}
+                  }
                 >
                   {status} ({statusCounts[status] || 0})
                 </Button>
@@ -238,7 +257,7 @@ export default function Booking() {
           rowKey="bookingId"
           bordered
           pagination={{ pageSize: 10 }}
-          scroll={{ x: "max-content", y: 400 }}
+          scroll={{ x: "max-content", y: 350 }}
           loading={loading}
         />
       </div>

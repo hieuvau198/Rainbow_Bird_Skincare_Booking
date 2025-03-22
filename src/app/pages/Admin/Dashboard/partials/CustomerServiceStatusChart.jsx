@@ -74,7 +74,7 @@ export default function CustomerServiceStatusChart() {
                 formatter: function (value, { seriesIndex }) {
                     const statusLabel = options.labels[seriesIndex];
                     const count = data[statusLabel];
-                    return `${count} Services`;
+                    return `${count} Bookings`;
                 },
             },
         },
