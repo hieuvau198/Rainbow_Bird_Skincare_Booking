@@ -10,6 +10,7 @@ import ViewBooking from "../Booking/partials/ViewBooking";
 import DecodeRoleId from "../../../components/DecodeRoleId";
 import getBookByTheId from "../../../modules/Booking/getBookByTheId";
 import StatusColor from "../../../components/StatusColor";
+import FormatDate from "../../../components/FormatDate";
 
 export default function Booking() {
   const [dataSource, setDataSource] = useState([]);
@@ -164,7 +165,7 @@ export default function Booking() {
       dataIndex: "bookingDate",
       key: "bookingDate",
       width: 150,
-      render: (date) => <span>{formatDate(date)}</span>,
+      render: (date) => <FormatDate date={date} />,
       filters: bookingDateFilters,
       onFilter: (value, record) =>
         formatDate(record.bookingDate) === value,

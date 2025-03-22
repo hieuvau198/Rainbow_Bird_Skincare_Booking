@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import StatusColor from "../../../../components/StatusColor";
 import getTimeSlotById from "../../../../modules/Admin/TimeSlot/getTimeSlotById";
+import VndFormat from "../../../../components/VndFormat/VndFormat";
+import FormatDate from "../../../../components/FormatDate";
 
 export default function BookingDetail({ booking }) {
   if (!booking) return null;
@@ -39,7 +41,7 @@ export default function BookingDetail({ booking }) {
       >
         {/* <Descriptions.Item label="Booking ID">{booking.bookingId}</Descriptions.Item> */}
         <Descriptions.Item label="Booking Date">
-          {dayjs(booking.bookingDate).format("YYYY-MM-DD")}
+          <FormatDate date={booking.bookingDate} />
         </Descriptions.Item>
         <Descriptions.Item label="Status">
           <Tag color={StatusColor(booking.status)}>{booking.status}</Tag>
@@ -51,7 +53,7 @@ export default function BookingDetail({ booking }) {
         <Descriptions.Item label="Start Time">{timeSlot.startTime || "N/A"}</Descriptions.Item>
         <Descriptions.Item label="End Time">{timeSlot.endTime || "N/A"}</Descriptions.Item>
         <Descriptions.Item label="Service Price">
-          {booking.servicePrice} {booking.currency}
+          <VndFormat amount={booking.servicePrice} />
         </Descriptions.Item>
         <Descriptions.Item label="Payment Status">
           <Tag color={StatusColor(booking.paymentStatus)}>{booking.paymentStatus}</Tag>

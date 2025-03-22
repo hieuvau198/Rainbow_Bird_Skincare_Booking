@@ -24,11 +24,11 @@ export default function ScheduleBooking() {
   };
 
   return (
-    <div className="grid grid-cols-7 gap-4 p-6 px-24">
-      <div className={`${selectedBooking ? "col-span-5" : "col-span-7"} transition-all duration-500 ease-in-out`}>
+    <div className="grid grid-cols-12 gap-4 p-6 px-24">
+      <div className={`${selectedBooking ? "col-span-8" : "col-span-12"} transition-all duration-500 ease-in-out`}>
         <BookingList bookings={bookings} onViewDetail={handleViewDetail} />
       </div>
-      <div className="col-span-2">
+      <div className="col-span-4">
         {selectedBooking ? (
           <BookingDetail booking={selectedBooking} />
         ) : (
