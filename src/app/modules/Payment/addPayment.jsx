@@ -1,30 +1,42 @@
+import Cookies from "js-cookie"; // Ensure you're importing cookies
+
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export default async function addPayment(paymentDetails) {
   try {
+    // Get authentication token for API request
+    const token = Cookies.get("__atok");
+    
     const response = await fetch(`${API_BASE_URL}/api/Payments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": token ? `Bearer ${token}` : "", // Add auth token if available
       },
       body: JSON.stringify({
-        paymentId: paymentDetails.paymentId,
+        bookingId: paymentDetails.paymentId,
         totalAmount: paymentDetails.totalAmount,
         currency: paymentDetails.currency,
         paymentMethod: paymentDetails.paymentMethod,
         status: "Paid",
         paymentDate: new Date().toISOString(),
-        tax: paymentDetails.tax || Math.round(paymentDetails.totalAmount * 0.1), // 10% tax if not specified
+        tax: paymentDetails.tax || Math.round(paymentDetails.totalAmount * 0.1),
         sender: "Prestine Care Customer",
         receiver: "Prestine Care"
       }),
     });
 
+    console.log("Payment API response status:", response.status);
+
     if (!response.ok) {
-      throw new Error("Payment failed");
+      const errorData = await response.json().catch(() => ({}));
+      console.error("Payment API error:", errorData);
+      throw new Error(errorData.message || "Payment failed with status: " + response.status);
     }
 
-    return await response.json();
+    const data = await response.json();
+    console.log("Payment API success:", data);
+    return data;
   } catch (error) {
     console.error("Error adding payment:", error);
     throw error;  // Rethrow the error to be handled in the calling function

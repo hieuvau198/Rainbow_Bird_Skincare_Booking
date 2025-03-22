@@ -27,7 +27,8 @@ export default function BookingDetail({ booking }) {
 
   // Navigate to Payment Page with Booking ID and Payment ID
   const handlePayment = () => {
-    navigate(`/payment?paymentId=${booking.bookingId}&amount=${booking.servicePrice}&currency=${booking.currency}`);
+    // Make sure we use the booking ID as the payment ID for consistency
+    navigate(`/payment?paymentId=${booking.bookingId}&amount=${booking.servicePrice}&currency=${booking.currency || "VND"}`);
   };
 
 
