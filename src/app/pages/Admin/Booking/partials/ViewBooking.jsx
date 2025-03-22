@@ -7,6 +7,8 @@ import getTimeSlotById from "../../../../modules/Admin/TimeSlot/getTimeSlotById"
 import changeTherapist from "../../../../modules/Booking/changeTherapist";
 import { editBookingStatus } from "../../../../modules/Booking/editBookingStatus";
 import { getBookingStatus } from "../../../../modules/Booking/getBookingStatus";
+import FormatDate from "../../../../components/FormatDate";
+import VndFormat from "../../../../components/VndFormat/VndFormat";
 
 export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
   if (!booking) return null;
@@ -176,7 +178,7 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
         <Descriptions.Item label="ID">{booking.bookingId}</Descriptions.Item>
         <Descriptions.Item label="Customer Name">{booking.customerName}</Descriptions.Item>
         <Descriptions.Item label="Service Name">{booking.serviceName}</Descriptions.Item>
-        <Descriptions.Item label="Booking Date">{formatDate(booking.bookingDate)}</Descriptions.Item>
+        <Descriptions.Item label="Booking Date"><FormatDate date={booking.bookingDate} /></Descriptions.Item>
         <Descriptions.Item label="Start Time">{timeSlot.startTime || "N/A"}</Descriptions.Item>
         <Descriptions.Item label="End Time">{timeSlot.endTime || "N/A"}</Descriptions.Item>
         <Descriptions.Item label="Therapist">
@@ -246,7 +248,7 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
         <Descriptions.Item label="Customer Phone">{booking.customerPhone}</Descriptions.Item>
         <Descriptions.Item label="Customer Email">{booking.customerEmail}</Descriptions.Item>
         <Descriptions.Item label="Service Price">
-          {booking.servicePrice} {booking.currency}
+          <VndFormat amount={booking.servicePrice} />
         </Descriptions.Item>
         <Descriptions.Item label="Payment Status">
           <Tag color={StatusColor(booking.paymentStatus)}>{booking.paymentStatus}</Tag>
