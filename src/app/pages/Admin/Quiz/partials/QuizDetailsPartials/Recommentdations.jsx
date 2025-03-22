@@ -5,6 +5,7 @@ import getRecomByQuizIdWithReferences from "../../../../../modules/Quizzs/getRec
 import deleteRecom from "../../../../../modules/Quizzs/deleteRecom";
 import AddRecommend from "./AddRecommend";
 import EditRecommend from "./EditRecommend";
+import VndFormat from "../../../../../components/VndFormat/VndFormat";
 
 const Recommendations = ({ quizId }) => {
     const [data, setData] = useState([]);
@@ -68,14 +69,14 @@ const Recommendations = ({ quizId }) => {
         },
         {
             title: "Service Name",
-            dataIndex: ["service", "serviceName"], // Updated to fetch from included service data
+            dataIndex: ["service", "serviceName"],
             key: "serviceName",
         },
         {
             title: "Price",
-            dataIndex: ["service", "price"], // Updated
+            dataIndex: ["service", "price"],
             key: "price",
-            render: (price, record) => `${price} ${record.service.currency}`,
+            render: (price) => <VndFormat amount={price} />,
         },
         {
             title: "Min Score",
