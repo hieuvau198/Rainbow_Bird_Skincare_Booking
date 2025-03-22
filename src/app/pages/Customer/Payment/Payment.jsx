@@ -79,7 +79,7 @@ export default function PaymentPage() {
       const paymentResponse = await addPayment(paymentPayload);
       
       // If the response exists, set status to success
-      if (paymentResponse) {
+      if (paymentResponse && paymentResponse.paymentId) {
         // Update local payment details with new status
         setPaymentDetails({
           ...paymentDetails,
