@@ -17,7 +17,7 @@ export const StatusColor = (status) => {
         case "Completed":
             return "green";
         case "Checked Out":
-            return "cyan";
+            return "volcano";
         default:
             return "default";
     }

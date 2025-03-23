@@ -37,14 +37,15 @@ const ViewTherapist = () => {
         return [...therapistsList].sort(
           (a, b) => b.therapistId - a.therapistId
         );
-      case "rating-high-to-low":
-        return [...therapistsList].sort(
-          (a, b) => (b.rating || 0) - (a.rating || 0)
-        );
-      case "rating-low-to-high":
-        return [...therapistsList].sort(
-          (a, b) => (a.rating || 0) - (b.rating || 0)
-        );
+        case "rating-high-to-low":
+          return [...therapistsList].sort(
+            (a, b) => (b.therapist.rating || 0) - (a.therapist.rating || 0)
+          );
+        case "rating-low-to-high":
+          return [...therapistsList].sort(
+            (a, b) => (a.therapist.rating || 0) - (b.therapist.rating || 0)
+          );
+        
       default:
         return therapistsList;
     }

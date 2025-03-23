@@ -42,7 +42,7 @@ export default function ContentSerDetail({ service, setIsModalOpen }) {
           {/* <p className="text-gray-600 text-md mt-2">{service.description || "No description available."}</p> */}
 
           <div className="mt-4">
-            <p className="text-red-500 font-bold text-2xl">
+            <p className="text-green-800 font-bold text-2xl">
                {service.price ? `${service.price} ${service.currency || "USD"}` : "Price not available"}
             </p>
             <p className="text-gray-700 text-md mt-2 flex items-center">

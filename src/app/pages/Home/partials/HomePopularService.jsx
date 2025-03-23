@@ -109,7 +109,7 @@ export default function HomePopularService() {
                       <ClockCircleOutlined className="mr-1" /> {service.duration_minutes}
                     </p>
                     {/* Giá dịch vụ */}
-                    <div className="text-lime-500 font-bold flex items-center mt-3">
+                    <div className="text-green-800 font-bold flex items-center mt-3">
                      {service.price}
                     </div>
                   </div>
