@@ -16,11 +16,11 @@ export default function Dashboard() {
           <OverviewMetrics />
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="col-span-1">
+      <div className="grid grid-cols-1 lg:grid-cols-9 gap-6">
+        <div className="col-span-4">
           <RevenueByDayChart />
         </div>
-        <div className="col-span-1">
+        <div className="col-span-5">
           <RevenueChart />
         </div>
       </div>

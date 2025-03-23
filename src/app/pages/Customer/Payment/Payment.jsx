@@ -63,21 +63,35 @@ export default function PaymentPage() {
 
   const handlePay = async () => {
     if (!paymentDetails) return;
-
+  
     setLoading(true);
     try {
-      const paymentResponse = await addPayment({
+      // Create payment payload
+      const paymentPayload = {
         paymentId: paymentDetails.paymentId,
         totalAmount: paymentDetails.totalAmount,
         currency: paymentDetails.currency,
         paymentMethod: activeTab === "vnpay" ? "VNPAY" : "Cash",
         tax: paymentDetails.tax || Math.round(paymentDetails.totalAmount * 0.1),
-      });
-
-      if (paymentResponse) {
+      };
+  
+      // Call API to process payment
+      const paymentResponse = await addPayment(paymentPayload);
+      
+      // If the response exists, set status to success
+      if (paymentResponse && paymentResponse.paymentId) {
+        // Update local payment details with new status
+        setPaymentDetails({
+          ...paymentDetails,
+          status: "Paid",
+          paymentMethod: activeTab === "vnpay" ? "VNPAY" : "Cash",
+          paymentDate: new Date().toISOString()
+        });
+        
+        // Set status to success to show PaymentSuccess component
         setStatus("success");
       } else {
-        throw new Error("Payment failed");
+        throw new Error("Payment response was empty");
       }
     } catch (error) {
       console.error("Payment error:", error);

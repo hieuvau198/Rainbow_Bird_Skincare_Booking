@@ -32,6 +32,7 @@ const WorkingDay = lazy(() => import("../pages/Admin/TimeSlot/WorkingDay"));
 const Employee = lazy(() => import("../pages/Admin/Employee/Employee"));
 const Booking = lazy(() => import("../pages/Admin/Booking/Booking"));
 const MaService = lazy(() => import("../pages/Admin/Service/Service"));
+const Payments = lazy(() => import("../pages/Admin/Payment/Payments"))
 const AdminFeedback = lazy(() => import("../pages/Admin/Feedback/Feedback"));
 const AdminRating = lazy(() => import("../pages/Admin/Rating/Rating"));
 const Customer = lazy(() => import("../pages/Admin/Customer/Customer"));
@@ -213,6 +214,11 @@ export default function MainRoutes() {
           <Route path="quiz" element={
             <Suspense fallback={<Loading />}>
               <ManageQuiz />
+            </Suspense>
+          } />
+          <Route path="Payments" element={
+            <Suspense fallback={<Loading />}>
+              <Payments />
             </Suspense>
           } />
           <Route path="NewsAndBlog" element={

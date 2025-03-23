@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BarChartOutlined, FileTextOutlined, ShoppingOutlined, UserOutlined } from "@ant-design/icons";
 import VndFormat from "../../../../components/VndFormat";
-import getTransaction from "../../../../modules/Admin/Dashboard/getTransaction";
+import getTotalRevenue from "../../../../modules/Admin/Dashboard/getTotalRevenue";
 import getAllBook from "../../../../modules/Booking/getAllBook";
 import getCustomer from "../../../../modules/Admin/Employee/getCustomer";
 import getAllService from "../../../../modules/Admin/Service/getAllService";
@@ -12,41 +12,32 @@ function OverviewMetrics() {
   const [chosenServices, setChosenServices] = useState(0);
   const [newCustomers, setNewCustomers] = useState(0);
 
-  // Hàm lấy dữ liệu giao dịch và tính tổng doanh thu
-  const transactionData = async () => {
+  const fetchTotalRevenue = async () => {
     try {
-      const data = await getTransaction();
-
-      // Tính tổng doanh thu từ các giao dịch
-      const totalRevenue = data.reduce((sum, transaction) => sum + transaction.amount, 0);
+      const totalRevenue = await getTotalRevenue();
       setRevenue(totalRevenue);
     } catch (error) {
-      console.error("Error fetching transactions:", error);
+      console.error("Error fetching total revenue:", error);
     }
   };
 
-  // Hàm lấy và cập nhật số lượng booking, customers, services
   const fetchMetricsData = async () => {
     try {
-      // Lấy tổng số bookings
       const bookings = await getAllBook();
-      setTotalBookings(bookings.length); // Giả sử API trả về mảng các booking
+      setTotalBookings(bookings.length);
 
-      // Lấy tổng số customers
       const customers = await getCustomer();
-      setNewCustomers(customers.length); // Giả sử API trả về mảng các khách hàng
+      setNewCustomers(customers.length);
 
-      // Lấy tổng số services
       const services = await getAllService();
-      setChosenServices(services.length); // Giả sử API trả về mảng các dịch vụ
+      setChosenServices(services.length);
     } catch (error) {
       console.error("Error fetching metrics data:", error);
     }
   };
 
-  // Gọi các hàm khi component được render
   useEffect(() => {
-    transactionData();
+    fetchTotalRevenue();
     fetchMetricsData();
   }, []);
 

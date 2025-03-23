@@ -10,6 +10,7 @@ import addService from "../../../modules/Admin/Service/addService";
 import deleteService from "../../../modules/Admin/Service/deleteService";
 import AddService from "./partials/AddService";
 import ServiceDetails from "./partials/ServiceDetail";
+import VndFormat from "../../../components/VndFormat/VndFormat";
 
 export default function Service() {
   const [loading, setLoading] = useState(false);
@@ -142,7 +143,7 @@ export default function Service() {
       dataIndex: "price",
       key: "price",
       width: 150,
-      render: (_, record) => `${record.price} ${record.currency || "USD"}`,
+      render: (price) => <VndFormat amount={price} />,
     },
     {
       title: "Status",

@@ -173,10 +173,10 @@ const ViewTherapist = () => {
                   {therapist.therapist.user.fullName}
                 </h2>
                 <p className="text-sm text-gray-500">
-                  Available: {therapist.isAvailable ? "Yes" : "No"}
+                  Available: {therapist.therapist.isAvailable ? "Yes" : "No"}
                 </p>
                 <p className="text-sm text-gray-500">
-                  Schedule: {therapist.schedule}
+                  Schedule: {therapist.therapist.schedule}
                 </p>
                 <p className="text-sm text-yellow-500 font-medium">
                   Rating:{" "}
