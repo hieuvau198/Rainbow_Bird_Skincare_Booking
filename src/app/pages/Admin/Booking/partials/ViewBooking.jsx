@@ -9,6 +9,7 @@ import { editBookingStatus } from "../../../../modules/Booking/editBookingStatus
 import { getBookingStatus } from "../../../../modules/Booking/getBookingStatus";
 import FormatDate from "../../../../components/FormatDate";
 import VndFormat from "../../../../components/VndFormat/VndFormat";
+import PaymentModal from "./PaymentModal";
 
 export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
   if (!booking) return null;
@@ -19,6 +20,7 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
   const [therapistName, setTherapistName] = useState(booking.therapistName || "N/A");
   const [timeSlot, setTimeSlot] = useState({ startTime: "", endTime: "" });
   const [error, setError] = useState("");
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   // State cho chỉnh sửa trạng thái
   const [editingStatus, setEditingStatus] = useState(false);
@@ -169,9 +171,20 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
             Check Out
           </Button>
         ),
-        <Button key="close" onClick={onClose}>
-          Close
-        </Button>,
+        booking.paymentStatus === "Pending" ? (
+          <Button
+            key="pay"
+            type="primary"
+            className="bg-green-500"
+            onClick={() => setShowPaymentModal(true)}
+          >
+            Proceed to Payment
+          </Button>
+        ) : (
+          <Button key="close" onClick={onClose}>
+            Close
+          </Button>
+        )
       ]}
     >
       <Descriptions bordered size="small" column={1}>
@@ -254,6 +267,17 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
           <Tag color={StatusColor(booking.paymentStatus)}>{booking.paymentStatus}</Tag>
         </Descriptions.Item>
       </Descriptions>
+
+      {showPaymentModal && (
+        <PaymentModal
+          visible={showPaymentModal}
+          onClose={() => setShowPaymentModal(false)}
+          bookingId={booking.bookingId}
+          amount={booking.servicePrice}
+          currency={booking.currency}
+        />
+      )}
+
     </Modal>
   );
 }
