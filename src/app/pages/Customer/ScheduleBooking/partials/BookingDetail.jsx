@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Descriptions, Tag, Button } from "antd";
 import { useNavigate } from "react-router-dom";
-import dayjs from "dayjs";
 import StatusColor from "../../../../components/StatusColor";
 import getTimeSlotById from "../../../../modules/Admin/TimeSlot/getTimeSlotById";
 import VndFormat from "../../../../components/VndFormat/VndFormat";
@@ -25,12 +24,15 @@ export default function BookingDetail({ booking }) {
     fetchTimeSlot();
   }, [booking.slotId]);
 
-  // Navigate to Payment Page with Booking ID and Payment ID
   const handlePayment = () => {
-    // Make sure we use the booking ID as the payment ID for consistency
-    navigate(`/payment?paymentId=${booking.bookingId}&amount=${booking.servicePrice}&currency=${booking.currency || "VND"}`);
+    navigate(
+      `/payment?paymentId=${booking.bookingId}&amount=${booking.servicePrice}&currency=${booking.currency || "VND"}`
+    );
   };
 
+  const handleRating = () => {
+    navigate(`/rating?bookingId=${booking.bookingId}`);
+  };
 
   return (
     <div className="p-4 bg-white rounded-md shadow-md min-h-[600px]">
@@ -40,7 +42,6 @@ export default function BookingDetail({ booking }) {
         column={1}
         layout="horizontal"
       >
-        {/* <Descriptions.Item label="Booking ID">{booking.bookingId}</Descriptions.Item> */}
         <Descriptions.Item label="Booking Date">
           <FormatDate date={booking.bookingDate} />
         </Descriptions.Item>
@@ -50,9 +51,12 @@ export default function BookingDetail({ booking }) {
         <Descriptions.Item label="Service Name">{booking.serviceName}</Descriptions.Item>
         <Descriptions.Item label="Therapist Name">{booking.therapistName}</Descriptions.Item>
         <Descriptions.Item label="Duration">{booking.durationMinutes} Mins</Descriptions.Item>
-        {/* NOTE: Hiển thị thông tin thời gian của slot */}
-        <Descriptions.Item label="Start Time">{timeSlot.startTime || "N/A"}</Descriptions.Item>
-        <Descriptions.Item label="End Time">{timeSlot.endTime || "N/A"}</Descriptions.Item>
+        <Descriptions.Item label="Start Time">
+          {timeSlot.startTime || "N/A"}
+        </Descriptions.Item>
+        <Descriptions.Item label="End Time">
+          {timeSlot.endTime || "N/A"}
+        </Descriptions.Item>
         <Descriptions.Item label="Service Price">
           <VndFormat amount={booking.servicePrice} />
         </Descriptions.Item>
@@ -61,16 +65,26 @@ export default function BookingDetail({ booking }) {
         </Descriptions.Item>
       </Descriptions>
 
-      {booking.paymentStatus !== "Paid" && (
-        <Button
-          type="primary"
-          className="mt-4 w-full bg-green-500 hover:bg-green-600 text-white"
-          onClick={handlePayment}
-        >
-          Proceed to Payment
-        </Button>
-      )}
-
+      <div className="flex gap-4 mt-4">
+        {booking.paymentStatus !== "Paid" && (
+          <Button
+            type="primary"
+            className="flex-1 bg-green-500 hover:bg-green-600 text-white"
+            onClick={handlePayment}
+          >
+            Proceed to Payment
+          </Button>
+        )}
+        {booking.status === "Checked Out" && booking.isRated && (
+          <Button
+            type="primary"
+            className="flex-1 bg-blue-500 hover:bg-blue-600 text-white"
+            onClick={handleRating}
+          >
+            Rating
+          </Button>
+        )}
+      </div>
     </div>
   );
 }
