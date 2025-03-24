@@ -23,7 +23,6 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
   const [timeSlot, setTimeSlot] = useState({ startTime: "", endTime: "" });
   const [error, setError] = useState("");
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const userRole = DecodeRole();
 
   // State cho chỉnh sửa trạng thái
   const [editingStatus, setEditingStatus] = useState(false);
@@ -69,7 +68,6 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
       console.error("Error fetching therapist list:", error);
     }
   };
-
 
   const fetchTherapistName = async (therapistId) => {
     try {
@@ -228,51 +226,41 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
             </Space>
           )}
         </Descriptions.Item>
-<Descriptions.Item label="Status">
-  {/* Chặn hoàn toàn admin vào chế độ edit status */}
-  {userRole !== UserRole.ADMIN && editingStatus ? (
-    <Space>
-      <Select
-        placeholder="Select status"
-        style={{ width: 200 }}
-        onChange={(value) => setSelectedStatus(value)}
-        value={selectedStatus}
-        loading={loadingStatus}
-      >
-        {availableStatusOptions.map((status) => (
-          <Select.Option key={status} value={status}>
-            {status}
-          </Select.Option>
-        ))}
-      </Select>
-      <Button type="primary" onClick={handleSaveStatus}>
-        Save
-      </Button>
-      <Button onClick={() => setEditingStatus(false)}>Cancel</Button>
-    </Space>
-  ) : (
-    <Space>
-      <Tag color={StatusColor(booking.status)}>{booking.status}</Tag>
-
-      {/* Chỉ Staff hoặc Therapist được phép thấy nút Edit */}
-      {userRole !== UserRole.ADMIN &&
-        availableStatusOptions &&
-        availableStatusOptions.length > 0 &&
-        booking.therapistId !== 0 && (
-          <Button
-            color="primary"
-            variant="solid"
-            type="link"
-            onClick={() => setEditingStatus(true)}
-          >
-            Edit Status
-          </Button>
-        )}
-    </Space>
-  )}
-</Descriptions.Item>
-
-
+        <Descriptions.Item label="Status">
+          {editingStatus ? (
+            <Space>
+              <Select
+                placeholder="Select status"
+                style={{ width: 200 }}
+                onChange={(value) => setSelectedStatus(value)}
+                value={selectedStatus}
+                loading={loadingStatus}
+              >
+                {availableStatusOptions.map((status) => (
+                  <Select.Option key={status} value={status}>
+                    {status}
+                  </Select.Option>
+                ))}
+              </Select>
+              <Button type="primary" onClick={handleSaveStatus}>
+                Save
+              </Button>
+              <Button onClick={() => setEditingStatus(false)}>Cancel</Button>
+            </Space>
+          ) : (
+            <Space>
+              <Tag color={StatusColor(booking.status)}>{booking.status}</Tag>
+              {availableStatusOptions &&
+                availableStatusOptions.length > 0 &&
+                booking.therapistId !== 0 && 
+                DecodeRole() !== UserRole.ADMIN && (
+                  <Button color="primary" variant="solid" type="link" onClick={() => setEditingStatus(true)}>
+                    Edit Status
+                  </Button>
+                )}
+            </Space>
+          )}
+        </Descriptions.Item>
         <Descriptions.Item label="Customer Phone">{booking.customerPhone}</Descriptions.Item>
         <Descriptions.Item label="Customer Email">{booking.customerEmail}</Descriptions.Item>
         <Descriptions.Item label="Service Price">
@@ -292,7 +280,6 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
           currency={booking.currency}
         />
       )}
-
     </Modal>
   );
 }
