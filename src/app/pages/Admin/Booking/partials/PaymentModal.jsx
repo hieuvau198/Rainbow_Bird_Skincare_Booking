@@ -30,70 +30,51 @@ const PaymentModal = ({ visible, onClose, bookingId, amount, currency = "VND" })
   const paymentId = bookingId;
 
   useEffect(() => {
-    const fetchPaymentDetails = async () => {
-      if (!paymentId) return;
-
-      setFetchingDetails(true);
-      try {
-        const allPayments = await getPayment();
-        const found = allPayments.find(
-          (p) => p.paymentId.toString() === paymentId.toString()
-        );
-
-        if (found) {
-          setPaymentDetails(found);
-        } else {
-          setPaymentDetails({
-            paymentId: bookingId,
-            totalAmount: parseFloat(amount),
-            currency: currency,
-            status: "Pending",
-            paymentDate: new Date().toISOString(),
-          });
-        }
-      } catch (err) {
-        setError(err.message || "Failed to fetch payment details");
-      } finally {
-        setFetchingDetails(false);
-      }
+    const buildPaymentDetails = () => {
+      setPaymentDetails({
+        bookingId: bookingId,
+        totalAmount: parseFloat(amount),
+        currency: currency,
+        status: "Pending",
+        paymentDate: new Date().toISOString(),
+      });
+      setFetchingDetails(false);
     };
-
-    if (visible) {
+  
+    if (visible && bookingId) {
       setStatus("idle");
-      fetchPaymentDetails();
+      buildPaymentDetails();
     }
   }, [visible, bookingId]);
+  
 
   const handlePay = async () => {
     if (!paymentDetails) return;
-
+  
     setLoading(true);
     try {
       const paymentPayload = {
-        bookingId,
+        bookingId: paymentDetails.bookingId,
         totalAmount: paymentDetails.totalAmount,
         currency: paymentDetails.currency,
         paymentMethod: activeTab === "vnpay" ? "VNPAY" : "Cash",
         tax: Math.round(paymentDetails.totalAmount * 0.1),
+        status: "Paid",
         sender: "Prestine Care Staff",
-        receiver: "Prestine Care",
+        receiver: "Prestine Care"
       };
-
-      console.log("Payment payload:", paymentPayload);
+  
       const result = await addPayment(paymentPayload);
-      console.log("Payment result:", result);
-
-      if (result) {
-        setPaymentDetails({
-          ...paymentDetails,
-          status: "Paid",
-          paymentMethod: paymentPayload.paymentMethod,
-          paymentDate: new Date().toISOString(),
-        });
+  
+      console.log("Payment API result:", result);
+  
+      if (result && result.paymentId) {
+        setPaymentDetails({ ...paymentDetails, status: "Paid" });
         setStatus("success");
       } else {
-        throw new Error("Invalid response");
+        throw new Error("Payment failed");
       }
+      
     } catch (err) {
       console.error("Payment error:", err);
       setStatus("fail");
@@ -101,6 +82,7 @@ const PaymentModal = ({ visible, onClose, bookingId, amount, currency = "VND" })
       setLoading(false);
     }
   };
+  
 
   const formatCurrency = (value) =>
     new Intl.NumberFormat("vi-VN").format(value) + " ₫";

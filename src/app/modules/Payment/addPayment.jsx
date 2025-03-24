@@ -11,18 +11,19 @@ export default async function addPayment(paymentDetails) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": token ? `Bearer ${token}` : "", // Add auth token if available
+         "Authorization": token ? `Bearer ${token}` : "", // Add auth token if available
+        //"Authorization": `Bearer ${Cookies.get("__atok")}`, // Authentication token
       },
       body: JSON.stringify({
-        bookingId: paymentDetails.paymentId,
+        bookingId: paymentDetails.bookingId || paymentDetails.paymentId, // ✅ Ưu tiên bookingId, fallback paymentId
         totalAmount: paymentDetails.totalAmount,
         currency: paymentDetails.currency,
         paymentMethod: paymentDetails.paymentMethod,
         status: "Paid",
         paymentDate: new Date().toISOString(),
         tax: paymentDetails.tax || Math.round(paymentDetails.totalAmount * 0.1),
-        sender: "Prestine Care Customer",
-        receiver: "Prestine Care"
+        sender: paymentDetails.sender || "Prestine Care Customer",
+        receiver: paymentDetails.receiver || "Prestine Care",
       }),
     });
 
