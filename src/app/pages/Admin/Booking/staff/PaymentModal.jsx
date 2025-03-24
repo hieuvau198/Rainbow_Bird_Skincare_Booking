@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Modal,
-  Spin,
-  Tag,
-  Radio,
-  Divider,
-  Alert,
-  message,
-  Button,
-} from "antd";
+import { Modal, Spin, Tag, Radio,Alert, Button } from "antd";
 import {
   CreditCardOutlined,
   DollarOutlined,

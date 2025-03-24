@@ -1,21 +1,14 @@
+// admin/AdminBooking.jsx
 import React, { useState, useEffect, useCallback } from "react";
 import { Table, Button, message, Space, Modal, Tag, Row, Col } from "antd";
-import { TfiReload } from "react-icons/tfi";
-import UserRole from "../../../../enums/userRole";
-import DecodeRole from "../../../components/DecodeRole";
-import deleteBooking from "../../../modules/Booking/deleteBooking";
-import getAllBook from "../../../modules/Booking/getAllBook";
-import getBookingById from "../../../modules/Booking/getBookingById";
-import ViewBooking from "./staff/ViewBooking";
-import DecodeRoleId from "../../../components/DecodeRoleId";
-import getBookByTheId from "../../../modules/Booking/getBookByTheId";
-import StatusColor from "../../../components/StatusColor";
-import FormatDate from "../../../components/FormatDate";
-import TherapistBooking from "./therapist/TherapistBooking";
-import AdminBooking from "./admin/AdminBooking";
+import deleteBooking from "../../../../modules/Booking/deleteBooking";
+import getAllBook from "../../../../modules/Booking/getAllBook";
+import getBookingById from "../../../../modules/Booking/getBookingById";
+import ViewBooking from "../staff/ViewBooking";
+import StatusColor from "../../../../components/StatusColor";
+import FormatDate from "../../../../components/FormatDate";
 
-
-export default function Booking() {
+export default function AdminBooking() {
   const [dataSource, setDataSource] = useState([]);
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,36 +16,18 @@ export default function Booking() {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [statusCounts, setStatusCounts] = useState({});
-  const userRole = DecodeRole();
 
-  if (userRole === UserRole.THERAPIST) {
-    return <TherapistBooking />;
-  }
-
-  if (userRole === UserRole.ADMIN) {
-    return <AdminBooking />;
-  }
-
-  // Hàm formatDate chuyển đổi chuỗi ngày sang định dạng DD-MM-YYYY
   const formatDate = (dateString) => {
     const d = new Date(dateString);
-    const day = d.getDate().toString().padStart(2, "0");
-    const month = (d.getMonth() + 1).toString().padStart(2, "0");
-    const year = d.getFullYear();
-    return `${day}-${month}-${year}`;
+    return `${d.getDate().toString().padStart(2, "0")}-${(d.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}-${d.getFullYear()}`;
   };
 
   const fetchBookings = useCallback(async () => {
     setLoading(true);
     try {
-      let data = [];
-      if (userRole === UserRole.THERAPIST) {
-        const therapistId = DecodeRoleId("__TheIden");
-        data = await getBookByTheId(therapistId);
-        // data = data.filter((book) => book.status === "In Progress");
-      } else {
-        data = await getAllBook();
-      }
+      const data = await getAllBook();
       const formattedData = data.map((book) => ({
         key: book.bookingId,
         bookingId: book.bookingId,
@@ -65,22 +40,19 @@ export default function Booking() {
       }));
       setDataSource(formattedData);
 
-      // Calculate status counts
       const counts = formattedData.reduce((acc, booking) => {
         acc[booking.status] = (acc[booking.status] || 0) + 1;
         return acc;
       }, {});
       setStatusCounts({ ...counts, All: formattedData.length });
 
-      // Apply current filter
       applyStatusFilter(selectedStatus, formattedData);
     } catch (error) {
       message.error("Failed to fetch bookings");
-      console.error("Error fetching bookings:", error);
     } finally {
       setLoading(false);
     }
-  }, [userRole, selectedStatus]);
+  }, [selectedStatus]);
 
   useEffect(() => {
     fetchBookings();
@@ -92,9 +64,7 @@ export default function Booking() {
     if (status === "All") {
       setFilteredDataSource(data);
     } else {
-      setFilteredDataSource(
-        data.filter((booking) => booking.status === status)
-      );
+      setFilteredDataSource(data.filter((booking) => booking.status === status));
     }
   };
 
@@ -111,7 +81,6 @@ export default function Booking() {
         setShowViewBooking(true);
       } catch (error) {
         message.error("Failed to fetch booking details");
-        console.error("Error fetching booking detail:", error);
       }
     } else if (action === "Delete") {
       Modal.confirm({
@@ -125,7 +94,6 @@ export default function Booking() {
             setDataSource((prevData) =>
               prevData.filter((item) => item.bookingId !== record.bookingId)
             );
-            // Also update filtered data
             setFilteredDataSource((prevData) =>
               prevData.filter((item) => item.bookingId !== record.bookingId)
             );
@@ -138,7 +106,6 @@ export default function Booking() {
     }
   };
 
-  // Tạo các filter options dựa trên dataSource
   const serviceNameFilters = Array.from(
     new Set(dataSource.map((book) => book.serviceName))
   ).map((value) => ({ text: value, value }));
@@ -151,27 +118,21 @@ export default function Booking() {
     new Set(dataSource.map((book) => book.status))
   ).map((value) => ({ text: value, value }));
 
-  const uniqueStatuses = [
-    "All",
-    ...Array.from(new Set(dataSource.map((item) => item.status))),
-  ];
+  const uniqueStatuses = ["All", ...Array.from(new Set(dataSource.map((item) => item.status)))];
 
   const columns = [
     {
       title: "No.",
-      key: "stt",
-      width: 60,
       render: (_, __, index) => index + 1,
+      width: 60,
     },
     {
       title: "Customer Name",
       dataIndex: "customerName",
-      key: "customerName",
     },
     {
       title: "Service Name",
       dataIndex: "serviceName",
-      key: "serviceName",
       filters: serviceNameFilters,
       onFilter: (value, record) =>
         record.serviceName.toLowerCase().includes(value.toLowerCase()),
@@ -179,42 +140,30 @@ export default function Booking() {
     {
       title: "Booking Date",
       dataIndex: "bookingDate",
-      key: "bookingDate",
-      width: 150,
       render: (date) => <FormatDate date={date} />,
+      width: 150,
       filters: bookingDateFilters,
       onFilter: (value, record) => formatDate(record.bookingDate) === value,
     },
     {
       title: "Status",
-      key: "status",
+      dataIndex: "status",
+      render: (status) => <Tag color={StatusColor(status)}>{status}</Tag>,
       width: 150,
       filters: statusFilters,
       onFilter: (value, record) => record.status === value,
-      render: (_, record) => (
-        <Tag color={StatusColor(record.status)}>{record.status}</Tag>
-      ),
     },
     {
-      title: "Action",
-      key: "action",
+      title: "Actions",
       width: 200,
       render: (_, record) => (
         <Space size="middle">
-          <Button
-            color="primary"
-            variant="solid"
-            type="link"
-            onClick={() => handleAction(record, "View details")}
-          >
+          <Button type="link" onClick={() => handleAction(record, "View details")}>
             View details
           </Button>
-          {/* Uncomment nếu cần cho phép xóa */}
-          {/* {userRole === UserRole.ADMIN && (
-            <Button type="link" danger onClick={() => handleAction(record, "Delete")}>
-              Delete
-            </Button>
-          )} */}
+          <Button type="link" danger onClick={() => handleAction(record, "Delete")}>
+            Delete
+          </Button>
         </Space>
       ),
     },
@@ -224,14 +173,13 @@ export default function Booking() {
     <div className="p-6 max-w-[1270px]">
       <div className="p-6 bg-white rounded-md shadow-md min-h-[640px]">
         <div className="flex justify-between items-center mb-5">
-          <h1 className="text-[22px] font-bold m-0">Service Bookings</h1>
+          <h1 className="text-[22px] font-bold m-0">Admin Bookings</h1>
           <Button type="primary" onClick={fetchBookings}>
             <TfiReload style={{ marginRight: 4 }} />
-            Reload Data
+            Reload
           </Button>
         </div>
 
-        {/* Status Filter Buttons */}
         <div className="mb-5">
           <Row gutter={[8, 8]} wrap>
             {uniqueStatuses.map((status) => (
@@ -243,9 +191,7 @@ export default function Booking() {
                     status !== "All"
                       ? {
                           backgroundColor:
-                            selectedStatus === status
-                              ? StatusColor(status)
-                              : undefined,
+                            selectedStatus === status ? StatusColor(status) : undefined,
                         }
                       : {}
                   }
@@ -273,7 +219,7 @@ export default function Booking() {
           booking={selectedBooking}
           onClose={() => {
             setShowViewBooking(false);
-            fetchBookings(); // Refresh after closing modal
+            fetchBookings();
           }}
           onStatusUpdated={fetchBookings}
         />
