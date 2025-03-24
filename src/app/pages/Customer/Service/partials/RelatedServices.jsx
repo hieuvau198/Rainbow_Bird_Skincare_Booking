@@ -50,7 +50,7 @@ export default function RelatedServices({ services, selectedService }) {
                   />
                   <div className="flex-grow">
                     <h3 className="text-sm font-semibold line-clamp-2">{related.serviceName}</h3>
-                    <p className="text-red-500 font-bold text-sm flex items-center gap-1 mt-2">
+                    <p className="text-green-800 font-bold text-sm flex items-center gap-1 mt-2">
                       <DollarOutlined /> {related.price ? `${related.price} ${related.currency || "USD"}` : "Price not available"}
                     </p>
                     <div className="text-xs text-gray-500 mt-1">

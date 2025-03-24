@@ -15,9 +15,10 @@ export const StatusColor = (status) => {
         case "Pending":
             return "orange";
         case "Completed":
+        case "Paid":
             return "green";
         case "Checked Out":
-            return "cyan";
+            return "volcano";
         default:
             return "default";
     }

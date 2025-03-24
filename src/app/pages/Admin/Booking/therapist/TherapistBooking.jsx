@@ -3,7 +3,7 @@ import { Table, Button, message, Tag, Row, Col } from "antd";
 import { TfiReload } from "react-icons/tfi";
 import getBookByTheId from "../../../../modules/Booking/getBookByTheId";
 import getBookingById from "../../../../modules/Booking/getBookingById";
-import ViewBooking from "../partials/ViewBooking";
+import ViewBooking from "../staff/ViewBooking";
 import DecodeRoleId from "../../../../components/DecodeRoleId";
 import StatusColor from "../../../../components/StatusColor";
 import FormatDate from "../../../../components/FormatDate";
@@ -21,7 +21,9 @@ export default function TherapistBooking() {
     setLoading(true);
     try {
       const therapistId = DecodeRoleId("__TheIden");
+      console.log("Therapist ID:", therapistId);
       const data = await getBookByTheId(therapistId);
+      console.log("Fetched bookings:", data);
       const allowedStatuses = [
         "Checked In",
         "In Progress",
