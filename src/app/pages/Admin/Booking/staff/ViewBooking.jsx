@@ -23,7 +23,8 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
   const [timeSlot, setTimeSlot] = useState({ startTime: "", endTime: "" });
   const [error, setError] = useState("");
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-
+  const [cancelReason, setCancelReason] = useState("");
+  
   // State cho chỉnh sửa trạng thái
   const [editingStatus, setEditingStatus] = useState(false);
   const [availableStatusOptions, setAvailableStatusOptions] = useState([]);
@@ -130,6 +131,16 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
       message.info("Please select a different status");
       return;
     }
+
+    if (
+      (selectedStatus === "Cancelled by Customer" ||
+        selectedStatus === "Cancelled by Therapist") &&
+      !cancelReason.trim()
+    ) {
+      message.warning("Please enter a reason for cancellation");
+      return;
+    }
+
     try {
       const data = await editBookingStatus(booking.bookingId, selectedStatus);
       booking.status = selectedStatus;
@@ -226,7 +237,7 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
             </Space>
           )}
         </Descriptions.Item>
-        <Descriptions.Item label="Status">
+        {/* <Descriptions.Item label="Status">
           {editingStatus ? (
             <Space>
               <Select
@@ -255,6 +266,61 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
                 booking.therapistId !== 0 && 
                 DecodeRole() !== UserRole.ADMIN && (
                   <Button color="primary" variant="solid" type="link" onClick={() => setEditingStatus(true)}>
+                    Edit Status
+                  </Button>
+                )}
+            </Space>
+          )}
+        </Descriptions.Item> */}
+        <Descriptions.Item label="Status">
+          {editingStatus ? (
+            <Space direction="vertical" className="w-full">
+              <Select
+                placeholder="Select status"
+                style={{ width: 200 }}
+                onChange={(value) => setSelectedStatus(value)}
+                value={selectedStatus}
+                loading={loadingStatus}
+              >
+                {availableStatusOptions.map((status) => (
+                  <Select.Option key={status} value={status}>
+                    {status}
+                  </Select.Option>
+                ))}
+              </Select>
+
+              {/* ✅ Nếu chọn 2 trạng thái cần lý do thì hiển thị input */}
+              {(selectedStatus === "Cancelled By Customer" ||
+                selectedStatus === "Cancelled By Therapist") && (
+                <textarea
+                  rows={3}
+                  className="w-full border border-gray-300 rounded p-2 mt-2"
+                  placeholder="Enter reason for cancellation..."
+                  value={cancelReason}
+                  onChange={(e) => setCancelReason(e.target.value)}
+                />
+              )}
+
+              <div className="flex gap-2 mt-2">
+                <Button type="primary" onClick={handleSaveStatus}>
+                  Save
+                </Button>
+                <Button onClick={() => setEditingStatus(false)}>Cancel</Button>
+              </div>
+            </Space>
+          ) : (
+            <Space>
+              <Tag color={StatusColor(booking.status)}>{booking.status}</Tag>
+              {availableStatusOptions &&
+                availableStatusOptions.length > 0 &&
+                booking.therapistId !== 0 &&
+                DecodeRole() !== UserRole.ADMIN && (
+                  <Button
+                    color="primary"
+                    variant="solid"
+                    type="link"
+                    onClick={() => setEditingStatus(true)}
+                  >
                     Edit Status
                   </Button>
                 )}
