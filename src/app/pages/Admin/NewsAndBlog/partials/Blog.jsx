@@ -107,7 +107,7 @@ const Blog = () => {
       title: "Date",
       dataIndex: "date",
       key: "date",
-      width: 200,
+      width: 150,
       render: (text) => {
         const dateObj = new Date(text);
         return `${dateObj.toLocaleTimeString([], {
@@ -162,7 +162,7 @@ const Blog = () => {
         loading={loading}
         pagination={{ pageSize: 10 }}
         bordered
-        scroll={{ x: "max-content", y: 400 }}
+        scroll={{ x: "max-content", y: 350 }}
       />
       <Modal
         open={isDetailModalVisible}
