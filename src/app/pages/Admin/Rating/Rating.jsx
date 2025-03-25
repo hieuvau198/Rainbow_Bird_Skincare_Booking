@@ -101,7 +101,7 @@ const Rating = () => {
             dataSource={filteredRatings.map((r, index) => ({ ...r, key: index }))}
             pagination={{ pageSize: 10 }}
             bordered
-            scroll={{ x: "max-content", y: 400 }}
+            scroll={{ x: "max-content", y: 350 }}
           />
         )}
       </div>

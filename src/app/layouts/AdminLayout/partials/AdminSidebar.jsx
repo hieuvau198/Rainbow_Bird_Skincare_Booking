@@ -246,22 +246,24 @@ const AdminSidebar = () => {
             </Link>
           )}
 
-          <Link
-            to="/management/Payments"
-            className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${
-              activeMenu === "Payments"
-                ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
-            }`}
-            onClick={() => {
-              sActiveMenu.set("Payments");
-            }}
-          >
-            <div className="flex items-center gap-3 w-full">
-              <HiOutlineNewspaper />
-              <span className="text-[15px] font-semibold">Payments</span>
-            </div>
-          </Link>
+          {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
+            <Link
+              to="/management/Payments"
+              className={`group flex items-center gap-3 px-6 py-3 cursor-pointer rounded-2xl ${
+                activeMenu === "Payments"
+                  ? "bg-sky-500 hover:bg-sky-600 text-white shadow-md"
+                  : "text-gray-500 hover:bg-gray-200 hover:text-gray-800"
+              }`}
+              onClick={() => {
+                sActiveMenu.set("Payments");
+              }}
+            >
+              <div className="flex items-center gap-3 w-full">
+                <HiOutlineNewspaper />
+                <span className="text-[15px] font-semibold">Payments</span>
+              </div>
+            </Link>
+          )}
 
           <Link
             to="/management/NewsAndBlog"
