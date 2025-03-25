@@ -1,41 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, message, Switch } from "antd";
 
-// Dummy API functions, thay thế bằng API thực tế khi cần.
-const addTherapistProfileAPI = async (values) => {
-  return new Promise((resolve) => {
-    setTimeout(
-      () =>
-        resolve({
-          ...values,
-          profileId: Math.floor(Math.random() * 1000),
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        }),
-      1000
-    );
-  });
-};
-
-const updateTherapistProfileAPI = async (profileId, values) => {
-  return new Promise((resolve) => {
-    setTimeout(
-      () =>
-        resolve({
-          ...values,
-          profileId,
-          updatedAt: new Date().toISOString(),
-        }),
-      1000
-    );
-  });
-};
-
-export default function AddTherapistProfile({ open, onClose, initialData }) {
+export default function AddTherapistProfile({ open, onClose, initialData, onSubmit }) {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [form] = Form.useForm();
 
-  // Khi mở modal, nếu có dữ liệu ban đầu thì set vào form, ngược lại reset form.
   useEffect(() => {
     if (open && initialData) {
       form.setFieldsValue(initialData);
@@ -48,18 +17,8 @@ export default function AddTherapistProfile({ open, onClose, initialData }) {
     try {
       const values = await form.validateFields();
       setConfirmLoading(true);
-      let response;
-      // Nếu có initialData và có profileId -> cập nhật hồ sơ
-      if (initialData && initialData.profileId) {
-        response = await updateTherapistProfileAPI(initialData.profileId, values);
-        message.success("Cập nhật hồ sơ thành công!");
-      } else {
-        response = await addTherapistProfileAPI(values);
-        message.success("Thêm hồ sơ thành công!");
-      }
-      console.log("Response:", response);
+      await onSubmit(values);
       form.resetFields();
-      onClose(response);
     } catch (error) {
       console.error("Error:", error);
       message.error("Có lỗi xảy ra, vui lòng thử lại.");
@@ -67,6 +26,7 @@ export default function AddTherapistProfile({ open, onClose, initialData }) {
       setConfirmLoading(false);
     }
   };
+  
 
   return (
     <Modal
@@ -83,9 +43,9 @@ export default function AddTherapistProfile({ open, onClose, initialData }) {
           name="therapistId"
           rules={[{ required: true, message: "Vui lòng nhập Therapist ID!" }]}
         >
-          {/* Khi cập nhật, bạn có thể disable trường này để không cho sửa */}
-          <Input type="number" disabled={!!initialData} />
+          <Input type="number" disabled={!!initialData?.profileId} />
         </Form.Item>
+
         <Form.Item
           label="Bio"
           name="bio"
@@ -93,6 +53,7 @@ export default function AddTherapistProfile({ open, onClose, initialData }) {
         >
           <Input.TextArea rows={3} />
         </Form.Item>
+
         <Form.Item
           label="Personal Statement"
           name="personalStatement"
@@ -100,6 +61,7 @@ export default function AddTherapistProfile({ open, onClose, initialData }) {
         >
           <Input.TextArea rows={3} />
         </Form.Item>
+
         <Form.Item
           label="Profile Image URL"
           name="profileImage"
@@ -107,6 +69,7 @@ export default function AddTherapistProfile({ open, onClose, initialData }) {
         >
           <Input />
         </Form.Item>
+
         <Form.Item
           label="Education"
           name="education"
@@ -114,15 +77,19 @@ export default function AddTherapistProfile({ open, onClose, initialData }) {
         >
           <Input />
         </Form.Item>
+
         <Form.Item label="Certifications" name="certifications">
           <Input />
         </Form.Item>
+
         <Form.Item label="Specialties" name="specialties">
           <Input />
         </Form.Item>
+
         <Form.Item label="Languages" name="languages">
           <Input />
         </Form.Item>
+
         <Form.Item
           label="Years Experience"
           name="yearsExperience"
@@ -130,6 +97,7 @@ export default function AddTherapistProfile({ open, onClose, initialData }) {
         >
           <Input type="number" />
         </Form.Item>
+
         <Form.Item
           label="Accepts New Clients"
           name="acceptsNewClients"
