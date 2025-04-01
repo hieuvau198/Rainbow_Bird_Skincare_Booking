@@ -43,7 +43,9 @@ export default function ContentSerDetail({ service, setIsModalOpen }) {
 
           <div className="mt-4">
             <p className="text-green-800 font-bold text-2xl">
-               {service.price ? `${service.price} ${service.currency || "USD"}` : "Price not available"}
+            {service.price
+          ? `${new Intl.NumberFormat("vi-VN", { style: "currency", currency: service.currency || "VND" }).format(service.price)}`
+          : "Price not available"}
             </p>
             <p className="text-gray-700 text-md mt-2 flex items-center">
               <ClockCircleOutlined className="mr-2" /> {service.durationMinutes ? `${service.durationMinutes} minutes` : "Duration not specified"}
