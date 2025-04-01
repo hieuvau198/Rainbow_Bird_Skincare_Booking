@@ -75,7 +75,7 @@ export default function BookingDetail({ booking }) {
             Proceed to Payment
           </Button>
         )}
-        {booking.status === "Checked Out" && booking.isRated && (
+        {booking.status === "Checked Out" && !booking.isRated && (
           <Button
             type="primary"
             className="flex-1 bg-blue-500 hover:bg-blue-600 text-white"
