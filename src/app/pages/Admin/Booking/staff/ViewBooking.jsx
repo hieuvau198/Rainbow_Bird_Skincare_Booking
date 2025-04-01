@@ -95,7 +95,6 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
     fetchTimeSlot();
   }, [booking.slotId]);
 
-  // Chỉ cho phép thay đổi therapist khi status là "Await Confirmation"
   const handleEditTherapist = () => {
     if (booking.status !== "Await Confirmation") {
       message.info("Therapist can only be changed when status is 'Await Confirmation'");
@@ -113,12 +112,12 @@ export default function ViewBooking({ booking, onClose, onStatusUpdated }) {
     try {
       const data = await changeTherapist(booking.bookingId, selectedTherapist);
       booking.therapistId = selectedTherapist;
-      await fetchTherapistName(selectedTherapist); // Fetch new therapist name after successful update
+      await fetchTherapistName(selectedTherapist);
       setEditingTherapist(false);
       setError(data.message);
       message.success(data.message);
       if (onStatusUpdated) {
-        onStatusUpdated(); // Update parent component if needed
+        onStatusUpdated();
       }
     } catch (e) {
       message.error(e.message);
