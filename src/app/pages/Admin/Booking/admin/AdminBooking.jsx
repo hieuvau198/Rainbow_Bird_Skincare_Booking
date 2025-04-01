@@ -1,13 +1,13 @@
 // admin/AdminBooking.jsx
-import React, { useState, useEffect, useCallback } from "react";
-import { Table, Button, message, Space, Modal, Tag, Row, Col } from "antd";
+import { Button, Col, message, Modal, Row, Space, Table, Tag } from "antd";
+import React, { useCallback, useEffect, useState } from "react";
+import { TfiReload } from "react-icons/tfi";
+import FormatDate from "../../../../components/FormatDate";
+import StatusColor from "../../../../components/StatusColor";
 import deleteBooking from "../../../../modules/Booking/deleteBooking";
 import getAllBook from "../../../../modules/Booking/getAllBook";
 import getBookingById from "../../../../modules/Booking/getBookingById";
 import ViewBooking from "../staff/ViewBooking";
-import StatusColor from "../../../../components/StatusColor";
-import FormatDate from "../../../../components/FormatDate";
-import { TfiReload } from "react-icons/tfi";
 
 export default function AdminBooking() {
   const [dataSource, setDataSource] = useState([]);
@@ -151,8 +151,8 @@ export default function AdminBooking() {
       dataIndex: "status",
       render: (status) => <Tag color={StatusColor(status)}>{status}</Tag>,
       width: 150,
-      filters: statusFilters,
-      onFilter: (value, record) => record.status === value,
+      // filters: statusFilters,
+      // onFilter: (value, record) => record.status === value,
     },
     {
       title: "Actions",
@@ -191,9 +191,9 @@ export default function AdminBooking() {
                   style={
                     status !== "All"
                       ? {
-                          backgroundColor:
-                            selectedStatus === status ? StatusColor(status) : undefined,
-                        }
+                        backgroundColor:
+                          selectedStatus === status ? StatusColor(status) : undefined,
+                      }
                       : {}
                   }
                 >
@@ -210,7 +210,7 @@ export default function AdminBooking() {
           rowKey="bookingId"
           bordered
           pagination={{ pageSize: 10 }}
-          scroll={{ x: "max-content", y: 350 }}
+          scroll={{ x: "max-content", y: 310 }}
           loading={loading}
         />
       </div>
