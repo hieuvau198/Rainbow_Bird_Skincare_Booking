@@ -5,6 +5,7 @@ import RelatedServices from "./partials/RelatedServices";
 import getAllService from "../../../modules/Admin/Service/getAllService";
 import getServiceDetail from "../../../modules/Admin/Service/getServiceDetail";
 import InfoSerDetail from "./partials/InfoSerDetail";
+import RatingSerDetail from "./partials/RatingSerDetail";
 import ContentSerDetail from "./partials/ContentSerDetail";
 import Loading from "../../../components/Loading/Loading";
 import BookingModal from "./partials/BookingModal";
@@ -131,6 +132,9 @@ export default function ServiceDetail() {
         setShowFullInfo={setShowFullInfo}
         image={service.serviceImage}
       />
+
+      {/* Đánh giá khách hàng */}
+      <RatingSerDetail serviceId={service.serviceId} />
 
       {/* Dịch vụ liên quan */}
       {services.length > 0 && service && (
