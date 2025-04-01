@@ -38,7 +38,7 @@ const AdminRating = lazy(() => import("../pages/Admin/Rating/Rating"));
 const Customer = lazy(() => import("../pages/Admin/Customer/Customer"));
 const AdminProfile = lazy(() => import("../pages/Admin/Profile/Profile"));
 const ManageQuiz = lazy(() => import("../pages/Admin/Quiz/ManageQuiz"));
-const TherapistChedule = lazy(() => import("../pages/Admin/Schedule/TherapistChedule"));
+const TherapistSchedule = lazy(() => import("../pages/Admin/Schedule/TherapistSchedule"));
 
 const LoginC = lazy(() => import("../pages/Login/LoginC"));
 const SignUp = lazy(() => import("../pages/SignUp/SignUp"));
@@ -229,7 +229,7 @@ export default function MainRoutes() {
           <Route path="schedule" element={
             <PrivateRoute allowedRoles={[UserRole.THERAPIST, UserRole.MANAGER]}>
               <Suspense fallback={<Loading />}>
-                <TherapistChedule />
+                <TherapistSchedule />
               </Suspense>
             </PrivateRoute>
           } />
