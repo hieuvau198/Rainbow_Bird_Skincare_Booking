@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, Button, Upload, message, Spin, Switch, InputNumber, Tabs } from 'antd';
-import { UploadOutlined, UserOutlined, EditOutlined, SaveOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
+import { Form, Input, Button, message, Spin, Switch, InputNumber, Tabs } from 'antd';
+import { EditOutlined, SaveOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 import getTherapistProfile from '../../../modules/Admin/Employee/getTherapistProfile';
 import updateTherapistProfile from '../../../modules/Admin/Employee/updateTherapistProfile';
 import DecodeRoleId from '../../../components/DecodeRoleId';
-
 
 const { TextArea } = Input;
 const { TabPane } = Tabs;
@@ -17,8 +16,6 @@ export default function Profile() {
   const [editing, setEditing] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [form] = Form.useForm();
-  const [imageUrl, setImageUrl] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
   const [activeTab, setActiveTab] = useState("about");
 
   const therapistId = DecodeRoleId('__TheIden');
@@ -32,7 +29,6 @@ export default function Profile() {
     try {
       const data = await getTherapistProfile(therapistId);
       setProfile(data);
-      setImageUrl(data.profileImage);
       resetForm(data);
     } catch (err) {
       setError(err);
@@ -59,16 +55,9 @@ export default function Profile() {
     setSubmitting(true);
     try {
       const formData = new FormData();
-
-      // Add form fields to FormData
       Object.keys(values).forEach(key => {
         formData.append(key, values[key]);
       });
-
-      // Add image file if it exists
-      if (imageFile) {
-        formData.append('profileImage', imageFile);
-      }
 
       const updatedProfile = await updateTherapistProfile(therapistId, formData);
       setProfile(updatedProfile);
@@ -79,33 +68,6 @@ export default function Profile() {
       message.error('Failed to update profile');
     } finally {
       setSubmitting(false);
-    }
-  };
-
-  // const beforeUpload = (file) => {
-  //   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  //   if (!isJpgOrPng) {
-  //     message.error('You can only upload JPG/PNG file!');
-  //   }
-  //   const isLt2M = file.size / 1024 / 1024 < 2;
-  //   if (!isLt2M) {
-  //     message.error('Image must be smaller than 2MB!');
-  //   }
-  //   return isJpgOrPng && isLt2M;
-  // };
-
-  const handleImageChange = (info) => {
-    if (info.file.status === 'uploading') {
-      return;
-    }
-    if (info.file.status === 'done') {
-      setImageFile(info.file.originFileObj);
-      // Generate a preview URL
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImageUrl(e.target.result);
-      };
-      reader.readAsDataURL(info.file.originFileObj);
     }
   };
 
@@ -165,8 +127,6 @@ export default function Profile() {
               onClick={() => {
                 setEditing(false);
                 resetForm(profile);
-                setImageUrl(profile.profileImage);
-                setImageFile(null);
               }}
             >
               Cancel Editing
@@ -178,34 +138,11 @@ export default function Profile() {
           {/* Profile Image Card */}
           <div className="md:w-1/4">
             <div className="bg-white rounded-lg shadow overflow-hidden self-start">
-              {editing ? (
-                <div className="p-4 flex flex-col items-center">
-                  <Upload
-                    name="avatar"
-                    listType="picture-card"
-                    className="avatar-uploader"
-                    showUploadList={false}
-                    beforeUpload={beforeUpload}
-                    onChange={handleImageChange}
-                  >
-                    {imageUrl ? (
-                      <img src={imageUrl} alt="avatar" className="w-full h-full object-cover" />
-                    ) : (
-                      <div>
-                        <UploadOutlined />
-                        <div className="mt-2">Upload</div>
-                      </div>
-                    )}
-                  </Upload>
-                  <div className="text-sm text-gray-500 mt-2">Click to update your profile photo</div>
-                </div>
-              ) : (
-                <img
-                  src={profile.profileImage || `https://ui-avatars.com/api/?name=${profile.therapist?.user?.fullName}`}
-                  alt="Therapist"
-                  className="w-full h-64 object-cover"
-                />
-              )}
+              <img
+                src={profile.profileImage || `https://ui-avatars.com/api/?name=${profile.therapist?.user?.fullName}`}
+                alt="Therapist"
+                className="w-full h-64 object-cover"
+              />
 
               <div className="p-4">
                 <h2 className="text-xl font-bold text-gray-800">{profile.therapist?.user?.fullName}</h2>
@@ -401,7 +338,7 @@ export default function Profile() {
               <div className="flex flex-col md:flex-row gap-6">
                 <div className="md:w-1/4">
                   <img
-                    src={imageUrl || profile.profileImage || `https://ui-avatars.com/api/?name=${profile.therapist?.user?.fullName}`}
+                    src={profile.profileImage || `https://ui-avatars.com/api/?name=${profile.therapist?.user?.fullName}`}
                     alt="Therapist"
                     className="w-full h-64 object-cover rounded-lg"
                   />
