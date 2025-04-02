@@ -124,9 +124,10 @@ const AddService = ({ open, onClose, onSubmit }) => {
           <Form.Item
             name="location"
             label="Location"
+            initialValue="Prestine Care Center"
             rules={[{ required: true, message: "Please input the location!" }]}
           >
-            <Input placeholder="Enter location" />
+            <Input value="Prestine Care Center" disabled />
           </Form.Item>
           <Form.Item
             name="isActive"
