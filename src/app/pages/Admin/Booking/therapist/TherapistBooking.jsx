@@ -119,7 +119,8 @@ export default function TherapistBooking() {
       render: (_, record) => (
         <Button
           type="link"
-          className="text-blue-600 hover:text-blue-800 font-medium"
+          color="primary"
+          variant="solid"
           onClick={() => handleView(record.bookingId)}
         >
           View details

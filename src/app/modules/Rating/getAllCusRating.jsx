@@ -14,14 +14,36 @@ export default async function getAllFeedback() {
         });
 
         if (!response.ok) {
-            throw new Error("Failed to fetch feedback. Please try again.");
+            throw new Error("Failed to fetch rating. Please try again.");
         }
 
         const data = await response.json();
         return data;
     } catch (error) {
-        message.error("Failed to fetch feedback. Please try again.");
-        console.error("❌ Error fetching feedback:", error);
+        message.error("Failed to fetch rating. Please try again.");
+        console.error("❌ Error fetching rating:", error);
+        return [];
+    }
+}
+
+export async function getCustomerRating (serviceId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/CustomerRating/service/${serviceId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${Cookies.get("__atok")}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch rating. Please try again.");
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        message.error("Failed to fetch rating. Please try again.");
         return [];
     }
 }

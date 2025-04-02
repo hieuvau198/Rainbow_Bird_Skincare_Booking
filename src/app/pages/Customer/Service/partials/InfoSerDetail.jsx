@@ -31,6 +31,7 @@ export default function InfoSerDetail({ additionalInfo, showFullInfo, setShowFul
           </button>
         </div>
       </div>
+      <hr className="my-4 border-lime-200" />
     </div>
   );
 }

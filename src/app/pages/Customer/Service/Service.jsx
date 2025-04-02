@@ -28,7 +28,9 @@ export default function Service() {
         const formattedServices = serviceResponse.map((service) => ({
           service_id: service.serviceId || "N/A",
           service_name: service.serviceName || "Unknown Service",
-          price: service.price ? `${service.price} ${service.currency || "VND"}` : "Price not available",
+          price: service.price
+          ? `${new Intl.NumberFormat("vi-VN", { style: "currency", currency: service.currency || "VND" }).format(service.price)}`
+          : "Price not available",
           description: service.description || "No description available.",
           buyers: service.bookingNumber || "0",
           reviews: service.averageReview || "No reviews",

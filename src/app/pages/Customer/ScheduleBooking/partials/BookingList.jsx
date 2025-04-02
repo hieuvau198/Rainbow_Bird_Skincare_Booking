@@ -24,7 +24,7 @@ const BookingList = ({ bookings, onViewDetail }) => {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      width: 120,
+      width: 150,
       render: (status) => <Tag color={StatusColor(status)}>{status}</Tag>,
     },
     {

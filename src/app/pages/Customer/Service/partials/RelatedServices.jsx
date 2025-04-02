@@ -30,7 +30,7 @@ export default function RelatedServices({ services, selectedService }) {
   return (
     <div>
       <hr className="my-4 border-lime-200" />
-      <div className="mt-2 mb-10 p-6 bg-white">
+      <div className="mt-2 p-6 bg-white">
         <h2 className="text-4xl flex justify-center font-bold mb-4">Suggestions specifically for you</h2>
         <div className="relative">
           <button

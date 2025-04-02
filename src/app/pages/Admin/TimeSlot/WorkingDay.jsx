@@ -103,9 +103,41 @@ export default function WorkingDay() {
       }
   
       // Nếu chọn "All Week", lấy tất cả ngày làm việc
-      const filteredWorkingDays = allWeekSelected ? workingDays : workingDays.filter((day) => selectedDays.includes(day.workingDayId));
+      const filteredWorkingDays = allWeekSelected 
+        ? workingDays 
+        : workingDays.filter((day) => selectedDays.includes(day.workingDayId));
+  
+      const now = new Date();
+      const currentDay = now.getDay(); // 0 = Chủ Nhật, 1 = Thứ 2, ...
+      const mondayOfWeek = new Date(now);
+      // Đặt về ngày đầu tiên của tuần làm việc (Thứ 2)
+      mondayOfWeek.setDate(now.getDate() - currentDay + (currentDay === 0 ? -6 : 1));
   
       for (const day of filteredWorkingDays) {
+        // Lấy thông tin về ngày làm việc từ dayName
+        let dayOffset = 0;
+        
+        // Xác định offset dựa vào tên ngày
+        const dayNameLower = day.dayName.toLowerCase();
+        if (dayNameLower.includes("monday") || dayNameLower.includes("thứ 2")) {
+          dayOffset = 0; // Thứ 2 = offset 0 từ ngày thứ 2
+        } else if (dayNameLower.includes("tuesday") || dayNameLower.includes("thứ 3")) {
+          dayOffset = 1; // Thứ 3 = offset 1 từ ngày thứ 2
+        } else if (dayNameLower.includes("wednesday") || dayNameLower.includes("thứ 4")) {
+          dayOffset = 2; // Thứ 4 = offset 2 từ ngày thứ 2
+        } else if (dayNameLower.includes("thursday") || dayNameLower.includes("thứ 5")) {
+          dayOffset = 3; // Thứ 5 = offset 3 từ ngày thứ 2
+        } else if (dayNameLower.includes("friday") || dayNameLower.includes("thứ 6")) {
+          dayOffset = 4; // Thứ 6 = offset 4 từ ngày thứ 2
+        } else if (dayNameLower.includes("saturday") || dayNameLower.includes("thứ 7")) {
+          dayOffset = 5; // Thứ 7 = offset 5 từ ngày thứ 2
+        }
+        
+        const specificDate = new Date(mondayOfWeek);
+        specificDate.setDate(mondayOfWeek.getDate() + dayOffset);
+  
+        const formattedDate = specificDate.toISOString().split("T")[0];
+  
         const slotsForDay = timeSlots.filter((slot) => slot.workingDayId === day.workingDayId);
   
         for (const slot of slotsForDay) {
@@ -116,16 +148,23 @@ export default function WorkingDay() {
           );
   
           if (isAlreadyAssigned) {
-            console.log(`Therapist ${selectedTherapistId} already exists in Slot ${slot.slotId}, skipping...`);
+            console.log(`Therapist ${selectedTherapistId} already exists in Slot ${slot.slotId} for ${day.dayName}, skipping...`);
             continue;
+          }
+  
+          // Kết hợp ngày làm việc và thời gian của slot
+          let slotTime = "";
+          if (slot.startTime) {
+            slotTime = ` (${slot.startTime} - ${slot.endTime})`;
           }
   
           const payload = {
             therapistId: selectedTherapistId,
             slotId: slot.slotId,
-            workingDate: day.date || new Date().toISOString().split("T")[0],
+            workingDate: day.date || formattedDate, // Sử dụng ngày cụ thể của thứ trong tuần
             status: "Available",
             createdAt: new Date().toISOString(),
+            description: `${day.dayName}${slotTime}` // Thêm mô tả chi tiết
           };
   
           await addTherapistToSlot(payload);
@@ -141,7 +180,6 @@ export default function WorkingDay() {
     setLoading(false);
     setIsModalOpen(false);
   };
-  
   
   return (
     <div className="p-6 max-w-[1270px]">
