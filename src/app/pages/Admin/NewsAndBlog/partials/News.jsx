@@ -116,7 +116,7 @@ const News = () => {
   };
 
   const columns = [
-    { title: "ID", dataIndex: "id", key: "id", width: 50 },
+    // { title: "ID", dataIndex: "id", key: "id", width: 50 },
     {
       title: "Title",
       dataIndex: "title",
@@ -144,19 +144,19 @@ const News = () => {
       key: "author",
       width: 150,
     },
+    // {
+    //   title: "Status",
+    //   dataIndex: "isPublished",
+    //   key: "status",
+    //   width: 150,
+    //   render: (isPublished) => (
+    //     <Tag color={isPublished ? "green" : "red"}>
+    //       {isPublished ? "Published" : "Unpublished"}
+    //     </Tag>
+    //   ),
+    // },
     {
       title: "Status",
-      dataIndex: "isPublished",
-      key: "status",
-      width: 150,
-      render: (isPublished) => (
-        <Tag color={isPublished ? "green" : "red"}>
-          {isPublished ? "Published" : "Unpublished"}
-        </Tag>
-      ),
-    },
-    {
-      title: "Change Status",
       key: "changeStatus",
       width: 150,
       render: (_, record) =>

@@ -17,7 +17,7 @@ const TherapistTable = () => {
     const [searchText, setSearchText] = useState("");
 
     const columns = [
-        { title: "ID", dataIndex: "id", key: "id", width: 50 },
+        // { title: "ID", dataIndex: "id", key: "id", width: 50 },
         { title: "Name", dataIndex: "name", key: "name" },
         { title: "Email", dataIndex: "email", key: "email", width: 250 },
         { title: "Mobile", dataIndex: "mobile", key: "mobile" },
