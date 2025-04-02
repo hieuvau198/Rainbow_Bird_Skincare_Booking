@@ -168,33 +168,14 @@ export default function Profile() {
                 <div className="mt-4">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-700">Accepting clients:</span>
-                    {editing ? (
-                      <Form.Item 
-                        name="acceptsNewClients" 
-                        valuePropName="checked"
-                        noStyle
-                      >
-                        <Switch />
-                      </Form.Item>
-                    ) : (
-                      <span className={`font-medium ${profile.acceptsNewClients ? 'text-green-600' : 'text-red-600'}`}>
-                        {profile.acceptsNewClients ? 'Yes' : 'No'}
-                      </span>
-                    )}
+                    <span className={`font-medium ${profile.acceptsNewClients ? 'text-green-600' : 'text-red-600'}`}>
+                      {profile.acceptsNewClients ? 'Yes' : 'No'}
+                    </span>
                   </div>
                   
                   <div className="flex justify-between items-center mt-2">
                     <span className="text-gray-700">Experience:</span>
-                    {editing ? (
-                      <Form.Item 
-                        name="yearsExperience" 
-                        noStyle
-                      >
-                        <InputNumber min={0} max={100} className="w-20" /> <span className="ml-1">years</span>
-                      </Form.Item>
-                    ) : (
-                      <span className="font-medium">{profile.yearsExperience} years</span>
-                    )}
+                    <span className="font-medium">{profile.yearsExperience} years</span>
                   </div>
                 </div>
               </div>
@@ -288,7 +269,7 @@ export default function Profile() {
                         className={`cursor-pointer px-6 py-3 ${
                           activeTab === tab.key
                             ? "border-b-2 border-green-500 text-green-500"
-                            : "text-gray-600"
+                            : "text W-gray-600"
                         }`}
                         onClick={() => setActiveTab(tab.key)}
                       >
@@ -357,7 +338,7 @@ export default function Profile() {
                     <span className="font-bold">Specialties:</span> {form.getFieldValue('specialties') || profile.specialties || "None specified"}
                   </div>
                   <div className="mt-2">
-                    <span className="font-bold">Experience:</span> {form.getFieldValue('yearsExperience') || profile.yearsExperience || 0} years
+                    <span className="font-bold">Experience:</span> {profile.yearsExperience || 0} years
                   </div>
                 </div>
               </div>
