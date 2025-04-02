@@ -1,4 +1,5 @@
 import { message } from "antd";
+import Cookies from "js-cookie";
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -7,6 +8,9 @@ const addService = async (formData) => {
         console.log("Data sent to API:", formData);
         const response = await fetch(`${API_BASE_URL}/api/Service`, {
             method: "POST",
+            headers: {
+                "Authorization": `Bearer ${Cookies.get("__atok")}`,
+            },
             body: formData,
         });
         if (!response.ok) {
