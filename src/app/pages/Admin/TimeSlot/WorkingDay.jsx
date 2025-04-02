@@ -256,7 +256,7 @@ export default function WorkingDay() {
           onViewSlot={handleViewSlot}
           renderExtra={(
             <Button type="primary" onClick={openModal}>
-              Add Therapist for Full Week
+              Assign Therapist
             </Button>
           )}
         />
