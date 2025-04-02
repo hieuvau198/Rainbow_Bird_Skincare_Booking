@@ -1,66 +1,117 @@
 import React, { useEffect, useState } from "react";
-import Chart from "react-apexcharts";
+import ReactApexChart from "react-apexcharts";
 import getRevenueByYear from "../../../../modules/Admin/Dashboard/getRevenueByYear";
 import ReactDOMServer from "react-dom/server";
 import VndFormat from "../../../../components/VndFormat/VndFormat";
 
 export default function RevenueChart() {
-  const [chartData, setChartData] = useState({
-    options: {
-      chart: { id: "revenue-chart", toolbar: { show: false } },
-      xaxis: { categories: [] },
-      yaxis: {
-        labels: {
-          formatter: (value) => {
-            const html = ReactDOMServer.renderToStaticMarkup(
-              <VndFormat amount={value} />
-            );
-            return html.replace(/<\/?span>/g, "");
-          },
-        },
+  const [state, setState] = useState({
+    series: [
+      {
+        name: "Revenue",
+        data: [],
       },
-      colors: ["#1E88E5"],
-      stroke: { curve: "smooth" },
-      tooltip: {
-        y: {
-          formatter: (value) => {
-            const html = ReactDOMServer.renderToStaticMarkup(
-              <VndFormat amount={value} />
-            );
-            return html.replace(/<\/?span>/g, "");
-          },
-        },
+    ],
+    options: {
+      chart: {
+        height: 350,
+        type: "bar",
       },
       plotOptions: {
         bar: {
-          horizontal: false,
-          columnWidth: "50%",
+          borderRadius: 10,
+          dataLabels: {
+            position: "top", // top, center, bottom
+          },
         },
       },
       dataLabels: {
-        enabled: false,
+        enabled: true,
+        formatter: function (val) {
+          const html = ReactDOMServer.renderToStaticMarkup(
+            <VndFormat amount={val} />
+          );
+          return html.replace(/<\/?span>/g, "");
+        },
+        offsetY: -20,
+        style: {
+          fontSize: "12px",
+          colors: ["#304758"],
+        },
       },
+      xaxis: {
+        categories: [],
+        position: "top",
+        axisBorder: {
+          show: false,
+        },
+        axisTicks: {
+          show: false,
+        },
+        crosshairs: {
+          fill: {
+            type: "gradient",
+            gradient: {
+              colorFrom: "#D8E3F0",
+              colorTo: "#BED1E6",
+              stops: [0, 100],
+              opacityFrom: 0.4,
+              opacityTo: 0.5,
+            },
+          },
+        },
+        tooltip: {
+          enabled: true,
+        },
+      },
+      yaxis: {
+        axisBorder: {
+          show: false,
+        },
+        axisTicks: {
+          show: false,
+        },
+        labels: {
+          show: true,
+          formatter: function (val) {
+            const html = ReactDOMServer.renderToStaticMarkup(
+              <VndFormat amount={val} />
+            );
+            return html.replace(/<\/?span>/g, "");
+          },
+        },
+      },
+      
     },
-    series: [{ name: "Revenue", data: [] }],
   });
 
   useEffect(() => {
     async function fetchData() {
       try {
         const data = await getRevenueByYear();
+        // Sắp xếp theo tháng nếu cần (giả sử mỗi object có trường month và monthName)
         const sortedData = data.sort((a, b) => a.month - b.month);
-        const categories = sortedData.map(item =>
+        const categories = sortedData.map((item) =>
           item.monthName.substring(0, 3)
         );
-        const revenueData = sortedData.map(item => item.totalRevenue);
+        const revenueData = sortedData.map((item) => item.totalRevenue);
 
-        setChartData({
+        setState((prevState) => ({
+          ...prevState,
+          series: [
+            {
+              name: "Revenue",
+              data: revenueData,
+            },
+          ],
           options: {
-            ...chartData.options,
-            xaxis: { categories },
+            ...prevState.options,
+            xaxis: {
+              ...prevState.options.xaxis,
+              categories: categories,
+            },
           },
-          series: [{ name: "Revenue", data: revenueData }],
-        });
+        }));
       } catch (error) {
         console.error("Error fetching revenue data:", error);
       }
@@ -72,11 +123,11 @@ export default function RevenueChart() {
   return (
     <div className="p-4 bg-white rounded-2xl shadow-md">
       <h3 className="font-bold mb-2">Revenue by Month</h3>
-      <Chart
-        options={chartData.options}
-        series={chartData.series}
+      <ReactApexChart
+        options={state.options}
+        series={state.series}
         type="bar"
-        height={258}
+        height={350}
       />
     </div>
   );

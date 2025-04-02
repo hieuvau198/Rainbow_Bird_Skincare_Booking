@@ -116,9 +116,10 @@ const AddService = ({ open, onClose, onSubmit }) => {
           <Form.Item
             name="currency"
             label="Currency"
-            rules={[{ required: true, message: "Please input the currency!" }]}
+            initialValue="VND"
+            rules={[{ required: true, message: "Currency is required!" }]}
           >
-            <Input placeholder="e.g. $" />
+            <Input value="VND" disabled />
           </Form.Item>
           <Form.Item
             name="location"

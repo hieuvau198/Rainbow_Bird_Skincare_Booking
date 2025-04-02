@@ -31,24 +31,6 @@ export default function BookingSuccess({ isOpen, onClose, bookingData }) {
           <span className="font-bold">{bookingData?.timeSlot}</span>.
         </p>
         
-        <div className="mt-8 border-t border-gray-200 pt-6">
-          <h2 className="text-xl font-semibold mb-4">Would you like to make a payment now?</h2>
-          <div className="flex justify-center space-x-4 mt-6">
-            <button
-              className="bg-green-500 text-white px-6 py-2 rounded-md font-bold hover:bg-green-600 transition-all"
-              onClick={handlePayNow}
-            >
-              Pay Now
-            </button>
-            <button
-              className="bg-gray-200 text-gray-800 px-6 py-2 rounded-md font-bold hover:bg-gray-300 transition-all"
-              onClick={handleGoHome}
-            >
-              Go Home
-            </button>
-          </div>
-        </div>
-        
         <button
           className="mt-6 bg-lime-300 text-gray-800 px-6 py-2 rounded-md font-bold hover:bg-lime-400 transition-all"
           onClick={onClose}

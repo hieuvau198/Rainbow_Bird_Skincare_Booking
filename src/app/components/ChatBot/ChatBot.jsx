@@ -7,7 +7,7 @@ export default function Chatbot() {
   const [messages, setMessages] = useState([
     {
       sender: "bot",
-      text: "Hello! I'm Prestine Care Assistants. What skincare support do you need?",
+      text: "Hello! I'm Prestine Care Assistants. Ask me anything about Prestine Care.",
     },
   ]);
   const [input, setInput] = useState("");
@@ -21,9 +21,14 @@ export default function Chatbot() {
     setInput("");
 
     setIsBotResponding(true);
-    setMessages((prev) => [...prev, { sender: "bot", text: "...", loading: true }]);
+    setMessages((prev) => [
+      ...prev,
+      { sender: "bot", text: "...", loading: true },
+    ]);
 
-    const botResponse = await chatBotAI(currentInput);
+    const promptWithContext = `Please answer the following question based solely on the content of https://calm-sky-071265e10.4.azurestaticapps.net/: ${currentInput}`;
+
+    const botResponse = await chatBotAI(promptWithContext);
 
     setMessages((prev) => {
       const newMessages = [...prev];
@@ -62,11 +67,15 @@ export default function Chatbot() {
             {messages.map((msg, idx) => (
               <div
                 key={idx}
-                className={`mb-2 ${msg.sender === "bot" ? "text-left" : "text-right"}`}
+                className={`mb-2 ${
+                  msg.sender === "bot" ? "text-left" : "text-right"
+                }`}
               >
                 <div
                   className={`inline-block rounded-xl px-3 py-2 ${
-                    msg.sender === "bot" ? "bg-gray-200" : "bg-lime-400 text-white"
+                    msg.sender === "bot"
+                      ? "bg-gray-200"
+                      : "bg-lime-400 text-white"
                   } ${msg.loading ? "animate-pulse" : ""}`}
                 >
                   {msg.text}
