@@ -73,12 +73,13 @@ const RenderEditForm = ({
           <Input value="VND" disabled />
         </Form.Item>
         <Form.Item
-          name="location"
-          label="Location"
-          rules={[{ required: true, message: "Please input the location!" }]}
-        >
-          <Input />
-        </Form.Item>
+                    name="location"
+                    label="Location"
+                    initialValue="Prestine Care Center"
+                    rules={[{ required: true, message: "Please input the location!" }]}
+                  >
+                    <Input value="Prestine Care Center" disabled />
+                  </Form.Item>
         <Form.Item
           name="isActive"
           label="Status"
