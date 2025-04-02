@@ -57,7 +57,7 @@ export default function ContentSerDetail({ service, setIsModalOpen }) {
               <UserOutlined className="mr-2" /> {service.bookingNumber || "0"} Booking
             </p>
             <p className="flex items-center">
-              <StarOutlined className="mr-2" /> {service.averageReview || "No reviews"} Rating
+              <StarOutlined className="mr-2" /> {service.rating.toFixed(1) || "No reviews"}
             </p>
           </div>
 

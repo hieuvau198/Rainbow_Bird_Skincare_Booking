@@ -114,12 +114,13 @@ const AddService = ({ open, onClose, onSubmit }) => {
             <InputNumber style={{ width: "100%" }} placeholder="e.g. 19.99" />
           </Form.Item>
           <Form.Item
-            name="currency"
-            label="Currency"
-            rules={[{ required: true, message: "Please input the currency!" }]}
-          >
-            <Input placeholder="e.g. $" />
-          </Form.Item>
+  name="currency"
+  label="Currency"
+  rules={[{ required: true, message: "Please input the currency!" }]}
+  initialValue="VND"
+>
+  <Input placeholder="e.g. $" />
+</Form.Item>
           <Form.Item
             name="location"
             label="Location"
