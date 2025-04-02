@@ -16,8 +16,8 @@ export default function Dashboard() {
           <OverviewMetrics />
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-9 gap-6">
-        <div className="col-span-4">
+      <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
+        <div className="col-span-5">
           <RevenueByDayChart />
         </div>
         <div className="col-span-5">
@@ -25,16 +25,16 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         <div className="col-span-1">
           <CustomerServiceStatusChart />
         </div>
         <div className="col-span-1">
           <ServiceCategory />
         </div>
-        <div className="col-span-1">
+        {/* <div className="col-span-1">
           <CustomerRatingChart />
-        </div>
+        </div> */}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
