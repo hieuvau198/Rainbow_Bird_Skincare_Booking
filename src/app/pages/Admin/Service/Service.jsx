@@ -121,12 +121,12 @@ export default function Service() {
   
 
   const columns = [
-    {
-      title: "ID",
-      dataIndex: "serviceId",
-      key: "serviceId",
-      width: 50,
-    },
+    // {
+    //   title: "ID",
+    //   dataIndex: "serviceId",
+    //   key: "serviceId",
+    //   width: 50,
+    // },
     {
       title: "Service Name",
       dataIndex: "serviceName",

@@ -11,12 +11,12 @@ export default function WorkingDayList({
   renderExtra,
 }) {
   const columns = [
-    {
-      title: "ID",
-      dataIndex: "workingDayId",
-      key: "workingDayId",
-      width: 50,
-    },
+    // {
+    //   title: "ID",
+    //   dataIndex: "workingDayId",
+    //   key: "workingDayId",
+    //   width: 50,
+    // },
     {
       title: "Day Name",
       dataIndex: "dayName",

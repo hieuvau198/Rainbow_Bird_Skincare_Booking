@@ -14,7 +14,7 @@ const StaffTable = () => {
   const [searchText, setSearchText] = useState("");
 
   const columns = [
-    { title: "Staff ID", dataIndex: "Staffid", key: "Staffid", width: 100 },
+    // { title: "Staff ID", dataIndex: "Staffid", key: "Staffid", width: 100 },
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Email", dataIndex: "email", key: "email", width: 250 },
     { title: "Mobile", dataIndex: "mobile", key: "mobile" },

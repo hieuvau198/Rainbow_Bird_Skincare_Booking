@@ -15,7 +15,7 @@ const ManagerTable = () => {
   const [searchText, setSearchText] = useState("");
 
   const columns = [
-    { title: "Manager ID", dataIndex: "managerId", key: "managerId", width: 150 },
+    // { title: "Manager ID", dataIndex: "managerId", key: "managerId", width: 150 },
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Email", dataIndex: "email", key: "email", width: 250 },
     { title: "Mobile", dataIndex: "mobile", key: "mobile" },
