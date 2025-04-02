@@ -17,10 +17,12 @@ export default function HomePopularService() {
         const formattedServices = data.map(service => ({
           service_id: service.serviceId || "N/A",
           service_name: service.serviceName || "Unknown Service",
-          price: service.price ? `${service.price} ${service.currency || "USD"}` : "Price not available",
+          price: service.price
+          ? `${new Intl.NumberFormat("vi-VN", { style: "currency", currency: service.currency || "VND" }).format(service.price)}`
+          : "Price not available",
           description: service.description || "No description available.",
           buyers: service.bookingNumber || "0",
-          reviews: service.reviews || "No reviews",
+          reviews: service.rating ? service.rating.toFixed(1) : "No ratings",
           image: service.serviceImage || "https://via.placeholder.com/500",
           duration_minutes: service.durationMinutes ? `${service.durationMinutes} minutes` : "Duration not specified"
         }));
