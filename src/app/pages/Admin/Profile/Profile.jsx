@@ -21,7 +21,7 @@ export default function Profile() {
   const [imageFile, setImageFile] = useState(null);
   const [activeTab, setActiveTab] = useState("about");
 
-  const therapistId = DecodeRoleId('__TheId');
+  const therapistId = DecodeRoleId('__TheIden');
 
   useEffect(() => {
     fetchProfile();
