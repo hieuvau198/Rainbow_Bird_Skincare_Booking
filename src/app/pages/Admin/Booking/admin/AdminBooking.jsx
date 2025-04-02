@@ -7,6 +7,7 @@ import getBookingById from "../../../../modules/Booking/getBookingById";
 import ViewBooking from "../staff/ViewBooking";
 import StatusColor from "../../../../components/StatusColor";
 import FormatDate from "../../../../components/FormatDate";
+import { TfiReload } from "react-icons/tfi";
 
 export default function AdminBooking() {
   const [dataSource, setDataSource] = useState([]);
@@ -158,12 +159,12 @@ export default function AdminBooking() {
       width: 200,
       render: (_, record) => (
         <Space size="middle">
-          <Button type="link" onClick={() => handleAction(record, "View details")}>
+          <Button color="primary" variant="solid" type="link" onClick={() => handleAction(record, "View details")}>
             View details
           </Button>
-          <Button type="link" danger onClick={() => handleAction(record, "Delete")}>
+          {/* <Button color="red" variant="solid" type="link" danger onClick={() => handleAction(record, "Delete")}>
             Delete
-          </Button>
+          </Button> */}
         </Space>
       ),
     },

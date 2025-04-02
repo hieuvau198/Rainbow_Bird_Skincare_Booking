@@ -1,30 +1,48 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button } from "antd";
+import { Modal, Button, message } from "antd";
 import Loading from "../../../../../components/Loading";
 import getTherapistProfile from "../../../../../modules/Admin/Employee/getTherapistProfile";
 import AddTherapistProfile from "../../../../../pages/Admin/Employee/partials/TherapistPartials/AddTherapistProfile";
+import updateTherapistProfile from "../../../../../modules/Admin/Employee/updateTherapistProfile";
 
 export default function ViewTherapistProfile({ open, therapistId, onClose }) {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [showAddProfileModal, setShowAddProfileModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+
+  const fetchProfile = async (id) => {
+    setLoading(true);
+    try {
+      const data = await getTherapistProfile(id);
+      setProfile(data);
+    } catch (error) {
+      console.error("Error fetching therapist profile:", error);
+      setProfile(null);
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const fetchProfile = async (id) => {
-      setLoading(true);
-      try {
-        const data = await getTherapistProfile(id);
-        setProfile(data);
-      } catch (error) {
-        console.error("Error fetching therapist profile:", error);
-      }
-      setLoading(false);
-    };
-
     if (open && therapistId) {
       fetchProfile(therapistId);
     }
   }, [open, therapistId]);
+
+  const handleProfileSubmit = async (values) => {
+    try {
+      if (!profile || !profile.profileId) {
+        message.error("Profile does not exist. Cannot update.");
+        return;
+      }
+
+      const updatedProfile = await updateTherapistProfile(profile.therapistId, values);
+      message.success("Therapist profile updated successfully!");
+      setProfile(updatedProfile);
+      setShowProfileModal(false);
+    } catch (error) {
+      message.error(error.message || "Operation failed. Please try again.");
+    }
+  };
 
   return (
     <>
@@ -33,32 +51,30 @@ export default function ViewTherapistProfile({ open, therapistId, onClose }) {
         width={1000}
         onCancel={onClose}
         footer={[
-          // profile ? (
-          //   <Button key="update" onClick={() => setShowAddProfileModal(true)}>
-          //     Update Therapist Profile
-          //   </Button>
-          // ) : (
-          //   <Button key="add" onClick={() => setShowAddProfileModal(true)}>
-          //     Add Therapist Profile
-          //   </Button>
-          // ),
+          <Button
+            key="update"
+            type="primary"
+            onClick={() => setShowProfileModal(true)}
+            disabled={!profile} // Disable nút update nếu không có profile
+          >
+            Update Therapist Profile
+          </Button>,
           <Button key="close" onClick={onClose}>
             Close
-          </Button>
+          </Button>,
         ]}
-        title={
-          <div className="text-center text-2xl font-bold">
-            Therapist Details
-          </div>
-        }
+        title={<div className="text-center text-2xl font-bold">Therapist Details</div>}
       >
         {loading ? (
           <Loading />
         ) : profile ? (
-          <div className="grid grid-cols-2 gap-4 gap-x-4">
+          <div className="grid grid-cols-2 gap-4">
             <div className="flex justify-center items-center">
               <img
-                src={profile.profileImage || `https://ui-avatars.com/api/?name=${profile.therapist.user.fullName}`}
+                src={
+                  profile.profileImage ||
+                  `https://ui-avatars.com/api/?name=${profile?.therapist?.user?.fullName || 'Therapist'}`
+                }
                 alt="Therapist Profile"
                 className="w-60 h-60 object-cover rounded-lg shadow-md"
               />
@@ -99,14 +115,16 @@ export default function ViewTherapistProfile({ open, therapistId, onClose }) {
             </div>
           </div>
         ) : (
-          <p>No profile data available.</p>
+          <p className="text-center text-gray-500">No profile data available.</p>
         )}
       </Modal>
-      {showAddProfileModal && (
+
+      {showProfileModal && profile && (
         <AddTherapistProfile
-          open={showAddProfileModal}
-          onClose={() => setShowAddProfileModal(false)}
+          open={showProfileModal}
           initialData={profile}
+          onClose={() => setShowProfileModal(false)}
+          onSubmit={handleProfileSubmit}
         />
       )}
     </>

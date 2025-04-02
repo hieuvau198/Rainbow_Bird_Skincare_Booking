@@ -1,3 +1,5 @@
+// modules/Admin/Timeslot/getTimeSlot.jsx
+
 import { message } from "antd";
 import Cookies from "js-cookie";
 
@@ -21,6 +23,29 @@ export default async function getTimeSlot() {
         return data;
     } catch (error) {
         message.error("Failed to fetch. Please try again.");
+        return [];
+    }
+}
+
+
+export async function getTherapistSlots(therapistId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/TherapistAvailability/therapist/${therapistId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${Cookies.get("__atok")}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch slots.");
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        message.error("Failed to fetch therapist slots.");
         return [];
     }
 }
