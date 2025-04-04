@@ -91,99 +91,121 @@ const AddService = ({ open, onClose, onSubmit }) => {
       }
     >
       <Form form={form} layout="vertical">
-        <div className="grid grid-cols-2 gap-4">
-          <Form.Item
-            name="serviceName"
-            label="Service Name"
-            rules={[{ required: true, message: "Please input the service name!" }]}
-          >
-            <Input placeholder="Enter service name" />
-          </Form.Item>
-          <Form.Item
-            name="durationMinutes"
-            label="Duration (minutes)"
-            rules={[{ required: true, message: "Please input the duration!" }]}
-          >
-            <InputNumber style={{ width: "100%" }} placeholder="e.g. 60" />
-          </Form.Item>
-          <Form.Item
-            name="price"
-            label="Price"
-            rules={[{ required: true, message: "Please input the price!" }]}
-          >
-            <InputNumber style={{ width: "100%" }} placeholder="e.g. 19.99" />
-          </Form.Item>
-          <Form.Item
-            name="currency"
-            label="Currency"
-            initialValue="VND"
-            rules={[{ required: true, message: "Currency is required!" }]}
-          >
-            <Input value="VND" disabled />
-          </Form.Item>
-          <Form.Item
-            name="location"
-            label="Location"
-            initialValue="Prestine Care Center"
-            rules={[{ required: true, message: "Please input the location!" }]}
-          >
-            <Input value="Prestine Care Center" disabled />
-          </Form.Item>
-          <Form.Item
-            name="isActive"
-            label="Status"
-            rules={[{ required: true, message: "Please select a status!" }]}
-          >
-            <Select placeholder="Select status">
-              <Select.Option value={true}>Available</Select.Option>
-              <Select.Option value={false}>Unavailable</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="shortDescription"
-            label="Short Description"
-            rules={[{ required: true, message: "Please input the short description!" }]}
-          >
-            <Input placeholder="Enter short description" />
-          </Form.Item>
-          <Form.Item
-            name="categoryId"
-            label="Category"
-            rules={[{ required: true, message: "Please select a category!" }]}
-          >
-            <Select placeholder="Select Category">
-              {categories.map((category) => (
-                <Select.Option key={category.categoryId} value={category.categoryId}>
-                  {category.categoryName}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="serviceImage"
-            label="Service Image"
-            valuePropName="fileList"
-            getValueFromEvent={normFile}
-            rules={[{ required: true, message: "Please select an image!" }]}
-          >
-            <Upload
-              name="serviceImage"
-              listType="picture-card"
-              beforeUpload={beforeUpload}
-              maxCount={1}
-              accept="image/*"
-            >
-              <div>
-                <PlusOutlined />
-                <div style={{ marginTop: 8 }}>Upload</div>
-              </div>
-            </Upload>
-          </Form.Item>
+  <div className="grid grid-cols-2 gap-4">
+    <Form.Item
+      name="serviceName"
+      label="Service Name"
+      rules={[
+        { required: true, message: "Please input the service name!" },
+        { min: 3, message: "Service name should be at least 3 characters!" },
+      ]}
+    >
+      <Input placeholder="Enter service name" />
+    </Form.Item>
+
+    <Form.Item
+      name="durationMinutes"
+      label="Duration (minutes)"
+      rules={[
+        { required: true, message: "Please input the duration!" },
+        { type: "number", min: 10, max: 30,message: "Duration must between 10-30 minutes!" },
+      ]}
+    >
+      <InputNumber style={{ width: "100%" }} placeholder="e.g. 60" />
+    </Form.Item>
+
+    <Form.Item
+      name="price"
+      label="Price"
+      rules={[
+        { required: true, message: "Please input the price!" },
+        { type: "number", min: 0, max:1000000000, message: "Price must between 0 - 1,000,000,000!" },
+      ]}
+    >
+      <InputNumber style={{ width: "100%" }} placeholder="e.g. 19.99" />
+    </Form.Item>
+
+    <Form.Item
+      name="currency"
+      label="Currency"
+      initialValue="VND"
+      rules={[{ required: true, message: "Currency is required!" }]}
+    >
+      <Input value="VND" disabled />
+    </Form.Item>
+
+    <Form.Item
+      name="location"
+      label="Location"
+      initialValue="Prestine Care Center"
+      rules={[{ required: true, message: "Please input the location!" }]}
+    >
+      <Input value="Prestine Care Center" disabled />
+    </Form.Item>
+
+    <Form.Item
+      name="isActive"
+      label="Status"
+      rules={[{ required: true, message: "Please select a status!" }]}
+    >
+      <Select placeholder="Select status">
+        <Select.Option value={true}>Available</Select.Option>
+        <Select.Option value={false}>Unavailable</Select.Option>
+      </Select>
+    </Form.Item>
+
+    <Form.Item
+      name="shortDescription"
+      label="Short Description"
+      rules={[
+        { required: true, message: "Please input the short description!" },
+        { min: 10, message: "Short description should be at least 10 characters!" },
+      ]}
+    >
+      <Input placeholder="Enter short description" />
+    </Form.Item>
+
+    <Form.Item
+      name="categoryId"
+      label="Category"
+      rules={[{ required: true, message: "Please select a category!" }]}
+    >
+      <Select placeholder="Select Category">
+        {categories.map((category) => (
+          <Select.Option key={category.categoryId} value={category.categoryId}>
+            {category.categoryName}
+          </Select.Option>
+        ))}
+      </Select>
+    </Form.Item>
+
+    <Form.Item
+      name="serviceImage"
+      label="Service Image"
+      valuePropName="fileList"
+      getValueFromEvent={normFile}
+      rules={[{ required: true, message: "Please select an image!" }]}
+    >
+      <Upload
+        name="serviceImage"
+        listType="picture-card"
+        beforeUpload={beforeUpload}
+        maxCount={1}
+        accept="image/*"
+      >
+        <div>
+          <PlusOutlined />
+          <div style={{ marginTop: 8 }}>Upload</div>
         </div>
-        <Form.Item label="Description">
-          <MDEditor value={description} onChange={setDescription} height={200} data-color-mode="light" />
-        </Form.Item>
-      </Form>
+      </Upload>
+    </Form.Item>
+  </div>
+
+  <Form.Item label="Description">
+    <MDEditor value={description} onChange={setDescription} height={200} data-color-mode="light" />
+  </Form.Item>
+</Form>
+
     </Modal>
   );
 };
